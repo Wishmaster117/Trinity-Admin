@@ -97,7 +97,7 @@ function TrinityAdmin:CreateTeleportPanel()
 
     local bg = panel:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints()
-    bg:SetColorTexture(0, 0, 0, 0.7)
+    bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
@@ -237,7 +237,7 @@ function TrinityAdmin:PopulateZoneDropdown(continentName, panel)
             UIDropDownMenu_AddButton(info, level)
         end
     end)
-    UIDropDownMenu_SetText(zoneDropdown, TrinityAdmin_Translations["Select_Zone")
+    UIDropDownMenu_SetText(zoneDropdown, TrinityAdmin_Translations["Select_Zone"])
 end
 
 function TrinityAdmin:PopulateLocationDropdown(continentName, zoneName, panel)
@@ -271,7 +271,7 @@ function TrinityAdmin:PopulateLocationDropdown(continentName, zoneName, panel)
             UIDropDownMenu_AddButton(info, level)
         end
     end)
-    UIDropDownMenu_SetText(locationDropdown, TrinityAdmin_Translations["Select_Location")
+    UIDropDownMenu_SetText(locationDropdown, TrinityAdmin_Translations["Select_Location"])
 end
 
 function TrinityAdmin:TeleportTo(command)
@@ -297,13 +297,13 @@ function TrinityAdmin:CreateGMPanel()
 
     local bg = panel:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints(true)
-    bg:SetColorTexture(0, 0, 0, 0.7)
+    bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText(TrinityAdmin_Translations["Modify_Panel")
+    panel.title:SetText(TrinityAdmin_Translations["Modify_Panel"])
 
-    -- Champ de saisie repositionné directement sur le panel
+    -- Champ de saisie
     local modifyInput = CreateFrame("EditBox", "TrinityAdminModifyInput", panel, "InputBoxTemplate")
     modifyInput:SetSize(80, 22)
     modifyInput:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -50)
@@ -311,96 +311,68 @@ function TrinityAdmin:CreateGMPanel()
     modifyInput:SetText("Enter Value")
     modifyInput:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 
-    -- Dropdown (.modify) repositionné à droite du champ de saisie
+    -- Dropdown
     local modifyDropdown = CreateFrame("Frame", "TrinityAdminModifyDropdown", panel, "TrinityAdminDropdownTemplate")
     modifyDropdown:SetPoint("LEFT", modifyInput, "RIGHT", 10, 0)
 
+    -- Définir les options globalement
+    local options = {
+        "Choose",
+        "Speed",
+        "Money",
+        "Hp",
+        "Xp",
+        "Scale",
+        "Currency"
+    }
+
+    -- Définir displayNames en dehors pour éviter l'erreur
+    local displayNames = {
+        Choose = TrinityAdmin_Translations["Choose"] or "Choose",
+        Speed = TrinityAdmin_Translations["Speed"],
+        Money = TrinityAdmin_Translations["Money"],
+        Hp = TrinityAdmin_Translations["Hp"],
+        Xp = TrinityAdmin_Translations["Xp"],
+        Scale = TrinityAdmin_Translations["Scale"],
+        Currency = TrinityAdmin_Translations["Currency"]
+    }
+
+    local tooltipTexts = {
+        Speed = TrinityAdmin_Translations["Modify_Speed"],
+        Money = TrinityAdmin_Translations["Modify_Money"],
+        Hp = TrinityAdmin_Translations["Modify_HP"],
+        Xp = TrinityAdmin_Translations["Modify_XP"],
+        Scale = TrinityAdmin_Translations["Modify_Scale"],
+        Currency = TrinityAdmin_Translations["Add_Money"]
+    }
+
     UIDropDownMenu_Initialize(modifyDropdown, function(dropdown, level, menuList)
-        local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
-        local info  = UIDropDownMenu_CreateInfo()
-        local options = {
-			TrinityAdmin_Translations["Speed"],
-			TrinityAdmin_Translations["Money"],
-			TrinityAdmin_Translations["Hp"],
-			TrinityAdmin_Translations["Xp"],
-			TrinityAdmin_Translations["Scale"],
-			TrinityAdmin_Translations["Currency"]
-		}
+        local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown) or "Choose"
+        local info = UIDropDownMenu_CreateInfo()
+
         for _, option in ipairs(options) do
-            info.text       = option
-            info.value      = option
+            info.text = displayNames[option] or option
+            info.value = option
             info.isNotRadio = false
             info.r, info.g, info.b = 1, 1, 1
-            info.checked    = (info.value == selectedValue)
+            info.checked = (info.value == selectedValue)
 
             info.func = function(button)
                 UIDropDownMenu_SetSelectedValue(dropdown, button.value)
-                UIDropDownMenu_SetText(dropdown, button.value)
+                UIDropDownMenu_SetText(dropdown, displayNames[button.value] or button.value)
                 TrinityAdmin.modifyFunction = button.value
 
-                -- Ajout du tooltip si l'option "Currency" est sélectionnée
-                if button.value == "Currency" then
+                -- Vérifie si un tooltip est défini pour l'option sélectionnée
+                if tooltipTexts[button.value] then
                     modifyInput:SetScript("OnEnter", function(self)
                         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                        -- GameTooltip:SetText("Ajoute le montant de Monnaie (Emblemes etc...) = ID au joueur, si aucun joueur n'est selectionné vous l'ajoute à vous. Syntaxe: ID + espace + montant", 1, 1, 1)
-						GameTooltip:SetText(TrinityAdmin_Translations["Add_Money"], 1,1,1)
+                        GameTooltip:SetText(tooltipTexts[button.value], 1, 1, 1)
                         GameTooltip:Show()
                     end)
                     modifyInput:SetScript("OnLeave", function(self)
                         GameTooltip:Hide()
                     end)
-				elseif button.value == "Speed" then
-					modifyInput:SetScript("OnEnter", function(self)
-					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					-- GameTooltip:SetText("Modifie votre vitesse de déplacement : Valeurs de 1 à 100",1,1,1)
-					GameTooltip:SetText(TrinityAdmin_Translations["Modify_Speed"], 1,1,1)
-					GameTooltip:Show()
-					end)
-					modifyInput:SetScript("OnLeave", function(self)
-					GameTooltip:Hide()
-					end)
-				elseif button.value == "Money" then
-					modifyInput:SetScript("OnEnter", function(self)
-					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					-- GameTooltip:SetText("Modifie l'argent du joueur, si aucun joueur n'est selectionné, modifie le votre (en pieces de cuivre 10000 cuivre = 1 or)",1,1,1)
-					GameTooltip:SetText(TrinityAdmin_Translations["Modify_Money"], 1,1,1)
-					GameTooltip:Show()
-					end)
-					modifyInput:SetScript("OnLeave", function(self)
-					GameTooltip:Hide()
-					end)
-				elseif button.value == "Hp" then
-					modifyInput:SetScript("OnEnter", function(self)
-					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					-- GameTooltip:SetText("Modifie les HP du joueur, si aucun joueur n'est selectionné, modifie vos HP (Points de vie)",1,1,1)
-					GameTooltip:SetText(TrinityAdmin_Translations["Modify_HP"], 1,1,1)
-					GameTooltip:Show()
-					end)
-					modifyInput:SetScript("OnLeave", function(self)
-					GameTooltip:Hide()
-					end)
-				elseif button.value == "Xp" then
-					modifyInput:SetScript("OnEnter", function(self)
-					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					-- GameTooltip:SetText("Modifie le XP du joueur, si aucun joueur n'est selectionné, modifie votre XP",1,1,1)
-					GameTooltip:SetText(TrinityAdmin_Translations["Modify_XP"], 1,1,1)
-					GameTooltip:Show()
-					end)
-					modifyInput:SetScript("OnLeave", function(self)
-					GameTooltip:Hide()
-					end)
-				elseif button.value == "Scale" then
-					modifyInput:SetScript("OnEnter", function(self)
-					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					-- GameTooltip:SetText("Modifie la taille du joueur, si aucun joueur n'est selectionné, modifie votre taille (valeurs de 0.1 à 10)",1,1,1)
-					GameTooltip:SetText(TrinityAdmin_Translations["Modify_Scale"], 1,1,1)
-					GameTooltip:Show()
-					end)
-					modifyInput:SetScript("OnLeave", function(self)
-					GameTooltip:Hide()
-					end)	
                 else
-                    -- Supprimer le tooltip pour les autres options
                     modifyInput:SetScript("OnEnter", nil)
                     modifyInput:SetScript("OnLeave", nil)
                 end
@@ -410,7 +382,9 @@ function TrinityAdmin:CreateGMPanel()
         end
     end)
 
-    UIDropDownMenu_SetText(modifyDropdown, "Speed")
+    -- Utiliser selectedValue pour afficher "Choose" par défaut
+    local selectedValue = "Choose"
+    UIDropDownMenu_SetText(modifyDropdown, displayNames[selectedValue] or selectedValue)
 
     -- Bouton "Set"
     local btnSet = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -419,7 +393,7 @@ function TrinityAdmin:CreateGMPanel()
     btnSet:SetText("Set")
     btnSet:SetScript("OnClick", function()
         local value = modifyInput:GetText()
-        if value == "" or value == "Enter Value" then
+        if value == "" or value == "Enter Value" or value == "Choose" then
             print(TrinityAdmin_Translations["Enter_Valid_Value"])
             return
         end
@@ -428,7 +402,6 @@ function TrinityAdmin:CreateGMPanel()
         local command
 
         if func == "Currency" then
-            -- Extrait deux valeurs séparées par un espace : l'id et le montant
             local id, amount = string.match(value, "(%S+)%s+(%S+)")
             if not id or not amount then
                 print(TrinityAdmin_Translations["Enter_Valid_Currency"])
@@ -455,6 +428,7 @@ function TrinityAdmin:CreateGMPanel()
     self.gmPanel = panel
 end
 
+
 ------------------------------------------------------------
 -- Panel NPC
 ------------------------------------------------------------
@@ -474,7 +448,7 @@ function TrinityAdmin:CreateNPCPanel()
 
     local bg = npc:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints(true)
-    bg:SetColorTexture(0, 0, 0, 0.7)
+    bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)
 
     npc.title = npc:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     npc.title:SetPoint("TOPLEFT", 10, -10)

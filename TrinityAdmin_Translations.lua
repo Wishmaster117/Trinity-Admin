@@ -10,7 +10,7 @@ if locale == "frFR" then
 	L["Select_Zone"]            = "Sélectionnez une zone"
 	L["Select_Continent"]     	= "Sélectionnez un continent"
 	L["Select_Location"]      	= "Sélectionnez un lieu"
-	L["Modify Panel"]         	= "Panneau de Modifications"
+	L["Modify_Panel"]         	= "Panneau de Modifications"
 	L["Speed"]    				= "Vitesse"
 	L["Money"]    				= "Argent"
 	L["Hp"]       				= "PV"
