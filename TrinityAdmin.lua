@@ -6,7 +6,7 @@ TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0"
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     type = "launcher",
     text = "TrinityAdmin",
-    icon = "Interface\\Icons\\INV_Misc_PenAndPaper",  -- Remplacez par l'icône souhaitée
+    icon = "Interface\\Icons\\Inv_7xp_inscription_talenttome01",  -- Remplacez par l'icône souhaitée
     OnClick = function(self, button)
         if button == "LeftButton" then
             TrinityAdmin:ToggleUI()  -- Ouvre/ferme votre interface
