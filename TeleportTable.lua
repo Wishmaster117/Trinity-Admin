@@ -1430,19 +1430,19 @@ TeleportData = {
   },
 ["I_Northendre"] = {
   ["The heart of Acherus"] = {
-    ["The heart of Acherus"]                = ".go xyz 2476.1101 -5515.0400 420.6366 609",
+  ["The heart of Acherus"]                = ".go xyz 2476.1101 -5515.0400 420.6366 609",
   },
   ["Vault of Archavon"] = {
-    ["Vault of Archavon"]                   = ".go xyz -503.5889 -103.4430 156.0875 624",
+  ["Vault of Archavon"]                   = ".go xyz -503.5889 -103.4430 156.0875 624",
    },
   ["Ahn'Kahet"] = {
-    ["Hall of Conquered Kings"]             = ".go xyz 333.3510 -1109.9399 69.7720 619",
+  ["Hall of Conquered Kings"]             = ".go xyz 333.3510 -1109.9399 69.7720 619",
    },
-  ["The Obsidian Sanctum"] = {
-    ["The Obsidian Sanctum"]                = ".go xyz 3228.5800 385.8599 65.5490 615",
+["The Obsidian Sanctum"] = {
+  ["The Obsidian Sanctum"]                = ".go xyz 3228.5800 385.8599 65.5490 615",
    },
   ["Azjof_Nerub"] = {
-    ["The Glided gate"]                     = ".go xyz 413.314 795.968 831.351 601",
+  ["The Glided gate"]                     = ".go xyz 413.314 795.968 831.351 601",
    },
   ["Naxxramas"] = {
     ["Naxxramas"]                           = ".go xyz 3005.68 -3447.77 293.93 533",
