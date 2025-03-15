@@ -48,6 +48,9 @@ function TrinityAdmin_ShowGMFunctionsPanel()
     TrinityAdmin:ShowGMFunctionsPanel()
 end
 
+function TrinityAdmin_ShowAccountPanel()
+    TrinityAdmin:ShowAccountPanel()
+end
 ------------------------------------------------------------
 -- Gestion du "menu principal" (les 4 boutons désormais)
 ------------------------------------------------------------
@@ -56,22 +59,28 @@ function TrinityAdmin:ShowMainMenu()
     if self.gmPanel then self.gmPanel:Hide() end
     if self.npcPanel then self.npcPanel:Hide() end
     if self.gmFunctionsPanel then self.gmFunctionsPanel:Hide() end  -- Masque aussi le nouveau
+	if self.accountPanel then self.accountPanel:Hide() end  -- Masque accounpanel
 
     -- On ré‐affiche tous les boutons
     TrinityAdminMainFrameTeleportButton:Show()
     TrinityAdminMainFrameGMButton:Show()
     TrinityAdminMainFrameNPCButton:Show()
     TrinityAdminMainFrameGMFunctionsButton:Show()  -- Le 4e
+	TrinityAdminMainFrameAccountButton:Show() -- 5 eme bouton
 
     TrinityAdminMainFrame:Show()
 end
 
+------------------------------------------------------------
+-- Fonction pour cacher le menu principale quand on est dans les sous menus
+------------------------------------------------------------
 function TrinityAdmin:HideMainMenu()
     -- On masque tous les boutons
     TrinityAdminMainFrameTeleportButton:Hide()
     TrinityAdminMainFrameGMButton:Hide()
     TrinityAdminMainFrameNPCButton:Hide()
     TrinityAdminMainFrameGMFunctionsButton:Hide()  -- Le 4e
+	TrinityAdminMainFrameAccountButton:Hide()  -- Le 5e
 
     TrinityAdminMainFrame:Show()
 end
@@ -323,7 +332,9 @@ function TrinityAdmin:CreateGMPanel()
         "Hp",
         "Xp",
         "Scale",
-        "Currency"
+        "Currency",
+		"Faction",
+		"Gender"
     }
 
     -- Définir displayNames en dehors pour éviter l'erreur
@@ -334,7 +345,9 @@ function TrinityAdmin:CreateGMPanel()
         Hp = TrinityAdmin_Translations["Hp"],
         Xp = TrinityAdmin_Translations["Xp"],
         Scale = TrinityAdmin_Translations["Scale"],
-        Currency = TrinityAdmin_Translations["Currency"]
+        Currency = TrinityAdmin_Translations["Currency"],
+		Faction = TrinityAdmin_Translations["Faction"],
+		Gender = TrinityAdmin_Translations["Gender"]
     }
 
     local tooltipTexts = {
@@ -343,7 +356,9 @@ function TrinityAdmin:CreateGMPanel()
         Hp = TrinityAdmin_Translations["Modify_HP"],
         Xp = TrinityAdmin_Translations["Modify_XP"],
         Scale = TrinityAdmin_Translations["Modify_Scale"],
-        Currency = TrinityAdmin_Translations["Add_Money"]
+        Currency = TrinityAdmin_Translations["Add_Money"],
+		Faction = TrinityAdmin_Translations["Modify_Faction"],
+		Gender = TrinityAdmin_Translations["Modify_Gender"]
     }
 
     UIDropDownMenu_Initialize(modifyDropdown, function(dropdown, level, menuList)
@@ -467,6 +482,43 @@ function TrinityAdmin:CreateNPCPanel()
 end
 
 ------------------------------------------------------------
+-- Panel ACCOUNTS
+------------------------------------------------------------
+function TrinityAdmin:ShowAccountPanel()
+    self:HideMainMenu()
+    if not self.accountPanel then
+        self:CreateAccountPanel()
+    end
+    self.accountPanel:Show()
+end
+
+function TrinityAdmin:CreateAccountPanel()
+    local account = CreateFrame("Frame", "TrinityAdminAccountPanel", TrinityAdminMainFrame)
+    account:ClearAllPoints()
+    account:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+    account:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+
+    local bg = account:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints(true)
+    bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)
+
+    account.title = account:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+    account.title:SetPoint("TOPLEFT", 10, -10)
+    account.title:SetText(TrinityAdmin_Translations["Account_Panel"])
+
+    local btnBack = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+    btnBack:SetSize(80, 22)
+    btnBack:SetPoint("BOTTOM", account, "BOTTOM", 0, 10)
+    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetScript("OnClick", function()
+        account:Hide()
+        self:ShowMainMenu()
+    end)
+
+    self.accountPanel = account
+end
+
+------------------------------------------------------------
 -- Nouveau Panel : GM Functions
 ------------------------------------------------------------
 function TrinityAdmin:ShowGMFunctionsPanel()
@@ -577,7 +629,17 @@ function TrinityAdmin:CreateGMFunctionsPanel()
 			self.gmVisible = true
 		end
 	end)
-
+	
+	-- Bouton Appear (positionné sous GM Fly)
+	local btnAppear = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnAppear:SetSize(100, 22)
+	btnAppear:SetPoint("TOPLEFT", btnFly, "BOTTOMLEFT", 0, -10) -- Positionnement sous btnFly
+	btnAppear:SetText("Appear")
+	btnAppear:SetScript("OnClick", function()
+		SendChatMessage(".appear", "SAY")
+	end)
+    
+	-- Bouton Retout (positionné )
 	local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)

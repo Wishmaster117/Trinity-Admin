@@ -28,6 +28,12 @@ if locale == "frFR" then
 	L["Free_Panel"]    			= "Panneau à Définir"
 	L["Back"]                 	= "Retour"
 	
+	L["Faction"]                = "Faction"
+	L["Gender"]                 = "Genre"
+	L["Modify_Faction"]         = "Selectionnez une créature pour lui changer sa faction."
+	L["Modify_Gender"]          = "Modifie le genre du Joueur, valeurs possibles (male/female)."
+	L["Acoount_Panel"]          = "Panneau de Gestion des comptes"
+	
 	
     -- Ajoutez ici toutes les chaînes dont vous avez besoin...
 elseif locale == "enUS" then

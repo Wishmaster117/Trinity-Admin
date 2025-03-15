@@ -111,6 +111,24 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<!-- Bouton Account Ici, $parent prend la valeur "TrinityAdminMainFrame", donc le nom final du bouton sera : TrinityAdminMainFrameAccountButton-->
+			<Button name="$parentAccountButton" inherits="UIPanelButtonTemplate" text="Accounts">
+				<Size>
+					<AbsDimension x="100" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentGMFunctionsButton" relativePoint="RIGHT">
+					    <Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowAccountPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>
