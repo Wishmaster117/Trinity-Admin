@@ -27,21 +27,31 @@ if locale == "frFR" then
 	L["Enter_Valid_Currency"] 	= "Veuillez entrer un id et un montant séparés par un espace pour la currency."
 	L["Free_Panel"]    			= "Panneau à Définir"
 	L["Back"]                 	= "Retour"
-	L["Account_Panel"] = "Panneau des Comptes"
+	L["Account_Panel"]			= "Panneau des Comptes"
     L["Account_Format_Tooltip"] = "Format: name@domaine"
-    L["Create"] = "Créer"
+    L["Create"]					= "Créer"
     L["Please enter both account and password."] = "Veuillez entrer un compte et un mot de passe."
-	L["Username"] = "Nom d'utilisateur"   -- Vous pouvez mettre "Nom d'utilisateur" si vous préférez
-    L["Password"] = "Password"   -- Ou "Mot de passe"
+	L["Username"]				= "Nom d'utilisateur"
+    L["Password"]				= "Password"
 	L["Account_Password_Tooltip"] = "Choisissez un mot de passe"   
 	L["Faction"]                = "Faction"
 	L["Gender"]                 = "Genre"
 	L["Modify_Faction"]         = "Selectionnez une créature pour lui changer sa faction."
 	L["Modify_Gender"]          = "Modifie le genre du Joueur, valeurs possibles (male/female)."
 	L["Acoount_Panel"]          = "Panneau de Gestion des comptes"
+	L["Account Creation"]		= "Création de comptes"
+	L["Ban Account"]			= "Bannir un compte"
+	L["Name"]					= "Nom"
+	L["Bantime"]				= "Durée"
+	L["Reason"]					= "Raison"
+	L["Ban"]					= "Bannir Compte" 
+	L["Name Tooltip"]			= "Ban le compte ou le joueur et le Kick, une valeur négative signifie permaban."
+	L["Bantime Tooltip"] = "Syntaxe : 4d20h3s"
+	L["Please enter name, bantime and reason."] = "Veuillez entrer le nom, la durée du ban et la raison."
+	L["Ban Character"]          = "Bannir Personnage" 
 	
 	
-    -- Ajoutez ici toutes les chaînes dont vous avez besoin...
+
 elseif locale == "enUS" then
     L["GM Functions Panel"]     = "GM Functions Panel"
 	L["TrinityAdmin Main Menu"] = "TrinityAdmin By TheWarlock"
@@ -71,18 +81,27 @@ elseif locale == "enUS" then
     L["Account_Format_Tooltip"] = "Format: name@domain"
     L["Create"] = "Create"
     L["Please enter both account and password."] = "Please enter both account and password."
-	L["Username"] = "Username"
-    L["Password"] = "Password"
-	L["Account_Password_Tooltip"] = "Pck a Password"
+	L["Username"]				= "Username"
+    L["Password"]				= "Password"
+	L["Account_Password_Tooltip"] = "Pick a Password"
 	L["Faction"]                = "Faction"
 	L["Gender"]                 = "Gender"
 	L["Modify_Faction"]         = "Select a creature to change its faction."
 	L["Modify_Gender"]          = "Modify the player's gender, possible values (male/female)."
-	L["Acoount_Panel"]          = "Account Management Panel"	
+	L["Acoount_Panel"]          = "Account Management Panel"
+	L["Account Creation"]		= "Account Creation"
+	L["Ban Account"]			= "Ban Account"
+	L["Name"]					= "Name"
+	L["Bantime"]				= "Bantime"
+	L["Reason"]					= "Reason"
+	L["Ban"]					= "Ban Account"
+	L["Name Tooltip"]			= "Ban Account or character and Kick Player, negative Bantime means permaban."
+	L["Bantime Tooltip"]		= "Syntax: : 4d20h3s"
+	L["Please enter name, bantime and reason."] = "Please enter name, bantime and reason."
+	L["Ban Character"]          = "Ban Character"
 
     
     
-    -- Ajoutez ici les traductions en anglais...
 end
 
 TrinityAdmin_Translations = L

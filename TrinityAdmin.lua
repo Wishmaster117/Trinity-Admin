@@ -206,9 +206,11 @@ function TrinityAdmin:CreateTeleportPanel()
     -- Bouton Go
     ------------------------------------------------------------------
     local goButton = CreateFrame("Button", "TrinityAdminGoButton", panel, "UIPanelButtonTemplate")
-    goButton:SetSize(60, 22)
+    -- goButton:SetSize(60, 22)
     goButton:SetPoint("LEFT", locationDropdown, "RIGHT", 10, 0)
     goButton:SetText("Go")
+    goButton:SetHeight(22)
+    goButton:SetWidth(goButton:GetTextWidth() + 20)
     goButton:Hide()
     goButton:SetScript("OnClick", function()
         if self.selectedCommand then
@@ -222,9 +224,11 @@ function TrinityAdmin:CreateTeleportPanel()
     -- Bouton Back
     ------------------------------------------------------------------
     local btnBack = CreateFrame("Button", "TrinityAdminTeleportBackButton", panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetPoint("BOTTOM", 0, 10)
     btnBack:SetText("Back")
+    btnBack:SetHeight(22)
+    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         self:ShowMainMenu()
@@ -431,9 +435,11 @@ function TrinityAdmin:CreateGMPanel()
 
     -- Bouton "Set"
     local btnSet = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnSet:SetSize(60, 22)
+    -- btnSet:SetSize(60, 22)
     btnSet:SetPoint("LEFT", modifyDropdown, "RIGHT", 10, 0)
     btnSet:SetText("Set")
+    btnSet:SetHeight(22)
+    btnSet:SetWidth(btnSet:GetTextWidth() + 20)
     btnSet:SetScript("OnClick", function()
         local value = modifyInput:GetText()
         if value == "" or value == "Enter Value" or value == "Choose" then
@@ -460,9 +466,11 @@ function TrinityAdmin:CreateGMPanel()
 
     -- Bouton Back
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
     btnBack:SetText("Back")
+    btnBack:SetHeight(22)
+    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         self:ShowMainMenu()
@@ -498,9 +506,11 @@ function TrinityAdmin:CreateNPCPanel()
     npc.title:SetText(TrinityAdmin_Translations["Free_Panel"])
 
     local btnBack = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetPoint("BOTTOM", npc, "BOTTOM", 0, 10)
     btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetHeight(22)
+    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         npc:Hide()
         self:ShowMainMenu()
@@ -534,10 +544,15 @@ function TrinityAdmin:CreateAccountPanel()
     account.title:SetPoint("TOPLEFT", 10, -10)
     account.title:SetText(TrinityAdmin_Translations["Account_Panel"])
 
+    -- Label indiquant "Création de comptes" (utilisation de la traduction)
+    local creationLabel = account:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    creationLabel:SetPoint("TOPLEFT", account, "TOPLEFT", 10, -30)
+    creationLabel:SetText(TrinityAdmin_Translations["Account Creation"])
+
     -- EditBox pour l'Account avec valeur par défaut et tooltip
     local accountEditBox = CreateFrame("EditBox", "TrinityAdminAccountEditBox", account, "InputBoxTemplate")
     accountEditBox:SetSize(200, 22)
-    accountEditBox:SetPoint("TOPLEFT", account, "TOPLEFT", 10, -40)
+    accountEditBox:SetPoint("TOPLEFT", account, "TOPLEFT", 10, -50)
     accountEditBox:SetAutoFocus(false)
     accountEditBox:SetText(TrinityAdmin_Translations["Username"])
     accountEditBox:SetScript("OnEditFocusGained", function(self)
@@ -588,9 +603,11 @@ function TrinityAdmin:CreateAccountPanel()
     end)
     -- Bouton "Create"
     local btnCreate = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
-    btnCreate:SetSize(80, 22)
+    -- btnCreate:SetSize(80, 22)
     btnCreate:SetPoint("TOPLEFT", passwordEditBox, "BOTTOMLEFT", 0, -10)
     btnCreate:SetText(TrinityAdmin_Translations["Create"])
+    btnCreate:SetHeight(22)
+    btnCreate:SetWidth(btnCreate:GetTextWidth() + 20)
     btnCreate:SetScript("OnClick", function()
         local accountValue = accountEditBox:GetText()
         local passwordValue = passwordEditBox:GetText()
@@ -604,10 +621,128 @@ function TrinityAdmin:CreateAccountPanel()
         SendChatMessage(command, "SAY")
     end)
 
+    -- Label "Bannir un compte"
+    local banLabel = account:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    banLabel:SetPoint("TOPLEFT", btnCreate, "BOTTOMLEFT", 0, -20)
+    banLabel:SetText(TrinityAdmin_Translations["Ban Account"])
+    
+    -- EditBox pour le Name
+    local banNameEditBox = CreateFrame("EditBox", "TrinityAdminBanNameEditBox", account, "InputBoxTemplate")
+    banNameEditBox:SetSize(150, 22)
+    banNameEditBox:SetPoint("TOPLEFT", banLabel, "BOTTOMLEFT", 0, -10)
+    banNameEditBox:SetAutoFocus(false)
+    banNameEditBox:SetText(TrinityAdmin_Translations["Name"])
+    banNameEditBox:SetScript("OnEditFocusGained", function(self)
+        if self:GetText() == TrinityAdmin_Translations["Name"] then
+            self:SetText("")
+        end
+    end)
+    banNameEditBox:SetScript("OnEditFocusLost", function(self)
+        if self:GetText() == "" then
+            self:SetText(TrinityAdmin_Translations["Name"])
+        end
+    end)
+    banNameEditBox:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(TrinityAdmin_Translations["Name Tooltip"], 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    banNameEditBox:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+    end)
+    
+    -- EditBox pour le Bantime
+    local banTimeEditBox = CreateFrame("EditBox", "TrinityAdminBanTimeEditBox", account, "InputBoxTemplate")
+    banTimeEditBox:SetSize(150, 22)
+    banTimeEditBox:SetPoint("TOPLEFT", banNameEditBox, "BOTTOMLEFT", 0, -10)
+    banTimeEditBox:SetAutoFocus(false)
+    banTimeEditBox:SetText(TrinityAdmin_Translations["Bantime"])
+    banTimeEditBox:SetScript("OnEditFocusGained", function(self)
+        if self:GetText() == TrinityAdmin_Translations["Bantime"] then
+            self:SetText("")
+        end
+    end)
+    banTimeEditBox:SetScript("OnEditFocusLost", function(self)
+        if self:GetText() == "" then
+            self:SetText(TrinityAdmin_Translations["Bantime"])
+        end
+    end)
+    banTimeEditBox:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(TrinityAdmin_Translations["Bantime Tooltip"], 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    banTimeEditBox:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+    end)
+    
+    -- EditBox pour le Reason
+    local banReasonEditBox = CreateFrame("EditBox", "TrinityAdminBanReasonEditBox", account, "InputBoxTemplate")
+    banReasonEditBox:SetSize(150, 22)
+    banReasonEditBox:SetPoint("TOPLEFT", banTimeEditBox, "BOTTOMLEFT", 0, -10)
+    banReasonEditBox:SetAutoFocus(false)
+    banReasonEditBox:SetText(TrinityAdmin_Translations["Reason"])
+    banReasonEditBox:SetScript("OnEditFocusGained", function(self)
+        if self:GetText() == TrinityAdmin_Translations["Reason"] then
+            self:SetText("")
+        end
+    end)
+    banReasonEditBox:SetScript("OnEditFocusLost", function(self)
+        if self:GetText() == "" then
+            self:SetText(TrinityAdmin_Translations["Reason"])
+        end
+    end)
+    -- (Vous pouvez ajouter un tooltip ici si nécessaire)
+    
+    -- Bouton "Ban"
+    local btnBan = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+    -- btnBan:SetSize(120, 22)
+    btnBan:SetPoint("TOPLEFT", banReasonEditBox, "BOTTOMLEFT", 0, -10)
+    btnBan:SetText(TrinityAdmin_Translations["Ban"])
+    btnBan:SetHeight(22)
+    btnBan:SetWidth(btnBan:GetTextWidth() + 20)
+    btnBan:SetScript("OnClick", function()
+        local nameValue = banNameEditBox:GetText()
+        local timeValue = banTimeEditBox:GetText()
+        local reasonValue = banReasonEditBox:GetText()
+        if nameValue == "" or nameValue == TrinityAdmin_Translations["Name"]
+           or timeValue == "" or timeValue == TrinityAdmin_Translations["Bantime"]
+           or reasonValue == "" or reasonValue == TrinityAdmin_Translations["Reason"] then
+            print(TrinityAdmin_Translations["Please enter name, bantime and reason."])
+            return
+        end
+        local command = ".ban account " .. nameValue .. " " .. timeValue .. " " .. reasonValue
+        SendChatMessage(command, "SAY")
+    end)
+
+    -- Bouton "Bannir Personnage" à droite du bouton "Ban"
+    local btnBanChar = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+    -- btnBanChar:SetSize(120, 22)
+    btnBanChar:SetHeight(22)
+    btnBanChar:SetPoint("LEFT", btnBan, "RIGHT", 10, 0)
+    btnBanChar:SetText(TrinityAdmin_Translations["Ban Character"])
+    btnBanChar:SetWidth(btnBanChar:GetTextWidth() + 20)
+    btnBanChar:SetScript("OnClick", function()
+        local nameValue = banNameEditBox:GetText()
+        local timeValue = banTimeEditBox:GetText()
+        local reasonValue = banReasonEditBox:GetText()
+        if nameValue == "" or nameValue == TrinityAdmin_Translations["Name"]
+           or timeValue == "" or timeValue == TrinityAdmin_Translations["Bantime"]
+           or reasonValue == "" or reasonValue == TrinityAdmin_Translations["Reason"] then
+            print(TrinityAdmin_Translations["Please enter name, bantime and reason."])
+            return
+        end
+        local command = ".ban character " .. nameValue .. " " .. timeValue .. " " .. reasonValue
+        SendChatMessage(command, "SAY")
+    end)
+
+
     local btnBack = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetPoint("BOTTOM", account, "BOTTOM", 0, 10)
     btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetHeight(22)
+    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         account:Hide()
         self:ShowMainMenu()
@@ -644,9 +779,11 @@ function TrinityAdmin:CreateGMFunctionsPanel()
 
     -- Bouton GM FLY ON/OFF
     local btnFly = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnFly:SetSize(80, 22)
+    -- btnFly:SetSize(80, 22)
     btnFly:SetPoint("TOPLEFT", 10, -50)
     btnFly:SetText(self.gmFlyOn and "GM Fly ON" or "GM Fly OFF")
+    btnFly:SetHeight(22)
+    btnFly:SetWidth(btnFly:GetTextWidth() + 20)
     btnFly:SetScript("OnClick", function()
         if self.gmFlyOn then
             SendChatMessage(".gm fly off", "SAY")
@@ -661,9 +798,11 @@ function TrinityAdmin:CreateGMFunctionsPanel()
 	
 	-- Bouton GM ON/OFF
     local btnGmOn = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnGmOn:SetSize(80, 22)
+    -- btnGmOn:SetSize(80, 22)
 	btnGmOn:SetPoint("LEFT", btnFly, "RIGHT", 10, 0)
     btnGmOn:SetText(self.gmOn and "GM ON" or "GM OFF")
+    btnGmOn:SetHeight(22)
+    btnGmOn:SetWidth(btnGmOn:GetTextWidth() + 20)
     btnGmOn:SetScript("OnClick", function()
         if self.gmOn then
             SendChatMessage(".gm off", "SAY")
@@ -678,9 +817,11 @@ function TrinityAdmin:CreateGMFunctionsPanel()
 
     -- Bouron GM Chat ON/OFF
     local btnGmChat = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnGmChat:SetSize(100, 22)
+    -- btnGmChat:SetSize(100, 22)
     btnGmChat:SetPoint("LEFT", btnGmOn, "RIGHT", 10, 0)
     btnGmChat:SetText(self.gmChatOn and "GM Chat ON" or "GM ChatOFF")
+    btnGmChat:SetHeight(22)
+    btnGmChat:SetWidth(btnGmChat:GetTextWidth() + 20)
     btnGmChat:SetScript("OnClick", function()
         if self.gmChatOn then
 			SendChatMessage(".gm chat off", "SAY")
@@ -695,27 +836,33 @@ function TrinityAdmin:CreateGMFunctionsPanel()
 	
 	-- Bouton GM Ingame (sans toggle)
 	local btnGmIngame = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnGmIngame:SetSize(100, 22)
+	-- btnGmIngame:SetSize(100, 22)
 	btnGmIngame:SetPoint("LEFT", btnGmChat, "RIGHT", 10, 0)
 	btnGmIngame:SetText("GM Ingame")
+    btnGmIngame:SetHeight(22)
+    btnGmIngame:SetWidth(btnGmIngame:GetTextWidth() + 20)
 	btnGmIngame:SetScript("OnClick", function()
 		SendChatMessage(".gm ingame", "SAY")
 	end)
 
     -- Bouton GM List (sans toggle)
 	local btnGmList = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnGmList:SetSize(100, 22)
+	-- btnGmList:SetSize(100, 22)
 	btnGmList:SetPoint("LEFT", btnGmIngame, "RIGHT", 10, 0)
 	btnGmList:SetText("GM List")
-	btnGmList:SetScript("OnClick", function()
+	btnGmList:SetHeight(22)
+    btnGmList:SetWidth(btnGmList:GetTextWidth() + 20)
+    btnGmList:SetScript("OnClick", function()
 		SendChatMessage(".gm list", "SAY")
 	end)
 	
 	-- Bouton GM Visible (toggle on/off)
 	local btnGmVisible = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnGmVisible:SetSize(100, 22)
+	-- btnGmVisible:SetSize(100, 22)
 	btnGmVisible:SetPoint("LEFT", btnGmList, "RIGHT", 10, 0)
 	btnGmVisible:SetText(self.gmVisible and "GM Visible ON" or "GM Visible OFF")
+    btnGmVisible:SetHeight(22)
+    btnGmVisible:SetWidth(btnGmVisible:GetTextWidth() + 20)
 	btnGmVisible:SetScript("OnClick", function()
 		if self.gmVisible then
 			SendChatMessage(".gm visible off", "SAY")
@@ -730,18 +877,22 @@ function TrinityAdmin:CreateGMFunctionsPanel()
 	
 	-- Bouton Appear (positionné sous GM Fly)
 	local btnAppear = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnAppear:SetSize(100, 22)
+	-- btnAppear:SetSize(100, 22)
 	btnAppear:SetPoint("TOPLEFT", btnFly, "BOTTOMLEFT", 0, -10) -- Positionnement sous btnFly
 	btnAppear:SetText("Appear")
+    btnAppear:SetHeight(22)
+    btnAppear:SetWidth(btnAppear:GetTextWidth() + 20)
 	btnAppear:SetScript("OnClick", function()
 		SendChatMessage(".appear", "SAY")
 	end)
     
 	-- Bouton Retout (positionné )
 	local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
     btnBack:SetText("Back")
+    btnBack:SetHeight(22)
+    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         self:ShowMainMenu()
