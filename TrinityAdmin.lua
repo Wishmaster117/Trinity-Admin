@@ -1,5 +1,4 @@
--- TrinityAdmin.lua
--- Suppose que TeleportData est déjà défini (via TeleportTable.lua) et chargé avant.
+-- TrinityAdmin
 
 TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0", "AceEvent-3.0")
 
@@ -117,9 +116,10 @@ function TrinityAdmin:CreateUI()
         self:ToggleGMPanel()
     end)
 
+     -- Bouton NPC (Positionné par rapport au bouton GM)
     local btnNpc = CreateFrame("Button", "TrinityAdminButtonNpc", f, "UIPanelButtonTemplate")
     btnNpc:SetSize(80, 22)
-    btnNpc:SetPoint("LEFT", btnChar, "RIGHT", 10, 0)
+    btnNpc:SetPoint("LEFT", btnGM, "RIGHT", 10, 0)
     btnNpc:SetText("Npc")
     btnNpc:SetScript("OnClick", function() self:Print("Bouton Npc cliqué !") end)
 
