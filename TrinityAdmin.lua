@@ -229,7 +229,7 @@ function TrinityAdmin:PopulateZoneDropdown(continentName, panel)
 
                 self:PopulateLocationDropdown(continentName, button.value, panel)
                 panel.locationDropdown:Show()
-                UIDropDownMenu_SetText(panel.locationDropdown, TrinityAdmin_Translations["Select_Location")
+                UIDropDownMenu_SetText(panel.locationDropdown, TrinityAdmin_Translations["Select_Location"])
 
                 panel.goButton:Hide()
             end
