@@ -369,3 +369,4 @@ function TrinityAdmin:ToggleUI(input)
         self.frame:Show()
     end
 end
+------------------------------------------------------------------------------
