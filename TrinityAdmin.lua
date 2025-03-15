@@ -1,6 +1,34 @@
 TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0", "AceEvent-3.0")
 
 ------------------------------------------------------------
+-- Librairie icone minimap
+------------------------------------------------------------
+local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
+    type = "launcher",
+    text = "TrinityAdmin",
+    icon = "Interface\\Icons\\INV_Misc_PenAndPaper",  -- Remplacez par l'icône souhaitée
+    OnClick = function(self, button)
+        if button == "LeftButton" then
+            TrinityAdmin:ToggleUI()  -- Ouvre/ferme votre interface
+        elseif button == "RightButton" then
+            -- Ajoutez ici d'autres actions si besoin
+        end
+    end,
+    OnTooltipShow = function(tooltip)
+        tooltip:AddLine("TrinityAdmin")
+        tooltip:AddLine("Cliquez pour ouvrir le menu principal.", 1, 1, 1)
+    end,
+})
+
+-- Table de sauvegarde pour l'icône minimap
+TrinityAdminDB = TrinityAdminDB or {}
+TrinityAdminDB.minimap = TrinityAdminDB.minimap or { hide = false }
+
+-- Enregistrement de l'icône sur la minimap
+local icon = LibStub("LibDBIcon-1.0")
+icon:Register("TrinityAdmin", LDB, TrinityAdminDB.minimap)
+
+------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
 function TrinityAdmin:OnInitialize()
@@ -288,7 +316,7 @@ function TrinityAdmin:TeleportTo(command)
 end
 
 ------------------------------------------------------------
--- Panel GM
+-- Panneau Modifications
 ------------------------------------------------------------
 function TrinityAdmin:ShowGMPanel()
     self:HideMainMenu()
@@ -505,6 +533,76 @@ function TrinityAdmin:CreateAccountPanel()
     account.title = account:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     account.title:SetPoint("TOPLEFT", 10, -10)
     account.title:SetText(TrinityAdmin_Translations["Account_Panel"])
+
+    -- EditBox pour l'Account avec valeur par défaut et tooltip
+    local accountEditBox = CreateFrame("EditBox", "TrinityAdminAccountEditBox", account, "InputBoxTemplate")
+    accountEditBox:SetSize(200, 22)
+    accountEditBox:SetPoint("TOPLEFT", account, "TOPLEFT", 10, -40)
+    accountEditBox:SetAutoFocus(false)
+    accountEditBox:SetText(TrinityAdmin_Translations["Username"])
+    accountEditBox:SetScript("OnEditFocusGained", function(self)
+        if self:GetText() == TrinityAdmin_Translations["Username"] then
+            self:SetText("")
+        end
+    end)
+    accountEditBox:SetScript("OnEditFocusLost", function(self)
+        if self:GetText() == "" then
+            self:SetText(TrinityAdmin_Translations["Username"])
+        end
+    end)
+    -- Ajout du tooltip pour préciser le format
+    accountEditBox:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(TrinityAdmin_Translations["Account_Format_Tooltip"], 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    accountEditBox:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+    end)
+
+    -- EditBox pour le Password avec valeur par défaut
+    local passwordEditBox = CreateFrame("EditBox", "TrinityAdminPasswordEditBox", account, "InputBoxTemplate")
+    passwordEditBox:SetSize(200, 22)
+    passwordEditBox:SetPoint("TOPLEFT", accountEditBox, "BOTTOMLEFT", 0, -10)
+    passwordEditBox:SetAutoFocus(false)
+    passwordEditBox:SetText(TrinityAdmin_Translations["Password"])
+    passwordEditBox:SetPassword(true)  -- Masque la saisie
+    passwordEditBox:SetScript("OnEditFocusGained", function(self)
+        if self:GetText() == TrinityAdmin_Translations["Password"] then
+            self:SetText("")
+        end
+    end)
+    passwordEditBox:SetScript("OnEditFocusLost", function(self)
+        if self:GetText() == "" then
+            self:SetText(TrinityAdmin_Translations["Password"])
+        end
+    end)
+    -- (Optionnel : vous pouvez ajouter un tooltip pour le password si besoin)
+	passwordEditBox:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(TrinityAdmin_Translations["Account_Password_Tooltip"], 1, 1, 1)
+        GameTooltip:Show()
+    end)
+    passwordEditBox:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+    end)
+    -- Bouton "Create"
+    local btnCreate = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+    btnCreate:SetSize(80, 22)
+    btnCreate:SetPoint("TOPLEFT", passwordEditBox, "BOTTOMLEFT", 0, -10)
+    btnCreate:SetText(TrinityAdmin_Translations["Create"])
+    btnCreate:SetScript("OnClick", function()
+        local accountValue = accountEditBox:GetText()
+        local passwordValue = passwordEditBox:GetText()
+        -- Vérifie si les champs sont remplis (en tenant compte des valeurs par défaut)
+        if accountValue == "" or accountValue == TrinityAdmin_Translations["Username"] or
+           passwordValue == "" or passwordValue == TrinityAdmin_Translations["Password"] then
+            print(TrinityAdmin_Translations["Please enter both account and password."])
+            return
+        end
+        local command = ".bnetaccount create \"" .. accountValue .. "\" \"" .. passwordValue .. "\""
+        SendChatMessage(command, "SAY")
+    end)
 
     local btnBack = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)

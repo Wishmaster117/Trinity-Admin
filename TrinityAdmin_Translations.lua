@@ -27,7 +27,13 @@ if locale == "frFR" then
 	L["Enter_Valid_Currency"] 	= "Veuillez entrer un id et un montant séparés par un espace pour la currency."
 	L["Free_Panel"]    			= "Panneau à Définir"
 	L["Back"]                 	= "Retour"
-	
+	L["Account_Panel"] = "Panneau des Comptes"
+    L["Account_Format_Tooltip"] = "Format: name@domaine"
+    L["Create"] = "Créer"
+    L["Please enter both account and password."] = "Veuillez entrer un compte et un mot de passe."
+	L["Username"] = "Nom d'utilisateur"   -- Vous pouvez mettre "Nom d'utilisateur" si vous préférez
+    L["Password"] = "Password"   -- Ou "Mot de passe"
+	L["Account_Password_Tooltip"] = "Choisissez un mot de passe"   
 	L["Faction"]                = "Faction"
 	L["Gender"]                 = "Genre"
 	L["Modify_Faction"]         = "Selectionnez une créature pour lui changer sa faction."
@@ -61,6 +67,19 @@ elseif locale == "enUS" then
 	L["Enter_Valid_Currency"] 	= "Please enter an ID and an amount separated by a space for the currency."
 	L["Free_Panel"] 			= "Panel to be Defined"
 	L["Back"]                 	= "Back"
+	L["Account_Panel"] = "Account Panel"
+    L["Account_Format_Tooltip"] = "Format: name@domain"
+    L["Create"] = "Create"
+    L["Please enter both account and password."] = "Please enter both account and password."
+	L["Username"] = "Username"
+    L["Password"] = "Password"
+	L["Account_Password_Tooltip"] = "Pck a Password"
+	L["Faction"]                = "Faction"
+	L["Gender"]                 = "Gender"
+	L["Modify_Faction"]         = "Select a creature to change its faction."
+	L["Modify_Gender"]          = "Modify the player's gender, possible values (male/female)."
+	L["Acoount_Panel"]          = "Account Management Panel"	
+
     
     
     -- Ajoutez ici les traductions en anglais...
