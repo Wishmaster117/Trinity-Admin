@@ -1,0 +1,12 @@
+## Title: TrinityAdmin
+## Version: 1.0
+## Author: 33619
+## Interface: 80205
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\AceAddon-3.0\AceAddon-3.0.lua
+Libs\AceConsole-3.0\AceConsole-3.0.lua
+Libs\AceEvent-3.0\AceEvent-3.0.lua
+TeleportTable.lua
+TrinityAdmin.lua
