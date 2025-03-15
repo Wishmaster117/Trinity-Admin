@@ -1,0 +1,163 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ../../../BlizzardInterfaceCode/Interface/FrameXML/UI.xsd">
+
+    <!-- Fenêtre principale -->
+    <Frame name="TrinityAdminMainFrame" parent="UIParent" toplevel="true" enableMouse="true" hidden="true">
+        <Size>
+            <AbsDimension x="700" y="400"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+
+        <!-- Fond noir semi-transparent -->
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentBackground">
+                    <Anchors>
+                        <Anchor point="TOPLEFT"/>
+                        <Anchor point="BOTTOMRIGHT"/>
+                    </Anchors>
+                    <Color r="0" g="0" b="0" a="0.7"/>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString name="$parentTitle" inherits="GameFontNormalLarge" text="TrinityAdmin Main Menu">
+                    <Size>
+                        <AbsDimension x="400" y="20"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="-10"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+
+        <!-- Boutons Teleport, GM, Npc, Close -->
+        <Frames>
+            <Button name="$parentTeleportButton" inherits="UIPanelButtonTemplate" text="Teleport">
+                <Size>
+                    <AbsDimension x="80" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="10" y="-30"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        TrinityAdmin_ShowTeleportPanel()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentGMButton" inherits="UIPanelButtonTemplate" text="Modify Funcs">
+                <Size>
+                    <AbsDimension x="100" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="10" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        TrinityAdmin_ShowGMPanel()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentNPCButton" inherits="UIPanelButtonTemplate" text="Npc">
+                <Size>
+                    <AbsDimension x="80" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentGMButton" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="10" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        TrinityAdmin_ShowNPCPanel()
+                    </OnClick>
+                </Scripts>
+            </Button>
+             <!-- Nouveau bouton GM Functions -->
+			<Button name="$parentGMFunctionsButton" inherits="UIPanelButtonTemplate" text="GM Funcs">
+				<Size>
+					<AbsDimension x="100" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentNPCButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowGMFunctionsPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
+            <!-- Bouton Fermer -->
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-5" y="-5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        TrinityAdminMainFrame:Hide()
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+
+    <!-- Nouveau template pour nos dropdowns : TrinityAdminDropdownTemplate -->
+    <Frame name="TrinityAdminDropdownTemplate" virtual="true" inherits="UIDropDownMenuTemplate">
+    <Scripts>
+        <OnLoad>
+			-- Largeur
+			UIDropDownMenu_SetWidth(self, 110)
+			UIDropDownMenu_SetDisplayMode(self, "MENU_WITH_BORDERS")
+			UIDropDownMenu_JustifyText(self, "LEFT")
+		
+			-- On récupère le bouton
+			local btn = _G[self:GetName().."Button"]
+			if btn then
+			    -- local btn = _G[self:GetName().."Button"]
+				local fs = btn:GetFontString()
+				if fs then
+					fs:SetFontObject("GameFontHighlightSmall") 
+					-- ou, si vous voulez forcer explicitement la couleur
+					fs:SetTextColor(1,1,1,1) -- (blanc)
+				end
+			end
+		
+			-- (Optionnel) Masquer Left, Middle, Right
+			local left  = _G[self:GetName().."Left"]
+			local mid   = _G[self:GetName().."Middle"]
+			local right = _G[self:GetName().."Right"]
+			if left  then left:Hide()  end
+			if mid   then mid:Hide()   end
+			if right then right:Hide() end
+		</OnLoad>
+    </Scripts>
+	</Frame>
+</Ui>
