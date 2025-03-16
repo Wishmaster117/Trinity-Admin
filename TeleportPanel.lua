@@ -105,7 +105,7 @@ function TeleportModule:CreateTeleportPanel()
     ------------------------------------------------------------------
     local btnBack = CreateFrame("Button", "TrinityAdminTeleportBackButton", panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", 0, 10)
-    btnBack:SetText("Back")
+    btnBack:SetText(TrinityAdmin_Translations["Back"])
     btnBack:SetHeight(22)
     btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()

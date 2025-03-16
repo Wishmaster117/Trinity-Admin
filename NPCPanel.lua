@@ -1,3 +1,9 @@
+if not UnitIsNPC then
+    function UnitIsNPC(unit)
+        return true
+    end
+end
+
 local NPCModule = TrinityAdmin:GetModule("NPCPanel")
 
 function NPCModule:ShowNPCPanel()
@@ -103,10 +109,18 @@ function NPCModule:CreateNPCPanel()
     actionButton:SetScript("OnClick", function()
         local value = inputBox:GetText()
         if value and value ~= "" then
-            SendChatMessage(selectedCommand .. " " .. value, "SAY")
-        else
-            print("Veuillez entrer une valeur pour la commande.")
-        end
+		    command = selectedCommand .. " " .. value
+            -- SendChatMessage(selectedCommand .. " " .. value, "SAY")
+		else
+			if UnitExists("target") and UnitIsNPC("target") then
+				local targetName = UnitName("target")
+				command = selectedCommand .. " " .. targetName	
+			else
+				print("Veuillez entrer une valeur pour la commande ou sélectionner un PNJ cible.")
+				return
+			end
+		end	
+		SendChatMessage(selectedCommand .. " " .. value, "SAY")
     end)
 
     -- Bouton Retour

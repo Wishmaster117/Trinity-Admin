@@ -111,12 +111,12 @@ function AccountModule:CreateAccountPanel()
     
     -- Définition des options pour le menu déroulant
     local banInfoOptions = {
-        { value = "baninfo account", text = "baninfo account", tooltip = TrinityAdmin_Translations["Baninfo_Account"], needsInput = true },
-        { value = "baninfo character", text = "baninfo character", tooltip = TrinityAdmin_Translations["Baninfo_Character"], needsInput = true },
-        { value = "baninfo ip", text = "baninfo ip", tooltip = TrinityAdmin_Translations["Baninfo_IP"], needsInput = true },
-        { value = "banlist account", text = "banlist account", tooltip = TrinityAdmin_Translations["Banlist_Account"], needsInput = false },
-        { value = "banlist character", text = "banlist character", tooltip = TrinityAdmin_Translations["Banlist_Character"], needsInput = true },
-        { value = "banlist ip", text = "banlist ip", tooltip = TrinityAdmin_Translations["Banlist_IP"], needsInput = true },
+        { value = ".baninfo account", text = "baninfo account", tooltip = TrinityAdmin_Translations["Baninfo_Account"], needsInput = true },
+        { value = ".baninfo character", text = "baninfo character", tooltip = TrinityAdmin_Translations["Baninfo_Character"], needsInput = true },
+        { value = ".baninfo ip", text = "baninfo ip", tooltip = TrinityAdmin_Translations["Baninfo_IP"], needsInput = true },
+        { value = ".banlist account", text = "banlist account", tooltip = TrinityAdmin_Translations["Banlist_Account"], needsInput = false },
+        { value = ".banlist character", text = "banlist character", tooltip = TrinityAdmin_Translations["Banlist_Character"], needsInput = true },
+        { value = ".banlist ip", text = "banlist ip", tooltip = TrinityAdmin_Translations["Banlist_IP"], needsInput = true },
     }
 
     UIDropDownMenu_Initialize(banInfoDropdown, function(dropdown, level, menuList)
@@ -166,8 +166,9 @@ function AccountModule:CreateAccountPanel()
                 print("Veuillez entrer une valeur pour " .. option.value)
                 return
             end
-            command = option.value .. " \"" .. inputValue .. "\""
+            command = option.value .. " " .. inputValue
         end
+		print("Debug: Commande envoyée en SAY: " .. command)
         SendChatMessage(command, "SAY")
     end)
 
@@ -329,6 +330,7 @@ function AccountModule:CreateAccountPanel()
             command = ".ban playeraccount " .. nameValue .. " " .. timeValue .. " " .. reasonValue
             print(string.format(TrinityAdmin_Translations["Ban_PlayerAccount_done"], nameValue, timeValue, reasonValue))
         end
+		print("Debug: Commande envoyée en SAY: " .. command)
         SendChatMessage(command, "SAY")
     end)
 
