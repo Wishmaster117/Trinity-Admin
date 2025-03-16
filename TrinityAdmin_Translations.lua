@@ -85,6 +85,7 @@ if locale == "frFR" then
     L["NPC_Follow_Tooltip"] = "Syntaxe: .npc follow start\nFait suivre la créature sélectionnée jusqu'à la mort ou un combat."
     L["NPC_FollowStop_Tooltip"] = "Syntaxe: .npc follow stop\nFait arrêter la créature sélectionnée de vous suivre."
     L["NPC_SetAllowMove_Tooltip"] = "Syntaxe: .npc set allowmove\nActive ou désactive le déplacement des créatures dans le monde."
+	L["Database_Panel"] = "Outils de Bases de Données et Sauvegarde de Personnages"
 	L["NPC_Panel"] = "Gestion des PNJ"
 	
 elseif locale == "enUS" then
@@ -170,6 +171,7 @@ elseif locale == "enUS" then
     L["NPC_Follow_Tooltip"] = "Syntax: .npc follow start\nMake the selected creature follow you until death, combat, etc."
     L["NPC_FollowStop_Tooltip"] = "Syntax: .npc follow stop\nMake the selected creature stop following you."
     L["NPC_SetAllowMove_Tooltip"] = "Syntax: .npc set allowmove\nEnable or disable movement of creatures in the world."
+	L["Database_Panel"] = "Database Tools and Characters Save"
 	L["NPC_Panel"] = "NPC Management"
 
     

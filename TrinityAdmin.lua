@@ -1,5 +1,15 @@
 TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0", "AceEvent-3.0")
-
+------------------------------------------------------------
+-- pour ajouter un nouveau pannel, il faut dans ce fichier:
+-- Ajouter la fonction pour qu'il l'appel de l'xml:
+-- function TrinityAdmin_ShowDatabasePanel()
+--     DatabaseModule:ShowDatabasePanel()
+-- end
+-- Ajouter une variable globale: local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
+-- Ajouter ceci pour afficher : if DatabaseModule.panel then DatabaseModule.panel:Hide() end
+-- Ajouter aussi ceci : TrinityAdminMainFrameDatabaseButton:Show()  -> DatabaseButton est le nom du bouton dans le xml
+-- Ajouter ceci pour fermer : TrinityAdminMainFrameDatabaseButton:Hide()
+-- Et penser à charger le fichier DatabasePanel.lua ou autre dans le fichier .toc
 ------------------------------------------------------------
 -- Librairie icone minimap
 ------------------------------------------------------------
@@ -34,6 +44,7 @@ local GMModule = TrinityAdmin:NewModule("GMPanel")
 local NPCModule = TrinityAdmin:NewModule("NPCPanel")
 local AccountModule = TrinityAdmin:NewModule("AccountPanel")
 local GMFunctionsModule = TrinityAdmin:NewModule("GMFunctionsPanel")
+local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
 
 ------------------------------------------------------------
 -- Fonctions globales appelées depuis l'interface XML
@@ -58,6 +69,9 @@ function TrinityAdmin_ShowAccountPanel()
     AccountModule:ShowAccountPanel()
 end
 
+function TrinityAdmin_ShowDatabasePanel()
+    DatabaseModule:ShowDatabasePanel()
+end
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
@@ -95,12 +109,14 @@ function TrinityAdmin:ShowMainMenu()
     if NPCModule.panel then NPCModule.panel:Hide() end
     if AccountModule.panel then AccountModule.panel:Hide() end
     if GMFunctionsModule.panel then GMFunctionsModule.panel:Hide() end
+	if DatabaseModule.panel then DatabaseModule.panel:Hide() end
 
     TrinityAdminMainFrameTeleportButton:Show()
     TrinityAdminMainFrameGMButton:Show()
     TrinityAdminMainFrameNPCButton:Show()
     TrinityAdminMainFrameGMFunctionsButton:Show()
     TrinityAdminMainFrameAccountButton:Show()
+	TrinityAdminMainFrameDatabaseButton:Show()
 
     TrinityAdminMainFrame:Show()
 end
@@ -114,6 +130,7 @@ function TrinityAdmin:HideMainMenu()
     TrinityAdminMainFrameNPCButton:Hide()
     TrinityAdminMainFrameGMFunctionsButton:Hide()
     TrinityAdminMainFrameAccountButton:Hide()
+	TrinityAdminMainFrameDatabaseButton:Hide()
 
     TrinityAdminMainFrame:Show()
 end

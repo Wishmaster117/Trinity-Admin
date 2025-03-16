@@ -47,7 +47,7 @@
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="10" y="-30"/>
+                            <AbsDimension x="10" y="-70"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -126,6 +126,24 @@
 				<Scripts>
 					<OnClick>
 						TrinityAdmin_ShowAccountPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<!-- Panneau de gestion des bdd -->
+			<Button name="$parentDatabaseButton" inherits="UIPanelButtonTemplate" text="Database/Saves">
+				<Size>
+					<AbsDimension x="115" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentAccountButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowDatabasePanel()
 					</OnClick>
 				</Scripts>
 			</Button>

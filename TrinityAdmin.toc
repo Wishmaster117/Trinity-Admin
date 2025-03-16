@@ -26,3 +26,4 @@ GMPanel.lua
 NPCPanel.lua
 AccountPanel.lua
 GMFunctionsPAnel.lua
+DatabasePanel.lua
