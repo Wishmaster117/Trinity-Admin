@@ -15,12 +15,14 @@ Libs/AceEvent-3.0.lua
 
 # TranslationsData
 TrinityAdmin_Translations.lua
-
 # TeleportData
 TeleportTable.lua
-
 # Interface XML
 TrinityAdmin.xml
-
 # Code principal
 TrinityAdmin.lua
+TeleportPanel.lua
+GMPanel.lua
+NPCPanel.lua
+AccountPanel.lua
+GMFunctionsPAnel.lua
