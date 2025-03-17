@@ -44,7 +44,20 @@ function GMModule:CreateGMPanel()
         "Scale",
         "Currency",
 		"Faction",
-		"Gender"
+		"Gender",
+		"honor",
+		"energy",
+		"drunk",
+		"mana",
+		"mount",
+		"phase",
+		"power",
+		"rage",
+		"reputation",
+		"runicpower",
+		"spell",
+		"standstate",
+		"talentpoints"
     }
 
     -- Définir displayNames en dehors pour éviter l'erreur
@@ -57,7 +70,20 @@ function GMModule:CreateGMPanel()
         Scale = TrinityAdmin_Translations["Scale"],
         Currency = TrinityAdmin_Translations["Currency"],
 		Faction = TrinityAdmin_Translations["Faction"],
-		Gender = TrinityAdmin_Translations["Gender"]
+		Gender = TrinityAdmin_Translations["Gender"],
+		honor = TrinityAdmin_Translations["honor"],
+		energy = TrinityAdmin_Translations["energy"],
+		drunk = TrinityAdmin_Translations["drunk"],
+		mana = TrinityAdmin_Translations["mana"],
+		mount = TrinityAdmin_Translations["mount"],
+		phase = TrinityAdmin_Translations["phase"],
+		power = TrinityAdmin_Translations["power"],
+		rage = TrinityAdmin_Translations["rage"],
+		reputation = TrinityAdmin_Translations["reputation"],
+		runicpower = TrinityAdmin_Translations["runicpower"],
+		spell = TrinityAdmin_Translations["spell"],
+		standstate = TrinityAdmin_Translations["standstate"],
+		talentpoints = TrinityAdmin_Translations["talentpoints"]
     }
 
     local tooltipTexts = {
@@ -68,7 +94,20 @@ function GMModule:CreateGMPanel()
         Scale = TrinityAdmin_Translations["Modify_Scale"],
         Currency = TrinityAdmin_Translations["Add_Money"],
 		Faction = TrinityAdmin_Translations["Modify_Faction"],
-		Gender = TrinityAdmin_Translations["Modify_Gender"]
+		Gender = TrinityAdmin_Translations["Modify_Gender"],
+		honor = TrinityAdmin_Translations["Modify_honor"],
+		energy = TrinityAdmin_Translations["Modify_energy"],
+		drunk = TrinityAdmin_Translations["Modify_drunk"],
+		mana = TrinityAdmin_Translations["Modify_mana"],
+		mount = TrinityAdmin_Translations["Modify_mount"],
+		phase = TrinityAdmin_Translations["Modify_phase"],
+		power = TrinityAdmin_Translations["Modify_power"],
+		rage = TrinityAdmin_Translations["Modify_rage"],
+		reputation = TrinityAdmin_Translations["Modify_reputation"],
+		runicpower = TrinityAdmin_Translations["Modify_runicpower"],
+		spell = TrinityAdmin_Translations["Modify_spell"],
+		standstate = TrinityAdmin_Translations["Modify_standstate"],
+		talentpoints = TrinityAdmin_Translations["Modify_talentpoints"]
     }
 
     UIDropDownMenu_Initialize(modifyDropdown, function(dropdown, level, menuList)
@@ -86,7 +125,7 @@ function GMModule:CreateGMPanel()
                 UIDropDownMenu_SetSelectedValue(dropdown, button.value)
                 UIDropDownMenu_SetText(dropdown, displayNames[button.value] or button.value)
                 TrinityAdmin.modifyFunction = button.value
-
+				print("DEBUG: Fonction sélectionnée = " .. tostring(TrinityAdmin.modifyFunction)) -- Pour debug
                 -- Vérifie si un tooltip est défini pour l'option sélectionnée
                 if tooltipTexts[button.value] then
                     modifyInput:SetScript("OnEnter", function(self)
@@ -138,7 +177,7 @@ function GMModule:CreateGMPanel()
         else
             command = ".modify " .. func .. " " .. value
         end
-
+        print("Commande de sortie: " ..command) -- Pour débug
         SendChatMessage(command, "SAY")
     end)
 
