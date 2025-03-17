@@ -171,7 +171,6 @@
 	('debug warden force', 'Syntax: .debug warden force id1 [id2 [id3 [...]]]\n\nQueues the specified Warden checks for your client. They will be sent according to your Warden settings.'),
 	('debug worldstate', 'Syntax: debug worldstate $stateId $value\n\nSends a world state update for the specified state to your client.'),
 	
-	('demorph', 'Syntax: .demorph\r\n\r\nDemorph the selected player.'),
 	('deserter', 'Syntax: deserter $subcommand\n Type .deserter to see a list of possible subcommands\n or .help deserter $subcommand to see info on the subcommand.'),
 	('deserter bg', 'Syntax: '),
 	('deserter bg add', 'Syntax: .deserter bg add $time \n\n Adds the bg deserter debuff to your target with $time duration.'),
@@ -180,7 +179,6 @@
 	('deserter instance add', 'Syntax: .deserter instance add $time \n\n Adds the instance deserter debuff to your target with $time duration.'),
 	('deserter instance remove', 'Syntax: .deserter instance remove \n\n Removes the instance deserter debuff from your target.'),
 	('dev', 'Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.'),
-	('die', 'Syntax: .die\r\n\r\nKill the selected player. If no player is selected, it will kill you.'),
 	
 	('disable', 'Syntax: disable $subcommand\n Type .disable to see a list of possible subcommands\n or .help disable $subcommand to see info on the subcommand.'),
 	('disable add', 'Syntax: '),
@@ -209,14 +207,7 @@
 	('event start', 'Syntax: .event start #event_id\r\nStart event #event_id. Set start time for event to current moment (change not saved in DB).'),
 	('event stop', 'Syntax: .event stop #event_id\r\nStop event #event_id. Set start time for event to time in past that make current moment is event stop time (change not saved in DB).'),
 	('freeze', 'Syntax: .freeze [#player] [#duration]\nFreezes #player for #duration (seconds)\nFreezes the selected player if no arguments are given.\nDefault duration: GM.FreezeAuraDuration (worldserver.conf)'),
-	
-	('gm chat', 'Syntax: .gm chat [on/off]\r\n\r\nEnable or disable chat GM MODE (show gm badge in messages) or show current state of on/off not provided.'),
-	('gm fly', 'Syntax: .gm fly [on/off]\r\nEnable/disable gm fly mode.'),
-	('gm ingame', 'Syntax: .gm ingame\r\n\r\nDisplay a list of available in game Game Masters.'),
-	('gm list', 'Syntax: .gm list\r\n\r\nDisplay a list of all Game Masters accounts and security levels.'),
-	('gm off', 'Syntax: .gm off\n\nDisables in-game GM mode.'),
-	('gm on', 'Syntax: .gm on\n\nEnables in-game GM mode. This makes you exempt from most game mechanics.\nAmong other things, it makes creatures unable to attack you, and makes you untargetable by most spells. It also makes creatures in all phases, as well as invisible creatures, visible to you.'),
-	('gm visible', 'Syntax: .gm visible on/off\r\n\r\nOutput current visibility state or make GM visible(on) and invisible(off) for other players.'),
+
 	
 	('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
 	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
@@ -347,39 +338,14 @@
 	('mmap path', 'Syntax: .mmap path to calculate and show a path to current select unit'),
 	('mmap stats', 'Syntax: .mmap stats to show information about current state of mmaps'),
 	('mmap testarea', 'Syntax: .mmap testarea to calculate paths for all nearby npcs to player'),
+
+
 	
-	('modify', 'Syntax: .modify $subcommand\nType .modify to see the list of possible subcommands or .help modify $subcommand to see info on subcommands'),
-	('modify currency', 'Syntax: .modify currency #id #value\nAdd $amount (without precision) of $currency to the selected player.'),
-	('modify drunk', 'Syntax: .modify drunk #value\r\n Set drunk level to #value (0..100). Value 0 remove drunk state, 100 is max drunked state.'),
-	('modify energy', 'Syntax: .modify energy #energy\r\n\r\nModify the energy of the selected player. If no player is selected, modify your energy.'),
-	('modify faction', 'Syntax: .modify faction #factionid #flagid #npcflagid #dynamicflagid\r\n\r\nModify the faction and flags of the selected creature. Without arguments, display the faction and flags of the selected creature.'),
-	('modify gender', 'Syntax: .modify gender male/female\r\n\r\nChange gender of selected player.'),
-	('modify honor', 'Syntax: .modify honor $amount\r\n\r\nAdd $amount honor points to the selected player.'),
-	('modify hp', 'Syntax: .modify hp #newhp\r\n\r\nModify the hp of the selected player. If no player is selected, modify your hp.'),
-	('modify mana', 'Syntax: .modify mana #newmana\r\n\r\nModify the mana of the selected player. If no player is selected, modify your mana.'),
-	('modify money', 'Syntax: .modify money #money\r\n.money #money\r\n\r\nAdd or remove money to the selected player. If no player is selected, modify your money.\r\n\r\n #gold can be negative to remove money.'),
-	('modify mount', 'Syntax: .modify mount #id #speed\r\nDisplay selected player as mounted at #id creature and set speed to #speed value.'),
-	('modify phase', 'Syntax: .modify phase #phasemask\r\n\r\nSelected character phasemask changed to #phasemask with related world vision update. Change active until in game phase changed, or GM-mode enable/disable, or re-login. Character pts pasemask update to same value.'),
-	('modify power', 'Syntax: .modify power #powerType #amount \r\n\r\nModify the power of the selected player. If no player is selected, modify your power.'),
-	('modify rage', 'Syntax: .modify rage #newrage\r\n\r\nModify the rage of the selected player. If no player is selected, modify your rage.'),
-	('modify reputation', 'Syntax: .modify reputation #repId (#repvalue | $rankname [#delta])\nSets the selected players reputation with faction #repId to #repvalue or to $reprank.\nIf the reputation rank name is provided, the resulting reputation will be the lowest reputation for that rank plus the delta amount, if specified.\nYou can use \'.pinfo rep\' to list all known reputation ids, or use \'.lookup faction $name\' to locate a specific faction id.'),
-	('modify runicpower', 'Syntax: .modify runicpower #newrunicpower\r\n\r\nModify the runic power of the selected player. If no player is selected, modify your runic power.'),
-	('modify scale', '.modify scale #scale\nModify size of the selected player or creature to "normal scale"*rate. If no player or creature is selected, modify your size.\n#rate may range from 0.1 to 10.'),
-	('modify speed', 'Syntax: .modify speed $speedtype #rate\r\n\r\nModify the running speed of the selected player to "normal base run speed"= 1. If no player is selected, modify your speed.\r\n\r\n$speedtypes may be fly, all, walk, backwalk, or swim.\r\n\r\n #rate may range from 0.1 to 50.'),
-	('modify speed all', 'Syntax: .modify aspeed #rate\r\n\r\nModify all speeds -run,swim,run back,swim back- of the selected player to "normalbase speed for this move type"*rate. If no player is selected, modify your speed.\r\n\r\n #rate may range from 0.1 to 50.'),
-	('modify speed backwalk', 'Syntax: .modify speed backwalk #rate\r\n\r\nModify the speed of the selected player while running backwards to "normal walk back speed"*rate. If no player is selected, modify your speed.\r\n\r\n #rate may range from 0.1 to 50.'),
-	('modify speed fly', '.modify speed fly #rate\nModify the flying speed of the selected player to "normal flying speed"*rate. If no player is selected, modify your speed.\n #rate may range from 0.1 to 50.'),
-	('modify speed swim', 'Syntax: .modify speed swim #rate\r\n\r\nModify the swim speed of the selected player to "normal swim speed"*rate. If no player is selected, modify your speed.\r\n\r\n #rate may range from 0.1 to 50.'),
-	('modify speed walk', 'Syntax: .modify speed bwalk #rate\r\n\r\nModify the speed of the selected player while running to "normal walk speed"*rate. If no player is selected, modify your speed.\r\n\r\n #rate may range from 0.1 to 50.'),
-	('modify spell', 'TODO'),
-	('modify standstate', 'Syntax: .modify standstate #emoteid\r\n\r\nChange the emote of your character while standing to #emoteid.'),
-	('modify talentpoints', 'Syntax: .modify talentpoints #amount\r\n\r\nSet free talent points for selected character or character\'s pet. It will be reset to default expected at next levelup/login/quest reward.'),
-	('modify xp', 'Syntax: .modify xp #xp\n\nGives experience points to the targeted player or self.'),
 	
-	('morph', 'Syntax: .morph #displayid\r\n\r\nChange your current model id to #displayid.'),
 	('movegens', 'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
-	('mute', 'Syntax: .mute [$playerName] $timeInMinutes [$reason]\r\n\r\nDisible chat messaging for any character from account of character $playerName (or currently selected) at $timeInMinutes minutes. Player can be offline.'),
-	('mutehistory', 'Syntax: '),
+	
+
+
 	('nameannounce', 'Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.'),
 	('neargrave', 'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
 	('notify', 'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
@@ -444,9 +410,6 @@
 	('reset stats', 'Syntax: .reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
 	('reset talents', 'Syntax: .reset talents [Playername]\r\n  Removes all talents of the targeted player or pet or named player. Playername can be name of offline character. With player talents also will be reset talents for all character\'s pets if any.'),
 	
-	('respawn', 'Syntax: .respawn\r\n\r\nRespawn all nearest creatures and GO without waiting respawn time expiration.'),
-	('save', 'Syntax: .save\r\n\r\nSaves your character.'),
-	('saveall', 'Syntax: .saveall\r\n\r\nSave all characters in game.'),
 	
 	('scene', ''),
 	('scene cancel', 'Syntax: .scene cancel #scenePackageId\nCancels scene with package id for targeted player'),
@@ -544,7 +507,7 @@
 	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
 	
 	('unfreeze', 'Syntax: .unfreeze (#player)\r\n"Unfreezes" #player and enables his chat again. When using this without #name it will unfreeze your target.'),
-	('unmute', 'Syntax: .unmute [$playerName]\r\n\r\nRestore chat messaging for any character from account of character $playerName (or selected). Character can be ofline.'),
+	
 	('unpossess', 'Syntax: .unpossess\r\n\r\nIf you are possessed, unpossesses yourself; otherwise unpossesses current possessed target.'),
 	('unstuck', 'Syntax: .unstuck $playername [inn/graveyard/startzone]\n\nTeleports specified player to specified location. Default location is player\'s current hearth location.'),
 	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
