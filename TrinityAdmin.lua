@@ -1,18 +1,5 @@
 TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0", "AceEvent-3.0")
-------------------------------------------------------------
--- pour ajouter un nouveau pannel, il faut dans ce fichier:
--- Ajouter la fonction pour qu'il l'appel de l'xml:
--- function TrinityAdmin_ShowDatabasePanel()
---     DatabaseModule:ShowDatabasePanel()
--- end
--- Ajouter une variable globale: local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
--- Ajouter ceci pour afficher : if DatabaseModule.panel then DatabaseModule.panel:Hide() end
--- Ajouter aussi ceci : TrinityAdminMainFrameDatabaseButton:Show()  -> DatabaseButton est le nom du bouton dans le xml
--- Ajouter ceci pour fermer : TrinityAdminMainFrameDatabaseButton:Hide()
--- Et penser à charger le fichier DatabasePanel.lua ou autre dans le fichier .toc
-------------------------------------------------------------
--- Librairie icone minimap
-------------------------------------------------------------
+
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     type = "launcher",
     text = "TrinityAdmin",
@@ -46,6 +33,8 @@ local AccountModule = TrinityAdmin:NewModule("AccountPanel")
 local GMFunctionsModule = TrinityAdmin:NewModule("GMFunctionsPanel")
 local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
 local ServerAdminModule = TrinityAdmin:NewModule("ServerAdmin") -- Module gestion serveur
+local GameObjectsModule = TrinityAdmin:NewModule("GameObjects") -- Module gestion des objets
+local AddLearnModule = TrinityAdmin:NewModule("AddLearn") -- Module pour ajouter et apprendre
 
 ------------------------------------------------------------
 -- Fonctions globales appelées depuis l'interface XML
@@ -76,6 +65,14 @@ end
 
 function TrinityAdmin_ShowServerAdminPanel()
     ServerAdminModule:ShowServerAdminPanel()
+end
+
+function TrinityAdmin_ShowGameObjectsPanel()
+    GameObjectsModule:ShowGameObjectsPanel()
+end
+
+function TrinityAdmin_ShowAddLearnPanel()
+    AddLearnModule:ShowAddLearnPanel()
 end
 
 ------------------------------------------------------------
@@ -147,6 +144,8 @@ function TrinityAdmin:ShowMainMenu()
     if GMFunctionsModule.panel then GMFunctionsModule.panel:Hide() end
 	if DatabaseModule.panel then DatabaseModule.panel:Hide() end
 	if ServerAdminModule.panel then ServerAdminModule.panel:Hide() end
+    if GameObjectsModule.panel then GameObjectsModule.panel:Hide() end
+    if AddLearnModule.panel then AddLearnModule.panel:Hide() end
 
     TrinityAdminMainFrameTeleportButton:Show()
     TrinityAdminMainFrameGMButton:Show()
@@ -155,6 +154,8 @@ function TrinityAdmin:ShowMainMenu()
     TrinityAdminMainFrameAccountButton:Show()
 	TrinityAdminMainFrameDatabaseButton:Show()
 	TrinityAdminMainFrameServerAdminButton:Show()
+    TrinityAdminMainFrameGameObjectsButton:Show()
+    TrinityAdminMainFrameAddLearnButton:Show()
 
     TrinityAdminMainFrame:Show()
 end
@@ -170,6 +171,8 @@ function TrinityAdmin:HideMainMenu()
     TrinityAdminMainFrameAccountButton:Hide()
 	TrinityAdminMainFrameDatabaseButton:Hide()
 	TrinityAdminMainFrameServerAdminButton:Hide()
+    TrinityAdminMainFrameGameObjectsButton:Hide()
+    TrinityAdminMainFrameAddLearnButton:Hide()
 
     TrinityAdminMainFrame:Show()
 end

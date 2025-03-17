@@ -42,7 +42,7 @@
         <Frames>
             <Button name="$parentTeleportButton" inherits="UIPanelButtonTemplate" text="Teleport">
                 <Size>
-                    <AbsDimension x="80" y="22"/>
+                    <AbsDimension x="80" y="30"/>
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT">
@@ -60,7 +60,7 @@
 
             <Button name="$parentGMButton" inherits="UIPanelButtonTemplate" text="Modify Funcs">
                 <Size>
-                    <AbsDimension x="100" y="22"/>
+                    <AbsDimension x="100" y="30"/>
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="RIGHT">
@@ -78,7 +78,7 @@
 
             <Button name="$parentNPCButton" inherits="UIPanelButtonTemplate" text="Npc">
                 <Size>
-                    <AbsDimension x="80" y="22"/>
+                    <AbsDimension x="80" y="30"/>
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentGMButton" relativePoint="RIGHT">
@@ -96,7 +96,7 @@
              <!-- Nouveau bouton GM Functions -->
 			<Button name="$parentGMFunctionsButton" inherits="UIPanelButtonTemplate" text="GM Funcs">
 				<Size>
-					<AbsDimension x="100" y="22"/>
+					<AbsDimension x="100" y="30"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentNPCButton" relativePoint="RIGHT">
@@ -114,7 +114,7 @@
 			<!-- Bouton Account Ici, $parent prend la valeur "TrinityAdminMainFrame", donc le nom final du bouton sera : TrinityAdminMainFrameAccountButton-->
 			<Button name="$parentAccountButton" inherits="UIPanelButtonTemplate" text="Accounts">
 				<Size>
-					<AbsDimension x="100" y="22"/>
+					<AbsDimension x="100" y="30"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentGMFunctionsButton" relativePoint="RIGHT">
@@ -132,7 +132,7 @@
 			<!-- Panneau de gestion des bdd -->
 			<Button name="$parentDatabaseButton" inherits="UIPanelButtonTemplate" text="Database/Saves">
 				<Size>
-					<AbsDimension x="115" y="22"/>
+					<AbsDimension x="115" y="30"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentAccountButton" relativePoint="RIGHT">
@@ -151,18 +151,54 @@
 			<!-- Bouton Server Admin -->
 			<Button name="$parentServerAdminButton" inherits="UIPanelButtonTemplate" text="Server Admin">
 				<Size>
-					<AbsDimension x="100" y="22"/>
+					<AbsDimension x="105" y="30"/>
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="0" y="-20"/>
+							<AbsDimension x="0" y="-30"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnClick>
 						TrinityAdmin_ShowServerAdminPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<!-- Bouton GameObjects -->
+			<Button name="$parentGameObjectsButton" inherits="UIPanelButtonTemplate" text="GameObjects">
+				<Size>
+					<AbsDimension x="105" y="30"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentServerAdminButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowGameObjectsPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
+			<!-- Bouton AddLearn -->
+			<Button name="$parentAddLearnButton" inherits="UIPanelButtonTemplate" text="AddLearn">
+				<Size>
+					<AbsDimension x="105" y="30"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentGameObjectsButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowAddLearnPanel()
 					</OnClick>
 				</Scripts>
 			</Button>

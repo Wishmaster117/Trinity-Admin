@@ -28,3 +28,5 @@ AccountPanel.lua
 GMFunctionsPAnel.lua
 DatabasePanel.lua
 ServerAdmin.lua
+GameObjects.lua
+AddLearn.lua
