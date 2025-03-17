@@ -5,26 +5,10 @@
 -- HeidiSQL Version:             12.10.0.7000
 -- --------------------------------------------------------
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Listage de la structure de table within_ptr_world. command
-CREATE TABLE IF NOT EXISTS `command` (
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `help` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Chat System';
-
--- Listage des données de la table within_ptr_world.command : ~620 rows (environ)
-INSERT INTO `command` (`name`, `help`) VALUES
 	('additem', 'Syntax: .additem #itemid/[#itemname]/#shift-click-item-link #itemcount #bonusListIDs\n\nAdds the specified number of items of id #itemid (or exact (!) name $itemname in brackets, or link created by shift-click at item in inventory or recipe) to your or selected character inventory. If #itemcount is omitted, only one item will be added. #bonusListIDs is a semicolon separated list of bonuses to add to item (such as Mythic/Heroic/Warforged/socket)'),
 	('additem set', 'Syntax: .additemset #itemsetid #bonusListIDs\n\nAdd items from itemset of id #itemsetid to your or selected character inventory. Will add by one example each item from itemset.\n\nIf the itemset has multiple levels it adds one of each item level. #bonusListIDs is a semicolon separated list of bonuses to add to all items (such as Mythic/Heroic/Warforged/socket)'),
+	
 	('ahbot', 'Syntax: ahbot $subcommand\n Type .ahbot to see a list of possible subcommands\n or .help ahbot $subcommand to see info on the subcommand.'),
 	('ahbot items', 'Syntax: .ahbot items $GrayItems $WhiteItems $GreenItems $BlueItems $PurpleItems $OrangeItems $YellowItems\r\n\r\nSet amount of each items color be selled on auction.'),
 	('ahbot items blue', 'Syntax: .ahbot items blue $BlueItems\r\n\r\nSet amount of Blue color items be selled on auction.'),
@@ -41,8 +25,10 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('ahbot rebuild', 'Syntax: .ahbot rebuild [all]\r\n\r\nExpire all actual auction of ahbot except bided by player. Binded auctions included to expire if "all" option used. Ahbot re-fill auctions base at current settings then.'),
 	('ahbot reload', 'Syntax: .ahbot reload\r\n\r\nReload AHBot settings from configuration file.'),
 	('ahbot status', 'Syntax: .ahbot status [all]\r\n\r\nShow current ahbot state data in short form, and with "all" with details.'),
+	
 	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'),
 	('appear', 'Syntax: .appear [$charactername]\r\n\r\nTeleport to the given character. Either specify the character name or click on the character\'s portrait,e.g. when you are in a group. Character can be offline.'),
+	
 	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
 	('arena captain', 'Syntax: .arena captain #TeamID $name\n\nA command to set new captain to the team $name must be in the team'),
 	('arena create', 'Syntax: .arena create $name "arena name" #type\n\nA command to create a new Arena-team in game. #type  = [2/3/5]'),
@@ -50,12 +36,15 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('arena info', 'Syntax: .arena info #TeamID\n\nA command that show info about arena team'),
 	('arena lookup', 'Syntax: .arena lookup $name\n\nA command that give a list of arenateam with the given $name'),
 	('arena rename', 'Syntax: .arena rename "oldname" "newname"\n\nA command to rename Arena-team name.'),
+	
 	('aura', 'Syntax: .aura #spellid\r\n\r\nAdd the aura from spell #spellid to the selected Unit.'),
+	
 	('ban', 'Syntax: .ban $subcommand\nType .ban to see the list of possible subcommands or .help ban $subcommand to see info on subcommands'),
 	('ban account', 'Syntax: .ban account $Name $bantime $reason\r\nBan account kick player.\r\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
 	('ban character', 'Syntax: .ban character $Name $bantime $reason\nBan character and kick player.\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
 	('ban ip', 'Syntax: .ban ip $Ip $bantime $reason\r\nBan IP.\r\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
 	('ban playeraccount', 'Syntax: .ban playeraccount $Name $bantime $reason\nBan account and kick player.\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
+	
 	('baninfo', 'Syntax: .baninfo $subcommand\nType .baninfo to see the list of possible subcommands or .help baninfo $subcommand to see info on subcommands'),
 	('baninfo account', 'Syntax: .baninfo account $accountid\r\nWatch full information about a specific ban.'),
 	('baninfo character', 'Syntax: .baninfo character $charactername \r\nWatch full information about a specific ban.'),
@@ -65,6 +54,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('banlist account', 'Syntax: .banlist account [$Name]\r\nSearches the banlist for a account name pattern or show full list account bans.'),
 	('banlist character', 'Syntax: .banlist character $Name\r\nSearches the banlist for a character name pattern. Pattern required.'),
 	('banlist ip', 'Syntax: .banlist ip [$Ip]\r\nSearches the banlist for a IP pattern or show full list of IP bans.'),
+	
 	('bf', 'Syntax: bf $subcommand\n Type .bf to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
 	('bf enable', 'Syntax: .bf enable #battleid'),
 	('bf start', 'Syntax: .bf start #battleid'),
@@ -72,6 +62,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('bf switch', 'Syntax: .bf switch #battleid'),
 	('bf timer', 'Syntax: .bf timer #battleid #timer'),
 	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
+	
 	('bnetaccount', 'Syntax: .bnetaccount $subcommand\nType .bnetaccount to see the list of possible subcommands or .help account set $subcommand to see info on subcommands.'),
 	('bnetaccount create', 'Syntax: .bnetaccount create $account $password\nCreate battle.net account and set password to it. Account must contain the @ symbol.'),
 	('bnetaccount gameaccountcreate', 'Syntax: .bnetaccount gameaccountcreate $account\nCreate additional game account for specified battle.net account.'),
@@ -83,6 +74,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('bnetaccount set', 'Syntax: .bnetaccount set $subcommand\nType .bnetaccount set to see the list of possible subcommands or .help bnetaccount set $subcommand to see info on subcommands.'),
 	('bnetaccount set password', 'Syntax: .bnetaccount set password $account $password $password\nSet password for account.'),
 	('bnetaccount unlink', 'Syntax: .bnetaccount unlink $gameaccount $password\nRemoves battle.net account link from $gameaccount'),
+	
 	('cast', 'Syntax: .cast #spellid [triggered]\r\n  Cast #spellid to selected target. If no target selected cast to self. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast back', 'Syntax: .cast back #spellid [triggered]\r\n  Selected target will cast #spellid to your character. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast dest', 'Syntax: .cast dest #spellid #x #y #z [triggered]\r\n  Selected target will cast #spellid at provided destination. If \'triggered\' or part provided then spell casted with triggered flag.'),
@@ -92,6 +84,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('channel', 'Syntax: channel $subcommand\n Type .channel to see a list of possible subcommands\n or .help channel $subcommand to see info on the subcommand.'),
 	('channel set', 'Syntax: '),
 	('channel set ownership', 'Syntax: .channel set ownership $channel [on/off]\n\nGrant ownership to the first person that joins the channel.'),
+	
 	('character', 'Syntax: character $subcommand\n Type .character to see a list of possible subcommands\n or .help character $subcommand to see info on the subcommand.'),
 	('character changeaccount', 'Syntax: .character changeaccount [$player] $account\n\nTransfers ownership of named (or selected) character to another account'),
 	('character changefaction', 'Syntax: .character changefaction $name\r\n\r\nChange character faction.'),
@@ -107,6 +100,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('character rename', 'Syntax: .character rename [$name] [$newName] \n\nMark selected in game or by $name in command character for rename at next login.\n\nIf $newName then the player will be forced rename.'),
 	('character reputation', 'Syntax: .character reputation [$player_name]\r\n\r\nShow reputation information for selected player or player find by $player_name.'),
 	('character titles', 'Syntax: .character titles [$player_name]\r\n\r\nShow known titles list for selected player or player find by $player_name.'),
+	
 	('cheat', 'Syntax: .cheat $subcommand\r\nType .cheat to see the list of possible subcommands or .help cheat $subcommand to see info on subcommands'),
 	('cheat casttime', 'Syntax: .cheat casttime [on/off]\r\nEnables or disables your character\'s spell cast times.'),
 	('cheat cooldown', 'Syntax: .cheat cooldown [on/off]\r\nEnables or disables your character\'s spell cooldowns.'),
@@ -116,12 +110,14 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('cheat status', 'Syntax: .cheat status \n\nShows the cheats you currently have enabled.'),
 	('cheat taxi', 'Syntax: .cheat taxi on/off\r\nTemporary grant access or remove to all taxi routes for the selected character.\r\n If no character is selected, hide or reveal all routes to you.Visited taxi nodes sill accessible after removing access.'),
 	('cheat waterwalk', 'Syntax: .cheat waterwalk on/off\r\nSet on/off waterwalk state for selected player or self if no player selected.'),
+	
 	('combatstop', 'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),
 	('cometome', 'Syntax: .cometome\nMake selected creature come to your current location (new position not saved to DB).'),
 	('commands', 'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
 	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
 	('damage', 'Syntax: .damage $damage_amount [$school [$spellid]]\r\n\r\nApply $damage to target. If not $school and $spellid provided then this flat clean melee damage without any modifiers. If $school provided then damage modified by armor reduction (if school physical), and target absorbing modifiers and result applied as melee damage to target. If spell provided then damage modified and applied as spell damage. $spellid can be shift-link.'),
 	('damage go', 'Syntax: .damage go $guid|$link $damage_amount\n\nApply $damage to destructible gameobject.'),
+	
 	('debug', 'Syntax: .debug $subcommand\nType .debug to see the list of possible subcommands or .help debug $subcommand to see info on subcommands'),
 	('debug anim', 'Syntax: '),
 	('debug areatriggers', 'Syntax: .debug areatriggers\nToggle debug mode for areatriggers. In debug mode GM will be notified if reaching an areatrigger'),
@@ -174,6 +170,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('debug transport', 'Syntax: .debug transport [start/stop]\n\n Allows to stop the current transport at its nearest wait point and start movement of a stopped one. Not all transports can be started or stopped.'),
 	('debug warden force', 'Syntax: .debug warden force id1 [id2 [id3 [...]]]\n\nQueues the specified Warden checks for your client. They will be sent according to your Warden settings.'),
 	('debug worldstate', 'Syntax: debug worldstate $stateId $value\n\nSends a world state update for the specified state to your client.'),
+	
 	('demorph', 'Syntax: .demorph\r\n\r\nDemorph the selected player.'),
 	('deserter', 'Syntax: deserter $subcommand\n Type .deserter to see a list of possible subcommands\n or .help deserter $subcommand to see info on the subcommand.'),
 	('deserter bg', 'Syntax: '),
@@ -184,6 +181,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('deserter instance remove', 'Syntax: .deserter instance remove \n\n Removes the instance deserter debuff from your target.'),
 	('dev', 'Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.'),
 	('die', 'Syntax: .die\r\n\r\nKill the selected player. If no player is selected, it will kill you.'),
+	
 	('disable', 'Syntax: disable $subcommand\n Type .disable to see a list of possible subcommands\n or .help disable $subcommand to see info on the subcommand.'),
 	('disable add', 'Syntax: '),
 	('disable add battleground', 'Syntax: .disable add battleground $entry $flag $comment'),
@@ -203,6 +201,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('disable remove quest', 'Syntax: .disable remove quest $entry'),
 	('disable remove spell', 'Syntax: .disable remove spell $entry'),
 	('disable remove vmap', 'Syntax: .disable remove vmap $entry'),
+	
 	('dismount', 'Syntax: .dismount\r\n\r\nDismount you, if you are mounted.'),
 	('distance', 'Syntax: .distance [link]\r\n\r\nDisplay the distance from your character to the selected unit or given creature, player or gameobject.'),
 	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
@@ -210,6 +209,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('event start', 'Syntax: .event start #event_id\r\nStart event #event_id. Set start time for event to current moment (change not saved in DB).'),
 	('event stop', 'Syntax: .event stop #event_id\r\nStop event #event_id. Set start time for event to time in past that make current moment is event stop time (change not saved in DB).'),
 	('freeze', 'Syntax: .freeze [#player] [#duration]\nFreezes #player for #duration (seconds)\nFreezes the selected player if no arguments are given.\nDefault duration: GM.FreezeAuraDuration (worldserver.conf)'),
+	
 	('gm chat', 'Syntax: .gm chat [on/off]\r\n\r\nEnable or disable chat GM MODE (show gm badge in messages) or show current state of on/off not provided.'),
 	('gm fly', 'Syntax: .gm fly [on/off]\r\nEnable/disable gm fly mode.'),
 	('gm ingame', 'Syntax: .gm ingame\r\n\r\nDisplay a list of available in game Game Masters.'),
@@ -217,9 +217,11 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('gm off', 'Syntax: .gm off\n\nDisables in-game GM mode.'),
 	('gm on', 'Syntax: .gm on\n\nEnables in-game GM mode. This makes you exempt from most game mechanics.\nAmong other things, it makes creatures unable to attack you, and makes you untargetable by most spells. It also makes creatures in all phases, as well as invisible creatures, visible to you.'),
 	('gm visible', 'Syntax: .gm visible on/off\r\n\r\nOutput current visibility state or make GM visible(on) and invisible(off) for other players.'),
+	
 	('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
 	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
 	('gmnotify', 'Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM\'s.'),
+	
 	('go areatrigger', 'Syntax: .go areatrigger <areatriggerId>\nTeleport yourself to the specified areatrigger\'s location.\nNote that you may end up at the trigger\'s target location if it is a teleport trigger.'),
 	('go boss', 'Syntax: .go boss <part(s) of name>\nTeleport yourself to the dungeon boss whose name and/or script name best matches the specified search string(s).'),
 	('go bugticket', 'Syntax: .go bugticket <ticketId>\nTeleport yourself to the location at which the specified bug ticket was created.'),
@@ -237,6 +239,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('go taxinode', 'Syntax: .go taxinode <nodeId>\nTeleport yourself to the specified taxi node.'),
 	('go xyz', 'Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.'),
 	('go zonexy', 'Syntax: .go zonexy <x> <y> [<zone>]\nTeleport yourself to the given local (x,y) position in the specified (or current) zone.'),
+	
 	('gobject', 'Syntax: .gobject $subcommand\nType .gobject to see the list of possible subcommands or .help gobject $subcommand to see info on subcommands'),
 	('gobject activate', 'Syntax: .gobject activate #guid\r\n\r\nActivates an object like a door or a button.'),
 	('gobject add', 'Syntax: .gobject add #id <spawntimeSecs>\r\n\r\nAdd a game object from game object templates to the world at your current location using the #id.\r\nspawntimesecs sets the spawntime, it is optional.\r\n\r\nNote: this is a copy of .gameobject.'),
@@ -252,7 +255,9 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('gobject spawngroup', 'Syntax: .gobject spawngroup $groupId [ignorerespawn] [force]'),
 	('gobject target', 'Syntax: .gobject target [#go_id|#go_name_part]\r\n\r\nLocate and show position nearest gameobject. If #go_id or #go_name_part provide then locate and show position of nearest gameobject with gameobject template id #go_id or name included #go_name_part as part.'),
 	('gobject turn', 'Syntax: .gobject turn [guid|link] [oz [oy [ox]]]\r\n\r\nSet the orientation of the gameobject to player\'s orientation or the given orientation.'),
+	
 	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
+	
 	('group', 'Syntax: .group $subcommand\nType .group to see the list of possible subcommands or .help group $subcommand to see info on subcommands'),
 	('group disband', 'Syntax: .group disband [$characterName]\n\nDisbands the given character\'s group.'),
 	('group join', 'Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName] \r\nAdds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).'),
@@ -267,6 +272,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('group set mainassist', 'Syntax: .group set mainassist [$characterName]\n\nToggles the given character\'s main assist flag in his raid group.'),
 	('group set maintank', 'Syntax: .group set maintank [$characterName]\n\nToggles the given character\'s main tank flag in his raid group.'),
 	('group summon', 'Syntax: .group summon [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
+	
 	('guid', 'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
 	('guild', 'Syntax: .guild $subcommand\nType .guild to see the list of possible subcommands or .help guild $subcommand to see info on subcommands'),
 	('guild create', 'Syntax: .guild create [$GuildLeaderName] "$GuildName"\r\n\r\nCreate a guild named $GuildName with the player $GuildLeaderName (or selected) as leader.  Guild name must in quotes.'),
@@ -276,6 +282,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('guild rank', 'Syntax: .guild rank [$CharacterName] #Rank\r\n\r\nSet for player $CharacterName (or selected) rank #Rank in a guild.'),
 	('guild rename', 'Syntax: .guild rename "$GuildName" "$NewGuildName" \n\n Rename a guild named $GuildName with $NewGuildName. Guild name and new guild name must in quotes.'),
 	('guild uninvite', 'Syntax: .guild uninvite [$CharacterName]\r\n\r\nRemove player $CharacterName (or selected) from a guild.'),
+	
 	('help', 'Syntax: .help [$command]\r\n\r\nDisplay usage instructions for the given $command. If no $command provided show list available commands.'),
 	('hidearea', 'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
 	('honor', 'Syntax: .honor $subcommand\nType .honor to see the list of possible subcommands or .help honor $subcommand to see info on subcommands'),
@@ -291,6 +298,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
 	('kick', 'Syntax: .kick [$charactername] [$reason]\r\n\r\nKick the given character name from the world with or without reason. If no character name is provided then the selected player (except for yourself) will be kicked. If no reason is provided, default is "No Reason".'),
 	('levelup', 'Syntax: .levelup [$playername] [#numberoflevels]\r\n\r\nIncrease/decrease the level of character with $playername (or the selected if not name provided) by #numberoflevels Or +1 if no #numberoflevels provided). If #numberoflevels is omitted, the level will be increase by 1. If #numberoflevels is 0, the same level will be restarted. If no character is selected and name not provided, increase your level. Command can be used for offline character. All stats and dependent values recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost.'),
+	
 	('lfg', 'Syntax: lfg $subcommand\n Type .lfg to see a list of possible subcommands\n or .help lfg $subcommand to see info on the subcommand.'),
 	('lfg clean', 'Syntax: .flg clean\n Cleans current queue, only for debugging purposes.'),
 	('lfg group', 'Syntax: .lfg group\n Shows information about all players in the group  (state, roles, comment, dungeons selected).'),
@@ -298,6 +306,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('lfg player', 'Syntax: .lfg player\n Shows information about player (state, roles, comment, dungeons selected).'),
 	('lfg queue', 'Syntax: .lfg queue\n Shows info about current lfg queues.'),
 	('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
+	
 	('list', 'Syntax: .list $subcommand\nType .list to see the list of possible subcommands or .help list $subcommand to see info on subcommands'),
 	('list auras', 'Syntax: .list auras\nList auras (passive and active) of selected creature or player. If no creature or player is selected, list your own auras.'),
 	('list creature', 'Syntax: .list creature #creature_id [#max_count]\r\n\r\nOutput creatures with creature id #creature_id found in world. Output creature guids and coordinates sorted by distance from character. Will be output maximum #max_count creatures. If #max_count not provided use 10 as default value.'),
@@ -308,6 +317,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('list scenes', 'Syntax: .list scenes\nList of all active scenes for targeted character.'),
 	('list spawnpoints', 'Syntax: .list spawnpoints\n\nLists all spawn points (both creatures and GOs) in the current zone.'),
 	('listfreeze', 'Syntax: .listfreeze\r\n\r\nSearch and output all frozen players.'),
+	
 	('lookup', 'Syntax: .lookup $subcommand\nType .lookup to see the list of possible subcommands or .help lookup $subcommand to see info on subcommands'),
 	('lookup area', 'Syntax: .lookup area $namepart\r\n\r\nLooks up an area by $namepart, and returns all matches with their area ID\'s.'),
 	('lookup creature', 'Syntax: .lookup creature $namepart\r\n\r\nLooks up a creature by $namepart, and returns all matches with their creature ID\'s.'),
@@ -328,13 +338,16 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('lookup taxinode', 'Syntax: .lookup taxinode $substring\r\n\r\nSearch and output all taxinodes with provide $substring in name.'),
 	('lookup tele', 'Syntax: .lookup tele $substring\r\n\r\nSearch and output all .tele command locations with provide $substring in name.'),
 	('lookup title', 'Syntax: .lookup title $$namepart\r\n\r\nLooks up a title by $namepart, and returns all matches with their title ID\'s and index\'s.'),
+	
 	('mailbox', 'Syntax: .mailbox\r\n\r\nShow your mailbox content.'),
+	
 	('mmap', 'Syntax: Syntax: .mmaps $subcommand Type .mmaps to see the list of possible subcommands or .help mmaps $subcommand to see info on subcommands'),
 	('mmap loadedtiles', 'Syntax: .mmap loadedtiles to show which tiles are currently loaded'),
 	('mmap loc', 'Syntax: .mmap loc to print on which tile one is'),
 	('mmap path', 'Syntax: .mmap path to calculate and show a path to current select unit'),
 	('mmap stats', 'Syntax: .mmap stats to show information about current state of mmaps'),
 	('mmap testarea', 'Syntax: .mmap testarea to calculate paths for all nearby npcs to player'),
+	
 	('modify', 'Syntax: .modify $subcommand\nType .modify to see the list of possible subcommands or .help modify $subcommand to see info on subcommands'),
 	('modify currency', 'Syntax: .modify currency #id #value\nAdd $amount (without precision) of $currency to the selected player.'),
 	('modify drunk', 'Syntax: .modify drunk #value\r\n Set drunk level to #value (0..100). Value 0 remove drunk state, 100 is max drunked state.'),
@@ -362,6 +375,7 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('modify standstate', 'Syntax: .modify standstate #emoteid\r\n\r\nChange the emote of your character while standing to #emoteid.'),
 	('modify talentpoints', 'Syntax: .modify talentpoints #amount\r\n\r\nSet free talent points for selected character or character\'s pet. It will be reset to default expected at next levelup/login/quest reward.'),
 	('modify xp', 'Syntax: .modify xp #xp\n\nGives experience points to the targeted player or self.'),
+	
 	('morph', 'Syntax: .morph #displayid\r\n\r\nChange your current model id to #displayid.'),
 	('movegens', 'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
 	('mute', 'Syntax: .mute [$playerName] $timeInMinutes [$reason]\r\n\r\nDisible chat messaging for any character from account of character $playerName (or currently selected) at $timeInMinutes minutes. Player can be offline.'),
@@ -420,105 +434,6 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('rbac list', 'Syntax: rbac list [$id]\n\nView list of all permissions. If $id is given will show only info for that permission.'),
 	('recall', 'Syntax: .recall [$playername]\r\n\r\nTeleport $playername or selected player to the place where he has been before last use of a teleportation command. If no $playername is entered and no player is selected, it will teleport you.'),
 	
-	('reload', 'Syntax: .reload $subcommand\nType .reload to see the list of possible subcommands or .help reload $subcommand to see info on subcommands'),
-	('reload access_requirement', 'Syntax: .reload access_requirement\nReload access_requirement table.'),
-	('reload achievement_reward', 'Syntax: .reload achievement_reward\nReload achievement_reward table.'),
-	('reload achievement_reward_locale', 'Syntax: .reload achievement_reward_locale\nReload achievement_reward_locale table.'),
-	('reload all', 'Syntax: .reload all\r\n\r\nReload all tables with reload support added and that can be _safe_ reloaded.'),
-	('reload all achievement', 'Syntax: .reload all achievement\r\n\r\nReload achievement_reward, achievement_criteria_data tables.'),
-	('reload all area', 'Syntax: .reload all area\n\nReload areatrigger_teleport, areatrigger_tavern, graveyard_zone tables.'),
-	('reload all gossips', 'Syntax: .reload all gossips\nReload gossip_menu, gossip_menu_option, gossip_scripts, points_of_interest tables.'),
-	('reload all item', 'Syntax: .reload all item\nReload page_text, item_enchantment_table tables.'),
-	('reload all locales', 'Syntax: .reload all locales\r\n\r\nReload all `locales_*` tables with reload support added and that can be _safe_ reloaded.'),
-	('reload all loot', 'Syntax: .reload all loot\r\n\r\nReload all `*_loot_template` tables. This can be slow operation with lags for server run.'),
-	('reload all npc', 'Syntax: .reload all npc\nReload npc_option, npc_trainer, npc vendor, points of interest tables.'),
-	('reload all quest', 'Syntax: .reload all quest\r\n\r\nReload all quest related tables if reload support added for this table and this table can be _safe_ reloaded.'),
-	('reload all scripts', 'Syntax: .reload all scripts\nReload gameobject_scripts, event_scripts, quest_end_scripts, quest_start_scripts, spell_scripts, db_script_string, waypoint_scripts tables.'),
-	('reload all spell', 'Syntax: .reload all spell\r\n\r\nReload all `spell_*` tables with reload support added and that can be _safe_ reloaded.'),
-	('reload areatrigger_involvedrelation', 'Syntax: .reload areatrigger_involvedrelation\nReload areatrigger_involvedrelation table.'),
-	('reload areatrigger_tavern', 'Syntax: .reload areatrigger_tavern\nReload areatrigger_tavern table.'),
-	('reload areatrigger_teleport', 'Syntax: .reload areatrigger_teleport\nReload areatrigger_teleport table.'),
-	('reload auctions', 'Syntax: .reload auctions\nReload dynamic data tables from the database.'),
-	('reload autobroadcast', 'Syntax: .reload autobroadcast\nReload autobroadcast table.'),
-	('reload battleground_template', 'Syntax: .reload battleground_template\r\nReload Battleground Templates.'),
-	('reload conditions', 'Reload conditions table.'),
-	('reload config', 'Syntax: .reload config\r\n\r\nReload config settings (by default stored in trinityd.conf). Not all settings can be change at reload: some new setting values will be ignored until restart, some values will applied with delay or only to new objects/maps, some values will explicitly rejected to change at reload.'),
-	('reload conversation_template', 'Syntax: .reload conversation_template\r\nReload conversation tables.'),
-	('reload creature_linked_respawn', 'Syntax: .reload creature_linked_respawn\r\nReload creature_linked_respawn table.'),
-	('reload creature_loot_template', 'Syntax: .reload creature_loot_template\nReload creature_loot_template table.'),
-	('reload creature_movement_override', 'Syntax: .reload creature_movement_override\nReload creature_movement_override table.'),
-	('reload creature_onkill_reputation', 'Syntax: .reload creature_onkill_reputation\r\nReload creature_onkill_reputation table.'),
-	('reload creature_questender', 'Syntax: .reload creature_questender\nReload creature_questender table.'),
-	('reload creature_queststarter', 'Syntax: .reload creature_queststarter\nReload creature_queststarter table.'),
-	('reload creature_summon_groups', 'Syntax: .reload creature_summon_groups\nReload creature_summon_groups table.'),
-	('reload creature_template', 'Syntax: .reload creature_template $entry\r\nReload the specified creature\'s template.'),
-	('reload creature_template_locale', 'Syntax: .reload creature_template_locale\nReload creature_template_locale table.'),
-	('reload creature_text', 'Syntax: .reload creature_text\nReload creature_text Table.'),
-	('reload creature_text_locale', 'Syntax: .reload creature_text_locale\nReload creature_text_locale Table.'),
-	('reload criteria_data', 'Syntax: .reload criteria_data\nReload criteria_data table.'),
-	('reload disables', 'Syntax: .reload disables\r\nReload disables table.'),
-	('reload disenchant_loot_template', 'Syntax: .reload disenchant_loot_template\nReload disenchant_loot_template table.'),
-	('reload event_scripts', 'Syntax: .reload event_scripts\nReload event_scripts table.'),
-	('reload fishing_loot_template', 'Syntax: .reload fishing_loot_template\nReload fishing_loot_template table.'),
-	('reload game_tele', 'Syntax: .reload game_tele\nReload game_tele table.'),
-	('reload gameobject_loot_template', 'Syntax: .reload gameobject_loot_template\nReload gameobject_loot_template table.'),
-	('reload gameobject_questender', 'Syntax: .reload gameobject_questender\\nReload gameobject_questender table.'),
-	('reload gameobject_queststarter', 'Syntax: .reload gameobject_queststarter\nReload gameobject_queststarter table.'),
-	('reload gameobject_template_locale', 'Syntax: .reload gameobject_template_locale\nReload gameobject_template_locale table.'),
-	('reload gossip_menu', 'Syntax: .reload gossip_menu\nReload gossip_menu table.'),
-	('reload gossip_menu_option', 'Syntax: .reload gossip_menu_option\nReload gossip_menu_option table.'),
-	('reload gossip_menu_option_locale', 'Syntax: .reload gossip_menu_option_locale\nReload gossip_menu_option_locale table.'),
-	('reload graveyard_zone', 'Syntax: .reload graveyard_zone\nReload graveyard_zone table.'),
-	('reload item_loot_template', 'Syntax: .reload item_loot_template\nReload item_loot_template table.'),
-	('reload item_random_bonus_list_template', 'Syntax: .reload item_enchantment_template\nReload item_enchantment_template table.'),
-	('reload lfg_dungeon_rewards', 'Syntax: .reload lfg_dungeon_rewards\nReload lfg_dungeon_rewards table.'),
-	('reload mail_level_reward', 'Syntax: .reload mail_level_reward\nReload mail_level_reward table.'),
-	('reload mail_loot_template', 'Syntax: .reload quest_mail_loot_template\nReload quest_mail_loot_template table.'),
-	('reload milling_loot_template', 'Syntax: .reload milling_loot_template\nReload milling_loot_template table.'),
-	('reload npc_spellclick_spells', 'Syntax: '),
-	('reload npc_vendor', 'Syntax: .reload npc_vendor\nReload npc_vendor table.'),
-	('reload page_text', 'Syntax: .reload page_text\nReload page_text table.'),
-	('reload page_text_locale', 'Syntax: .reload page_text_locale\nReload page_text_locale table.'),
-	('reload pickpocketing_loot_template', 'Syntax: .reload pickpocketing_loot_template\nReload pickpocketing_loot_template table.'),
-	('reload points_of_interest', 'Syntax: .reload points_of_interest\nReload points_of_interest table.'),
-	('reload points_of_interest_locale', 'Syntax: .reload points_of_interest_locale\nReload points_of_interest_locale table.'),
-	('reload prospecting_loot_template', 'Syntax: .reload prospecting_loot_template\nReload prospecting_loot_template table.'),
-	('reload quest_greeting', 'Syntax: .reload quest_greeting\nReload quest_greeting table.'),
-	('reload quest_locale', 'Syntax: .reload quest_locale\nReload all quest_*_locale tables.'),
-	('reload quest_poi', 'Syntax: .reload quest_poi\nReload quest_poi table.'),
-	('reload quest_template', 'Syntax: .reload quest_template\nReload quest_template table.'),
-	('reload rbac', 'Syntax: .reload rbac\nReload rbac system.'),
-	('reload reference_loot_template', 'Syntax: .reload reference_loot_template\nReload reference_loot_template table.'),
-	('reload reputation_reward_rate', 'Syntax: .reload reputation_reward_rate\r\nReload reputation_reward_rate table.'),
-	('reload reputation_spillover_template', 'Syntax: .reload reputation_spillover_template\r\nReload reputation_spillover_template table.'),
-	('reload reserved_name', 'Syntax: .reload reserved_name\nReload reserved_name table.'),
-	('reload scene_template', 'Syntax: .reload scene_template\nReload scene_template table.'),
-	('reload skill_discovery_template', 'Syntax: .reload skill_discovery_template\nReload skill_discovery_template table.'),
-	('reload skill_extra_item_template', 'Syntax: .reload skill_extra_item_template\nReload skill_extra_item_template table.'),
-	('reload skill_fishing_base_level', 'Syntax: .reload skill_fishing_base_level\nReload skill_fishing_base_level table.'),
-	('reload skinning_loot_template', 'Syntax: .reload skinning_loot_template\nReload skinning_loot_template table.'),
-	('reload smart_scripts', 'Syntax: .reload smart_scripts\nReload smart_scripts table.'),
-	('reload spell_area', 'Syntax: .reload spell_area\nReload spell_area table.'),
-	('reload spell_group', 'Syntax: .reload spell_group\nReload spell_group table.'),
-	('reload spell_group_stack_rules', 'Syntax: .reload spell_group\nReload spell_group_stack_rules table.'),
-	('reload spell_learn_spell', 'Syntax: .reload spell_learn_spell\nReload spell_learn_spell table.'),
-	('reload spell_linked_spell', 'Usage: .reload spell_linked_spell\r\nReloads the spell_linked_spell DB table.'),
-	('reload spell_loot_template', 'Syntax: .reload spell_loot_template\nReload spell_loot_template table.'),
-	('reload spell_pet_auras', 'Syntax: .reload spell_pet_auras\nReload spell_pet_auras table.'),
-	('reload spell_proc', 'Syntax: .reload spell_proc\nReload spell_proc table.'),
-	('reload spell_required', 'Syntax: .reload spell_required\nReload spell_required table.'),
-	('reload spell_script_names', 'Syntax: .reload spell_script_names\nReload spell_script_names table.'),
-	('reload spell_scripts', 'Syntax: .reload spell_scripts\nReload spell_scripts table.'),
-	('reload spell_target_position', 'Syntax: .reload spell_target_position\nReload spell_target_position table.'),
-	('reload spell_threats', 'Syntax: .reload spell_threats\nReload spell_threats table.'),
-	('reload support', 'Syntax: .reload support\r\nReload support system tables.'),
-	('reload trainer', 'Syntax: .reload trainer\nReloads trainer, trainer_locale and trainer_spell tables.'),
-	('reload trinity_string', 'Syntax: .reload trinity_string\nReload trinity_string table.'),
-	('reload vehicle_accessory', ''),
-	('reload vehicle_template', ''),
-	('reload vehicle_template_accessory', ''),
-	('reload waypoint_path', ''),
-	
 	('repairitems', 'Syntax: .repairitems\r\n\r\nRepair all selected player\'s items.'),
 	('reset', 'Syntax: .reset $subcommand\nType .reset to see the list of possible subcommands or .help reset $subcommand to see info on subcommands'),
 	('reset achievements', 'Syntax: .reset achievements [$playername]\r\n\r\nReset achievements data for selected or named (online or offline) character. Achievements for persistance progress data like completed quests/etc re-filled at reset. Achievements for events like kills/casts/etc will lost.'),
@@ -538,11 +453,13 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('scene debug', 'Syntax: .scene debug\nToggle debug mode for scenes. In debug mode GM will be notified in chat when scenes start/stop/trigger event'),
 	('scene play', 'Syntax: .scene play #sceneId\nPlays scene with id for targeted player'),
 	('scene playpackage', 'Syntax: .scene playpackage #scenePackageId #playbackFlags\nPlays scene with package id and playback flags for targeted player'),
+	
 	('send', 'Syntax: send $subcommand\n Type .send to see a list of possible subcommands\n or .help send $subcommand to see info on the subcommand.'),
 	('send items', 'Syntax: .send items #playername "#subject" "#text" itemid1[:count1] itemid2[:count2] ... itemidN[:countN]\r\n\r\nSend a mail to a player. Subject and mail text must be in "". If for itemid not provided related count values then expected 1, if count > max items in stack then items will be send in required amount stacks. All stacks amount in mail limited to 12.'),
 	('send mail', 'Syntax: .send mail #playername "#subject" "#text"\r\n\r\nSend a mail to a player. Subject and mail text must be in "".'),
 	('send message', 'Syntax: .send message $playername $message\r\n\r\nSend screen message to player from ADMINISTRATOR.'),
 	('send money', 'Syntax: .send money #playername "#subject" "#text" #money\r\n\r\nSend mail with money to a player. Subject and mail text must be in "".'),
+	
 	('server', 'Syntax: .server $subcommand\nType .server to see the list of possible subcommands or .help server $subcommand to see info on subcommands'),
 	('server corpses', 'Syntax: .server corpses\r\n\r\nTriggering corpses expire check in world.'),
 	('server debug', 'Syntax: .server debug\n\nShows detailed information about server setup, useful when reporting a bug'),
@@ -564,9 +481,11 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('server shutdown', 'Syntax: .server shutdown [force] #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds. Use #exit_code or 0 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.'),
 	('server shutdown cancel', 'Syntax: .server shutdown cancel\r\n\r\nCancel the restart/shutdown timer if any.'),
 	('server shutdown force', 'Syntax: .server shutdown [force] #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds. Use #exit_code or 0 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.'),
+	
 	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
 	('showarea', 'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
 	('summon', 'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
+	
 	('tele', 'Syntax: .tele #location\r\n\r\nTeleport player to a given location.'),
 	('tele add', 'Syntax: .tele add $name\r\n\r\nAdd current your position to .tele command target locations list with name $name.'),
 	('tele del', 'Syntax: .tele del $name\r\n\r\nRemove location with name $name for .tele command locations list.'),
@@ -614,19 +533,23 @@ INSERT INTO `command` (`name`, `help`) VALUES
 	('titles remove', 'Syntax: .titles remove #title\r\nRemove title #title (id or shift-link) from known titles list for selected player.'),
 	('titles set', 'Syntax: '),
 	('titles set mask', 'Syntax: .titles set mask #mask\r\n\r\nAllows user to use all titles from #mask.\r\n\r\n #mask=0 disables the title-choose-field'),
+	
 	('unaura', 'Syntax: .unaura #spellid\r\n\r\nRemove aura due to spell #spellid from the selected Unit.'),
+	
 	('unban', 'Syntax: .unban $subcommand\nType .unban to see the list of possible subcommands or .help unban $subcommand to see info on subcommands'),
 	('unban account', 'Syntax: .unban account $Name\r\nUnban accounts for account name pattern.'),
 	('unban character', 'Syntax: .unban character $Name\r\nUnban accounts for character name pattern.'),
 	('unban ip', 'Syntax : .unban ip $Ip\r\nUnban accounts for IP pattern.'),
 	('unban playeraccount', 'Syntax: '),
 	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
+	
 	('unfreeze', 'Syntax: .unfreeze (#player)\r\n"Unfreezes" #player and enables his chat again. When using this without #name it will unfreeze your target.'),
 	('unmute', 'Syntax: .unmute [$playerName]\r\n\r\nRestore chat messaging for any character from account of character $playerName (or selected). Character can be ofline.'),
 	('unpossess', 'Syntax: .unpossess\r\n\r\nIf you are possessed, unpossesses yourself; otherwise unpossesses current possessed target.'),
 	('unstuck', 'Syntax: .unstuck $playername [inn/graveyard/startzone]\n\nTeleports specified player to specified location. Default location is player\'s current hearth location.'),
 	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
 	('whispers', 'Syntax: .whispers on|off\r\nEnable/disable accepting whispers by GM from players. By default use trinityd.conf setting.'),
+	
 	('wp', 'Syntax: wp $subcommand\n Type .wp to see a list of possible subcommands\n or .help wp $subcommand to see info on the subcommand.'),
 	('wp add', 'Syntax: .wp add\r\n\r\nAdd a waypoint for the selected creature at your current position.'),
 	('wp load', 'Syntax: .wp load $pathid\nLoad pathid number for selected creature. Creature must have no waypoint data.'),
