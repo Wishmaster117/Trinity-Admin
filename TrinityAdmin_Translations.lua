@@ -218,6 +218,16 @@ if locale == "frFR" then
 	L["Tele_Name_Id"] = "Syntaxe : .tele name id #playername #creatureSpawnId\n\nTéléporte le personnage donné à la créature avec l'ID d'apparition #creatureSpawnId. Le personnage peut être hors ligne."
 	L["Tele_Name_NPC_Id"] = "Syntaxe : .tele name npc id #playername #creatureId\n\nTéléporte le personnage donné à la première créature trouvée avec l'ID #creatureId. Le personnage peut être hors ligne."
 	L["Tele_Name_NPC_Name"] = "Syntaxe : .tele name npc name #playername #creatureName\n\nTéléporte le personnage donné à la première créature trouvée avec le nom exact #creatureName. Le personnage peut être hors ligne."
+	L["bnetaccount gameaccountcreate"] = "Syntaxe : .bnetaccount gameaccountcreate $account\nCrée un compte de jeu supplémentaire pour le compte battle.net spécifié."
+	L["bnetaccount link"] = "Syntaxe : .bnetaccount link $email $login\nLie un compte battle.net ($email) à un compte de jeu existant ($login)."
+	L["bnetaccount listgameaccounts"] = "Syntaxe : .bnetaccount listgameaccounts $email $password\nListe tous les comptes de jeu liés au compte battle.net $email."
+	L["bnetaccount lock country"] = "Syntaxe : .bnetaccount lock country [on|off]\nAutorise la connexion au compte uniquement depuis le pays actuellement utilisé ou supprime cette restriction."
+	L["bnetaccount lock ip"] = "Syntaxe : .bnetaccount lock ip [on|off]\nAutorise la connexion au compte uniquement depuis l'adresse IP actuellement utilisée ou supprime cette restriction."
+	L["bnetaccount password"] = "Syntaxe : .bnetaccount password $old_password $new_password $new_password\nChange le mot de passe de votre compte."
+	L["bnetaccount set"] = "Syntaxe : .bnetaccount set $subcommand\nTapez .bnetaccount set pour voir la liste des sous-commandes possibles ou .help bnetaccount set $subcommand pour voir les informations sur une sous-commande spécifique."
+	L["bnetaccount set password"] = "Syntaxe : .bnetaccount set password $account $password $password\nDéfinit le mot de passe pour le compte spécifié."
+	L["bnetaccount unlink"] = "Syntaxe : .bnetaccount unlink $gameaccount $password\nSupprime le lien entre le compte battle.net et le compte de jeu $gameaccount."
+
 
 
 	
@@ -438,15 +448,15 @@ elseif locale == "enUS" then
     L["Tele_Name_Id"] = "Syntax: .tele name id #playername #creatureSpawnId\n\nTeleport the given character to creature with spawn id #creatureSpawnId. Character can be offline."
     L["Tele_Name_NPC_Id"] = "Syntax: .tele name npc id #playername #creatureId\n\nTeleport the given character to first found creature with id #creatureId. Character can be offline."
     L["Tele_Name_NPC_Name"] = "Syntax: .tele name npc name #playername #creatureName\n\nTeleport the given character to first found creature with name (must match exactly) #creatureName. Character can be offline."
-
-
-
-
-
-
-
-
-
+	L["bnetaccount gameaccountcreate"] = "Syntax: .bnetaccount gameaccountcreate $account\nCreate additional game account for specified battle.net account."
+	L["bnetaccount link"] = "Syntax: .bnetaccount link $email $login\nLinks battle.net account ($email) to an existing game account ($login)."
+	L["bnetaccount listgameaccounts"] = "Syntax: .bnetaccount listgameaccounts $email $password\nLists all game accounts linked to battle.net $email"
+	L["bnetaccount lock country"] = "Syntax: .bnetaccount lock country [on|off]\nAllow login to account only from current used Country or remove this requirement."
+	L["bnetaccount lock ip"] = "Syntax: .bnetaccount lock ip [on|off]\nAllow login to account only from current used IP or remove this requirement."
+	L["bnetaccount password"] = "Syntax: .bnetaccount password $old_password $new_password $new_password\nChange your account password."
+	L["bnetaccount set"] = "Syntax: .bnetaccount set $subcommand\nType .bnetaccount set to see the list of possible subcommands or .help bnetaccount set $subcommand to see info on subcommands."
+	L["bnetaccount set password"] = "Syntax: .bnetaccount set password $account $password $password\nSet password for account."
+	L["bnetaccount unlink"] = "Syntax: .bnetaccount unlink $gameaccount $password\nRemoves battle.net account link from $gameaccount"
 
 
 

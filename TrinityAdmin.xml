@@ -147,6 +147,25 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<!-- Module gestion serveur -->
+			<!-- Bouton Server Admin -->
+			<Button name="$parentServerAdminButton" inherits="UIPanelButtonTemplate" text="Server Admin">
+				<Size>
+					<AbsDimension x="100" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="-20"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowServerAdminPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

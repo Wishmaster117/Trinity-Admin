@@ -39,21 +39,10 @@
 	
 	('aura', 'Syntax: .aura #spellid\r\n\r\nAdd the aura from spell #spellid to the selected Unit.'),
 	
-	('ban', 'Syntax: .ban $subcommand\nType .ban to see the list of possible subcommands or .help ban $subcommand to see info on subcommands'),
-	('ban account', 'Syntax: .ban account $Name $bantime $reason\r\nBan account kick player.\r\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
-	('ban character', 'Syntax: .ban character $Name $bantime $reason\nBan character and kick player.\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
-	('ban ip', 'Syntax: .ban ip $Ip $bantime $reason\r\nBan IP.\r\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
-	('ban playeraccount', 'Syntax: .ban playeraccount $Name $bantime $reason\nBan account and kick player.\n$bantime: negative value leads to permban, otherwise use a timestring like "4d20h3s".'),
 	
-	('baninfo', 'Syntax: .baninfo $subcommand\nType .baninfo to see the list of possible subcommands or .help baninfo $subcommand to see info on subcommands'),
-	('baninfo account', 'Syntax: .baninfo account $accountid\r\nWatch full information about a specific ban.'),
-	('baninfo character', 'Syntax: .baninfo character $charactername \r\nWatch full information about a specific ban.'),
-	('baninfo ip', 'Syntax: .baninfo ip $ip\r\nWatch full information about a specific ban.'),
+
 	('bank', 'Syntax: .bank\r\n\r\nShow your bank inventory.'),
-	('banlist', 'Syntax: .banlist $subcommand\nType .banlist to see the list of possible subcommands or .help banlist $subcommand to see info on subcommands'),
-	('banlist account', 'Syntax: .banlist account [$Name]\r\nSearches the banlist for a account name pattern or show full list account bans.'),
-	('banlist character', 'Syntax: .banlist character $Name\r\nSearches the banlist for a character name pattern. Pattern required.'),
-	('banlist ip', 'Syntax: .banlist ip [$Ip]\r\nSearches the banlist for a IP pattern or show full list of IP bans.'),
+
 	
 	('bf', 'Syntax: bf $subcommand\n Type .bf to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
 	('bf enable', 'Syntax: .bf enable #battleid'),
@@ -63,17 +52,6 @@
 	('bf timer', 'Syntax: .bf timer #battleid #timer'),
 	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
 	
-	('bnetaccount', 'Syntax: .bnetaccount $subcommand\nType .bnetaccount to see the list of possible subcommands or .help account set $subcommand to see info on subcommands.'),
-	('bnetaccount create', 'Syntax: .bnetaccount create $account $password\nCreate battle.net account and set password to it. Account must contain the @ symbol.'),
-	('bnetaccount gameaccountcreate', 'Syntax: .bnetaccount gameaccountcreate $account\nCreate additional game account for specified battle.net account.'),
-	('bnetaccount link', 'Syntax: .bnetaccount link $email $login\nLinks battle.net account ($email) to an existing game account ($login).'),
-	('bnetaccount listgameaccounts', 'Syntax: .bnetaccount listgameaccounts $email $password\nLists all game accounts linked to battle.net $email'),
-	('bnetaccount lock country', 'Syntax: .bnetaccount lock country [on|off]\nAllow login to account only from current used Country or remove this requirement.'),
-	('bnetaccount lock ip', 'Syntax: .bnetaccount lock ip [on|off]\nAllow login to account only from current used IP or remove this requirement.'),
-	('bnetaccount password', 'Syntax: .bnetaccount password $old_password $new_password $new_password\nChange your account password.'),
-	('bnetaccount set', 'Syntax: .bnetaccount set $subcommand\nType .bnetaccount set to see the list of possible subcommands or .help bnetaccount set $subcommand to see info on subcommands.'),
-	('bnetaccount set password', 'Syntax: .bnetaccount set password $account $password $password\nSet password for account.'),
-	('bnetaccount unlink', 'Syntax: .bnetaccount unlink $gameaccount $password\nRemoves battle.net account link from $gameaccount'),
 	
 	('cast', 'Syntax: .cast #spellid [triggered]\r\n  Cast #spellid to selected target. If no target selected cast to self. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast back', 'Syntax: .cast back #spellid [triggered]\r\n  Selected target will cast #spellid to your character. If \'triggered\' or part provided then spell casted with triggered flag.'),
@@ -212,7 +190,7 @@
 	('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
 	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
 	('gmnotify', 'Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM\'s.'),
-	
+
 	('go areatrigger', 'Syntax: .go areatrigger <areatriggerId>\nTeleport yourself to the specified areatrigger\'s location.\nNote that you may end up at the trigger\'s target location if it is a teleport trigger.'),
 	('go boss', 'Syntax: .go boss <part(s) of name>\nTeleport yourself to the dungeon boss whose name and/or script name best matches the specified search string(s).'),
 	('go bugticket', 'Syntax: .go bugticket <ticketId>\nTeleport yourself to the location at which the specified bug ticket was created.'),
@@ -231,6 +209,7 @@
 	('go xyz', 'Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.'),
 	('go zonexy', 'Syntax: .go zonexy <x> <y> [<zone>]\nTeleport yourself to the given local (x,y) position in the specified (or current) zone.'),
 	
+	-- Panneau GameobjetcsandGo
 	('gobject', 'Syntax: .gobject $subcommand\nType .gobject to see the list of possible subcommands or .help gobject $subcommand to see info on subcommands'),
 	('gobject activate', 'Syntax: .gobject activate #guid\r\n\r\nActivates an object like a door or a button.'),
 	('gobject add', 'Syntax: .gobject add #id <spawntimeSecs>\r\n\r\nAdd a game object from game object templates to the world at your current location using the #id.\r\nspawntimesecs sets the spawntime, it is optional.\r\n\r\nNote: this is a copy of .gameobject.'),
@@ -358,7 +337,6 @@
 	('npc near', 'Syntax: '),
 	('npc set allowmove', 'Syntax: .npc set allowmove\r\n\r\nEnable or disable movement creatures in world. Not implemented.'),
 	('npc set data', 'Syntax: .npc set data $field $data\nSets data for the selected creature. Used for testing Scripting'),
-	('npc set factionid', 'Syntax: .npc set factionid #factionid\r\n\r\nSet the faction of the selected creature to #factionid.'),
 	('npc set movetype', 'Syntax: .npc set movetype [#creature_guid] stay/random/way [NODEL]\r\n\r\nSet for creature pointed by #creature_guid (or selected if #creature_guid not provided) movement type and move it to respawn position (if creature alive). Any existing waypoints for creature will be removed from the database if you do not use NODEL. If the creature is dead then movement type will applied at creature respawn.\r\nMake sure you use NODEL, if you want to keep the waypoints.'),
 	('npc set spawntime', 'Syntax: .npc set spawntime #time \r\n\r\nAdjust spawntime of selected creature to time.'),
 	('npc set wanderdistance', 'Syntax: .npc set wanderdistance #dist\r\n\r\nAdjust wander distance of selected creature to dist.'),
@@ -391,6 +369,7 @@
 	('quest objective complete', 'Syntax: .quest objective complete #questObjectiveId\nMark specific quest objective as completed for target character.'),
 	('quest remove', 'Syntax: .quest remove #quest_id\r\n\r\nSet quest #quest_id state to not completed and not active (and remove from active quest list) for selected player.'),
 	('quest reward', 'Syntax: .quest reward #questId\n\nGrants quest reward to selected player and removes quest from his log (quest must be in completed state).'),
+	
 	('rbac', 'Syntax: bf $subcommand\n Type .rbac to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
 	('rbac account', 'Syntax: rbac account $subcommand\n Type .rbac account to see a list of possible subcommands\n or .help rbac account $subcommand to see info on the subcommand.'),
 	('rbac account deny', 'Syntax: rbac account deny [$account] #id [#realmId]\n\nDeny a permission to selected player or given account.\n\n#reamID may be -1 for all realms.'),
@@ -449,14 +428,6 @@
 	('showarea', 'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
 	('summon', 'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
 	
-	('tele', 'Syntax: .tele #location\r\n\r\nTeleport player to a given location.'),
-	('tele add', 'Syntax: .tele add $name\r\n\r\nAdd current your position to .tele command target locations list with name $name.'),
-	('tele del', 'Syntax: .tele del $name\r\n\r\nRemove location with name $name for .tele command locations list.'),
-	('tele group', 'Syntax: .tele group#location\r\n\r\nTeleport a selected player and his group members to a given location.'),
-	('tele name', 'Syntax: .tele name [#playername] #location\n\nTeleport the given character to a given location. Character can be offline.\n\nTo teleport to homebind, set #location to "$home" (without quotes).'),
-	('tele name npc guid', 'Syntax: .tele name id #playername #creatureSpawnId\n\nTeleport the given character to creature with spawn id #creatureSpawnId. Character can be offline.'),
-	('tele name npc id', 'Syntax: .tele name id #playername #creatureId\n\nTeleport the given character to first found creature with id #creatureId. Character can be offline.'),
-	('tele name npc name', 'Syntax: .tele name id #playername #creatureName\n\nTeleport the given character to first found creature with name (must match exactly) #creatureName. Character can be offline.'),
 	
 	('ticket', 'Syntax: .ticket $subcommand\nType .ticket to see the list of possible subcommands or .help ticket $subcommand to see info on subcommands'),
 	('ticket bug assign', 'Usage: .ticket bug assign $ticketid $gmname.\r\nAssigns the specified ticket to the specified Game Master.'),

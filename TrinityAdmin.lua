@@ -45,6 +45,7 @@ local NPCModule = TrinityAdmin:NewModule("NPCPanel")
 local AccountModule = TrinityAdmin:NewModule("AccountPanel")
 local GMFunctionsModule = TrinityAdmin:NewModule("GMFunctionsPanel")
 local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
+local ServerAdminModule = TrinityAdmin:NewModule("ServerAdmin") -- Module gestion serveur
 
 ------------------------------------------------------------
 -- Fonctions globales appelées depuis l'interface XML
@@ -72,6 +73,11 @@ end
 function TrinityAdmin_ShowDatabasePanel()
     DatabaseModule:ShowDatabasePanel()
 end
+
+function TrinityAdmin_ShowServerAdminPanel()
+    ServerAdminModule:ShowServerAdminPanel()
+end
+
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
@@ -83,10 +89,40 @@ end
 
 function TrinityAdmin:OnEnable()
     TrinityAdminMainFrameTitle:SetText(TrinityAdmin_Translations["TrinityAdmin Main Menu"])
+	-- Rendre la frame principale déplaçable
+    TrinityAdminMainFrame:SetMovable(true)
+    TrinityAdminMainFrame:EnableMouse(true)
+    TrinityAdminMainFrame:RegisterForDrag("LeftButton")
+    TrinityAdminMainFrame:SetScript("OnDragStart", function(self)
+        self:StartMoving()
+    end)
+    TrinityAdminMainFrame:SetScript("OnDragStop", function(self)
+        self:StopMovingOrSizing()
+    end)
+    
+    -- Rendre la frame redimensionnable
+    -- TrinityAdminMainFrame:SetResizable(true)
+    -- 
+    -- -- Créez un "handle" dans le coin inférieur droit pour le redimensionnement
+    -- local resizeButton = CreateFrame("Frame", "TrinityAdminMainFrameResizeButton", TrinityAdminMainFrame)
+    -- resizeButton:SetSize(16, 16)
+    -- resizeButton:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", 0, 0)
+    -- resizeButton:EnableMouse(true)
+    -- resizeButton:SetScript("OnMouseDown", function(self, button)
+    --     TrinityAdminMainFrame:StartSizing("BOTTOMRIGHT")
+    -- end)
+    -- resizeButton:SetScript("OnMouseUp", function(self, button)
+    --     TrinityAdminMainFrame:StopMovingOrSizing()
+    -- end)
+    -- 
+    -- -- Ajoutez une texture pour visualiser le handle (optionnel)
+    -- local resizeTex = resizeButton:CreateTexture(nil, "OVERLAY")
+    -- resizeTex:SetAllPoints()
+    -- resizeTex:SetTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
 end
 
 function TrinityAdmin:OnDisable()
-    self:Print("TrinityAdmin OnDisable fired")
+    self:Print("TrinityAdmin Fermé")
 end
 
 ------------------------------------------------------------
@@ -110,6 +146,7 @@ function TrinityAdmin:ShowMainMenu()
     if AccountModule.panel then AccountModule.panel:Hide() end
     if GMFunctionsModule.panel then GMFunctionsModule.panel:Hide() end
 	if DatabaseModule.panel then DatabaseModule.panel:Hide() end
+	if ServerAdminModule.panel then ServerAdminModule.panel:Hide() end
 
     TrinityAdminMainFrameTeleportButton:Show()
     TrinityAdminMainFrameGMButton:Show()
@@ -117,6 +154,7 @@ function TrinityAdmin:ShowMainMenu()
     TrinityAdminMainFrameGMFunctionsButton:Show()
     TrinityAdminMainFrameAccountButton:Show()
 	TrinityAdminMainFrameDatabaseButton:Show()
+	TrinityAdminMainFrameServerAdminButton:Show()
 
     TrinityAdminMainFrame:Show()
 end
@@ -131,6 +169,7 @@ function TrinityAdmin:HideMainMenu()
     TrinityAdminMainFrameGMFunctionsButton:Hide()
     TrinityAdminMainFrameAccountButton:Hide()
 	TrinityAdminMainFrameDatabaseButton:Hide()
+	TrinityAdminMainFrameServerAdminButton:Hide()
 
     TrinityAdminMainFrame:Show()
 end

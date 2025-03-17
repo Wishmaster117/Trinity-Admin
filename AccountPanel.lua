@@ -106,7 +106,7 @@ function AccountModule:CreateAccountPanel()
     banInfoInput:SetAutoFocus(false)
     banInfoInput:SetText("")
 
-    local banInfoDropdown = CreateFrame("Frame", "TrinityAdminBanInfoDropdown", account, "TrinityAdminDropdownTemplate")
+    local banInfoDropdown = CreateFrame("Frame", "TrinityAdminBanInfoDropdown", account, "UIDropDownMenuTemplate")
     banInfoDropdown:SetPoint("LEFT", banInfoInput, "RIGHT", 10, 0)
     
     -- Définition des options pour le menu déroulant
@@ -143,7 +143,7 @@ function AccountModule:CreateAccountPanel()
     UIDropDownMenu_SetText(banInfoDropdown, "Select Option")
 
     local btnGetBanInfo = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
-    btnGetBanInfo:SetPoint("LEFT", banInfoDropdown, "RIGHT", 10, 0)
+    btnGetBanInfo:SetPoint("LEFT", banInfoDropdown, "RIGHT", 115, 2)
     btnGetBanInfo:SetText("Get")
     btnGetBanInfo:SetHeight(22)
     btnGetBanInfo:SetWidth(btnGetBanInfo:GetTextWidth() + 20)
@@ -333,6 +333,99 @@ function AccountModule:CreateAccountPanel()
 		print("Debug: Commande envoyée en SAY: " .. command)
         SendChatMessage(command, "SAY")
     end)
+	
+	
+	------------------------------------------------------------------
+-- Nouvelle section "Bnet Account Manage"
+------------------------------------------------------------------
+local bnetLabel = account:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+bnetLabel:SetPoint("TOPLEFT", banInfoInput, "BOTTOMLEFT", 0, -20)
+bnetLabel:SetText("Bnet Account Manage")
+
+-- Créez le menu déroulant pour Bnet Account Manage AVANT le champ de saisie
+local bnetDropdown = CreateFrame("Frame", "TrinityAdminBnetDropdown", account, "UIDropDownMenuTemplate")
+bnetDropdown:SetPoint("LEFT", bnetLabel, "RIGHT", 10, -23)
+UIDropDownMenu_SetWidth(bnetDropdown, 180)
+UIDropDownMenu_SetButtonWidth(bnetDropdown, 240)
+local bnetOptions = {
+    { text = "bnetaccount gameaccountcreate", command = ".bnetaccount gameaccountcreate", tooltip = TrinityAdmin_Translations["bnetaccount gameaccountcreate"] },
+    { text = "bnetaccount link", command = ".bnetaccount link", tooltip = TrinityAdmin_Translations["bnetaccount link"]},
+    { text = "bnetaccount listgameaccounts", command = ".bnetaccount listgameaccounts", tooltip = TrinityAdmin_Translations["bnetaccount listgameaccounts"] },
+    { text = "bnetaccount lock country", command = ".bnetaccount lock country", tooltip = TrinityAdmin_Translations["bnetaccount lock country"] },
+    { text = "bnetaccount lock ip", command = ".bnetaccount lock ip", tooltip = TrinityAdmin_Translations["bnetaccount lock ip"] },
+    { text = "bnetaccount password", command = ".bnetaccount password", tooltip = TrinityAdmin_Translations["bnetaccount password"] },
+    { text = "bnetaccount set", command = ".bnetaccount set", tooltip = TrinityAdmin_Translations["bnetaccount set"] },
+    { text = "bnetaccount set password", command = ".bnetaccount set password", tooltip = TrinityAdmin_Translations["bnetaccount set password"] },
+    { text = "bnetaccount unlink", command = ".bnetaccount unlink", tooltip = TrinityAdmin_Translations["bnetaccount unlink"] },
+}
+if not bnetDropdown.selectedID then bnetDropdown.selectedID = 1 end
+UIDropDownMenu_Initialize(bnetDropdown, function(dropdownFrame, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    for i, option in ipairs(bnetOptions) do
+        info.text = option.text
+        info.value = option.command
+        info.checked = (i == bnetDropdown.selectedID)
+        info.func = function(buttonFrame)
+            bnetDropdown.selectedID = i
+            UIDropDownMenu_SetSelectedID(bnetDropdown, i)
+            UIDropDownMenu_SetText(bnetDropdown, option.text)
+            bnetDropdown.selectedOption = option
+			print("DEBUG: Option sélectionnée: " .. option.text)       -- Affiche l'option sélectionnée pour débug
+        end
+        UIDropDownMenu_AddButton(info, level)
+    end
+end)
+UIDropDownMenu_SetSelectedID(bnetDropdown, bnetDropdown.selectedID)
+UIDropDownMenu_SetText(bnetDropdown, bnetOptions[bnetDropdown.selectedID].text)
+bnetDropdown.selectedOption = bnetOptions[bnetDropdown.selectedID]
+
+-- Maintenant, créez le champ de saisie qui utilise le menu déroulant
+local bnetEdit = CreateFrame("EditBox", "TrinityAdminBnetEditBox", account, "InputBoxTemplate")
+bnetEdit:SetSize(150, 22)
+bnetEdit:SetPoint("TOPLEFT", bnetLabel, "BOTTOMLEFT", 0, -5)
+bnetEdit:SetAutoFocus(false)
+bnetEdit:SetText("Enter Value")
+bnetEdit:SetScript("OnEnter", function(self)
+    local opt = bnetDropdown.selectedOption or bnetOptions[1]
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText(opt.tooltip, 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+bnetEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
+bnetEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
+
+-- Bouton "Execute" pour Bnet Account Manage
+local btnBnetGo = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+btnBnetGo:SetSize(60, 22)
+btnBnetGo:SetText("Execute")
+btnBnetGo:SetPoint("LEFT", bnetDropdown, "LEFT", 0, -30)
+btnBnetGo:SetScript("OnClick", function()
+    local inputValue = bnetEdit:GetText()
+    local option = bnetDropdown.selectedOption
+    local command = option.command
+    local finalCommand = command .. " " .. inputValue
+    if inputValue == "" or inputValue == "Enter Value" then
+        local targetName = UnitName("target")
+        if targetName then
+            finalCommand = command .. " " .. targetName
+        else
+            print("Veuillez saisir une valeur ou cibler un joueur.")
+			print("Debug: Commande envoyée en SAY: " .. finalCommand) -- Pour debug
+            return
+        end
+    end
+    print("Debug: Commande envoyée en SAY: " .. finalCommand) -- Pour debug
+    SendChatMessage(finalCommand, "SAY")
+end)
+btnBnetGo:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    local opt = bnetDropdown.selectedOption or bnetOptions[1]
+    GameTooltip:SetText(opt.tooltip, 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnBnetGo:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+end)
 
     -- Bouton "Back"
     local btnBack = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
