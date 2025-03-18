@@ -13,8 +13,10 @@ Libs/AceAddon-3.0.lua
 Libs/AceConsole-3.0.lua
 Libs/AceEvent-3.0.lua
 
+
 # TranslationsData
 TrinityAdmin_Translations.lua
+GameObjectsData.lua
 # TeleportData
 TeleportTable.lua
 # Interface XML
