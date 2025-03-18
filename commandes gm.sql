@@ -209,23 +209,6 @@
 	('go xyz', 'Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.'),
 	('go zonexy', 'Syntax: .go zonexy <x> <y> [<zone>]\nTeleport yourself to the given local (x,y) position in the specified (or current) zone.'),
 	
-	-- Panneau GameobjetcsandGo
-	('gobject', 'Syntax: .gobject $subcommand\nType .gobject to see the list of possible subcommands or .help gobject $subcommand to see info on subcommands'),
-	('gobject activate', 'Syntax: .gobject activate #guid\r\n\r\nActivates an object like a door or a button.'),
-	('gobject add', 'Syntax: .gobject add #id <spawntimeSecs>\r\n\r\nAdd a game object from game object templates to the world at your current location using the #id.\r\nspawntimesecs sets the spawntime, it is optional.\r\n\r\nNote: this is a copy of .gameobject.'),
-	('gobject add temp', 'Adds a temporary gameobject that is not saved to DB.'),
-	('gobject delete', 'Syntax: .gobject delete #go_guid\r\nDelete gameobject with guid #go_guid.'),
-	('gobject despawngroup', 'Syntax: .gobject despawngroup $groupId [removerespawntime]'),
-	('gobject info', 'Syntax: .gobject info [$entry|$link | guid [$guid|$link]\r \r Query Gameobject information for given gameobject entry, guid or link.\rFor example .gobject info 36\ror .gobject info guid 100'),
-	('gobject move', 'Syntax: .gobject move #goguid [#x #y #z]\r\n\r\nMove gameobject #goguid to character coordinates (or to (#x,#y,#z) coordinates if its provide).'),
-	('gobject near', 'Syntax: .gobject near  [#distance]\r\n\r\nOutput gameobjects at distance #distance from player. Output gameobject guids and coordinates sorted by distance from character. If #distance not provided use 10 as default value.'),
-	('gobject set', 'Syntax: '),
-	('gobject set phase', 'Syntax: .gobject set phase #guid #phasemask\r\n\r\nGameobject with DB guid #guid phasemask changed to #phasemask with related world vision update for players. Gameobject state saved to DB and persistent.'),
-	('gobject set state', 'Syntax: '),
-	('gobject spawngroup', 'Syntax: .gobject spawngroup $groupId [ignorerespawn] [force]'),
-	('gobject target', 'Syntax: .gobject target [#go_id|#go_name_part]\r\n\r\nLocate and show position nearest gameobject. If #go_id or #go_name_part provide then locate and show position of nearest gameobject with gameobject template id #go_id or name included #go_name_part as part.'),
-	('gobject turn', 'Syntax: .gobject turn [guid|link] [oz [oy [ox]]]\r\n\r\nSet the orientation of the gameobject to player\'s orientation or the given orientation.'),
-	
 	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
 	
 	('group', 'Syntax: .group $subcommand\nType .group to see the list of possible subcommands or .help group $subcommand to see info on subcommands'),

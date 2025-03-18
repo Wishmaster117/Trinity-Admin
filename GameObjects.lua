@@ -218,119 +218,190 @@ local specialOptions = {
         GameTooltip:Hide()
     end)
 	
--- Supposons que GameObjectsData soit déjà chargé et accessible
+    ------------------------------------------------------------
+    -- Variables de pagination
+    ------------------------------------------------------------
+    local entriesPerPage = 100
+    local currentPage = 1
+    local currentOptions = {}  -- la liste courante (filtrée ou non)
 
--- Création du label pour la nouvelle section
-local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
--- Ici, remplacez "someAnchor" par l'élément auquel vous voulez l'ancrer (par exemple, le titre existant)
-advancedLabel:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -200)
-advancedLabel:SetText("Game Objects Tools Advanced")
-
--- Création d'un EditBox pour filtrer le dropdown
-local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
-filterEditBox:SetSize(150, 22)
--- Ancrez-le sous le label advancedLabel avec un léger offset vertical
-filterEditBox:SetPoint("TOPLEFT", advancedLabel, "BOTTOMLEFT", 0, -10)
-filterEditBox:SetText("Search...")
-
-filterEditBox:SetScript("OnEnterPressed", function(self)
-    self:ClearFocus()
-    local searchText = self:GetText():lower()
-    local filteredOptions = {}
-    for _, option in ipairs(GameObjectsData) do
-        if option.name:lower():find(searchText) then
-            table.insert(filteredOptions, option)
-        end
-    end
-    -- Réinitialiser le dropdown avec la liste filtrée
-    UIDropDownMenu_Initialize(dataDropdown, function(dropdownFrame, level, menuList)
-        local info = UIDropDownMenu_CreateInfo()
-        for i, option in ipairs(filteredOptions) do
-            info.text = option.name
-            info.value = option.entry  -- stocke l'entry
-            info.checked = (i == dataDropdown.selectedID)
-            info.func = function(buttonFrame)
-                dataDropdown.selectedID = i
-                UIDropDownMenu_SetSelectedID(dataDropdown, i)
-                UIDropDownMenu_SetText(dataDropdown, option.name)
-                dataDropdown.selectedOption = option
-            end
-            UIDropDownMenu_AddButton(info, level)
-        end
-    end)
-    if #filteredOptions > 0 then
-        UIDropDownMenu_SetSelectedID(dataDropdown, 1)
-        UIDropDownMenu_SetText(dataDropdown, filteredOptions[1].name)
-        dataDropdown.selectedOption = filteredOptions[1]
-    else
-        UIDropDownMenu_SetText(dataDropdown, "No match")
-        dataDropdown.selectedOption = nil
-    end
-end)
-
--- Création de la dropdown alimentée par GameObjectsData
-local dataDropdown = CreateFrame("Frame", "TrinityAdminGODropdown", panel, "TrinityAdminDropdownTemplate")
-dataDropdown:SetPoint("TOPLEFT", filterEditBox, "BOTTOMLEFT", 0, -5)
-UIDropDownMenu_SetWidth(dataDropdown, 220)
-UIDropDownMenu_SetButtonWidth(dataDropdown, 240)
--- Initialiser l'ID sélectionné s'il n'est pas déjà défini
-if not dataDropdown.selectedID then dataDropdown.selectedID = 1 end
-
-UIDropDownMenu_Initialize(dataDropdown, function(dropdownFrame, level, menuList)
-    local info = UIDropDownMenu_CreateInfo()
-    for i, row in ipairs(GameObjectsData) do
-        info.text = row.name
-        info.value = row.entry  -- on stocke l'entry ici
-        info.checked = (i == dataDropdown.selectedID)
-        info.func = function(buttonFrame)
-            dataDropdown.selectedID = i
-            UIDropDownMenu_SetSelectedID(dataDropdown, i)
-            UIDropDownMenu_SetText(dataDropdown, row.name)
-            dataDropdown.selectedOption = row
-        end
-        UIDropDownMenu_AddButton(info, level)
-    end
-end)
-UIDropDownMenu_SetSelectedID(dataDropdown, dataDropdown.selectedID)
-UIDropDownMenu_SetText(dataDropdown, GameObjectsData[dataDropdown.selectedID].name)
-dataDropdown.selectedOption = GameObjectsData[dataDropdown.selectedID]
-
--- Création du bouton "Add" à côté de la dropdown
-local btnAdd = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-btnAdd:SetSize(80, 22)
-btnAdd:SetText("Add")
-btnAdd:SetPoint("LEFT", dataDropdown, "RIGHT", 10, 0)
-btnAdd:SetScript("OnClick", function()
-    local selected = dataDropdown.selectedOption
-    if selected then
-        local command = ".gobject add " .. selected.entry
-        SendChatMessage(command, "SAY")
-        print("Commande envoyée: " .. command)  -- Pour débug
-    else
-        print("Aucune option sélectionnée.")
-    end
-end)
-btnAdd:SetScript("OnEnter", function(self)
-    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    if dataDropdown.selectedOption then
-        GameTooltip:SetText("Envoie la commande: .gobject add " .. dataDropdown.selectedOption.entry, 1,1,1,1,true)
-    else
-        GameTooltip:SetText("Sélectionnez un gameobject.", 1,1,1,1,true)
-    end
-    GameTooltip:Show()
-end)
-btnAdd:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
--- Bouton back
-    local btnBack = CreateFrame("Button", "TrinityAdminTeleportBackButton", panel, "UIPanelButtonTemplate")
-    btnBack:SetPoint("BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
-    btnBack:SetHeight(22)
-    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+    ------------------------------------------------------------
+    -- Bouton "Retour" (pour revenir au menu principal)
+    ------------------------------------------------------------
+    local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnBack:SetSize(80, 22)
+    btnBack:SetText("Retour")
+    btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()
     end)
-	
+
+    ------------------------------------------------------------
+    -- Label "Game Objects Tools Advanced"
+    ------------------------------------------------------------
+    local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
+    advancedLabel:SetText("Game Objects Tools Advanced")
+
+    ------------------------------------------------------------
+    -- Champ de saisie pour filtrer la liste
+    ------------------------------------------------------------
+    local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
+    filterEditBox:SetSize(150, 22)
+    filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
+    filterEditBox:SetText("Search...")
+
+    ------------------------------------------------------------
+    -- ScrollFrame + scrollChild
+    ------------------------------------------------------------
+    local scrollFrame = CreateFrame("ScrollFrame", "TrinityAdminGOScrollFrame", panel, "UIPanelScrollFrameTemplate")
+    scrollFrame:SetSize(220, 200)
+    -- Ancrage : en dessous du filterEditBox, en haut à droite du panel
+    scrollFrame:SetPoint("TOPRIGHT", filterEditBox, "BOTTOMRIGHT", 5, -5)
+    scrollFrame:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -30, 50)
+
+    local scrollChild = CreateFrame("Frame", "TrinityAdminGOScrollChild", scrollFrame)
+    scrollChild:SetSize(220, 400) -- hauteur ajustée dynamiquement
+    scrollFrame:SetScrollChild(scrollChild)
+
+    ------------------------------------------------------------
+    -- Boutons de pagination : Précédent, Suivant, et label Page
+    ------------------------------------------------------------
+    local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnPrev:SetSize(80, 22)
+    btnPrev:SetText("Preview")
+    btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
+
+    local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnNext:SetSize(80, 22)
+    btnNext:SetText("Next")
+    btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
+
+    local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnPage:SetSize(90, 22)
+    btnPage:SetPoint("BOTTOM", panel, "BOTTOM", 200, 10)
+    btnPage:SetText("Page 1 / 1")
+
+    ------------------------------------------------------------
+    -- Fonction PopulateGOScroll(options)
+    ------------------------------------------------------------
+    local function PopulateGOScroll(options)
+        -- On mémorise la liste courante
+        currentOptions = options
+
+        -- Calcule nombre total d'entrées et de pages
+        local totalEntries = #options
+        local totalPages = math.ceil(totalEntries / entriesPerPage)
+        if totalPages < 1 then totalPages = 1 end
+
+        -- Ajuste currentPage si hors bornes
+        if currentPage > totalPages then currentPage = totalPages end
+        if currentPage < 1 then currentPage = 1 end
+
+        -- Efface d'éventuels anciens boutons
+        if scrollChild.buttons then
+            for _, btn in ipairs(scrollChild.buttons) do
+                btn:Hide()
+            end
+        else
+            scrollChild.buttons = {}
+        end
+
+        -- Indices de début/fin pour la page courante
+        local startIdx = (currentPage - 1) * entriesPerPage + 1
+        local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
+
+        -- Création des boutons
+        local lastButton = nil
+        for i = startIdx, endIdx do
+            local option = options[i]
+            local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+            btn:SetSize(200, 20)
+
+            if not lastButton then
+                btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
+            else
+                btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
+            end
+
+            btn:SetText(option.name or ("Item "..i))
+            btn:SetScript("OnClick", function()
+                print("Option cliquée :", option.name, "Entry:", option.entry)
+                SendChatMessage(".gobject add " .. option.entry, "SAY")
+            end)
+
+            lastButton = btn
+            table.insert(scrollChild.buttons, btn)
+        end
+
+        -- Ajuster la hauteur du scrollChild
+        local visibleCount = endIdx - startIdx + 1
+        local contentHeight = (visibleCount * 25) + 10
+        scrollChild:SetHeight(contentHeight)
+
+        -- Mettre à jour le label de page
+        btnPage:SetText(currentPage.." / "..totalPages)
+
+        -- Activer/désactiver Précédent/Suivant
+        btnPrev:SetEnabled(currentPage > 1)
+        btnNext:SetEnabled(currentPage < totalPages)
+    end
+
+    ------------------------------------------------------------
+    -- Scripts de btnPrev / btnNext
+    ------------------------------------------------------------
+    btnPrev:SetScript("OnClick", function()
+        if currentPage > 1 then
+            currentPage = currentPage - 1
+            PopulateGOScroll(currentOptions)
+        end
+    end)
+
+    btnNext:SetScript("OnClick", function()
+        local totalPages = math.ceil(#currentOptions / entriesPerPage)
+        if currentPage < totalPages then
+            currentPage = currentPage + 1
+            PopulateGOScroll(currentOptions)
+        end
+    end)
+
+    ------------------------------------------------------------
+    -- Remplissage initial (sans filtre)
+    ------------------------------------------------------------
+    local defaultOptions = {}
+    -- Chargez *toutes* vos entrées, par exemple
+    for i = 1, #GameObjectsData do
+        table.insert(defaultOptions, GameObjectsData[i])
+    end
+
+    currentPage = 1
+    PopulateGOScroll(defaultOptions)
+
+    ------------------------------------------------------------
+    -- Script du filtre (EnterPressed)
+    ------------------------------------------------------------
+    filterEditBox:SetScript("OnEnterPressed", function(self)
+        self:ClearFocus()
+        local searchText = self:GetText():lower()
+        if #searchText < 3 then
+            print("Veuillez entrer au moins 3 caractères pour la recherche.")
+            return
+        end
+
+        local filteredOptions = {}
+        for _, option in ipairs(GameObjectsData) do
+            if option.name and option.name:lower():find(searchText) then
+                table.insert(filteredOptions, option)
+            end
+        end
+
+        currentPage = 1
+        PopulateGOScroll(filteredOptions)
+    end)
+
+    ------------------------------------------------------------
+    -- Enfin, on mémorise ce panel dans self.panel
+    ------------------------------------------------------------
     self.panel = panel
 end
