@@ -202,6 +202,24 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<!-- Bouton AdvancedItems -->
+			<Button name="$parentAdvancedItemsButton" inherits="UIPanelButtonTemplate" text="Advanced Items">
+				<Size>
+					<AbsDimension x="120" y="30"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentAddLearnButton" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="10" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TrinityAdmin_ShowAdvancedItemsPanel()
+					</OnClick>
+				</Scripts>
+			</Button>
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

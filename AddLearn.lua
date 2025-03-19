@@ -64,7 +64,7 @@ function AddLearn:CreateAddLearnPanel()
         },
         {
             text = "additem set",
-            command = ".additemset",
+            command = ".additem set",
             tooltip = "Syntax: .additemset #itemsetid #bonusListIDs\n\nAdds items from an item set. (#bonusListIDs is optional)",
             defaults = { "ItemSet ID", "Don't use", "BonusList id's separated by ;" }
         },
@@ -82,8 +82,8 @@ function AddLearn:CreateAddLearnPanel()
         },
         {
             text = "lookup item set",
-            command = ".lookup itemset",
-            tooltip = "Syntax: .lookup itemset $itemname\n\nLooks up an item set by name (utilisez votre langue locale).",
+            command = ".lookup item set",
+            tooltip = "Syntax: .lookup itemset $itemsetname\n\nLooks up an item set by name (utilisez votre langue locale).",
             defaults = { "Item Name", "", "" }
         },
     }
@@ -255,18 +255,268 @@ function AddLearn:CreateAddLearnPanel()
         end
     end)
 	
-    --------------------------------------------------------------------------------
-    -- Bouton "Back"
-    --------------------------------------------------------------------------------
-    local btnBack = CreateFrame("Button", "TrinityAdminAddLearnBackButton", panel, "UIPanelButtonTemplate")
-    btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
-    btnBack:SetHeight(22)
-    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+    ------------------------------------------------------------
+    -- Items Advanced ADD
+    ------------------------------------------------------------	
+    ------------------------------------------------------------
+    -- Variables de pagination
+    ------------------------------------------------------------
+    local entriesPerPage = 100
+    local currentPage = 1
+    local currentOptions = {}  -- la liste courante (filtrée ou non)
+
+    ------------------------------------------------------------
+    -- Bouton "Retour" (pour revenir au menu principal)
+    ------------------------------------------------------------
+    local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnBack:SetSize(80, 22)
+    btnBack:SetText("Retour")
+    btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()
     end)
 
+    ------------------------------------------------------------
+    -- Label "Game Objects Tools Advanced"
+    ------------------------------------------------------------
+    local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
+    advancedLabel:SetText("Item Set Advanced Add")
+
+    ------------------------------------------------------------
+    -- Champ de saisie pour filtrer la liste
+    ------------------------------------------------------------
+    local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
+    filterEditBox:SetSize(150, 22)
+    filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
+    filterEditBox:SetText("Search...")
+
+    ------------------------------------------------------------
+    -- ScrollFrame + scrollChild
+    ------------------------------------------------------------
+    local scrollFrame = CreateFrame("ScrollFrame", "TrinityAdminGOScrollFrame", panel, "UIPanelScrollFrameTemplate")
+    scrollFrame:SetSize(220, 200)
+    -- Ancrage : en dessous du filterEditBox, en haut à droite du panel
+    scrollFrame:SetPoint("TOPRIGHT", filterEditBox, "BOTTOMRIGHT", 5, -5)
+    scrollFrame:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -30, 50)
+
+    local scrollChild = CreateFrame("Frame", "TrinityAdminGOScrollChild", scrollFrame)
+    scrollChild:SetSize(220, 400) -- hauteur ajustée dynamiquement
+    scrollFrame:SetScrollChild(scrollChild)
+
+    ------------------------------------------------------------
+    -- Boutons de pagination : Précédent, Suivant, et label Page
+    ------------------------------------------------------------
+    local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnPrev:SetSize(80, 22)
+    btnPrev:SetText("Preview")
+    btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
+
+    local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnNext:SetSize(80, 22)
+    btnNext:SetText("Next")
+    btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
+
+    local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnPage:SetSize(90, 22)
+    btnPage:SetPoint("BOTTOM", panel, "BOTTOM", 200, 10)
+    btnPage:SetText("Page 1 / 1")
+
+    ------------------------------------------------------------
+    -- Fonction PopulateGOScroll(options)
+    ------------------------------------------------------------
+    local function PopulateGOScroll(options)
+        -- On mémorise la liste courante
+        currentOptions = options
+
+        -- Calcule nombre total d'entrées et de pages
+        local totalEntries = #options
+        local totalPages = math.ceil(totalEntries / entriesPerPage)
+        if totalPages < 1 then totalPages = 1 end
+
+        -- Ajuste currentPage si hors bornes
+        if currentPage > totalPages then currentPage = totalPages end
+        if currentPage < 1 then currentPage = 1 end
+
+        -- Efface d'éventuels anciens boutons
+        if scrollChild.buttons then
+            for _, btn in ipairs(scrollChild.buttons) do
+                btn:Hide()
+            end
+        else
+            scrollChild.buttons = {}
+        end
+
+        -- Indices de début/fin pour la page courante
+        local startIdx = (currentPage - 1) * entriesPerPage + 1
+        local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
+
+        -- Création des boutons
+		local maxTextLength = 20 -- ?? Changez ce nombre pour ajuster la taille max
+		local lastButton = nil
+		for i = startIdx, endIdx do
+			local option = options[i]
+			local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+			btn:SetSize(200, 20)
+		
+			if not lastButton then
+				btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
+			else
+				btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
+			end
+		
+			-- Tronquer le texte s'il est trop long
+			local fullText = option.name or ("Item "..i)
+			local truncatedText = fullText
+			if #fullText > maxTextLength then
+				truncatedText = fullText:sub(1, maxTextLength) .. "..."
+			end
+		
+			btn:SetText(truncatedText)
+		
+			-- Ajouter un tooltip pour afficher le texte complet au survol
+			btn:SetScript("OnEnter", function(self)
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+				GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
+				GameTooltip:Show()
+			end)
+			btn:SetScript("OnLeave", function(self)
+				GameTooltip:Hide()
+			end)
+					
+			btn:SetScript("OnLeave", function(self)
+				GameTooltip:Hide()
+				if self.wowheadTooltip then
+					self.wowheadTooltip:Hide()
+				end
+			end)
+
+			btn:SetScript("OnClick", function()
+				print("Option cliquée :", fullText, "Entry:", option.entry)
+				SendChatMessage(".additem set " .. option.entry, "SAY")
+			end)
+		
+			lastButton = btn
+			table.insert(scrollChild.buttons, btn)
+		end
+
+        -- Ajuster la hauteur du scrollChild
+        local visibleCount = endIdx - startIdx + 1
+        local contentHeight = (visibleCount * 25) + 10
+        scrollChild:SetHeight(contentHeight)
+
+        -- Mettre à jour le label de page
+        btnPage:SetText(currentPage.." / "..totalPages)
+
+        -- Activer/désactiver Précédent/Suivant
+        btnPrev:SetEnabled(currentPage > 1)
+        btnNext:SetEnabled(currentPage < totalPages)
+    end
+
+    ------------------------------------------------------------
+    -- Scripts de btnPrev / btnNext
+    ------------------------------------------------------------
+    btnPrev:SetScript("OnClick", function()
+        if currentPage > 1 then
+            currentPage = currentPage - 1
+            PopulateGOScroll(currentOptions)
+        end
+    end)
+
+    btnNext:SetScript("OnClick", function()
+        local totalPages = math.ceil(#currentOptions / entriesPerPage)
+        if currentPage < totalPages then
+            currentPage = currentPage + 1
+            PopulateGOScroll(currentOptions)
+        end
+    end)
+
+    ------------------------------------------------------------
+    -- Remplissage initial (sans filtre)
+    ------------------------------------------------------------
+    local defaultOptions = {}
+    -- Chargez *toutes* vos entrées, par exemple
+    for i = 1, #ItemSetData do
+        table.insert(defaultOptions, ItemSetData[i])
+    end
+
+    currentPage = 1
+    PopulateGOScroll(defaultOptions)
+	
+	-- Recheche avec text Nothing found
+	filterEditBox:SetScript("OnEnterPressed", function(self)
+		self:ClearFocus()
+		local searchText = self:GetText():lower()
+	
+		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
+		if #searchText < 3 then
+			print("Veuillez entrer au moins 3 caractères pour la recherche.")
+			return
+		end
+	
+		local filteredOptions = {}
+		for _, option in ipairs(ItemSetData) do
+			-- Vérifie si le texte est dans le "name" ou correspond à l'"entry"
+			if (option.name and option.name:lower():find(searchText)) or
+			(tostring(option.entry) == searchText) then
+				table.insert(filteredOptions, option)
+			end
+		end
+	
+		-- Si aucun résultat n'est trouvé, afficher "Nothing found"
+		if #filteredOptions == 0 then
+			-- Supprime les anciens boutons si présents
+			if scrollChild.buttons then
+				for _, btn in ipairs(scrollChild.buttons) do
+					btn:Hide()
+				end
+			end
+			
+			-- Si le texte "Nothing found" n'existe pas, le créer
+			if not scrollChild.noResultText then
+				scrollChild.noResultText = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+				scrollChild.noResultText:SetPoint("TOP", scrollChild, "TOP", 0, -10)
+				scrollChild.noResultText:SetText("|cffff0000Nothing found|r") -- Texte en rouge
+			end
+			scrollChild.noResultText:Show()
+	
+			-- Ajuste la hauteur pour éviter l'affichage de contenu invisible
+			scrollChild:SetHeight(50)
+	
+		else
+			-- Cache le texte "Nothing found" s'il était affiché
+			if scrollChild.noResultText then
+				scrollChild.noResultText:Hide()
+			end
+			
+			-- Charge les résultats normalement
+			currentPage = 1
+			PopulateGOScroll(filteredOptions)
+		end
+	end)
+
+	------------------------------------------------------------
+	-- Bouton "Reset" pour revenir à la liste complète
+	------------------------------------------------------------
+	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnReset:SetSize(80, 22)
+	btnReset:SetText("Reset")
+	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
+	btnReset:SetScript("OnClick", function()
+		filterEditBox:SetText("")  -- Efface le champ de recherche
+		currentPage = 1  -- Revient à la première page
+		PopulateGOScroll(ItemSetData)  -- Recharge toute la liste
+	
+		-- Cacher le message "Nothing found" s'il est affiché
+		if scrollChild.noResultText then
+			scrollChild.noResultText:Hide()
+		end
+	end)
+
+    ------------------------------------------------------------
+    -- Enfin, on mémorise ce panel dans self.panel
+    ------------------------------------------------------------
+	
     self.panel = panel
 end

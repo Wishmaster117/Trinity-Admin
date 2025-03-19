@@ -38,6 +38,8 @@ Libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
 # TranslationsData
 TrinityAdmin_Translations.lua
 GameObjectsData.lua
+ItemSetData.lua
+ItemsData.lua
 # TeleportData
 TeleportTable.lua
 # Interface XML
@@ -53,3 +55,4 @@ DatabasePanel.lua
 ServerAdmin.lua
 GameObjects.lua
 AddLearn.lua
+AdvancedItems.lua

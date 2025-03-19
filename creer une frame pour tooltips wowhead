@@ -1,4 +1,4 @@
-			-- Créer une frame pour afficher le tooltip Wowhead
+-- Créer une frame pour afficher le tooltip Wowhead
 local wowheadFrame = CreateFrame("Frame", "WowheadTooltipFrame", UIParent)
 wowheadFrame:SetSize(300, 150) -- Taille du tooltip
 wowheadFrame:SetFrameStrata("TOOLTIP")

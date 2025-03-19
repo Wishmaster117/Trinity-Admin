@@ -35,6 +35,7 @@ local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
 local ServerAdminModule = TrinityAdmin:NewModule("ServerAdmin") -- Module gestion serveur
 local GameObjectsModule = TrinityAdmin:NewModule("GameObjects") -- Module gestion des objets
 local AddLearnModule = TrinityAdmin:NewModule("AddLearn") -- Module pour ajouter et apprendre
+local AdvancedItemsModule = TrinityAdmin:NewModule("AdvancedItems") -- Advanced items
 
 ------------------------------------------------------------
 -- Fonctions globales appelées depuis l'interface XML
@@ -73,6 +74,10 @@ end
 
 function TrinityAdmin_ShowAddLearnPanel()
     AddLearnModule:ShowAddLearnPanel()
+end
+
+function TrinityAdmin_ShowAdvancedItemsPanel()
+    AdvancedItemsModule:ShowAdvancedItemsPanel()
 end
 
 ------------------------------------------------------------
@@ -146,6 +151,8 @@ function TrinityAdmin:ShowMainMenu()
 	if ServerAdminModule.panel then ServerAdminModule.panel:Hide() end
     if GameObjectsModule.panel then GameObjectsModule.panel:Hide() end
     if AddLearnModule.panel then AddLearnModule.panel:Hide() end
+	if AdvancedItemsModule.panel then AdvancedItemsModule.panel:Hide() end
+	
 
     TrinityAdminMainFrameTeleportButton:Show()
     TrinityAdminMainFrameGMButton:Show()
@@ -156,6 +163,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameServerAdminButton:Show()
     TrinityAdminMainFrameGameObjectsButton:Show()
     TrinityAdminMainFrameAddLearnButton:Show()
+	TrinityAdminMainFrameAdvancedItemsButton:Show()
 
     TrinityAdminMainFrame:Show()
 end
@@ -173,7 +181,8 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameServerAdminButton:Hide()
     TrinityAdminMainFrameGameObjectsButton:Hide()
     TrinityAdminMainFrameAddLearnButton:Hide()
-
+	TrinityAdminMainFrameAdvancedItemsButton:Hide()
+	
     TrinityAdminMainFrame:Show()
 end
 
