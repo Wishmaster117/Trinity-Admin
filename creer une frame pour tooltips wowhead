@@ -1,0 +1,69 @@
+			-- Créer une frame pour afficher le tooltip Wowhead
+local wowheadFrame = CreateFrame("Frame", "WowheadTooltipFrame", UIParent)
+wowheadFrame:SetSize(300, 150) -- Taille du tooltip
+wowheadFrame:SetFrameStrata("TOOLTIP")
+wowheadFrame:SetPoint("CENTER") -- Position initiale
+wowheadFrame:Hide()
+
+-- Créer un fond pour le tooltip
+local bg = wowheadFrame:CreateTexture(nil, "BACKGROUND")
+bg:SetAllPoints(true)
+bg:SetColorTexture(0, 0, 0, 0.8) -- Fond noir semi-transparent
+
+-- Ajouter un titre (nom de l'objet)
+local wowheadTitle = wowheadFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+wowheadTitle:SetPoint("TOP", wowheadFrame, "TOP", 0, -10)
+wowheadTitle:SetText("Objet inconnu")
+
+-- Ajouter une description
+local wowheadDescription = wowheadFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+wowheadDescription:SetPoint("TOPLEFT", wowheadFrame, "TOPLEFT", 10, -40)
+wowheadDescription:SetSize(280, 100)
+wowheadDescription:SetText("Chargement des données Wowhead...")
+
+-- Bouton pour fermer le tooltip
+local closeButton = CreateFrame("Button", nil, wowheadFrame, "UIPanelCloseButton")
+closeButton:SetPoint("TOPRIGHT", wowheadFrame, "TOPRIGHT", -5, -5)
+closeButton:SetScript("OnClick", function() wowheadFrame:Hide() end)
+
+			
+btn:SetScript("OnEnter", function(self)
+    -- Générer le lien Wowhead
+    local wowheadLink = "https://www.wowhead.com/object=" .. option.entry
+
+    -- Afficher la frame Wowhead
+    wowheadFrame:ClearAllPoints()
+    wowheadFrame:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -5) -- S'affiche sous le bouton
+    wowheadTitle:SetText(option.name or "Objet inconnu")
+    wowheadDescription:SetText("Chargement des données Wowhead...")
+
+    -- Permet de copier-coller le lien Wowhead en jeu
+    wowheadFrame:SetScript("OnMouseUp", function()
+        ChatFrame1EditBox:Show()
+        ChatFrame1EditBox:SetText(wowheadLink)
+        ChatFrame1EditBox:HighlightText()
+    end)
+
+    wowheadFrame:Show()
+end)
+
+wowheadFrame:SetScript("OnLeave", function(self)
+    -- Délai avant de cacher le tooltip
+    C_Timer.After(0.01, function()
+        if not MouseIsOver(self) then
+            self:Hide()
+        end
+    end)
+end)
+
+local openWowheadButton = CreateFrame("Button", nil, wowheadFrame, "UIPanelButtonTemplate")
+openWowheadButton:SetSize(120, 22)
+openWowheadButton:SetPoint("BOTTOM", wowheadFrame, "BOTTOM", 0, 10)
+openWowheadButton:SetText("Voir sur Wowhead")
+
+openWowheadButton:SetScript("OnClick", function()
+    local wowheadLink = "https://www.wowhead.com/object=" .. option.entry
+    print("|cff33ff99[Wowhead] Ouvrir:|r " .. wowheadLink)
+end)			
+			
+	-- -------------------------------------------------------------- --

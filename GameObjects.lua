@@ -217,7 +217,10 @@ local specialOptions = {
     advButton:SetScript("OnLeave", function(self)
         GameTooltip:Hide()
     end)
-	
+
+    ------------------------------------------------------------
+    -- GameObject Advanced ADD
+    ------------------------------------------------------------	
     ------------------------------------------------------------
     -- Variables de pagination
     ------------------------------------------------------------
@@ -242,7 +245,7 @@ local specialOptions = {
     ------------------------------------------------------------
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
-    advancedLabel:SetText("Game Objects Tools Advanced")
+    advancedLabel:SetText("Game Objects Advanced Add")
 
     ------------------------------------------------------------
     -- Champ de saisie pour filtrer la liste
@@ -313,27 +316,53 @@ local specialOptions = {
         local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
 
         -- Création des boutons
-        local lastButton = nil
-        for i = startIdx, endIdx do
-            local option = options[i]
-            local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
-            btn:SetSize(200, 20)
+		local maxTextLength = 20 -- ?? Changez ce nombre pour ajuster la taille max
+		local lastButton = nil
+		for i = startIdx, endIdx do
+			local option = options[i]
+			local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+			btn:SetSize(200, 20)
+		
+			if not lastButton then
+				btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
+			else
+				btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
+			end
+		
+			-- Tronquer le texte s'il est trop long
+			local fullText = option.name or ("Item "..i)
+			local truncatedText = fullText
+			if #fullText > maxTextLength then
+				truncatedText = fullText:sub(1, maxTextLength) .. "..."
+			end
+		
+			btn:SetText(truncatedText)
+		
+			-- Ajouter un tooltip pour afficher le texte complet au survol
+			btn:SetScript("OnEnter", function(self)
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+				GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
+				GameTooltip:Show()
+			end)
+			btn:SetScript("OnLeave", function(self)
+				GameTooltip:Hide()
+			end)
+					
+			btn:SetScript("OnLeave", function(self)
+				GameTooltip:Hide()
+				if self.wowheadTooltip then
+					self.wowheadTooltip:Hide()
+				end
+			end)
 
-            if not lastButton then
-                btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
-            else
-                btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
-            end
-
-            btn:SetText(option.name or ("Item "..i))
-            btn:SetScript("OnClick", function()
-                print("Option cliquée :", option.name, "Entry:", option.entry)
-                SendChatMessage(".gobject add " .. option.entry, "SAY")
-            end)
-
-            lastButton = btn
-            table.insert(scrollChild.buttons, btn)
-        end
+			btn:SetScript("OnClick", function()
+				print("Option cliquée :", fullText, "Entry:", option.entry)
+				SendChatMessage(".gobject add " .. option.entry, "SAY")
+			end)
+		
+			lastButton = btn
+			table.insert(scrollChild.buttons, btn)
+		end
 
         -- Ajuster la hauteur du scrollChild
         local visibleCount = endIdx - startIdx + 1
@@ -381,24 +410,119 @@ local specialOptions = {
     ------------------------------------------------------------
     -- Script du filtre (EnterPressed)
     ------------------------------------------------------------
-    filterEditBox:SetScript("OnEnterPressed", function(self)
-        self:ClearFocus()
-        local searchText = self:GetText():lower()
-        if #searchText < 3 then
-            print("Veuillez entrer au moins 3 caractères pour la recherche.")
-            return
-        end
+	-- Recherche uniquement avec name
+    -- filterEditBox:SetScript("OnEnterPressed", function(self)
+    --     self:ClearFocus()
+    --     local searchText = self:GetText():lower()
+    --     if #searchText < 3 then
+    --         print("Veuillez entrer au moins 3 caractères pour la recherche.")
+    --         return
+    --     end
+	-- 
+    --     local filteredOptions = {}
+    --     for _, option in ipairs(GameObjectsData) do
+    --         if option.name and option.name:lower():find(searchText) then
+    --             table.insert(filteredOptions, option)
+    --         end
+    --     end
+	-- 
+    --     currentPage = 1
+    --     PopulateGOScroll(filteredOptions)
+    -- end)
+	
+	-- Recheche avec name ou entry
+	-- filterEditBox:SetScript("OnEnterPressed", function(self)
+	-- 	self:ClearFocus()
+	-- 	local searchText = self:GetText():lower()
+	-- 
+	-- 	-- Vérifie que l'utilisateur a saisi au moins 3 caractères
+	-- 	if #searchText < 3 then
+	-- 		print("Veuillez entrer au moins 3 caractères pour la recherche.")
+	-- 		return
+	-- 	end
+	-- 
+	-- 	local filteredOptions = {}
+	-- 	for _, option in ipairs(GameObjectsData) do
+	-- 		-- Vérifie si le texte est dans le "name" ou correspond à l'"entry"
+	-- 		if (option.name and option.name:lower():find(searchText)) or
+	-- 		(tostring(option.entry) == searchText) then
+	-- 			table.insert(filteredOptions, option)
+	-- 		end
+	-- 	end
+	-- 
+	-- 	currentPage = 1
+	-- 	PopulateGOScroll(filteredOptions)
+	-- end)
+	
+	-- Recheche avec text Nothing found
+	filterEditBox:SetScript("OnEnterPressed", function(self)
+		self:ClearFocus()
+		local searchText = self:GetText():lower()
+	
+		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
+		if #searchText < 3 then
+			print("Veuillez entrer au moins 3 caractères pour la recherche.")
+			return
+		end
+	
+		local filteredOptions = {}
+		for _, option in ipairs(GameObjectsData) do
+			-- Vérifie si le texte est dans le "name" ou correspond à l'"entry"
+			if (option.name and option.name:lower():find(searchText)) or
+			(tostring(option.entry) == searchText) then
+				table.insert(filteredOptions, option)
+			end
+		end
+	
+		-- Si aucun résultat n'est trouvé, afficher "Nothing found"
+		if #filteredOptions == 0 then
+			-- Supprime les anciens boutons si présents
+			if scrollChild.buttons then
+				for _, btn in ipairs(scrollChild.buttons) do
+					btn:Hide()
+				end
+			end
+			
+			-- Si le texte "Nothing found" n'existe pas, le créer
+			if not scrollChild.noResultText then
+				scrollChild.noResultText = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+				scrollChild.noResultText:SetPoint("TOP", scrollChild, "TOP", 0, -10)
+				scrollChild.noResultText:SetText("|cffff0000Nothing found|r") -- Texte en rouge
+			end
+			scrollChild.noResultText:Show()
+	
+			-- Ajuste la hauteur pour éviter l'affichage de contenu invisible
+			scrollChild:SetHeight(50)
+	
+		else
+			-- Cache le texte "Nothing found" s'il était affiché
+			if scrollChild.noResultText then
+				scrollChild.noResultText:Hide()
+			end
+			
+			-- Charge les résultats normalement
+			currentPage = 1
+			PopulateGOScroll(filteredOptions)
+		end
+	end)
 
-        local filteredOptions = {}
-        for _, option in ipairs(GameObjectsData) do
-            if option.name and option.name:lower():find(searchText) then
-                table.insert(filteredOptions, option)
-            end
-        end
-
-        currentPage = 1
-        PopulateGOScroll(filteredOptions)
-    end)
+	------------------------------------------------------------
+	-- Bouton "Reset" pour revenir à la liste complète
+	------------------------------------------------------------
+	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnReset:SetSize(80, 22)
+	btnReset:SetText("Reset")
+	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
+	btnReset:SetScript("OnClick", function()
+		filterEditBox:SetText("")  -- Efface le champ de recherche
+		currentPage = 1  -- Revient à la première page
+		PopulateGOScroll(GameObjectsData)  -- Recharge toute la liste
+	
+		-- Cacher le message "Nothing found" s'il est affiché
+		if scrollChild.noResultText then
+			scrollChild.noResultText:Hide()
+		end
+	end)
 
     ------------------------------------------------------------
     -- Enfin, on mémorise ce panel dans self.panel
