@@ -390,42 +390,13 @@
 	('send money', 'Syntax: .send money #playername "#subject" "#text" #money\r\n\r\nSend mail with money to a player. Subject and mail text must be in "".'),
 	
 	
-	DAns ce panneau je veux ajouter les fonctions suivantes:
 	
-	un bouton "server corpses" avec le Tootip : Syntax: .server corpses\r\n\r\nTriggering corpses expire check in world. quand on clique dessus on envoi dans SAY ma commande .server corpses
-	un bouton "server debug" avec le Tootip : Syntax: .server debug\n\nShows detailed information about server setup, useful when reporting a bug quand on clique dessus on envoi dans SAY ma commande .server debug
-	un bouton "server exit" avec le Tootip : Syntax: .server exit\r\n\r\nTerminate trinity-core NOW. Exit code 0. quand on clique dessus on envoi dans SAY ma commande .server exit
-	un bouton "server idlerestart" suivi d'une box de saisie avec comme texte par défaut "Delay in s", 
-suivi d'une box de saisie avec le texte par defaut "Reason"	avec le Tootip : Syntax: .server idlerestart #delay [#exit_code] [reason]\n\nRestart the server after #delay seconds if no active connections are present (no players). Use #exit_code or 2 as program exit code.quand on clique dessus on envoi dans SAY ma commande .server idlerestart #delay 2 [reason]
-	un bouton "server idlerestart cancel" avec le Tootip : Syntax: .server idlerestart cancel\r\n\r\nCancel the restart/shutdown timer if any. quand on clique dessus on envoi dans SAY ma commande .
-	un bouton "server idleshutdown" avec le Tootip : quand on clique dessus on envoi dans SAY ma commande .server idlerestart cancel
-	un bouton "server idleshutdown cancel" suivi d'une box de saisie avec comme texte par défaut "Delay in s", 
-suivi d'une box de saisie avec le texte par defaut "Reason" avec le Tootip : Syntax: .server idleshutdown #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds if no active connections are present (no players). Use #exit_code or 0 as program exist code. quand on clique dessus on envoi dans SAY ma commande .server idleshutdown #delay 0 [reason]
-	un bouton "server info" avec le Tootip : Syntax: .server info\r\n\r\nDisplay server version and the number of connected players. quand on clique dessus on envoi dans SAY ma commande .server info
-	un bouton "sserver motd" avec le Tootip : Syntax: .server motd\r\n\r\nShow server Message of the day. quand on clique dessus on envoi dans SAY ma commande .server motd
-	
-en suivant les memes logiwues il me faut dezs boutons pour ces fonctions:
-	('server plimit', 'Syntax: .server plimit [#num|-1|-2|-3|reset|player|moderator|gamemaster|administrator]\r\n\r\nWithout arg show current player amount and security level limitations for login to server, with arg set player linit ($num > 0) or securiti limitation ($num < 0 or security leme name. With `reset` sets player limit to the one in the config file'),
-	('server restart', 'Syntax: .server restart [force] #delay [#exit_code] [reason]\n\nRestart the server after #delay seconds. Use #exit_code or 2 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.'),
-	('server restart cancel', 'Syntax: .server restart cancel\r\n\r\nCancel the restart/shutdown timer if any.'),
-	('server restart force', 'Syntax: .server restart [force] #delay [#exit_code] [reason]\n\nRestart the server after #delay seconds. Use #exit_code or 2 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.'),
-	('server set closed', 'Syntax: server set closed on/off\r\n\r\nSets whether the world accepts new client connectsions.'),
 	('server set loglevel', 'Syntax: .server set loglevel $facility $name $loglevel. $facility can take the values: appender (a) or logger (l). $loglevel can take the values: disabled (0), trace (1), debug (2), info (3), warn (4), error (5) or fatal (6)'),
-	('server set motd', 'Syntax: .server set motd $MOTD\r\n\r\nSet server Message of the day.'),
-	('server shutdown', 'Syntax: .server shutdown [force] #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds. Use #exit_code or 0 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.'),
-	('server shutdown cancel', 'Syntax: .server shutdown cancel\r\n\r\nCancel the restart/shutdown timer if any.'),
-	('server shutdown force', 'Syntax: .server shutdown [force] #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds. Use #exit_code or 0 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.'),
 		
 
-	('server corpses', 'Syntax: .server corpses\r\n\r\nTriggering corpses expire check in world.'), -> OK
-	('server debug', 'Syntax: .server debug\n\nShows detailed information about server setup, useful when reporting a bug'), -> OK
-	('server exit', 'Syntax: .server exit\r\n\r\nTerminate trinity-core NOW. Exit code 0.'), -> Fait mais pas utilse à mon avis
-	('server idlerestart', 'Syntax: .server idlerestart #delay [#exit_code] [reason]\n\nRestart the server after #delay seconds if no active connections are present (no players). Use #exit_code or 2 as program exit code.'),
-	('server idlerestart cancel', 'Syntax: .server idlerestart cancel\r\n\r\nCancel the restart/shutdown timer if any.'),
-	('server idleshutdown', 'Syntax: .server idleshutdown #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds if no active connections are present (no players). Use #exit_code or 0 as program exist code.'),
-	('server idleshutdown cancel', 'Syntax: .server idleshutdown cancel\r\n\r\nCancel the restart/shutdown timer if any.'),
-	('server info', 'Syntax: .server info\r\n\r\nDisplay server version and the number of connected players.'), -> Fait
-	('server motd', 'Syntax: .server motd\r\n\r\nShow server Message of the day.'), -> Fait
+	
+
+
 	
 	
 	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
