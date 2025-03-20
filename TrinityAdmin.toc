@@ -39,7 +39,9 @@ Libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
 TrinityAdmin_Translations.lua
 GameObjectsData.lua
 ItemSetData.lua
-ItemsData.lua
+ItemsDataPart1.lua
+ItemsDataPart2.lua
+ItemsDataPart3.lua
 # TeleportData
 TeleportTable.lua
 # Interface XML
