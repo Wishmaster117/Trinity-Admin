@@ -182,6 +182,18 @@ local buttonDefs = {
         anchorOffsetY = -20,
         linkTo = "btnRevive",
     },	
+
+	{
+        name = "btnBank",
+        text = "Bank",
+        tooltip = "Show your bank inventory.",
+        command = ".bank",
+        isToggle = false,
+        anchorTo = "LEFT",
+        anchorOffsetX = 10,
+        anchorOffsetY = 0,
+        linkTo = "btnMailbox",
+    },		
 }
 
 ------------------------------------------------------------------

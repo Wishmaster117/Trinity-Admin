@@ -6,9 +6,7 @@
 -- --------------------------------------------------------
 
 
-	('additem', 'Syntax: .additem #itemid/[#itemname]/#shift-click-item-link #itemcount #bonusListIDs\n\nAdds the specified number of items of id #itemid (or exact (!) name $itemname in brackets, or link created by shift-click at item in inventory or recipe) to your or selected character inventory. If #itemcount is omitted, only one item will be added. #bonusListIDs is a semicolon separated list of bonuses to add to item (such as Mythic/Heroic/Warforged/socket)'),
-	('additem set', 'Syntax: .additemset #itemsetid #bonusListIDs\n\nAdd items from itemset of id #itemsetid to your or selected character inventory. Will add by one example each item from itemset.\n\nIf the itemset has multiple levels it adds one of each item level. #bonusListIDs is a semicolon separated list of bonuses to add to all items (such as Mythic/Heroic/Warforged/socket)'),
-	
+		
 	('ahbot', 'Syntax: ahbot $subcommand\n Type .ahbot to see a list of possible subcommands\n or .help ahbot $subcommand to see info on the subcommand.'),
 	('ahbot items', 'Syntax: .ahbot items $GrayItems $WhiteItems $GreenItems $BlueItems $PurpleItems $OrangeItems $YellowItems\r\n\r\nSet amount of each items color be selled on auction.'),
 	('ahbot items blue', 'Syntax: .ahbot items blue $BlueItems\r\n\r\nSet amount of Blue color items be selled on auction.'),
@@ -27,7 +25,7 @@
 	('ahbot status', 'Syntax: .ahbot status [all]\r\n\r\nShow current ahbot state data in short form, and with "all" with details.'),
 	
 	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'),
-	('appear', 'Syntax: .appear [$charactername]\r\n\r\nTeleport to the given character. Either specify the character name or click on the character\'s portrait,e.g. when you are in a group. Character can be offline.'),
+	
 	
 	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
 	('arena captain', 'Syntax: .arena captain #TeamID $name\n\nA command to set new captain to the team $name must be in the team'),
@@ -37,11 +35,8 @@
 	('arena lookup', 'Syntax: .arena lookup $name\n\nA command that give a list of arenateam with the given $name'),
 	('arena rename', 'Syntax: .arena rename "oldname" "newname"\n\nA command to rename Arena-team name.'),
 	
-	('aura', 'Syntax: .aura #spellid\r\n\r\nAdd the aura from spell #spellid to the selected Unit.'),
 	
 	
-
-	('bank', 'Syntax: .bank\r\n\r\nShow your bank inventory.'),
 
 	
 	('bf', 'Syntax: bf $subcommand\n Type .bf to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
@@ -63,21 +58,6 @@
 	('channel set', 'Syntax: '),
 	('channel set ownership', 'Syntax: .channel set ownership $channel [on/off]\n\nGrant ownership to the first person that joins the channel.'),
 	
-	('character', 'Syntax: character $subcommand\n Type .character to see a list of possible subcommands\n or .help character $subcommand to see info on the subcommand.'),
-	('character changeaccount', 'Syntax: .character changeaccount [$player] $account\n\nTransfers ownership of named (or selected) character to another account'),
-	('character changefaction', 'Syntax: .character changefaction $name\r\n\r\nChange character faction.'),
-	('character changerace', 'Syntax: .character changerace $name\r\n\r\nChange character race.'),
-	('character customize', 'Syntax: .character customize [$name]\r\n\r\nMark selected in game or by $name in command character for customize at next login.'),
-	('character deleted', 'Syntax: character deleted $subcommand\n Type .character deleted to see a list of possible subcommands\n or .help character deleted $subcommand to see info on the subcommand.'),
-	('character deleted delete', 'Syntax: .character deleted delete #guid|$name\r\n\r\nCompletely deletes the selected characters.\r\nIf $name is supplied, only characters with that string in their name will be deleted, if #guid is supplied, only the character with that GUID will be deleted.'),
-	('character deleted list', 'Syntax: .character deleted list [#guid|$name]\r\n\r\nShows a list with all deleted characters.\r\nIf $name is supplied, only characters with that string in their name will be selected, if #guid is supplied, only the character with that GUID will be selected.'),
-	('character deleted old', 'Syntax: .character deleted old [#keepDays]\r\n\r\nCompletely deletes all characters with deleted time longer #keepDays. If #keepDays not provided the  used value from mangosd.conf option \'CharDelete.KeepDays\'. If referenced config option disabled (use 0 value) then command can\'t be used without #keepDays.'),
-	('character deleted restore', 'Syntax: .character deleted restore #guid|$name [$newname] [#new account]\r\n\r\nRestores deleted characters.\r\nIf $name is supplied, only characters with that string in their name will be restored, if $guid is supplied, only the character with that GUID will be restored.\r\nIf $newname is set, the character will be restored with that name instead of the original one. If #newaccount is set, the character will be restored to specific account character list. This works only with one character!'),
-	('character erase', 'Syntax: .character erase $name\r\n\r\nDelete character $name. Character finally deleted in case any deleting options.'),
-	('character level', 'Syntax: .character level [$playername] [#level]\r\n\r\nSet the level of character with $playername (or the selected if not name provided) by #numberoflevels Or +1 if no #numberoflevels provided). If #numberoflevels is omitted, the level will be increase by 1. If #numberoflevels is 0, the same level will be restarted. If no character is selected and name not provided, increase your level. Command can be used for offline character. All stats and dependent values recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost.'),
-	('character rename', 'Syntax: .character rename [$name] [$newName] \n\nMark selected in game or by $name in command character for rename at next login.\n\nIf $newName then the player will be forced rename.'),
-	('character reputation', 'Syntax: .character reputation [$player_name]\r\n\r\nShow reputation information for selected player or player find by $player_name.'),
-	('character titles', 'Syntax: .character titles [$player_name]\r\n\r\nShow known titles list for selected player or player find by $player_name.'),
 	
 	('cheat', 'Syntax: .cheat $subcommand\r\nType .cheat to see the list of possible subcommands or .help cheat $subcommand to see info on subcommands'),
 	('cheat casttime', 'Syntax: .cheat casttime [on/off]\r\nEnables or disables your character\'s spell cast times.'),
@@ -89,7 +69,7 @@
 	('cheat taxi', 'Syntax: .cheat taxi on/off\r\nTemporary grant access or remove to all taxi routes for the selected character.\r\n If no character is selected, hide or reveal all routes to you.Visited taxi nodes sill accessible after removing access.'),
 	('cheat waterwalk', 'Syntax: .cheat waterwalk on/off\r\nSet on/off waterwalk state for selected player or self if no player selected.'),
 	
-	('combatstop', 'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),
+
 	('cometome', 'Syntax: .cometome\nMake selected creature come to your current location (new position not saved to DB).'),
 	('commands', 'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
 	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
@@ -239,20 +219,15 @@
 	('help', 'Syntax: .help [$command]\r\n\r\nDisplay usage instructions for the given $command. If no $command provided show list available commands.'),
 	('hidearea', 'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
 	
-	('honor', 'Syntax: .honor $subcommand\nType .honor to see the list of possible subcommands or .help honor $subcommand to see info on subcommands'),
-	('honor add', 'Syntax: .honor add $amount\r\n\r\nAdd a certain amount of honor (gained today) to the selected player.'),
-	('honor add kill', 'Syntax: .honor add kill\r\n\r\nAdd the targeted unit as one of your pvp kills today (you only get honor if it\'s a racial leader or a player)'),
-	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'),
+
+	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'), -> Fonction pour serveur
 	('instance', 'Syntax: .instance $subcommand\nType .instance to see the list of possible subcommands or .help instance $subcommand to see info on subcommands'),
 	('instance getbossstate', 'Syntax: .instance getbossstate $bossId [$Name]\r\nGets the current EncounterState for the provided boss id.\r\nIf no character name is provided, the current map will be used as target.'),
-	('instance listbinds', 'Syntax: .instance listbinds\r\n  Lists the binds of the selected player.'),
 	('instance setbossstate', 'Syntax: .instance setbossstate $bossId $encounterState [$Name]\r\nSets the EncounterState for the given boss id to a new value. EncounterStates range from 0 to 5.\r\nIf no character name is provided, the current map will be used as target.'),
 	('instance stats', 'Syntax: .instance stats\r\n  Shows statistics about instances.'),
-	('instance unbind', 'Syntax: .instance unbind <mapid|all> [difficulty]\r\n  Clear all/some of player\'s binds'),
+
 	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
-	('kick', 'Syntax: .kick [$charactername] [$reason]\r\n\r\nKick the given character name from the world with or without reason. If no character name is provided then the selected player (except for yourself) will be kicked. If no reason is provided, default is "No Reason".'),
-	('levelup', 'Syntax: .levelup [$playername] [#numberoflevels]\r\n\r\nIncrease/decrease the level of character with $playername (or the selected if not name provided) by #numberoflevels Or +1 if no #numberoflevels provided). If #numberoflevels is omitted, the level will be increase by 1. If #numberoflevels is 0, the same level will be restarted. If no character is selected and name not provided, increase your level. Command can be used for offline character. All stats and dependent values recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost.'),
 	
 	('lfg', 'Syntax: lfg $subcommand\n Type .lfg to see a list of possible subcommands\n or .help lfg $subcommand to see info on the subcommand.'),
 	('lfg clean', 'Syntax: .flg clean\n Cleans current queue, only for debugging purposes.'),
@@ -420,17 +395,24 @@
 
 	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
 	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
-	('unfreeze', 'Syntax: .unfreeze (#player)\r\n"Unfreezes" #player and enables his chat again. When using this without #name it will unfreeze your target.'),
-	('listfreeze', 'Syntax: .listfreeze\r\n\r\nSearch and output all frozen players.'),
-	('freeze', 'Syntax: .freeze [#player] [#duration]\nFreezes #player for #duration (seconds)\nFreezes the selected player if no arguments are given.\nDefault duration: GM.FreezeAuraDuration (worldserver.conf)'),
-	('unpossess', 'Syntax: .unpossess\r\n\r\nIf you are possessed, unpossesses yourself; otherwise unpossesses current possessed target.'),
-	('unstuck', 'Syntax: .unstuck $playername [inn/graveyard/startzone]\n\nTeleports specified player to specified location. Default location is player\'s current hearth location.'),
-	('unaura', 'Syntax: .unaura #spellid\r\n\r\nRemove aura due to spell #spellid from the selected Unit.'),
-	('repairitems', 'Syntax: .repairitems\r\n\r\nRepair all selected player\'s items.'),
+	
+En dessous du chanp de saisie de Freeze je voudrais ajouter un champ de saisi avec defaut texte "Player Name" et à coté de ce champ un bouton "UnFreeze" avec le tooltip sur le bouton "Syntax: .unfreeze (#player)\r\n"Unfreezes" #player and enables his chat again. When using this without #name it will unfreeze your target.3
+quand on clique sur le bouton UnFreeze on envoi la commande .unfreeze [valeur de player] il faut aussi integrer la possiblilité de reset les champs de saisie à leurs valeur par défaut et que si le champ Player Name n'est pas renseigné il faut unfreeze la cible du GM
+	
+	
+	('instance unbind', 'Syntax: .instance unbind <mapid|all> [difficulty]\r\n  Clear all/some of player\'s binds'),
+	('instance listbinds', 'Syntax: .instance listbinds\r\n  Lists the binds of the selected player.'),		
+	('combatstop', 'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),		
+	('honor', 'Syntax: .honor $subcommand\nType .honor to see the list of possible subcommands or .help honor $subcommand to see info on subcommands'),
+	('honor add', 'Syntax: .honor add $amount\r\n\r\nAdd a certain amount of honor (gained today) to the selected player.'),
+	('honor add kill', 'Syntax: .honor add kill\r\n\r\nAdd the targeted unit as one of your pvp kills today (you only get honor if it\'s a racial leader or a player)'),	
+
+
 	('titles add', 'Syntax: .titles add #title\r\nAdd title #title (id or shift-link) to known titles list for selected player.'),
 	('titles current', 'Syntax: .titles current #title\r\nSet title #title (id or shift-link) as current selected title for selected player. If title is not in known title list for player then it will be added to list.'),
 	('titles remove', 'Syntax: .titles remove #title\r\nRemove title #title (id or shift-link) from known titles list for selected player.'),
 	('titles set mask', 'Syntax: .titles set mask #mask\r\n\r\nAllows user to use all titles from #mask.\r\n\r\n #mask=0 disables the title-choose-field'),
+
 	('reset', 'Syntax: .reset $subcommand\nType .reset to see the list of possible subcommands or .help reset $subcommand to see info on subcommands'),
 	('reset achievements', 'Syntax: .reset achievements [$playername]\r\n\r\nReset achievements data for selected or named (online or offline) character. Achievements for persistance progress data like completed quests/etc re-filled at reset. Achievements for events like kills/casts/etc will lost.'),
 	('reset all', 'Syntax: .reset all spells\r\n\r\nSyntax: .reset all talents\r\n\r\nRequest reset spells or talents (including talents for all character\'s pets if any) at next login each existed character.'),
@@ -439,13 +421,24 @@
 	('reset spells', 'Syntax: .reset spells [Playername]\r\n  Removes all non-original spells from spellbook.\r\n. Playername can be name of offline character.'),
 	('reset stats', 'Syntax: .reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
 	('reset talents', 'Syntax: .reset talents [Playername]\r\n  Removes all talents of the targeted player or pet or named player. Playername can be name of offline character. With player talents also will be reset talents for all character\'s pets if any.'),
-	('pinfo', 'Syntax: .pinfo [$player_name/#GUID]\r\n\r\nOutput account information and guild information for selected player or player find by $player_name or #GUID.'), -> Creer une page speciale avec des champs pour afficher les infos "Player advances Infos"
-	('pet', 'Syntax: .pet $subcommand\nType .pet to see the list of possible subcommands or .help pet $subcommand to see info on subcommands'),
-	('pet create', 'Syntax: .pet create\r\n\r\nCreates a pet of the selected creature.'),
-	('pet learn', 'Syntax: .pet learn\r\n\r\nLearn #spellid to pet.'),
-	('pet level', 'Syntax: .pet level #dLevel\nIncreases/decreases the pet\'s level by #dLevel. Pet\'s level cannot exceed the owner\'s level.'),
-	('pet unlearn', 'Syntax: .pet unlean\r\n\r\nunLearn #spellid to pet.'),
 	
+	('pinfo', 'Syntax: .pinfo [$player_name/#GUID]\r\n\r\nOutput account information and guild information for selected player or player find by $player_name or #GUID.'), -> Creer une page speciale avec des champs pour afficher les infos "Player advances Infos"
+
+
+
+Pour ma page 4 ,
+Il me faut maintenant un champ de saisi avec le texte par defaut "Enter Char Name or Guid",
+à côté un champ de saisi avec le texte par defaut "New Name" (ce champ ne sera pas obligatoire lors du lancement de l'execution de la commande),
+à côté un champ de saisi avec le texte par defaut "New Account" (ce champ ne sera pas obligatoire lors du lancement de l'execution de la commande),
+Puis un bouton "Restore" qui aura le tooltip suivant : "Syntax: .character deleted restore #guid|$name [$newname] [#new account]\r\nRestores deleted characters.\r\nIf $name is supplied, only characters with that string in their name will be restored, if $guid is supplied, only the character with that GUID will be restored.\r\nIf $newname is set, the character will be restored with that name instead of the original one. If #newaccount is set, the character will be restored to specific account character list. This works only with one character!"
+Quand on cliquera sur le bouton Restore on enverra la commande dans le SAY : .character deleted restore "valeur de guid|name" "newname" (non obligatoire) "new account" (non obligatoire)
+ 
+
+Bien évidement il faut que le bouton pour réinitialiser le champ de saisie soit opérationnel et si le champ de saisie New Name est vide ou a le texte par defaut, on envoi une erreur.
+
+Pourriez vous me donner le code pour cette fonctionalité?
+	
+
 	('pdump', 'Syntax: .pdump $subcommand\nType .pdump to see the list of possible subcommands or .help pdump $subcommand to see info on subcommands'),
 	('pdump copy', 'Syntax: .pdump copy $playerNameOrGUID $account [$newname] [$newguid]\nCopy character with name/guid $playerNameOrGUID into character list of $account with $newname, with first free or $newguid guid.'),
 	('pdump load', 'Syntax: .pdump load $filename $account [$newname] [$newguid]\r\nLoad character dump from dump file into character list of $account with saved or $newname, with saved (or first free) or $newguid guid.'),

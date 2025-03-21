@@ -58,3 +58,4 @@ ServerAdmin.lua
 GameObjects.lua
 AddLearn.lua
 AdvancedItems.lua
+ModuleCharacters.lua

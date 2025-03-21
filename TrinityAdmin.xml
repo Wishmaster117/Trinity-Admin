@@ -220,6 +220,24 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<!-- Bouton Module Characters -->
+			<Button name="$parentModuleCharacterButton" inherits="UIPanelButtonTemplate" text="Characters Module">
+			<Size>
+				<AbsDimension x="135" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentAdvancedItemsButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowModuleCharacterPanel()
+				</OnClick>
+			</Scripts>
+			</Button>
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>
