@@ -27,30 +27,33 @@ function ServerAdmin:CreateServerAdminPanel()
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
     -------------------------------------------------------------------------------
-    local totalPages = 2  -- nombre de pages
-    local pages = {}
-    for i = 1, totalPages do
-        pages[i] = CreateFrame("Frame", nil, panel)
-        pages[i]:SetAllPoints(panel)
-        pages[i]:Hide()  -- on cache toutes les pages au départ
-    end
+	local totalPages = 2  -- nombre de pages
+	local pages = {}
+	for i = 1, totalPages do
+		pages[i] = CreateFrame("Frame", nil, panel)
+		pages[i]:SetAllPoints(panel)
+		pages[i]:Hide()  -- on cache toutes les pages au départ
+	end
+	
+	-- Label de navigation unique (affiché en bas du panneau)
+	local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
+	navPageLabel:SetText("Page 1 / " .. totalPages)
+	
+	-- Fonction de changement de page
+	local function ShowPage(pageIndex)
+		for i = 1, totalPages do
+			if i == pageIndex then
+				pages[i]:Show()
+			else
+				pages[i]:Hide()
+			end
+		end
+		navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+	end
+	
+	ShowPage(1)
 
-    -- Label de navigation (affiché en bas du panneau)
-    local pageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    pageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-    pageLabel:SetText("Page 1 / " .. totalPages)
-
-    -- Fonction de changement de page
-    local function ShowPage(pageIndex)
-        for i = 1, totalPages do
-            if i == pageIndex then
-                pages[i]:Show()
-            else
-                pages[i]:Hide()
-            end
-        end
-        pageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-    end
 
     -------------------------------------------------------------------------------
     -- PAGE 1
@@ -403,7 +406,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	-- Champ de saisie pour l'argument (par défaut "Arg")
 	local plimitInput = CreateFrame("EditBox", "ServerPlimitInputBox", plimitFrame, "InputBoxTemplate")
 	plimitInput:SetSize(100, 22)
-	plimitInput:SetText("Argument or Number")
+	plimitInput:SetText("Arg. or Number")
 	plimitInput:SetPoint("LEFT", plimitLabel, "RIGHT", 5, 0)
 	
 	-- Bouton "Set" qui envoie la commande .server plimit [argument]
@@ -413,7 +416,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnServerPlimit:SetPoint("LEFT", plimitInput, "RIGHT", 10, 0)
 	btnServerPlimit:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .server plimit [#num|-1|-2|-3|reset|player|moderator|gamemaster|administrator]\r\nWithout arg, show current limit; with arg, set the limit.\r\nAvec argument numérique positif :Par exemple, .server plimit 100 définira que 100 joueurs maximum peuvent se connecter au serveur.\r\nAvec argument numérique négatif : Un nombre négatif est utilisé pour définir une limitation de sécurité (par exemple, .server plimit -1). Cela signifie que seuls les joueurs ayant un certain niveau de sécurité (ou mieux) peuvent se connecter. Les valeurs négatives correspondent souvent à des niveaux de sécurité internes.\r\nAvec argument textuel (player, moderator, gamemaster, administrator) : Vous pouvez aussi utiliser des mots-clés qui représentent des niveaux de sécurité. Par exemple, .server plimit moderator limiterait les connexions aux joueurs qui possèdent un niveau de modérateur ou supérieur.", 1,1,1,1,true)
+		GameTooltip:SetText("Syntax: .server plimit [#num|-1|-2|-3||reset|player|moderator|gamemaster|administrator]\r\nWithout arg, show current limit; with arg, set the limit.\r\nAvec argument numérique positif :Par exemple, .server plimit 100 définira que 100 joueurs maximum peuvent se connecter au serveur.\r\nAvec argument numérique négatif : Un nombre négatif est utilisé pour définir une limitation de sécurité (par exemple, .server plimit -1). Cela signifie que seuls les joueurs ayant un certain niveau de sécurité (ou mieux) peuvent se connecter. Les valeurs négatives correspondent souvent à des niveaux de sécurité internes.\r\nAvec argument textuel (player, moderator, gamemaster, administrator) : Vous pouvez aussi utiliser des mots-clés qui représentent des niveaux de sécurité. Par exemple, .server plimit moderator limiterait les connexions aux joueurs qui possèdent un niveau de modérateur ou supérieur.", 1,1,1,1,true)
 		GameTooltip:Show()
 	end)
 	btnServerPlimit:SetScript("OnLeave", function(self)
@@ -450,20 +453,60 @@ function ServerAdmin:CreateServerAdminPanel()
 		print("Commande envoyée: " .. cmd)
 	end)
 
-	-- 
-	-- 
-    -- local btnServerSetClosed = CreateServerButtonPage2("ServerSetClosedButton", "server set closed", "Syntax: .server set closed on/off\r\nSet whether new connections are allowed.", ".server set closed on")
-    -- btnServerSetClosed:SetPoint("TOPLEFT", btnServerPlimit, "BOTTOMLEFT", 0, -10)
-	-- 
-    -- local btnServerSetLoglevel = CreateServerButtonPage2("ServerSetLoglevelButton", "server set loglevel", "Syntax: .server set loglevel $facility $name $loglevel.\n$facility: a (appender) or l (logger).\n$loglevel: 0-disabled, 1-trace, 2-debug, 3-info, 4-warn, 5-error, 6-fatal.", ".server set loglevel")
-    -- btnServerSetLoglevel:SetPoint("TOPLEFT", btnServerSetClosed, "BOTTOMLEFT", 0, -5)
-	-- 
-	-- 
-    -- local btnServerShutdown = CreateServerButtonPage2("ServerShutdownButton", "server shutdown", "Syntax: .server shutdown [force] #delay [#exit_code] [reason]\nShut the server down after delay. Use exit code 0.", ".server shutdown")
-    -- btnServerShutdown:SetPoint("TOPLEFT", btnServerSetMotd, "BOTTOMLEFT", 0, -10)
-	-- 
-    -- local btnServerShutdownForce = CreateServerButtonPage2("ServerShutdownForceButton", "shutdown force", "Syntax: .server shutdown [force] #delay [#exit_code] [reason]\nShut the server down after delay. Use exit code 0. Include 'force' to override.", ".server shutdown force")
-    -- btnServerShutdownForce:SetPoint("TOPLEFT", btnServerShutdown, "BOTTOMLEFT", 0, -5)
+ 	-------------------------------------------------------------------------------
+	-- Server Set Log Level
+	-------------------------------------------------------------------------------	
+	-- Création d'un frame pour la commande server set loglevel
+	local loglevelFrame = CreateFrame("Frame", nil, commandsFramePage2)
+	loglevelFrame:SetPoint("TOPLEFT", plimitFrame, "BOTTOMLEFT", 0, -10)  -- Placer en dessous du bloc plimit
+	loglevelFrame:SetSize(500, 22)
+	
+	-- Label indiquant la commande
+	local loglevelLabel = loglevelFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	loglevelLabel:SetPoint("LEFT", loglevelFrame, "LEFT", 0, 0)
+	loglevelLabel:SetText("Set Loglevel: ")
+	
+	-- Zone de saisie pour le facility ($facility)
+	local editFacility = CreateFrame("EditBox", "ServerSetLoglevelFacility", loglevelFrame, "InputBoxTemplate")
+	editFacility:SetSize(50, 22)
+	editFacility:SetText("a")  -- Valeur par défaut : "a" pour appender (vous pouvez modifier)
+	editFacility:SetPoint("LEFT", loglevelLabel, "RIGHT", 5, 0)
+	
+	-- Zone de saisie pour le nom ($name)
+	local editName = CreateFrame("EditBox", "ServerSetLoglevelName", loglevelFrame, "InputBoxTemplate")
+	editName:SetSize(100, 22)
+	editName:SetText("Name")
+	editName:SetPoint("LEFT", editFacility, "RIGHT", 5, 0)
+	
+	-- Zone de saisie pour le niveau de log ($loglevel)
+	local editLevel = CreateFrame("EditBox", "ServerSetLoglevelLevel", loglevelFrame, "InputBoxTemplate")
+	editLevel:SetSize(50, 22)
+	editLevel:SetText("3")  -- Par défaut "3" (info) ; vous pouvez adapter
+	editLevel:SetPoint("LEFT", editName, "RIGHT", 5, 0)
+	
+	-- Bouton "Set Loglevel" qui envoie la commande
+	local btnSetLoglevel = CreateFrame("Button", "ServerSetLoglevelButton", loglevelFrame, "UIPanelButtonTemplate")
+	btnSetLoglevel:SetSize(100, 22)
+	btnSetLoglevel:SetText("Set Loglevel")
+	btnSetLoglevel:SetPoint("LEFT", editLevel, "RIGHT", 10, 0)
+	btnSetLoglevel:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Syntax: .server set loglevel $facility $name $loglevel\r\n$facility: appender (a) or logger (l).\r\n$loglevel: 0-disabled, 1-trace, 2-debug, 3-info, 4-warn, 5-error, 6-fatal.", 1,1,1,1,true)
+		GameTooltip:Show()
+	end)
+	btnSetLoglevel:SetScript("OnLeave", function(self)
+		GameTooltip:Hide()
+	end)
+	btnSetLoglevel:SetScript("OnClick", function(self)
+		local facility = editFacility:GetText()
+		local name = editName:GetText()
+		local level = editLevel:GetText()
+		local cmd = ".server set loglevel " .. facility .. " " .. name .. " " .. level
+		SendChatMessage(cmd, "SAY")
+		print("Commande envoyée: " .. cmd)
+	end)
+
+
 
     ------------------------------------------------------------------------------
     -- Boutons de navigation (Précédent / Suivant)
@@ -492,22 +535,22 @@ function ServerAdmin:CreateServerAdminPanel()
         end
     end)
 
-    local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-    navPageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
-
-    local function ShowPage(pageIndex)
-        for i = 1, totalPages do
-            if i == pageIndex then
-                pages[i]:Show()
-            else
-                pages[i]:Hide()
-            end
-        end
-        navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-    end
-
-    ShowPage(1)
+    -- local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    -- navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
+    -- navPageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+	-- 
+    -- local function ShowPage(pageIndex)
+    --     for i = 1, totalPages do
+    --         if i == pageIndex then
+    --             pages[i]:Show()
+    --         else
+    --             pages[i]:Hide()
+    --         end
+    --     end
+    --     navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+    -- end
+	-- 
+    -- ShowPage(1)
 
     ------------------------------------------------------------------------------
     -- Bouton Back final

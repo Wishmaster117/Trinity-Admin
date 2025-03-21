@@ -24,35 +24,36 @@ function ServerAdmin:CreateServerAdminPanel()
     panel.title:SetPoint("TOPLEFT", 10, -10)
     panel.title:SetText("Server Admin Panel")
 
-    ------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
-    ------------------------------------------------------------------------------
-        -- Création des pages
-    local totalPages = 2  -- nombre de pages
-    local pages = {}
-    for i = 1, totalPages do
-        pages[i] = CreateFrame("Frame", nil, panel)
-        pages[i]:SetAllPoints(panel)
-        pages[i]:Hide()  -- on cache toutes les pages au départ
-    end
-
-    -- Déclarez le label de page avant la fonction ShowPage
-    local pageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    pageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-    pageLabel:SetText("Page 1 / " .. totalPages)
-
-    -- Définition de la fonction ShowPage
-    local function ShowPage(pageIndex)
-        for i = 1, totalPages do
-            if i == pageIndex then
-                pages[i]:Show()
-            else
-                pages[i]:Hide()
-            end
-        end
-        pageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-    end
-
+    -------------------------------------------------------------------------------
+	local totalPages = 2  -- nombre de pages
+	local pages = {}
+	for i = 1, totalPages do
+		pages[i] = CreateFrame("Frame", nil, panel)
+		pages[i]:SetAllPoints(panel)
+		pages[i]:Hide()  -- on cache toutes les pages au départ
+	end
+	
+	-- Label de navigation unique (affiché en bas du panneau)
+	local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
+	navPageLabel:SetText("Page 1 / " .. totalPages)
+	
+	-- Fonction de changement de page
+	local function ShowPage(pageIndex)
+		for i = 1, totalPages do
+			if i == pageIndex then
+				pages[i]:Show()
+			else
+				pages[i]:Hide()
+			end
+		end
+		navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+	end
+	
+	ShowPage(1)
+	
 -- Pour la page 1 :
 local commandsFramePage1 = CreateFrame("Frame", nil, pages[1])
 commandsFramePage1:SetPoint("TOPLEFT", pages[1], "TOPLEFT", 20, -40)
@@ -128,12 +129,6 @@ page2Title:SetText("Server Admin Panel Page 2")
         end
     end)
 
-    local pageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    pageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-    pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
-
-    -- On affiche la première page dès le départ
-    ShowPage(1)
 
     ------------------------------------------------------------------------------
     -- Fin du panneau, bouton Back déjà présent

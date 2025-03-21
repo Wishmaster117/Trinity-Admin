@@ -95,7 +95,7 @@ local buttonDefs = {
         command = ".revive",
         isToggle = false,
         anchorTo = "TOPLEFT",
-        anchorOffsetX = 0,
+        anchorOffsetX = -90,
         anchorOffsetY = -20,
         linkTo = "btnFly",
     },
@@ -155,6 +155,33 @@ local buttonDefs = {
         anchorOffsetY = 0,
         linkTo = "btnRespawn",
     },
+	
+	{
+		name = "btnWhispers",
+		textON = "GM Whispers ON",
+		textOFF = "GM Whispers OFF",
+		tooltip = "Enable/disable accepting whispers by GM from players.",
+		commandON = ".whispers on",
+		commandOFF = ".whispers off",
+		isToggle = true,
+		anchorTo = "LEFT",
+		anchorOffsetX = 10,
+		anchorOffsetY = 0,
+		linkTo = "btnDemorph",
+		stateVar = "gmWhispers",
+    },
+	
+	{
+        name = "btnMailbox",
+        text = "MailBox",
+        tooltip = "Show your mailbox content.",
+        command = ".mailbox",
+        isToggle = false,
+        anchorTo = "TOPLEFT",
+        anchorOffsetX = -60,
+        anchorOffsetY = -20,
+        linkTo = "btnRevive",
+    },	
 }
 
 ------------------------------------------------------------------
@@ -270,7 +297,7 @@ function module:CreateGMFunctionsPanel()
     -- Création du champ "Appear" et son bouton Go
     ------------------------------------------------------------------
     -- On part du principe que le dernier bouton de la première ligne est "btnRespawn"
-    local anchor = buttonRefs["btnRevive"]
+    local anchor = buttonRefs["btnMailbox"]
     if anchor then
         -- Label
         local appearLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -325,7 +352,7 @@ function module:CreateGMFunctionsPanel()
     -- On va l'ancrer sous le précédent bloc Appear, par ex. sous le label Appear ou son Edit
     -- Si vous voulez le mettre "à côté", vous pouvez ajuster l'ancrage (e.g. "LEFT", offsetX, etc.).
     -- Ici, on suppose qu'on veut le placer dessous la zone Appear
-    local anchor2 = buttonRefs["btnRevive"]  -- ou appearEdit, ou btnAppearGo, selon votre préférence
+    local anchor2 = buttonRefs["btnMailbox"]  -- ou appearEdit, ou btnAppearGo, selon votre préférence
     if anchor2 then
         -- Label Morph
         local morphLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -383,9 +410,9 @@ function module:CreateGMFunctionsPanel()
 	------------------------------------------------------------------
     -- CREATION DU CHAMP "Custom Mute" et son bouton Go
     ------------------------------------------------------------------
-    local anchorMute = buttonRefs["btnRevive"]
+    local anchorMute = buttonRefs["btnMailbox"]
     if anchorMute then
-        -- On ancre le label "Custom Mute" sous btnRevive avec un offset vertical de -80 pixels
+        -- On ancre le label "Custom Mute" sous btnMailbox avec un offset vertical de -80 pixels
         local muteLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         muteLabel:SetPoint("TOPLEFT", anchorMute, "BOTTOMLEFT", 0, -80)
         muteLabel:SetText("Mute Function")
