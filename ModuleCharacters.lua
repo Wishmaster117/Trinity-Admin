@@ -1476,15 +1476,121 @@ page6Title:SetText("Player Dumps")
     -- Ajoutez d'autres boutons de la page 6…
 
 ---------------------------------------------------------------
--- Page 6
+-- Page 7 : Player Info Capture (.pinfo) [DEBUG MODE]
 ---------------------------------------------------------------
+
 local commandsFramePage7 = CreateFrame("Frame", nil, pages[7])
-commandsFramePage7:SetPoint("TOPLEFT", pages[2], "TOPLEFT", 20, -40)
+commandsFramePage7:SetPoint("TOPLEFT", pages[7], "TOPLEFT", 20, -40)
 commandsFramePage7:SetSize(500, 350)
 
 local page7Title = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page7Title:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, 0)
-page7Title:SetText("Page 7")
+page7Title:SetText("Player Info Capture (Debug)")
+
+-- Fenêtre d'affichage des infos avec fond coloré (Debug visuel)
+local infoFrame = CreateFrame("Frame", "PlayerInfoFrame", commandsFramePage7, "BasicFrameTemplateWithInset")
+infoFrame:SetSize(450, 250)
+infoFrame:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, -100)
+-- infoFrame:Hide()
+
+-- Ajout d'un fond rouge pour visibilité immédiate
+local bg = infoFrame:CreateTexture(nil, "BACKGROUND")
+bg:SetAllPoints(true)
+bg:SetColorTexture(1, 0, 0, 0.7) -- rouge vif semi-transparent
+
+infoFrame.title = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+infoFrame.title:SetPoint("TOP", 0, -5)
+infoFrame.title:SetText("Player Info")
+
+infoFrame.scrollFrame = CreateFrame("ScrollFrame", nil, infoFrame, "UIPanelScrollFrameTemplate")
+infoFrame.scrollFrame:SetPoint("TOPLEFT", 10, -30)
+infoFrame.scrollFrame:SetPoint("BOTTOMRIGHT", -30, 10)
+
+infoFrame.content = CreateFrame("Frame", nil, infoFrame.scrollFrame)
+infoFrame.content:SetSize(400, 500)
+infoFrame.scrollFrame:SetScrollChild(infoFrame.content)
+
+infoFrame.text = infoFrame.content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+infoFrame.text:SetPoint("TOPLEFT")
+infoFrame.text:SetJustifyH("LEFT")
+infoFrame.text:SetJustifyV("TOP")
+infoFrame.text:SetSize(400, 500)
+
+local closeButton = CreateFrame("Button", nil, infoFrame, "UIPanelButtonTemplate")
+closeButton:SetText("Close")
+closeButton:SetSize(80, 22)
+closeButton:SetPoint("BOTTOM", infoFrame, "BOTTOM", 0, 10)
+closeButton:SetScript("OnClick", function() infoFrame:Hide() end)
+
+-- Bouton ON/OFF Capture
+local capturingPinfo = false
+local btnTogglePinfoCapture = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
+btnTogglePinfoCapture:SetSize(180, 24)
+btnTogglePinfoCapture:SetPoint("TOPLEFT", page7Title, "BOTTOMLEFT", 0, -20)
+btnTogglePinfoCapture:SetText("Capture .pinfo: OFF")
+
+btnTogglePinfoCapture:SetScript("OnClick", function()
+    capturingPinfo = not capturingPinfo
+    btnTogglePinfoCapture:SetText("Capture .pinfo: " .. (capturingPinfo and "ON" or "OFF"))
+    print("[DEBUG] Capture .pinfo activée: " .. tostring(capturingPinfo))
+end)
+
+-- Frame pour capturer les événements CHAT_MSG_SYSTEM
+local captureFrame = CreateFrame("Frame")
+captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+
+local isCapturingNow = false
+local collectedInfo = {}
+local captureTimer = nil
+
+local function FinishCapture()
+    isCapturingNow = false
+    if #collectedInfo > 0 then
+        local fullText = table.concat(collectedInfo, "\n")
+        infoFrame.text:SetText(fullText)
+
+        -- Ajustement dynamique de la taille du contenu
+        infoFrame.content:SetHeight(infoFrame.text:GetStringHeight() + 20)
+
+        -- Scroll en haut par défaut
+        infoFrame.scrollFrame:SetVerticalScroll(0)
+
+        infoFrame:Show()
+        print("[DEBUG] Capture terminée. Affichage dans la fenêtre.")
+    else
+        print("[DEBUG] Fin de capture mais aucune info capturée.")
+    end
+end
+
+captureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingPinfo then return end
+
+    print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
+
+    -- Détection du début de la capture
+    if msg:find("Player") and msg:find("guid") then
+        isCapturingNow = true
+        wipe(collectedInfo)
+        table.insert(collectedInfo, msg)
+        print("[DEBUG] Début de capture détecté.")
+
+        if captureTimer then captureTimer:Cancel() end
+        captureTimer = C_Timer.NewTimer(1, FinishCapture)
+        return
+    end
+
+    -- Messages suivants
+    if isCapturingNow then
+        table.insert(collectedInfo, msg)
+        print("[DEBUG] Ajouté à la capture : " .. msg)
+
+        if captureTimer then captureTimer:Cancel() end
+        captureTimer = C_Timer.NewTimer(1, FinishCapture)
+    end
+end)
+
+
+
 
     -- Ajoutez d'autres boutons de la page 7…	
      ------------------------------------------------------------------------------
