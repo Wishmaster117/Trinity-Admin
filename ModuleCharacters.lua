@@ -1485,112 +1485,110 @@ commandsFramePage7:SetSize(500, 350)
 
 local page7Title = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page7Title:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, 0)
-page7Title:SetText("Player Info Capture (Debug)")
+page7Title:SetText("Player Info Capture")
 
--- Fenêtre d'affichage des infos avec fond coloré (Debug visuel)
-local infoFrame = CreateFrame("Frame", "PlayerInfoFrame", commandsFramePage7, "BasicFrameTemplateWithInset")
-infoFrame:SetSize(450, 250)
-infoFrame:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, -100)
--- infoFrame:Hide()
+-- Création d'un ScrollFrame pour afficher les informations
+local scrollFrame = CreateFrame("ScrollFrame", "MyInfoScrollFrame", commandsFramePage7, "UIPanelScrollFrameTemplate")
+scrollFrame:SetPoint("TOPLEFT", page7Title, "TOPRIGHT", 100, 30)
+scrollFrame:SetSize(300, 300)
 
--- Ajout d'un fond rouge pour visibilité immédiate
-local bg = infoFrame:CreateTexture(nil, "BACKGROUND")
-bg:SetAllPoints(true)
-bg:SetColorTexture(1, 0, 0, 0.7) -- rouge vif semi-transparent
+-- Conteneur dans lequel on mettra le FontString
+local content = CreateFrame("Frame", nil, scrollFrame)
+content:SetSize(300, 300)  -- Taille initiale, pourra être ajustée dynamiquement
+scrollFrame:SetScrollChild(content)
 
-infoFrame.title = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
-infoFrame.title:SetPoint("TOP", 0, -5)
-infoFrame.title:SetText("Player Info")
+-- FontString qui contiendra les infos
+local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+infoText:SetPoint("TOPLEFT")
+infoText:SetWidth(300)        -- Largeur du texte (ou un peu moins pour la marge)
+infoText:SetJustifyH("LEFT")
+infoText:SetJustifyV("TOP")
+infoText:SetText("")          -- Initialement vide
 
-infoFrame.scrollFrame = CreateFrame("ScrollFrame", nil, infoFrame, "UIPanelScrollFrameTemplate")
-infoFrame.scrollFrame:SetPoint("TOPLEFT", 10, -30)
-infoFrame.scrollFrame:SetPoint("BOTTOMRIGHT", -30, 10)
-
-infoFrame.content = CreateFrame("Frame", nil, infoFrame.scrollFrame)
-infoFrame.content:SetSize(400, 500)
-infoFrame.scrollFrame:SetScrollChild(infoFrame.content)
-
-infoFrame.text = infoFrame.content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-infoFrame.text:SetPoint("TOPLEFT")
-infoFrame.text:SetJustifyH("LEFT")
-infoFrame.text:SetJustifyV("TOP")
-infoFrame.text:SetSize(400, 500)
-
-local closeButton = CreateFrame("Button", nil, infoFrame, "UIPanelButtonTemplate")
-closeButton:SetText("Close")
-closeButton:SetSize(80, 22)
-closeButton:SetPoint("BOTTOM", infoFrame, "BOTTOM", 0, 10)
-closeButton:SetScript("OnClick", function() infoFrame:Hide() end)
-
--- Bouton ON/OFF Capture
+-- Variables pour la capture des messages
 local capturingPinfo = false
-local btnTogglePinfoCapture = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
-btnTogglePinfoCapture:SetSize(180, 24)
-btnTogglePinfoCapture:SetPoint("TOPLEFT", page7Title, "BOTTOMLEFT", 0, -20)
-btnTogglePinfoCapture:SetText("Capture .pinfo: OFF")
-
-btnTogglePinfoCapture:SetScript("OnClick", function()
-    capturingPinfo = not capturingPinfo
-    btnTogglePinfoCapture:SetText("Capture .pinfo: " .. (capturingPinfo and "ON" or "OFF"))
-    print("[DEBUG] Capture .pinfo activée: " .. tostring(capturingPinfo))
-end)
-
--- Frame pour capturer les événements CHAT_MSG_SYSTEM
-local captureFrame = CreateFrame("Frame")
-captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-
-local isCapturingNow = false
 local collectedInfo = {}
 local captureTimer = nil
 
 local function FinishCapture()
-    isCapturingNow = false
+    capturingPinfo = false
     if #collectedInfo > 0 then
         local fullText = table.concat(collectedInfo, "\n")
-        infoFrame.text:SetText(fullText)
+        infoText:SetText(fullText)
+        
+        -- Ajuste dynamiquement la hauteur de 'content' en fonction du texte
+        local textHeight = infoText:GetStringHeight()
+        content:SetHeight(textHeight + 5)  -- +5 px de marge, ajustez selon besoin
 
-        -- Ajustement dynamique de la taille du contenu
-        infoFrame.content:SetHeight(infoFrame.text:GetStringHeight() + 20)
+        -- Remet le scroll en haut
+        scrollFrame:SetVerticalScroll(0)
 
-        -- Scroll en haut par défaut
-        infoFrame.scrollFrame:SetVerticalScroll(0)
-
-        infoFrame:Show()
-        print("[DEBUG] Capture terminée. Affichage dans la fenêtre.")
+        print("[DEBUG] Capture terminée. Affichage dans la page.")
     else
         print("[DEBUG] Fin de capture mais aucune info capturée.")
     end
 end
 
+-- Bouton cumulé : envoie la commande .pinfo et déclenche la capture
+local btnCapturePinfo = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
+btnCapturePinfo:SetSize(180, 24)
+btnCapturePinfo:SetPoint("TOPLEFT", page7Title, "TOPLEFT", 0, -30)
+btnCapturePinfo:SetText("Advanced .Pinfo")
+btnCapturePinfo:SetScript("OnClick", function()
+    SendChatMessage(".pinfo", "SAY")
+    capturingPinfo = true
+    collectedInfo = {}  -- réinitialise la capture
+    if captureTimer then captureTimer:Cancel() end
+    captureTimer = C_Timer.NewTimer(1, FinishCapture)
+    print("[DEBUG] .pinfo envoyé, capture activée")
+end)
+
+-- Frame pour capturer les événements CHAT_MSG_SYSTEM
+local captureFrame = CreateFrame("Frame")
+captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 captureFrame:SetScript("OnEvent", function(self, event, msg)
     if not capturingPinfo then return end
-
+    
     print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
+    
+local function DebugStringBytes(str)
+    print("=== Début DebugStringBytes ===")
+    for i = 1, #str do
+        local c = str:sub(i, i)
+        print(i, c, string.byte(c))
+    end
+    print("=== Fin DebugStringBytes ===")
+end
 
-    -- Détection du début de la capture
-    if msg:find("Player") and msg:find("guid") then
-        isCapturingNow = true
-        wipe(collectedInfo)
-        table.insert(collectedInfo, msg)
+DebugStringBytes(msg)
+
+-- Exemple de nettoyage
+local cleanMsg = msg
+-- Retire les codes couleur, liens, textures, etc. (optionnel)
+cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "")
+cleanMsg = cleanMsg:gsub("|r", "")
+cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
+cleanMsg = cleanMsg:gsub("|T.-|t", "")
+
+-- Retire spécifiquement le caractère U+2502 (box drawing vertical)
+--cleanMsg = cleanMsg:gsub("\226\148\130", "")
+cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
+
+    -- Détection du début de la capture (pinfo) s'il y a "Player" et "guid"
+    if cleanMsg:find("Player") and cleanMsg:find("guid") then
+        collectedInfo = {}  -- démarre une nouvelle capture
+        table.insert(collectedInfo, cleanMsg)
         print("[DEBUG] Début de capture détecté.")
-
         if captureTimer then captureTimer:Cancel() end
         captureTimer = C_Timer.NewTimer(1, FinishCapture)
         return
     end
 
-    -- Messages suivants
-    if isCapturingNow then
-        table.insert(collectedInfo, msg)
-        print("[DEBUG] Ajouté à la capture : " .. msg)
-
-        if captureTimer then captureTimer:Cancel() end
-        captureTimer = C_Timer.NewTimer(1, FinishCapture)
-    end
+    table.insert(collectedInfo, cleanMsg)
+    print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
+    if captureTimer then captureTimer:Cancel() end
+    captureTimer = C_Timer.NewTimer(1, FinishCapture)
 end)
-
-
-
 
     -- Ajoutez d'autres boutons de la page 7…	
      ------------------------------------------------------------------------------
@@ -1624,15 +1622,20 @@ end)
     ------------------------------------------------------------------------------
     -- Bouton Back final (commun aux pages)
     ------------------------------------------------------------------------------
-    local btnBackFinal = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
-    btnBackFinal:SetPoint("TOPRIGHT", account, "TOPRIGHT", 0, -10)
+    local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnBackFinal:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -10)
     btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
+    -- On augmente le niveau pour qu'il apparaisse au-dessus des pages
+    btnBackFinal:SetFrameLevel(panel:GetFrameLevel() + 10)
+    -- ou alternativement : btnBackFinal:SetFrameStrata("HIGH")
+    
     btnBackFinal:SetScript("OnClick", function()
-        account:Hide()
+        panel:Hide()
         TrinityAdmin:ShowMainMenu()
     end)
 
     self.panel = panel
+	self.pages = pages
 end
