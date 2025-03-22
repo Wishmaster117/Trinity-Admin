@@ -8,11 +8,15 @@
 idées:
 
 Pour npc show loot, afficher les loots dans une fenetre séparée
-Pour npc info il faut trier les données a afficher.gobject info il faut trier les données a afficher et creer un builder pour bouger l'objet
+Pour npc info il faut trier les données a afficher.gobject info il faut trier les données a afficher et creer un builder pour bouger l objet
 	
+	Amettre dans le panneau GM:
 	
-	
+	('dev', 'Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.'),
 	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'), --> Mettre dans le panneau GM
+		('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
+	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
+	('gmnotify', 'Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM\'s.'),
 	
 	
 	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
@@ -124,7 +128,7 @@ Pour npc info il faut trier les données a afficher.gobject info il faut trier l
 	('deserter instance', 'Syntax: '),
 	('deserter instance add', 'Syntax: .deserter instance add $time \n\n Adds the instance deserter debuff to your target with $time duration.'),
 	('deserter instance remove', 'Syntax: .deserter instance remove \n\n Removes the instance deserter debuff from your target.'),
-	('dev', 'Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.'),
+
 	
 	('disable', 'Syntax: disable $subcommand\n Type .disable to see a list of possible subcommands\n or .help disable $subcommand to see info on the subcommand.'),
 	('disable add', 'Syntax: '),
@@ -155,9 +159,38 @@ Pour npc info il faut trier les données a afficher.gobject info il faut trier l
 	
 
 	
-	('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
-	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
-	('gmnotify', 'Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM\'s.'),
+	Dans ce code existant, il fait m'ajouter la pagination, dans la page 1 on garde les fonctions déjà présentes: world teleportation et Special teleportations.
+	Dans la page 2 il me faut ces fonctions:
+	pour la fonction : go xyz, il me faut 5 champs de sasisie avec des textes par defaut : X, Y, Z, MapID, O, puis un bouton "Go" quand on clique sur ce bouton on envoi la commande Syntax: .go xyz "Val de X" "Val de Y" "Val de Z" "Val de Map ID" "Val de O", sachant de le champ O n'est pas obligatoirs, ce bouton aura ce tooltip : Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.
+    
+	En dessous, pour la fonction "go offset" il me faudra 4 champs de saisie avec les textes par defaut respectifs:  dForward, dSideways, dZ, dO puis à coté un bouton "Go" quand on clique sur ce bouton on envoi la commande : go offset et la valeur des 4 champs separées par un espace, sachamp que seul le premier champ est obligatoire et qu'il ne peut pas y'avoir un champ avec le texte par defaut entre deux champs modifiés,
+	par exemple 6 dSideways 3 devra donner une erreur. et ce bouton aura pour tooltip: Syntax: .go offset [<dForward> [<dSideways> [<dZ [<dO>]]]]\nTeleport yourself by the specified amount relative to your current position and orientation.
+	
+	En dessous il me faut 3 champs de saisie avec un menu dropdown avec les options suivantes:
+	"go zonexy" pour cette fonction quand elle est choisie dans la dropdown, les textes des box seront respectivement: X, Y, Zone. Zone ne sera pas obligatoire, quand on cliquera sur le bouton d'action, on executera la commande : .go zonexy "Val de X" "Val de Y" "Val de zone" le tooltip a afficher sur le bouton sera: Syntax: .go zonexy <x> <y> [<zone>]\nTeleport yourself to the given local (x,y) position in the specified (or current) zone.
+	"go grid" pour cette fonction quand elle est choisie dans la dropdown, les textes des box seront respectivement: gridX, gridY, mapId. mapId ne sera pas obligatoire, quand on cliquera sur le bouton d'action, on executera la commande : .go grid "Val de gridX" "Val de gridY" "Val de mapId" le tooltip a afficher sur le bouton sera : Syntax: .go grid <gridX> <gridY> [<mapId>]\nTeleport yourself to center of grid at the provided indices in specified (or current) map.
+    apres le menu déroulant il me faudra un bouton d'action appellé "Go"
+	
+	Il me faudra un champ de saisie avec un menu derourant, suivi d'un bouton nommé "Go". Les options du dropdown seront les suivantes:
+	go areatrigger, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "ArreaTriggerID", quand on cliquera sur le bouton on executera la fonction: .go areatrigger "la valeur de areatriggerId", le tooltip a afficher sera: Syntax: .go areatrigger <areatriggerId>\nTeleport yourself to the specified areatrigger\'s location.\nNote that you may end up at the trigger\'s target location if it is a teleport trigger.
+	go boss, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Boss Name", quand on cliquera sur le bouton on executera la fonction: .go boss "la valeur de Boss Name", le tooltip a afficher sera:Syntax: .go boss <part(s) of name>\nTeleport yourself to the dungeon boss whose name and/or script name best matches the specified search string(s).
+	go bugticket, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "TicketId", quand on cliquera sur le bouton on executera la fonction: .go bugticket "la valeur de ticketId", le tooltip a afficher sera: Syntax: .go bugticket <ticketId>\nTeleport yourself to the location at which the specified bug ticket was created.
+	go complaintticket, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "TicketId", quand on cliquera sur le bouton on executera la fonction: .go complaintticket "la valeur de ticketId", le tooltip a afficher sera: Syntax: .go complaintticket <ticketId>\nTeleport yourself to the location at which the specified complaint ticket was created.
+	go creature, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "SpawnID", quand on cliquera sur le bouton on executera la fonction: .go creature"la valeur de spawnId", le tooltip a afficher sera: Syntax: .go creature <spawnId>\nTeleport yourself to the creature spawn with the specified spawn ID.
+	go creature id, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Creature ID", quand on cliquera sur le bouton on executera la fonction: .go creature id "la valeur de creatureId", le tooltip a afficher sera: Syntax: .go creature id <creatureId>\nTeleport yourself to the first spawn point for the specified creature ID.\nIf multiple spawn points for the creature exist, teleport to the first one found.
+	go gameobject, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "SpawnID", quand on cliquera sur le bouton on executera la fonction: .go gameobject "la valeur de spawnId", le tooltip a afficher sera: Syntax: .go gameobject <spawnId>\nTeleport yourself to the gameobject spawn with the specified spawn ID.
+	go gameobject id, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Gobject ID", quand on cliquera sur le bouton on executera la fonction: .go gameobject id "la valeur de goId", le tooltip a afficher sera: Syntax: .go gameobject id <goId>\nTeleport yourself to the first spawn point for the specified gameobject ID.\nIf multiple spawn points for the gameobject exist, teleport to the first one found.
+	go graveyard, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Graveyard ID", quand on cliquera sur le bouton on executera la fonction: .go graveyard "la valeur de graveyardId", le tooltip a afficher sera: Syntax: .go graveyard <graveyardId>\nTeleport yourself to the graveyard with the specified graveyard ID.
+	go instance, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Instance Name", quand on cliquera sur le bouton on executera la fonction: .go instance "la valeur de Instace name", le tooltip a afficher sera: Syntax: .go instance <part(s) of name>\nTeleport yourself to the instance whose name and/or script name best matches the specified search string(s).
+	go quest, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Quest ID", quand on cliquera sur le bouton on executera la fonction: .go quest "la valeur de quest_id", le tooltip a afficher sera: Syntax: .go quest #quest_id\r\n\r\nTeleport your character to first quest poi with id #quest_id.
+	go suggestionticket, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "TicketId" , quand on cliquera sur le bouton on executera la fonction: .go suggestionticket "la valeur de ticketId", le tooltip a afficher sera: Syntax: .go suggestionticket <ticketId>\nTeleport yourself to the location at which the specified suggestion ticket was created.
+	go taxinode, pour cette fonction quand elle est choisie, le texte par defaut du champ de saisie sera: "Node ID", quand on cliquera sur le bouton on executera la fonction: .go taxinode "la valeur de nodeId", le tooltip a afficher sera: Syntax: .go taxinode <nodeId>\nTeleport yourself to the specified taxi node.
+	
+	
+	('go xyz', 'Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.'),
+	('go zonexy', 'Syntax: .go zonexy <x> <y> [<zone>]\nTeleport yourself to the given local (x,y) position in the specified (or current) zone.'),
+	('go grid', 'Syntax: .go grid <gridX> <gridY> [<mapId>]\nTeleport yourself to center of grid at the provided indices in specified (or current) map.'),
+	('go offset', 'Syntax: .go offset [<dForward> [<dSideways> [<dZ [<dO>]]]]\nTeleport yourself by the specified amount relative to your current position and orientation.'),
 
 	('go areatrigger', 'Syntax: .go areatrigger <areatriggerId>\nTeleport yourself to the specified areatrigger\'s location.\nNote that you may end up at the trigger\'s target location if it is a teleport trigger.'),
 	('go boss', 'Syntax: .go boss <part(s) of name>\nTeleport yourself to the dungeon boss whose name and/or script name best matches the specified search string(s).'),
@@ -168,14 +201,11 @@ Pour npc info il faut trier les données a afficher.gobject info il faut trier l
 	('go gameobject', 'Syntax: .go gameobject <spawnId>\nTeleport yourself to the gameobject spawn with the specified spawn ID.'),
 	('go gameobject id', 'Syntax: .go gameobject id <goId>\nTeleport yourself to the first spawn point for the specified gameobject ID.\nIf multiple spawn points for the gameobject exist, teleport to the first one found.'),
 	('go graveyard', 'Syntax: .go graveyard <graveyardId>\nTeleport yourself to the graveyard with the specified graveyard ID.'),
-	('go grid', 'Syntax: .go grid <gridX> <gridY> [<mapId>]\nTeleport yourself to center of grid at the provided indices in specified (or current) map.'),
 	('go instance', 'Syntax: .go instance <part(s) of name>\nTeleport yourself to the instance whose name and/or script name best matches the specified search string(s).'),
-	('go offset', 'Syntax: .go offset [<dForward> [<dSideways> [<dZ [<dO>]]]]\nTeleport yourself by the specified amount relative to your current position and orientation.'),
 	('go quest', 'Syntax: .go quest #quest_id\r\n\r\nTeleport your character to first quest poi with id #quest_id.'),
 	('go suggestionticket', 'Syntax: .go suggestionticket <ticketId>\nTeleport yourself to the location at which the specified suggestion ticket was created.'),
 	('go taxinode', 'Syntax: .go taxinode <nodeId>\nTeleport yourself to the specified taxi node.'),
-	('go xyz', 'Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.'),
-	('go zonexy', 'Syntax: .go zonexy <x> <y> [<zone>]\nTeleport yourself to the given local (x,y) position in the specified (or current) zone.'),
+	
 	
 	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
 	
