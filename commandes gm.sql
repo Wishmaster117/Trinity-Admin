@@ -9,23 +9,7 @@ idées:
 
 Pour npc show loot, afficher les loots dans une fenetre séparée
 Pour npc info il faut trier les données a afficher.gobject info il faut trier les données a afficher et creer un builder pour bouger l'objet
-		
-	('ahbot', 'Syntax: ahbot $subcommand\n Type .ahbot to see a list of possible subcommands\n or .help ahbot $subcommand to see info on the subcommand.'),
-	('ahbot items', 'Syntax: .ahbot items $GrayItems $WhiteItems $GreenItems $BlueItems $PurpleItems $OrangeItems $YellowItems\r\n\r\nSet amount of each items color be selled on auction.'),
-	('ahbot items blue', 'Syntax: .ahbot items blue $BlueItems\r\n\r\nSet amount of Blue color items be selled on auction.'),
-	('ahbot items gray', 'Syntax: .ahbot items gray $GrayItems\r\n\r\nSet amount of Gray color items be selled on auction.'),
-	('ahbot items green', 'Syntax: .ahbot items green $GreenItems\r\n\r\nSet amount of Green color items be selled on auction.'),
-	('ahbot items orange', 'Syntax: .ahbot items orange $OrangeItems\r\n\r\nSet amount of Orange color items be selled on auction.'),
-	('ahbot items purple', 'Syntax: .ahbot items purple $PurpleItems\r\n\r\nSet amount of Purple color items be selled on auction.'),
-	('ahbot items white', 'Syntax: .ahbot items white $WhiteItems\r\n\r\nSet amount of White color items be selled on auction.'),
-	('ahbot items yellow', 'Syntax: .ahbot items yellow $YellowItems\r\n\r\nSet amount of Yellow color items be selled on auction.'),
-	('ahbot ratio', 'Syntax: .ahbot ratio $allianceratio $horderatio $neutralratio\r\n\r\nSet ratio of items in 3 auctions house.'),
-	('ahbot ratio alliance', 'Syntax: .ahbot ratio alliance $allianceratio\r\n\r\nSet ratio of items in alliance auction house.'),
-	('ahbot ratio horde', 'Syntax: .ahbot ratio horde $horderatio\r\n\r\nSet ratio of items in horde auction house.'),
-	('ahbot ratio neutral', 'Syntax: .ahbot ratio neutral $neutralratio\r\n\r\nSet ratio of items in $neutral auction house.'),
-	('ahbot rebuild', 'Syntax: .ahbot rebuild [all]\r\n\r\nExpire all actual auction of ahbot except bided by player. Binded auctions included to expire if "all" option used. Ahbot re-fill auctions base at current settings then.'),
-	('ahbot reload', 'Syntax: .ahbot reload\r\n\r\nReload AHBot settings from configuration file.'),
-	('ahbot status', 'Syntax: .ahbot status [all]\r\n\r\nShow current ahbot state data in short form, and with "all" with details.'),
+	
 	
 	
 	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'), --> Mettre dans le panneau GM
