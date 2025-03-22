@@ -422,31 +422,8 @@ quand on clique sur le bouton UnFreeze on envoi la commande .unfreeze [valeur de
 	('reset stats', 'Syntax: .reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
 	('reset talents', 'Syntax: .reset talents [Playername]\r\n  Removes all talents of the targeted player or pet or named player. Playername can be name of offline character. With player talents also will be reset talents for all character\'s pets if any.'),
 	
-	('pinfo', 'Syntax: .pinfo [$player_name/#GUID]\r\n\r\nOutput account information and guild information for selected player or player find by $player_name or #GUID.'), -> Creer une page speciale avec des champs pour afficher les infos "Player advances Infos"
+	('pinfo', 'Syntax: .pinfo [$player_name/#GUID]\r\n\r\nOutput account information and guild information for selected player or player find by $player_name or #GUID.'), -> Creer une page speciale avec des champs pour afficher les infos "Player advances Infos" A finaliser
 
-
-
-Pour ma page 4 ,
-Il me faut maintenant un champ de saisi avec le texte par defaut "Enter Char Name or Guid",
-à côté un champ de saisi avec le texte par defaut "New Name" (ce champ ne sera pas obligatoire lors du lancement de l'execution de la commande),
-à côté un champ de saisi avec le texte par defaut "New Account" (ce champ ne sera pas obligatoire lors du lancement de l'execution de la commande),
-Puis un bouton "Restore" qui aura le tooltip suivant : "Syntax: .character deleted restore #guid|$name [$newname] [#new account]\r\nRestores deleted characters.\r\nIf $name is supplied, only characters with that string in their name will be restored, if $guid is supplied, only the character with that GUID will be restored.\r\nIf $newname is set, the character will be restored with that name instead of the original one. If #newaccount is set, the character will be restored to specific account character list. This works only with one character!"
-Quand on cliquera sur le bouton Restore on enverra la commande dans le SAY : .character deleted restore "valeur de guid|name" "newname" (non obligatoire) "new account" (non obligatoire)
- 
-
-Bien évidement il faut que le bouton pour réinitialiser le champ de saisie soit opérationnel et si le champ de saisie New Name est vide ou a le texte par defaut, on envoi une erreur.
-
-Pourriez vous me donner le code pour cette fonctionalité?
-	
-
-	('pdump', 'Syntax: .pdump $subcommand\nType .pdump to see the list of possible subcommands or .help pdump $subcommand to see info on subcommands'),
-	('pdump copy', 'Syntax: .pdump copy $playerNameOrGUID $account [$newname] [$newguid]\nCopy character with name/guid $playerNameOrGUID into character list of $account with $newname, with first free or $newguid guid.'),
-	('pdump load', 'Syntax: .pdump load $filename $account [$newname] [$newguid]\r\nLoad character dump from dump file into character list of $account with saved or $newname, with saved (or first free) or $newguid guid.'),
-	('pdump write', 'Syntax: .pdump write $filename $playerNameOrGUID\r\nWrite character dump with name/guid $playerNameOrGUID to file $filename.'),
-
-	
-
-	
 	
 	
 	
