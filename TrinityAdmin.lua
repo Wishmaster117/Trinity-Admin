@@ -37,6 +37,8 @@ local GameObjectsModule = TrinityAdmin:NewModule("GameObjects") -- Module gestio
 local AddLearnModule = TrinityAdmin:NewModule("AddLearn") -- Module pour ajouter et apprendre
 local AdvancedItemsModule = TrinityAdmin:NewModule("AdvancedItems") -- Advanced items
 local ModuleCharacterModule = TrinityAdmin:NewModule("ModuleCharacter") -- Character Module
+local WaypointsModule = TrinityAdmin:NewModule("Waypoints")
+local AhBotModule = TrinityAdmin:NewModule("AhBot")
 
 
 
@@ -86,6 +88,14 @@ end
 
 function TrinityAdmin_ShowModuleCharacterPanel()
     ModuleCharacterModule:ShowModuleCharacterPanel()
+end
+
+function TrinityAdmin_ShowWaypointsPanel()
+    WaypointsModule:ShowWaypointsPanel()
+end
+
+function TrinityAdmin_ShowAhBotPanel()
+    AhBotModule:ShowAhBotPanel()
 end
 
 ------------------------------------------------------------
@@ -161,6 +171,8 @@ function TrinityAdmin:ShowMainMenu()
     if AddLearnModule.panel then AddLearnModule.panel:Hide() end
 	if AdvancedItemsModule.panel then AdvancedItemsModule.panel:Hide() end
 	if ModuleCharacterModule.panel then ModuleCharacterModule.panel:Hide() end
+	if WaypointsModule.panel then WaypointsModule.panel:Hide() end
+	if AhBotModule.panel then AhBotModule.panel:Hide() end
 	
 	
 
@@ -175,6 +187,8 @@ function TrinityAdmin:ShowMainMenu()
     TrinityAdminMainFrameAddLearnButton:Show()
 	TrinityAdminMainFrameAdvancedItemsButton:Show()
 	TrinityAdminMainFrameModuleCharacterButton:Show()
+	TrinityAdminMainFrameWaypointsButton:Show()
+	TrinityAdminMainFrameAhBotButton:Show()
 	
 
 	TrinityAdminMainFrame:Show()
@@ -195,6 +209,8 @@ function TrinityAdmin:HideMainMenu()
     TrinityAdminMainFrameAddLearnButton:Hide()
 	TrinityAdminMainFrameAdvancedItemsButton:Hide()
 	TrinityAdminMainFrameModuleCharacterButton:Hide()
+	TrinityAdminMainFrameWaypointsButton:Hide()
+	TrinityAdminMainFrameAhBotButton:Hide()
 	
     TrinityAdminMainFrame:Show()
 end

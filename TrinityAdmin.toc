@@ -59,3 +59,5 @@ GameObjects.lua
 AddLearn.lua
 AdvancedItems.lua
 ModuleCharacters.lua
+Waypoints.lua
+AhBot.lua

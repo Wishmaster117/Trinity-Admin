@@ -238,6 +238,42 @@
 				</OnClick>
 			</Scripts>
 			</Button>
+			<!-- Bouton Module Waypoints -->
+			<Button name="$parentWaypointsButton" inherits="UIPanelButtonTemplate" text="Waypoints Module">
+			<Size>
+				<AbsDimension x="135" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentServerAdminButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="0" y="-45"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowWaypointsPanel()
+				</OnClick>
+			</Scripts>
+			</Button>
+			<!-- Bouton Module AhBot -->
+			<Button name="$parentAhBotButton" inherits="UIPanelButtonTemplate" text="AH Bot Module">
+			<Size>
+				<AbsDimension x="135" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentWaypointsButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowAhBotPanel()
+				</OnClick>
+			</Scripts>
+			</Button>			
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>
@@ -258,33 +294,32 @@
 
     <!-- Nouveau template pour nos dropdowns : TrinityAdminDropdownTemplate -->
     <Frame name="TrinityAdminDropdownTemplate" virtual="true" inherits="UIDropDownMenuTemplate">
-    <Scripts>
-        <OnLoad>
-			-- Largeur
-			UIDropDownMenu_SetWidth(self, 110)
-			UIDropDownMenu_SetDisplayMode(self, "MENU_WITH_BORDERS")
-			UIDropDownMenu_JustifyText(self, "LEFT")
-		
-			-- On récupère le bouton
-			local btn = _G[self:GetName().."Button"]
-			if btn then
-			    -- local btn = _G[self:GetName().."Button"]
-				local fs = btn:GetFontString()
-				if fs then
-					fs:SetFontObject("GameFontHighlightSmall") 
-					-- ou, si vous voulez forcer explicitement la couleur
-					fs:SetTextColor(1,1,1,1) -- (blanc)
-				end
-			end
-		
-			-- (Optionnel) Masquer Left, Middle, Right
-			local left  = _G[self:GetName().."Left"]
-			local mid   = _G[self:GetName().."Middle"]
-			local right = _G[self:GetName().."Right"]
-			if left  then left:Hide()  end
-			if mid   then mid:Hide()   end
-			if right then right:Hide() end
-		</OnLoad>
+        <Scripts>
+            <OnLoad>
+                -- Largeur
+                UIDropDownMenu_SetWidth(self, 110)
+                UIDropDownMenu_SetDisplayMode(self, "MENU_WITH_BORDERS")
+                UIDropDownMenu_JustifyText(self, "LEFT")
+            
+                -- On récupère le bouton en s'assurant que le nom n'est pas nil
+                local name = self:GetName() or ""
+                local btn = _G[name.."Button"]
+                if btn then
+                    local fs = btn:GetFontString()
+                    if fs then
+                        fs:SetFontObject("GameFontHighlightSmall")
+                        fs:SetTextColor(1,1,1,1)
+                    end
+                end
+            
+                -- (Optionnel) Masquer Left, Middle, Right
+                local left  = _G[name.."Left"]
+                local mid   = _G[name.."Middle"]
+                local right = _G[name.."Right"]
+                if left  then left:Hide()  end
+                if mid   then mid:Hide()   end
+                if right then right:Hide() end
+            </OnLoad>
     </Scripts>
 	</Frame>
 </Ui>
