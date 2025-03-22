@@ -1473,8 +1473,320 @@ local page6Title = commandsFramePage6:CreateFontString(nil, "OVERLAY", "GameFont
 page6Title:SetPoint("TOPLEFT", commandsFramePage6, "TOPLEFT", 0, 0)
 page6Title:SetText("Player Dumps")
 
-    -- Ajoutez d'autres boutons de la page 6…
+-- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
+local function CreateServerButtonPage5(name, text, tooltip, cmd)
+    local btn = CreateFrame("Button", name, commandsFramePage6, "UIPanelButtonTemplate")
+    btn:SetSize(150, 22)
+    btn:SetText(text)
+    btn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
+        GameTooltip:Show()
+    end)
+    btn:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
+    btn:SetScript("OnClick", function(self)
+        local targetName = UnitName("target")
+        local finalCmd
 
+        if targetName then
+            finalCmd = cmd .. " " .. targetName
+        else
+            finalCmd = cmd -- sans cible (appliqué au GM lui-même)
+        end
+
+        SendChatMessage(finalCmd, "SAY")
+        print("Commande envoyée: " .. finalCmd)
+    end)
+    return btn
+end
+
+-- Fonction polyvalente pour réinitialiser les champs de saisie
+local function ResetInputs()
+    for _, input in ipairs(inputFields) do
+        if input:GetText() ~= input.defaultText then
+            input:SetText(input.defaultText)
+        end
+    end
+end
+
+----------------------------
+-- pdumpcopy
+----------------------------
+-- Champ de saisie "Name"
+local pdumpcopyNameInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+pdumpcopyNameInput:SetSize(150, 22)
+pdumpcopyNameInput:SetPoint("TOPLEFT", page6Title, "BOTTOMLEFT", 0, -20)
+pdumpcopyNameInput:SetAutoFocus(false)
+pdumpcopyNameInput.defaultText = "Player NameOrGUID"
+pdumpcopyNameInput:SetText(pdumpcopyNameInput.defaultText)
+pdumpcopyNameInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+pdumpcopyNameInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, pdumpcopyNameInput)
+
+-- Champ de saisie "Account"
+local accountInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+accountInput:SetSize(70, 22)
+accountInput:SetPoint("LEFT", pdumpcopyNameInput, "RIGHT", 10, 0)
+accountInput:SetAutoFocus(false)
+accountInput.defaultText = "Account"
+accountInput:SetText(accountInput.defaultText)
+accountInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+accountInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, accountInput)
+
+-- Champ de saisie "newname"
+local newnameInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+newnameInput:SetSize(120, 22)
+newnameInput:SetPoint("LEFT", accountInput, "RIGHT", 10, 0)
+newnameInput:SetAutoFocus(false)
+newnameInput.defaultText = "New Name"
+newnameInput:SetText(newnameInput.defaultText)
+newnameInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+newnameInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, newnameInput)
+
+-- Champ de saisie "newguid"
+local newguidInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+newguidInput:SetSize(70, 22)
+newguidInput:SetPoint("LEFT", newnameInput, "RIGHT", 10, 0)
+newguidInput:SetAutoFocus(false)
+newguidInput.defaultText = "New Guid"
+newguidInput:SetText(newguidInput.defaultText)
+newguidInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+newguidInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, newguidInput)
+
+-- Bouton "Rename"
+local btnDumpCopy = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
+btnDumpCopy:SetSize(70, 22)
+btnDumpCopy:SetText("Dump")
+btnDumpCopy:SetPoint("LEFT", newguidInput, "RIGHT", 10, 0)
+btnDumpCopy:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Syntax: .pdump copy $playerNameOrGUID $account [$newname] [$newguid]\nCopy character with name/guid $playerNameOrGUID into character list of $account with $newname, with first free or $newguid guid.", 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnDumpCopy:SetScript("OnLeave", function() GameTooltip:Hide() end)
+btnDumpCopy:SetScript("OnClick", function()
+    local nameValue    = pdumpcopyNameInput:GetText()
+    local accountValue = accountInput:GetText()
+    local newNameValue = newnameInput:GetText()
+    local newGuidValue = newguidInput:GetText()
+
+    -- Vérification des champs obligatoires
+    if nameValue == "" or nameValue == pdumpcopyNameInput.defaultText or
+       accountValue == "" or accountValue == accountInput.defaultText or
+       newNameValue == "" or newNameValue == newnameInput.defaultText then
+        print("Les champs Nom ou GUID, Account et New Name sont obligatoires. Veuillez les renseigner.")
+        return
+    end
+
+    -- Construction de la commande
+    local cmd = ".pdump copy " .. nameValue .. " " .. accountValue .. " " .. newNameValue
+    -- Ajout du champ newguid s'il est renseigné (différent de vide ou du texte par défaut)
+    if newGuidValue ~= "" and newGuidValue ~= newguidInput.defaultText then
+        cmd = cmd .. " " .. newGuidValue
+    end
+
+    SendChatMessage(cmd, "SAY")
+    print("Commande envoyée : " .. cmd)
+end)
+
+----------------------------
+-- pdumpload
+----------------------------
+-- Champ de saisie "Filename"
+local pdumploadFileInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+pdumploadFileInput:SetSize(150, 22)
+pdumploadFileInput:SetPoint("TOPLEFT", pdumpcopyNameInput, "BOTTOMLEFT", 0, -20)
+pdumploadFileInput:SetAutoFocus(false)
+pdumploadFileInput.defaultText = "Enter Filename"
+pdumploadFileInput:SetText(pdumploadFileInput.defaultText)
+pdumploadFileInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+pdumploadFileInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, pdumploadFileInput)
+
+-- Champ de saisie "Account"
+local accountLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+accountLoadInput:SetSize(70, 22)
+accountLoadInput:SetPoint("LEFT", pdumploadFileInput, "RIGHT", 10, 0)
+accountLoadInput:SetAutoFocus(false)
+accountLoadInput.defaultText = "Account"
+accountLoadInput:SetText(accountLoadInput.defaultText)
+accountLoadInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+accountLoadInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, accountLoadInput)
+
+-- Champ de saisie "newname"
+local newnameLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+newnameLoadInput:SetSize(120, 22)
+newnameLoadInput:SetPoint("LEFT", accountLoadInput, "RIGHT", 10, 0)
+newnameLoadInput:SetAutoFocus(false)
+newnameLoadInput.defaultText = "New Name"
+newnameLoadInput:SetText(newnameLoadInput.defaultText)
+newnameLoadInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+newnameLoadInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, newnameLoadInput)
+
+-- Champ de saisie "newguid"
+local newguidLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+newguidLoadInput:SetSize(70, 22)
+newguidLoadInput:SetPoint("LEFT", newnameLoadInput, "RIGHT", 10, 0)
+newguidLoadInput:SetAutoFocus(false)
+newguidLoadInput.defaultText = "New Guid"
+newguidLoadInput:SetText(newguidLoadInput.defaultText)
+newguidLoadInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+newguidLoadInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, newguidLoadInput)
+
+-- Bouton "Load"
+local btnDumpLoad = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
+btnDumpLoad:SetSize(70, 22)
+btnDumpLoad:SetText("Load")
+btnDumpLoad:SetPoint("LEFT", newguidLoadInput, "RIGHT", 10, 0)
+btnDumpLoad:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Syntax: .pdump load $filename $account [$newname] [$newguid]\r\nLoad character dump from dump file into character list of $account with saved or $newname, with saved (or first free) or $newguid guid.", 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnDumpLoad:SetScript("OnLeave", function() GameTooltip:Hide() end)
+btnDumpLoad:SetScript("OnClick", function()
+    local nameValue    = pdumploadFileInput:GetText()
+    local accountValue = accountLoadInput:GetText()
+    local newNameValue = newnameLoadInput:GetText()
+    local newGuidValue = newguidLoadInput:GetText()
+
+    -- Vérification des champs obligatoires
+    if nameValue == "" or nameValue == pdumploadFileInput.defaultText or
+       accountValue == "" or accountValue == accountLoadInput.defaultText or
+       newNameValue == "" or newNameValue == newnameLoadInput.defaultText then
+        print("Les champs Filename, Account et New Name sont obligatoires. Veuillez les renseigner.")
+        return
+    end
+
+    -- Construction de la commande
+    local cmd = ".pdump copy " .. nameValue .. " " .. accountValue .. " " .. newNameValue
+    -- Ajout du champ newguid s'il est renseigné (différent de vide ou du texte par défaut)
+    if newGuidValue ~= "" and newGuidValue ~= newguidLoadInput.defaultText then
+        cmd = cmd .. " " .. newGuidValue
+    end
+
+    SendChatMessage(cmd, "SAY")
+    print("Commande envoyée : " .. cmd)
+end)
+
+----------------------------
+-- pdumpwrite
+----------------------------
+-- Champ de saisie "Filename"
+local pdumpwriteFileInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+pdumpwriteFileInput:SetSize(120, 22)
+pdumpwriteFileInput:SetPoint("TOPLEFT", pdumploadFileInput, "BOTTOMLEFT", 0, -20)
+pdumpwriteFileInput:SetAutoFocus(false)
+pdumpwriteFileInput.defaultText = "Enter Filename"
+pdumpwriteFileInput:SetText(pdumpwriteFileInput.defaultText)
+pdumpwriteFileInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+pdumpwriteFileInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, pdumpwriteFileInput)
+
+-- Champ de saisie "Name"
+local playerNameWriteInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
+playerNameWriteInput:SetSize(150, 22)
+playerNameWriteInput:SetPoint("LEFT", pdumpwriteFileInput, "RIGHT", 10, 0)
+playerNameWriteInput:SetAutoFocus(false)
+playerNameWriteInput.defaultText = "PlayerName Or GUID"
+playerNameWriteInput:SetText(playerNameWriteInput.defaultText)
+playerNameWriteInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+playerNameWriteInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+
+table.insert(inputFields, playerNameWriteInput)
+
+-- Bouton "Write"
+local btnDumpWrite = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
+btnDumpWrite:SetSize(70, 22)
+btnDumpWrite:SetText("Write")
+btnDumpWrite:SetPoint("LEFT", playerNameWriteInput, "RIGHT", 10, 0)
+btnDumpWrite:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Syntax: .pdump write $filename $playerNameOrGUID\r\nWrite character dump with name/guid $playerNameOrGUID to file $filename.", 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnDumpWrite:SetScript("OnLeave", function() GameTooltip:Hide() end)
+btnDumpWrite:SetScript("OnClick", function()
+    local nameValueWrite    = pdumpwriteFileInput:GetText()
+    local accountValueWrite = playerNameWriteInput:GetText()
+
+    -- Vérification des champs obligatoires
+    if nameValueWrite == "" or nameValueWrite == pdumpwriteFileInput.defaultText or
+       accountValueWrite == "" or accountValueWrite == playerNameWriteInput.defaultText then
+        print("Les champs Filename, Name or GUI sont obligatoires. Veuillez les renseigner.")
+        return
+    end
+
+    -- Construction de la commande
+    local cmd = ".pdump write " .. nameValueWrite .. " " .. accountValueWrite
+
+    SendChatMessage(cmd, "SAY")
+    print("Commande envoyée : " .. cmd)
+end)
+	
+-----------------------------
+-- Bouton reset
+----------------------------
+local btnResetInputs = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
+btnResetInputs:SetSize(100, 22)
+btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetPoint("TOPRIGHT", btnDumpWrite, "BOTTOMLEFT", 0, -15)
+btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
 -- Page 7 : Player Info Capture (.pinfo) [DEBUG MODE]
 ---------------------------------------------------------------
