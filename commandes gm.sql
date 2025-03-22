@@ -5,7 +5,10 @@
 -- HeidiSQL Version:             12.10.0.7000
 -- --------------------------------------------------------
 
+idées:
 
+Pour npc show loot, afficher les loots dans une fenetre séparée
+Pour npc info il faut trier les données a afficher.gobject info il faut trier les données a afficher et creer un builder pour bouger l'objet
 		
 	('ahbot', 'Syntax: ahbot $subcommand\n Type .ahbot to see a list of possible subcommands\n or .help ahbot $subcommand to see info on the subcommand.'),
 	('ahbot items', 'Syntax: .ahbot items $GrayItems $WhiteItems $GreenItems $BlueItems $PurpleItems $OrangeItems $YellowItems\r\n\r\nSet amount of each items color be selled on auction.'),
@@ -24,7 +27,8 @@
 	('ahbot reload', 'Syntax: .ahbot reload\r\n\r\nReload AHBot settings from configuration file.'),
 	('ahbot status', 'Syntax: .ahbot status [all]\r\n\r\nShow current ahbot state data in short form, and with "all" with details.'),
 	
-	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'),
+	
+	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'), --> Mettre dans le panneau GM
 	
 	
 	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
@@ -289,23 +293,7 @@
 	('neargrave', 'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
 	('notify', 'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
 
-	('npc add item', 'Syntax: .npc add item #itemId <#maxcount><#incrtime><#extendedcost><#bonusListIDs>\r\nAdd item #itemid to item list of selected vendor. Also optionally set max count item in vendor item list and time to item count restoring and items ExtendedCost.\r\n#bonusListIDs is a semicolon separated list of bonuses to add to item (such as Mythic/Heroic/Warforged/socket)'),
-	('npc add move', 'Syntax: .npc add move #creature_guid [#waittime]\r\n\r\nAdd your current location as a waypoint for creature with guid #creature_guid. And optional add wait time.'),
-	('npc add temp', 'Syntax: .npc add temp [loot/noloot] #entry\nAdds temporary NPC, not saved to database.\n  Specify \'loot\' to have the NPC\'s corpse stick around for some time after death, allowing it to be looted.\n  Specify \'noloot\' to have the corpse disappear immediately.'),
-	('npc despawngroup', 'Syntax: .npc despawngroup $groupId [removerespawntime]'),
-	('npc evade', 'Syntax: .npc evade [reason] [force]\nMakes the targeted NPC enter evade mode.\nDefaults to specifying EVADE_REASON_OTHER, override this by providing the reason string (ex.: .npc evade EVADE_REASON_BOUNDARY).\nSpecify \'force\' to clear any pre-existing evade state before evading - this may cause weirdness, use at your own risk.'),
-	('npc near', 'Syntax: '),
-	('npc set allowmove', 'Syntax: .npc set allowmove\r\n\r\nEnable or disable movement creatures in world. Not implemented.'),
-	('npc set data', 'Syntax: .npc set data $field $data\nSets data for the selected creature. Used for testing Scripting'),
-	('npc set movetype', 'Syntax: .npc set movetype [#creature_guid] stay/random/way [NODEL]\r\n\r\nSet for creature pointed by #creature_guid (or selected if #creature_guid not provided) movement type and move it to respawn position (if creature alive). Any existing waypoints for creature will be removed from the database if you do not use NODEL. If the creature is dead then movement type will applied at creature respawn.\r\nMake sure you use NODEL, if you want to keep the waypoints.'),
-	('npc set spawntime', 'Syntax: .npc set spawntime #time \r\n\r\nAdjust spawntime of selected creature to time.'),
-	('npc set wanderdistance', 'Syntax: .npc set wanderdistance #dist\r\n\r\nAdjust wander distance of selected creature to dist.'),
-	('npc showloot', 'Syntax: .npc showloot [all]\n\nShows the loot contained in targeted dead creature.'),
-	('npc spawngroup', 'Syntax: .npc spawngroup $groupId [ignorerespawn] [force]'),
-	('npc tame', 'Syntax: '),
-	('npc textemote', 'Syntax: .npc textemote #emoteid\r\n\r\nMake the selected creature to do textemote with an emote of id #emoteid.'),
-	('npc whisper', 'Syntax: .npc whisper #playerguid #text\r\nMake the selected npc whisper #text to  #playerguid.'),
-	('npc yell', 'Syntax: .npc yell $message\nMake selected creature yell specified message.'),
+	
 
 	
 
@@ -430,15 +418,4 @@ quand on clique sur le bouton UnFreeze on envoi la commande .unfreeze [valeur de
 	
 
 	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
-
-	
-	('wp', 'Syntax: wp $subcommand\n Type .wp to see a list of possible subcommands\n or .help wp $subcommand to see info on the subcommand.'),
-	('wp add', 'Syntax: .wp add\r\n\r\nAdd a waypoint for the selected creature at your current position.'),
-	('wp load', 'Syntax: .wp load $pathid\nLoad pathid number for selected creature. Creature must have no waypoint data.'),
-	('wp modify', 'Syntax: '),
-	('wp reload', 'Syntax: .wp reload $pathid\nLoad path changes ingame - IMPORTANT: must be applied first for new paths before .wp load #pathid '),
-	('wp show', 'Syntax: .wp show $option\nOptions:\non $pathid (or selected creature with loaded path) - Show path\nfirst $pathid (or selected creature with loaded path) - Show first waypoint in path\nlast $pathid (or selected creature with loaded path) - Show last waypoint in path\noff - Hide all paths\ninfo $selected_waypoint - Show info for selected waypoint.'),
-	('wp unload', 'Syntax: .wp unload\nUnload path for selected creature.'),
-	('wpgps', 'Syntax: .wpgps\n\nOutput current position to sql developer log as partial SQL query to be used in pathing');
-
 
