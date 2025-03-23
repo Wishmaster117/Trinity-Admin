@@ -16,11 +16,18 @@ voir les commandes .gobject
 	
 	('dev', 'Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.'),
 	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'), --> Mettre dans le panneau GM
-		('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
+	('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
 	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
 	('gmnotify', 'Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM\'s.'),
+	('nameannounce', 'Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.'),
+	('cometome', 'Syntax: .cometome\nMake selected creature come to your current location (new position not saved to DB).'),
+	('guid', 'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
+	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
 	
 	
+	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
+	
+		
 	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
 	('arena captain', 'Syntax: .arena captain #TeamID $name\n\nA command to set new captain to the team $name must be in the team'),
 	('arena create', 'Syntax: .arena create $name "arena name" #type\n\nA command to create a new Arena-team in game. #type  = [2/3/5]'),
@@ -64,7 +71,7 @@ voir les commandes .gobject
 	('cheat waterwalk', 'Syntax: .cheat waterwalk on/off\r\nSet on/off waterwalk state for selected player or self if no player selected.'),
 	
 
-	('cometome', 'Syntax: .cometome\nMake selected creature come to your current location (new position not saved to DB).'),
+	
 	('commands', 'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
 	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
 	('damage', 'Syntax: .damage $damage_amount [$school [$spellid]]\r\n\r\nApply $damage to target. If not $school and $spellid provided then this flat clean melee damage without any modifiers. If $school provided then damage modified by armor reduction (if school physical), and target absorbing modifiers and result applied as melee damage to target. If spell provided then damage modified and applied as spell damage. $spellid can be shift-link.'),
@@ -154,6 +161,7 @@ voir les commandes .gobject
 	
 	('dismount', 'Syntax: .dismount\r\n\r\nDismount you, if you are mounted.'),
 	('distance', 'Syntax: .distance [link]\r\n\r\nDisplay the distance from your character to the selected unit or given creature, player or gameobject.'),
+	
 	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
 	('event info', 'Syntax: .event info #event_id\r\nShow details about event with #event_id.'),
 	('event start', 'Syntax: .event start #event_id\r\nStart event #event_id. Set start time for event to current moment (change not saved in DB).'),
@@ -162,7 +170,6 @@ voir les commandes .gobject
 
 	
 	
-	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
 	
 	('group', 'Syntax: .group $subcommand\nType .group to see the list of possible subcommands or .help group $subcommand to see info on subcommands'),
 	('group disband', 'Syntax: .group disband [$characterName]\n\nDisbands the given character\'s group.'),
@@ -179,21 +186,14 @@ voir les commandes .gobject
 	('group set maintank', 'Syntax: .group set maintank [$characterName]\n\nToggles the given character\'s main tank flag in his raid group.'),
 	('group summon', 'Syntax: .group summon [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
 	
-	('guid', 'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
-	('guild', 'Syntax: .guild $subcommand\nType .guild to see the list of possible subcommands or .help guild $subcommand to see info on subcommands'),
-	('guild create', 'Syntax: .guild create [$GuildLeaderName] "$GuildName"\r\n\r\nCreate a guild named $GuildName with the player $GuildLeaderName (or selected) as leader.  Guild name must in quotes.'),
-	('guild delete', 'Syntax: .guild delete "$GuildName"\r\n\r\nDelete guild $GuildName. Guild name must in quotes.'),
-	('guild info', 'Shows information about target\'s guild or a given guild identifier or name.'),
-	('guild invite', 'Syntax: .guild invite [$CharacterName] "$GuildName"\r\n\r\nAdd player $CharacterName (or selected) into a guild $GuildName. Guild name must in quotes.'),
-	('guild rank', 'Syntax: .guild rank [$CharacterName] #Rank\r\n\r\nSet for player $CharacterName (or selected) rank #Rank in a guild.'),
-	('guild rename', 'Syntax: .guild rename "$GuildName" "$NewGuildName" \n\n Rename a guild named $GuildName with $NewGuildName. Guild name and new guild name must in quotes.'),
-	('guild uninvite', 'Syntax: .guild uninvite [$CharacterName]\r\n\r\nRemove player $CharacterName (or selected) from a guild.'),
+
 	
 	('help', 'Syntax: .help [$command]\r\n\r\nDisplay usage instructions for the given $command. If no $command provided show list available commands.'),
 	('hidearea', 'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
 	
 
-	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'), -> Fonction pour serveur
+	
+	
 	('instance', 'Syntax: .instance $subcommand\nType .instance to see the list of possible subcommands or .help instance $subcommand to see info on subcommands'),
 	('instance getbossstate', 'Syntax: .instance getbossstate $bossId [$Name]\r\nGets the current EncounterState for the provided boss id.\r\nIf no character name is provided, the current map will be used as target.'),
 	('instance setbossstate', 'Syntax: .instance setbossstate $bossId $encounterState [$Name]\r\nSets the EncounterState for the given boss id to a new value. EncounterStates range from 0 to 5.\r\nIf no character name is provided, the current map will be used as target.'),
@@ -202,12 +202,15 @@ voir les commandes .gobject
 	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
 	
+	-- Maintenance server
 	('lfg', 'Syntax: lfg $subcommand\n Type .lfg to see a list of possible subcommands\n or .help lfg $subcommand to see info on the subcommand.'),
 	('lfg clean', 'Syntax: .flg clean\n Cleans current queue, only for debugging purposes.'),
 	('lfg group', 'Syntax: .lfg group\n Shows information about all players in the group  (state, roles, comment, dungeons selected).'),
 	('lfg options', 'Syntax: .lfg options [new value]\n Shows current lfg options. New value is set if extra param is present.'),
 	('lfg player', 'Syntax: .lfg player\n Shows information about player (state, roles, comment, dungeons selected).'),
 	('lfg queue', 'Syntax: .lfg queue\n Shows info about current lfg queues.'),
+	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'), -> Fonction pour serveur
+	
 	
 	('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
 	
@@ -258,7 +261,7 @@ voir les commandes .gobject
 	
 
 
-	('nameannounce', 'Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.'),
+
 	('neargrave', 'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
 	('notify', 'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
 
@@ -304,7 +307,6 @@ voir les commandes .gobject
 	('send money', 'Syntax: .send money #playername "#subject" "#text" #money\r\n\r\nSend mail with money to a player. Subject and mail text must be in "".'),
 
 	
-	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
 	
 	('showarea', 'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
 	('summon', 'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),

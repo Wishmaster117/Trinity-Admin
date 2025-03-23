@@ -273,7 +273,25 @@
 				TrinityAdmin_ShowAhBotPanel()
 				</OnClick>
 			</Scripts>
-			</Button>			
+			</Button>
+			<!-- Bouton Module Guild -->
+			<Button name="$parentGuildButton" inherits="UIPanelButtonTemplate" text="Guild's Module">
+			<Size>
+				<AbsDimension x="135" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentAhBotButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowGuildPanel()
+				</OnClick>
+			</Scripts>
+			</Button>						
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

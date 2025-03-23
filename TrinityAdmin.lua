@@ -39,6 +39,7 @@ local AdvancedItemsModule = TrinityAdmin:NewModule("AdvancedItems") -- Advanced 
 local ModuleCharacterModule = TrinityAdmin:NewModule("ModuleCharacter") -- Character Module
 local WaypointsModule = TrinityAdmin:NewModule("Waypoints")
 local AhBotModule = TrinityAdmin:NewModule("AhBot")
+local GuildModule = TrinityAdmin:NewModule("Guild")
 
 
 
@@ -98,6 +99,9 @@ function TrinityAdmin_ShowAhBotPanel()
     AhBotModule:ShowAhBotPanel()
 end
 
+function TrinityAdmin_ShowGuildPanel()
+    GuildModule:ShowGuildPanel()
+end
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
@@ -173,6 +177,7 @@ function TrinityAdmin:ShowMainMenu()
 	if ModuleCharacterModule.panel then ModuleCharacterModule.panel:Hide() end
 	if WaypointsModule.panel then WaypointsModule.panel:Hide() end
 	if AhBotModule.panel then AhBotModule.panel:Hide() end
+	if GuildModule.panel then GuildModule.panel:Hide() end
 	
 	
 
@@ -189,6 +194,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameModuleCharacterButton:Show()
 	TrinityAdminMainFrameWaypointsButton:Show()
 	TrinityAdminMainFrameAhBotButton:Show()
+	TrinityAdminMainFrameGuildButton:Show()
 	
 
 	TrinityAdminMainFrame:Show()
@@ -211,6 +217,7 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameModuleCharacterButton:Hide()
 	TrinityAdminMainFrameWaypointsButton:Hide()
 	TrinityAdminMainFrameAhBotButton:Hide()
+	TrinityAdminMainFrameGuildButton:Hide()
 	
     TrinityAdminMainFrame:Show()
 end
