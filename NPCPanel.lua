@@ -605,7 +605,7 @@ end)
     ----------------------------------------------------------------------------
     local currentPage = 1
     local navPageLabel = npc:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    navPageLabel:SetPoint("BOTTOM", npc, "BOTTOM", 0, 12)
+    navPageLabel:SetPoint("BOTTOM", npc, "BOTTOM", 0, 40)
     navPageLabel:SetText("Page 1 / " .. totalPages)
 
     local function ShowPage(pageIndex)

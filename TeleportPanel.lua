@@ -21,7 +21,17 @@ function TeleportModule:CreateTeleportPanel()
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
     panel.title:SetText(TrinityAdmin_Translations["Teleport Panel"])
-
+    
+	-- Bouton Retour commun
+    local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
+    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
+    btnBack:SetScript("OnClick", function()
+        panel:Hide()
+        TrinityAdmin:ShowMainMenu()
+    end)
+	
     -------------------------------------------------------------------------
     -- On déclare ici navPageLabel (AVANT de définir ShowPage)
     -------------------------------------------------------------------------
@@ -268,8 +278,8 @@ function TeleportModule:CreateTeleportPanel()
         local yOffset = 0
         local label_page2 = page2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         --label_page2:SetPoint("TOPLEFT", 10, -10)
-		label_page2:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -5)
-        label_page2:SetText("Page 2: Extended Teleports")
+		label_page2:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -10)
+        label_page2:SetText("Extended Teleports 2")
 		
         -- A) go xyz
         do
@@ -279,7 +289,7 @@ function TeleportModule:CreateTeleportPanel()
             yOffset = yOffset + 45
 
             local label_xyz = row_xyz:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-            label_xyz:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", 0, 0)
+            label_xyz:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", 0, -5)
             label_xyz:SetText("go xyz")
 
             local fields_xyz = {"X", "Y", "Z", "MapID", "O"}
@@ -288,7 +298,7 @@ function TeleportModule:CreateTeleportPanel()
             for i = 1, 5 do
                 local edit = CreateFrame("EditBox", nil, row_xyz, "InputBoxTemplate")
                 edit:SetSize(60, 22)
-                edit:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", xOffset, -20)
+                edit:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", xOffset, -25)
                 edit:SetAutoFocus(false)
                 edit:SetText(fields_xyz[i])
                 edits_xyz[i] = edit
@@ -297,8 +307,19 @@ function TeleportModule:CreateTeleportPanel()
 
             local btn_xyz = CreateFrame("Button", nil, row_xyz, "UIPanelButtonTemplate")
             btn_xyz:SetSize(60, 22)
-            btn_xyz:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", xOffset, -20)
+            btn_xyz:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", xOffset, -25)
             btn_xyz:SetText("Go")
+			
+			-- Ajouter un tooltip pour afficher le texte complet au survol
+			btn_xyz:SetScript("OnEnter", function(self)
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+					GameTooltip:SetText("Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.", 1, 1, 1, 1, true)
+					GameTooltip:Show()
+				end)
+			btn_xyz:SetScript("OnLeave", function(self)
+					GameTooltip:Hide()
+			end)
+			
             btn_xyz:SetScript("OnClick", function()
                 local vals = {}
                 for i = 1, 5 do
@@ -327,7 +348,7 @@ function TeleportModule:CreateTeleportPanel()
             yOffset = yOffset + 45
 
             local label_offset = row_offset:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-            label_offset:SetPoint("TOPLEFT", row_offset, "TOPLEFT", 0, 0)
+            label_offset:SetPoint("TOPLEFT", row_offset, "TOPLEFT", 0, -5)
             label_offset:SetText("go offset")
 
             local fields_offset = {"dForward", "dSideways", "dZ", "dO"}
@@ -347,6 +368,17 @@ function TeleportModule:CreateTeleportPanel()
             btn_offset:SetSize(60, 22)
             btn_offset:SetPoint("TOPLEFT", row_offset, "TOPLEFT", xOffset, -20)
             btn_offset:SetText("Go")
+			
+			-- Ajouter un tooltip pour afficher le texte complet au survol
+			btn_offset:SetScript("OnEnter", function(self)
+					   GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+					   GameTooltip:SetText("Syntax: .go offset [<dForward> [<dSideways> [<dZ [<dO>]]]]\nTeleport yourself by the specified amount relative to your current position and orientation.", 1, 1, 1, 1, true)
+					   GameTooltip:Show()
+				end)
+			btn_offset:SetScript("OnLeave", function(self)
+					   GameTooltip:Hide()
+			end)
+			
             btn_offset:SetScript("OnClick", function()
                 local vals = {}
                 for i = 1, 4 do
@@ -369,100 +401,127 @@ function TeleportModule:CreateTeleportPanel()
         end
 
 		-- C) go zonexy / go grid
-		do
-		local row_option = CreateFrame("Frame", nil, page2)
-		row_option:SetSize(680, 40)
-		row_option:SetPoint("TOPLEFT", page2, "TOPLEFT", 10, -50 - yOffset)
-		yOffset = yOffset + 45
-	
-		-- 1) On déclare edits_option AVANT l’init du dropdown
-		local edits_option = {}
-	
-		local dropdownOptions = {
-			{ text = "go zonexy", command = ".go zonexy", fields = {"X", "Y", "Zone"} },
-			{ text = "go grid",   command = ".go grid",   fields = {"gridX", "gridY", "mapId"} },
-		}
-	
-		-- 2) Création du dropdown
-		local optionDropdown = CreateFrame("Frame", nil, row_option, "TrinityAdminDropdownTemplate")
-		optionDropdown:SetPoint("TOPLEFT", row_option, "TOPLEFT", 0, -20)
-		UIDropDownMenu_SetWidth(optionDropdown, 120)
-		UIDropDownMenu_SetButtonWidth(optionDropdown, 140)
-	
-		-- 3) Initialisation du dropdown
-		UIDropDownMenu_Initialize(optionDropdown, function(dropdown, level, menuList)
-			local info = UIDropDownMenu_CreateInfo()
-			for i, opt in ipairs(dropdownOptions) do
-				info.text = opt.text
-				info.value = i
-	
-				info.func = function(button)
-					-- Quand on clique dans la liste
-					UIDropDownMenu_SetSelectedID(optionDropdown, i)
-					UIDropDownMenu_SetText(optionDropdown, opt.text)
-					optionDropdown.selectedOption = opt
-	
-					-- On remplit les champs EditBox correspondants
-					for j = 1, #opt.fields do
-						if edits_option[j] then
-							edits_option[j]:SetText(opt.fields[j])
-						end
-					end
-				end
-	
-				-- On indique si c’est coché
-				info.checked = (UIDropDownMenu_GetSelectedID(optionDropdown) == i)
-				UIDropDownMenu_AddButton(info, level)
-			end
-		end)
-	
-		-- 4) Sélection par défaut (1er item)
-		UIDropDownMenu_SetSelectedID(optionDropdown, 1)
-		UIDropDownMenu_SetText(optionDropdown, dropdownOptions[1].text)
-		optionDropdown.selectedOption = dropdownOptions[1]
-	
-		-- 5) Création des EditBox en fonction de l’option par défaut
-		local xOffset = 150
-		for i, fieldName in ipairs(optionDropdown.selectedOption.fields) do
-			local edit = CreateFrame("EditBox", nil, row_option, "InputBoxTemplate")
-			edit:SetSize(60, 22)
-			edit:SetPoint("TOPLEFT", row_option, "TOPLEFT", xOffset, -20)
-			edit:SetAutoFocus(false)
-			edit:SetText(fieldName)
-			edits_option[i] = edit
-			xOffset = xOffset + 65
-		end
-	
-		-- 6) Bouton "Go"
-		--    On le place DANS le même bloc, pour qu’il voie `optionDropdown` et `edits_option`.
-		local btnOption = CreateFrame("Button", nil, row_option, "UIPanelButtonTemplate")
-		btnOption:SetSize(60, 22)
-		btnOption:SetPoint("TOPLEFT", row_option, "TOPLEFT", xOffset, -20)
-		btnOption:SetText("Go")
-	
-		btnOption:SetScript("OnClick", function()
-			local opt = optionDropdown.selectedOption
-			local vals = {}
-			for i = 1, #edits_option do
-				vals[i] = edits_option[i]:GetText()
-			end
-	
-			local command = opt.command .. " " .. table.concat(vals, " ")
-			SendChatMessage(command, "SAY")
-			print("[DEBUG] Commande envoyée: " .. command)
-		end)
-	end
+do
+    local row_option = CreateFrame("Frame", nil, page2)
+    row_option:SetSize(680, 40)
+    row_option:SetPoint("TOPLEFT", page2, "TOPLEFT", 10, -50 - yOffset)
+    yOffset = yOffset + 45
+
+    -- 1) On déclare edits_option AVANT l’init du dropdown
+    local edits_option = {}
+
+    local dropdownOptions = {
+        {
+            text    = "go zonexy",
+            command = ".go zonexy",
+            fields  = {"X", "Y", "Zone"},
+            tooltip = "Syntax: .go zonexy <x> <y> [<zone>]\n" ..
+                      "Teleport yourself to the given local (x,y) position in the specified (or current) zone."
+        },
+        {
+            text    = "go grid",
+            command = ".go grid",
+            fields  = {"gridX", "gridY", "mapId"},
+            tooltip = "Syntax: .go grid <gridX> <gridY> [<mapId>]\n" ..
+                      "Teleport yourself to center of grid at the provided indices in specified (or current) map."
+        },
+    }
+
+    -- 2) Création du dropdown
+    local optionDropdown = CreateFrame("Frame", nil, row_option, "TrinityAdminDropdownTemplate")
+    optionDropdown:SetPoint("TOPLEFT", row_option, "TOPLEFT", -20, -16)
+    UIDropDownMenu_SetWidth(optionDropdown, 120)
+    UIDropDownMenu_SetButtonWidth(optionDropdown, 140)
+
+    -- 3) Initialisation du dropdown
+    UIDropDownMenu_Initialize(optionDropdown, function(dropdown, level, menuList)
+        local info = UIDropDownMenu_CreateInfo()
+        for i, opt in ipairs(dropdownOptions) do
+            info.text    = opt.text
+            info.value   = i
+            info.checked = (UIDropDownMenu_GetSelectedID(optionDropdown) == i)
+            info.func    = function(button)
+                -- Quand on clique dans la liste
+                UIDropDownMenu_SetSelectedID(optionDropdown, i)
+                UIDropDownMenu_SetText(optionDropdown, opt.text)
+                optionDropdown.selectedOption = opt
+
+                -- On remplit les champs EditBox correspondants
+                for j = 1, #opt.fields do
+                    if edits_option[j] then
+                        edits_option[j]:SetText(opt.fields[j])
+                    end
+                end
+            end
+
+            UIDropDownMenu_AddButton(info, level)
+        end
+    end)
+
+    -- 4) Sélection par défaut (1er item)
+    UIDropDownMenu_SetSelectedID(optionDropdown, 1)
+    UIDropDownMenu_SetText(optionDropdown, dropdownOptions[1].text)
+    optionDropdown.selectedOption = dropdownOptions[1]
+
+    -- 5) Création des EditBox en fonction de l’option par défaut
+    local xOffset = 150
+    for i, fieldName in ipairs(optionDropdown.selectedOption.fields) do
+        local edit = CreateFrame("EditBox", nil, row_option, "InputBoxTemplate")
+        edit:SetSize(60, 22)
+        edit:SetPoint("TOPLEFT", row_option, "TOPLEFT", xOffset, -20)
+        edit:SetAutoFocus(false)
+        edit:SetText(fieldName)
+        edits_option[i] = edit
+        xOffset = xOffset + 65
+    end
+
+    -- 6) Bouton "Go"
+    --    On le place DANS le même bloc, pour qu’il voie `optionDropdown` et `edits_option`.
+    local btnOption = CreateFrame("Button", nil, row_option, "UIPanelButtonTemplate")
+    btnOption:SetSize(60, 22)
+    btnOption:SetPoint("TOPLEFT", row_option, "TOPLEFT", xOffset, -20)
+    btnOption:SetText("Go")
+
+    -- Script OnClick : envoie la commande
+    btnOption:SetScript("OnClick", function()
+        local opt = optionDropdown.selectedOption
+        local vals = {}
+        for i = 1, #edits_option do
+            vals[i] = edits_option[i]:GetText()
+        end
+
+        local command = opt.command .. " " .. table.concat(vals, " ")
+        SendChatMessage(command, "SAY")
+        print("[DEBUG] Commande envoyée: " .. command)
+    end)
+
+    -- **Ajout du Tooltip** dynamique selon l’option sélectionnée
+    btnOption:SetScript("OnEnter", function(self)
+        local opt = optionDropdown.selectedOption
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        if opt and opt.tooltip then
+            GameTooltip:SetText(opt.tooltip, 1, 1, 1, 1, true)
+        else
+            GameTooltip:SetText("No tooltip available.", 1, 1, 1, 1, true)
+        end
+        GameTooltip:Show()
+    end)
+    btnOption:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
 end
+end
+
 
     -- =========================================
     -- PAGE 3 : go areatrigger / boss / ...
     -- =========================================
     do
         local yOffset = 0
-        local label_page3 = page3:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        local label_page3 = page3:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         -- label_page3:SetPoint("TOPLEFT", 10, -10)
 		label_page3:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -5)
-        label_page3:SetText("Page 3: Extra Teleports")
+        label_page3:SetText("Extra Teleports")
 
         local goOptions = {
             { text = "go areatrigger", command = ".go areatrigger", defaultText = "AreatriggerID", tooltip = "Syntax: .go areatrigger <areatriggerId>" },
@@ -494,7 +553,7 @@ end
 		-- 2) Créer le dropdown 'optionDropdown2'
 		----------------------------------------------------------------
 		local optionDropdown2 = CreateFrame("Frame", nil, row_option2, "TrinityAdminDropdownTemplate")
-		optionDropdown2:SetPoint("TOPLEFT", row_option2, "TOPLEFT", 0, -20)
+		optionDropdown2:SetPoint("TOPLEFT", row_option2, "TOPLEFT", 0, -26)
 		UIDropDownMenu_SetWidth(optionDropdown2, 150)
 		UIDropDownMenu_SetButtonWidth(optionDropdown2, 200)
 	
