@@ -367,7 +367,8 @@ function AddLearn:CreateAddLearnPanel()
 			end
 		
 			-- Tronquer le texte s'il est trop long
-			local fullText = option.name or ("Item "..i)
+			-- local fullText = option.name or ("Item "..i)
+			local fullText = TrinityAdmin_Translations[option.name] or option.name or ("Item "..i) -- Modification pour traduction
 			local truncatedText = fullText
 			if #fullText > maxTextLength then
 				truncatedText = fullText:sub(1, maxTextLength) .. "..."

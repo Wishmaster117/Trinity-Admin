@@ -227,7 +227,11 @@ if locale == "frFR" then
 	L["bnetaccount set"] = "Syntaxe : .bnetaccount set $subcommand\nTapez .bnetaccount set pour voir la liste des sous-commandes possibles ou .help bnetaccount set $subcommand pour voir les informations sur une sous-commande spécifique."
 	L["bnetaccount set password"] = "Syntaxe : .bnetaccount set password $account $password $password\nDéfinit le mot de passe pour le compte spécifié."
 	L["bnetaccount unlink"] = "Syntaxe : .bnetaccount unlink $gameaccount $password\nSupprime le lien entre le compte battle.net et le compte de jeu $gameaccount."
-
+	-- Traductions des sets
+	L["Shards of Living Luster"] = "Éclats de Lustre Vivant"
+	L["Fangs of the Father"] = "Crocs du Père"
+	L["Oath of the Aureate Sentry"] = "Serment du Sentinelle Auréate"
+	-- Fin traduction des sets
 
 
 	

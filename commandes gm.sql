@@ -24,6 +24,27 @@ voir les commandes .gobject
 	('guid', 'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
 	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
 	
+	-- voir pour les . learn des proffessions etc...
+	-- finir de mettre les noms des sets et leurs traduction
+	
+
+	.learn all crafts
+	.learn all debug
+	.learn all languages
+	.learn all pettalents
+	.learn all recipes
+	.learn all talents
+	.learn my quests
+	.learn my trainer -- Apprends tous les sorts 
+	.learn <spell> [all] all pour tous les ranks du spell
+	.learn all my talents 3 Syntax: .learn all my talents Learn all talents (and spells with first rank learned as talent) available for his class. 
+	.learn all my spells 3 Syntax: .learn all my spells Learn all spells (except talents and spells with first rank learned as talent) available for his class.
+    .learn all my pettalents 3 Syntax: .learn all my pettalents Learn all talents for your pet available for his creature type (only for hunter pets).
+    .learn all my class 3 Syntax: .learn all my class Learn all spells and talents available for his class.
+    .learn all blizzard 2 Syntax: .learn all blizzard Learn all default spells for Game Masters.
+    .learn all lang Syntax: .learn all lang Learn all languages
+    .learn all default 1 Syntax: .learn all default [$playername] Learn for selected/$playername player all default spells for his race/class and spells rewarded by completed quests.
+    .learn 3 Syntax: .learn #spell [all] Selected character learn a spell of id #spell. If 'all' provided then all ranks learned.
 	
 	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
 	

@@ -234,7 +234,17 @@ function AdvancedItems:CreateAdvancedItemsPanel()
 
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
+                -- GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
+			if option.entry then
+			-- Avec traduction
+		    -- local translatedName = L[option.name] or option.name
+            -- local link = "|cffffffff|Hitem:" .. option.entry .. "|h[" .. translatedName .. "]|h|r"
+				local link = "|cffffffff|Hitem:" .. option.entry .. "|h[" .. (option.name or "Item") .. "]|h|r"
+				GameTooltip:SetHyperlink(link)
+			else
+				GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
+			end
+
                 GameTooltip:Show()
             end)
             btn:SetScript("OnLeave", function(self)
