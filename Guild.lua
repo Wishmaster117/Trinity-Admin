@@ -5,6 +5,132 @@
 local Guild = TrinityAdmin:GetModule("Guild")
 
 -------------------------------------------------------------
+-- Variables et fonctions pour la capture du .guild info
+-------------------------------------------------------------
+local capturingGuildInfo = false
+local guildInfoCollected = {}
+local guildInfoTimer = nil
+
+-- Fonction appelée quand on arrête la capture
+local function FinishGuildInfoCapture()
+    capturingGuildInfo = false
+    if #guildInfoCollected > 0 then
+        -- Concatène toutes les lignes
+        local fullText = table.concat(guildInfoCollected, "\n")
+        
+        -- Affiche dans la popup
+        GuildInfoPopup_SetText(fullText)
+        GuildInfoPopup:Show()
+    else
+        -- Aucun message capturé
+        TrinityAdmin:Print("No guild info was captured.")
+    end
+end
+
+-------------------------------------------------------------
+-- Fenêtre popup GuildInfoPopup pour afficher le .guild info
+-------------------------------------------------------------
+local GuildInfoPopup = CreateFrame("Frame", "GuildInfoPopup", UIParent, "BackdropTemplate")
+GuildInfoPopup:SetSize(400, 300)
+-- GuildInfoPopup:SetPoint("CENTER")
+GuildInfoPopup:ClearAllPoints()
+GuildInfoPopup:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 100, -100)
+
+-- GuildInfoPopup:SetBackdrop({
+--     bgFile = "Interface/DialogFrame/UI-DialogBox-Background",
+--     edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
+--     tile = true, tileSize = 32, edgeSize = 32,
+--     insets = { left=8, right=8, top=8, bottom=8 }
+-- })
+GuildInfoPopup:SetBackdrop({
+    bgFile = "Interface\\FrameGeneral\\UI-Background-Marble",
+    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+    tile = false, tileSize = 0, edgeSize = 16,
+    insets = { left = 4, right = 4, top = 4, bottom = 4 }
+})
+-- Personalisé:
+--GuildInfoPopup:SetBackdrop({
+--    bgFile = "Interface\\AddOns\\MonAddon\\Textures\\FondPerso",
+--    edgeFile = "Interface\\AddOns\\MonAddon\\Textures\\BordurePerso",
+--    tile = false, tileSize = 0, edgeSize = 16,
+--    insets = { left=5, right=5, top=5, bottom=5 }
+--})
+
+GuildInfoPopup:Hide()  -- Caché par défaut
+
+-- Rendre la fenêtre déplaçable
+GuildInfoPopup:EnableMouse(true)
+GuildInfoPopup:SetMovable(true)
+GuildInfoPopup:RegisterForDrag("LeftButton")
+GuildInfoPopup:SetScript("OnDragStart", function(self)
+    self:StartMoving()
+end)
+GuildInfoPopup:SetScript("OnDragStop", function(self)
+    self:StopMovingOrSizing()
+end)
+
+-- Titre de la fenêtre
+local title = GuildInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+title:SetPoint("TOP", 0, -15)
+title:SetText("Guild Info")
+
+-- Bouton Close
+local closeButton = CreateFrame("Button", nil, GuildInfoPopup, "UIPanelCloseButton")
+closeButton:SetPoint("TOPRIGHT", GuildInfoPopup, "TOPRIGHT")
+
+-- ScrollFrame
+local scrollFrame = CreateFrame("ScrollFrame", "GuildInfoScrollFrame", GuildInfoPopup, "UIPanelScrollFrameTemplate")
+scrollFrame:SetPoint("TOPLEFT", 15, -50)
+scrollFrame:SetSize(370, 230)
+
+-- Conteneur du texte
+local content = CreateFrame("Frame", nil, scrollFrame)
+content:SetSize(370, 230)
+scrollFrame:SetScrollChild(content)
+
+-- FontString pour le texte
+local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+infoText:SetPoint("TOPLEFT")
+infoText:SetWidth(350)          -- un peu moins que 370 pour la marge
+infoText:SetJustifyH("LEFT")
+infoText:SetJustifyV("TOP")
+
+-- Fonction pour régler le texte et ajuster la taille
+function GuildInfoPopup_SetText(text)
+    infoText:SetText(text or "")
+    local textHeight = infoText:GetStringHeight()
+    content:SetHeight(textHeight + 5)
+    scrollFrame:SetVerticalScroll(0) -- revient en haut
+end
+
+-------------------------------------------------------------
+-- CaptureFrame pour écouter CHAT_MSG_SYSTEM
+-------------------------------------------------------------
+local guildCaptureFrame = CreateFrame("Frame")
+guildCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+guildCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingGuildInfo then
+        return
+    end
+    
+    -- Nettoyage éventuel des codes couleur, etc.
+    local cleanMsg = msg
+    cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "") -- Retire codes couleurs
+    cleanMsg = cleanMsg:gsub("|r", "")
+    cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")     -- Retire liens
+    cleanMsg = cleanMsg:gsub("|T.-|t", "")             -- Retire textures
+    -- Retire quelques caractères "box drawing"
+    cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
+
+    -- Ajoute la ligne au tableau
+    table.insert(guildInfoCollected, cleanMsg)
+
+    -- On redémarre le timer (1 seconde sans nouveau message => fin capture)
+    if guildInfoTimer then guildInfoTimer:Cancel() end
+    guildInfoTimer = C_Timer.NewTimer(1, FinishGuildInfoCapture)
+end)
+
+-------------------------------------------------------------
 -- 1) Définir la fonction SendCommand pour exécuter une cmd --
 --    via la fenêtre de chat (ChatFrame1EditBox).
 -------------------------------------------------------------
@@ -179,16 +305,43 @@ function Guild:CreateGuildPanel()
     infoButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
-    infoButton:SetScript("OnClick", function()
-        local gName = guildInfoNameEB:GetText()
-
-        if (not gName or gName == "" or gName == "Guild ID") then
-            TrinityAdmin:Print("Please specify a valid Guild ID for info!")
-            return
-        end
-
-        TrinityAdmin:SendCommand('.guild info ' .. gName)
-    end)
+    -- infoButton:SetScript("OnClick", function()
+    --     local gName = guildInfoNameEB:GetText()
+	-- 
+    --     if (not gName or gName == "" or gName == "Guild ID") then
+    --         TrinityAdmin:Print("Please specify a valid Guild ID for info!")
+    --         return
+    --     end
+	-- 
+    --     TrinityAdmin:SendCommand('.guild info ' .. gName)
+    -- end)
+	infoButton:SetScript("OnClick", function()
+		local gName = guildInfoNameEB:GetText()
+	
+		if (not gName or gName == "" or gName == "Guild ID") then
+			TrinityAdmin:Print("Please specify a valid Guild ID for info!")
+			return
+		end
+	
+		-- 1) On efface l'ancien texte et vide la table
+		GuildInfoPopup_SetText("")
+		guildInfoCollected = {}
+	
+		-- 2) Active le mode capture
+		capturingGuildInfo = true
+	
+		-- 3) Envoie la commande
+		TrinityAdmin:SendCommand('.guild info ' .. gName)
+	
+		-- 4) Lance un timer pour clôturer la capture s'il n'y a plus de message
+		if guildInfoTimer then
+			guildInfoTimer:Cancel()
+		end
+		guildInfoTimer = C_Timer.NewTimer(1, FinishGuildInfoCapture)
+	
+		-- Facultatif : on peut afficher immédiatement la popup vide.
+		-- GuildInfoPopup:Show()
+	end)
 
     offsetY = offsetY - 40
 
