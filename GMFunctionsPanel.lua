@@ -143,8 +143,7 @@ local buttonDefs = {
         anchorOffsetY = 0,
         linkTo = "btnSaveAll",
     },
-	
-	{
+    {
         name = "btnDemorph",
         text = "Demorph",
         tooltip = "Demorph the selected player.",
@@ -155,23 +154,21 @@ local buttonDefs = {
         anchorOffsetY = 0,
         linkTo = "btnRespawn",
     },
-	
-	{
-		name = "btnWhispers",
-		textON = "GM Whispers ON",
-		textOFF = "GM Whispers OFF",
-		tooltip = "Enable/disable accepting whispers by GM from players.",
-		commandON = ".whispers on",
-		commandOFF = ".whispers off",
-		isToggle = true,
-		anchorTo = "LEFT",
-		anchorOffsetX = 10,
-		anchorOffsetY = 0,
-		linkTo = "btnDemorph",
-		stateVar = "gmWhispers",
+    {
+        name = "btnWhispers",
+        textON = "GM Whispers ON",
+        textOFF = "GM Whispers OFF",
+        tooltip = "Enable/disable accepting whispers by GM from players.",
+        commandON = ".whispers on",
+        commandOFF = ".whispers off",
+        isToggle = true,
+        anchorTo = "LEFT",
+        anchorOffsetX = 10,
+        anchorOffsetY = 0,
+        linkTo = "btnDemorph",
+        stateVar = "gmWhispers",
     },
-	
-	{
+    {
         name = "btnMailbox",
         text = "MailBox",
         tooltip = "Show your mailbox content.",
@@ -182,8 +179,7 @@ local buttonDefs = {
         anchorOffsetY = -20,
         linkTo = "btnRevive",
     },	
-
-	{
+    {
         name = "btnBank",
         text = "Bank",
         tooltip = "Show your bank inventory.",
@@ -193,7 +189,18 @@ local buttonDefs = {
         anchorOffsetX = 10,
         anchorOffsetY = 0,
         linkTo = "btnMailbox",
-    },		
+    },	
+    {
+        name = "btncometome",
+        text = "Come To Me",
+        tooltip = "Make selected creature come to your current location (new position not saved to DB).",
+        command = ".cometome",
+        isToggle = false,
+        anchorTo = "LEFT",
+        anchorOffsetX = 10,
+        anchorOffsetY = 0,
+        linkTo = "btnBank",
+    },			
 }
 
 ------------------------------------------------------------------
@@ -260,7 +267,7 @@ local function CreateGMButton(panel, def, module, buttonRefs)
         end)
     else
         btn:SetScript("OnClick", function()
-		    print("Commande envoyée :" ..def.command) -- Pour débug, à enlever
+            print("Commande envoyée :" .. def.command)
             SendChatMessage(def.command, "SAY")
         end)
     end
@@ -268,7 +275,7 @@ local function CreateGMButton(panel, def, module, buttonRefs)
     -- Tooltip
     SetTooltipScripts(btn, def.tooltip)
 
-    -- On stocke ce bouton dans un tableau de références
+    -- Stockage de la référence du bouton
     buttonRefs[def.name] = btn
 end
 
@@ -297,255 +304,469 @@ function module:CreateGMFunctionsPanel()
     panel.title:SetPoint("TOPLEFT", 10, -10)
     panel.title:SetText(TrinityAdmin_Translations["GM Functions Panel"] or "GM Functions Panel")
 
-    -- Tableau pour stocker les références de nos boutons
-    local buttonRefs = {}
+    ----------------------------------------------------------------------------
+    -- Création du conteneur de contenu pour la pagination
+    ----------------------------------------------------------------------------
+    local contentContainer = CreateFrame("Frame", nil, panel)
+    -- contentContainer:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -50)
+	contentContainer:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, 30)
+    contentContainer:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 40)
 
-    -- Crée tous les boutons
-    for _, def in ipairs(buttonDefs) do
-        CreateGMButton(panel, def, self, buttonRefs)
+    local totalPages = 2
+    local pages = {}
+    for i = 1, totalPages do
+        pages[i] = CreateFrame("Frame", nil, contentContainer)
+        pages[i]:SetAllPoints(contentContainer)
+        pages[i]:Hide()
+        pages[i].yOffset = 0  -- pour placer les éléments verticalement
     end
 
-    ------------------------------------------------------------------
-    -- Création du champ "Appear" et son bouton Go
-    ------------------------------------------------------------------
-    -- On part du principe que le dernier bouton de la première ligne est "btnRespawn"
-    local anchor = buttonRefs["btnMailbox"]
-    if anchor then
-        -- Label
-        local appearLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        appearLabel:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -20)
-        appearLabel:SetText("Appear Function")
-
-        -- Champ de saisie
-        local appearEdit = CreateFrame("EditBox", "TrinityAdminAppearEditBox", panel, "InputBoxTemplate")
-        appearEdit:SetAutoFocus(false)
-        appearEdit:SetSize(120, 22)
-        appearEdit:SetPoint("TOPLEFT", appearLabel, "BOTTOMLEFT", 0, -5)
-        
-		-- Valeur par défaut
-        appearEdit:SetText("Character Name")
-		
-        -- Tooltip du champ
-        appearEdit:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(TrinityAdmin_Translations["Tele_to_Player"], 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        appearEdit:SetScript("OnLeave", function()
-            GameTooltip:Hide()
-        end)
-
-        -- Pour valider quand on appuie sur Entrée
-        appearEdit:SetScript("OnEnterPressed", function(self)
-            self:ClearFocus()
-        end)
-
-        -- Bouton Go
-        local btnAppearGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-        btnAppearGo:SetSize(40, 22)
-        btnAppearGo:SetText("Go")
-        btnAppearGo:SetPoint("LEFT", appearEdit, "RIGHT", 10, 0)
-
-        btnAppearGo:SetScript("OnClick", function()
-            local playerName = appearEdit:GetText()
-            if playerName and playerName ~= "" then
-                SendChatMessage(".appear "..playerName, "SAY")
-            else
-                print("Veuillez saisir le nom du joueur pour .appear.")
-            end
-        end)
-    else
-        print("Erreur: impossible de trouver 'btnRespawn' pour ancrer le champ Appear.")
+    ----------------------------------------------------------------------------
+    -- Fonction utilitaire pour créer une ligne dans une page
+    ----------------------------------------------------------------------------
+    local function CreateRow(page, height)
+        local row = CreateFrame("Frame", nil, page)
+        row:SetSize(contentContainer:GetWidth(), height)
+        row:SetPoint("TOPLEFT", page, "TOPLEFT", 0, -page.yOffset)
+        page.yOffset = page.yOffset + height + 5
+        return row
     end
+
+    ----------------------------------------------------------------------------
+    -- Boutons de navigation de la pagination
+    ----------------------------------------------------------------------------
+	-- Déclaration de la variable de page actuelle et pré-déclaration des boutons
+	local currentPage = 1
+	local btnPrev, btnNext
 	
-	------------------------------------------------------------------
-    -- CREATION DU CHAMP "MORPH" ET SON BOUTON GO
-    ------------------------------------------------------------------
-    -- On va l'ancrer sous le précédent bloc Appear, par ex. sous le label Appear ou son Edit
-    -- Si vous voulez le mettre "à côté", vous pouvez ajuster l'ancrage (e.g. "LEFT", offsetX, etc.).
-    -- Ici, on suppose qu'on veut le placer dessous la zone Appear
-    local anchor2 = buttonRefs["btnMailbox"]  -- ou appearEdit, ou btnAppearGo, selon votre préférence
-    if anchor2 then
-        -- Label Morph
-        local morphLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        morphLabel:SetPoint("TOPLEFT", anchor2, "BOTTOMLEFT", 180, -20)
-        morphLabel:SetText("Morph Function")
+	-- Création de navPageLabel (celui-ci peut être créé avant les boutons)
+	local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 35)
+	navPageLabel:SetText("Page 1 / " .. totalPages)
+	
+	-- Déclaration de la fonction ShowPage qui utilise btnPrev et btnNext
+	local function ShowPage(pageIndex)
+		for i = 1, totalPages do
+			if i == pageIndex then
+				pages[i]:Show()
+			else
+				pages[i]:Hide()
+			end
+		end
+		navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+		if pageIndex <= 1 then
+			btnPrev:SetEnabled(false)
+		else
+			btnPrev:SetEnabled(true)
+		end
+		if pageIndex >= totalPages then
+			btnNext:SetEnabled(false)
+		else
+			btnNext:SetEnabled(true)
+		end
+	end
+	
+	-- Création et configuration du bouton Précédent
+	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnPrev:SetSize(80, 22)
+	btnPrev:SetText("Précédent")
+	btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
+	btnPrev:SetScript("OnClick", function()
+		if currentPage > 1 then
+			currentPage = currentPage - 1
+			ShowPage(currentPage)
+		end
+	end)
+	
+	-- Création et configuration du bouton Suivant
+	btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnNext:SetSize(80, 22)
+	btnNext:SetText("Suivant")
+	btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
+	btnNext:SetScript("OnClick", function()
+		if currentPage < totalPages then
+			currentPage = currentPage + 1
+			ShowPage(currentPage)
+		end
+	end)
+	
+	-- Appel initial de la fonction ShowPage
+	ShowPage(currentPage)
 
-        -- Champ de saisie Morph
-        local morphEdit = CreateFrame("EditBox", "TrinityAdminMorphEditBox", panel, "InputBoxTemplate")
-        morphEdit:SetAutoFocus(false)
-        morphEdit:SetSize(120, 22)
-        morphEdit:SetPoint("TOPLEFT", morphLabel, "BOTTOMLEFT", 0, -5)
+    ----------------------------------------------------------------------------
+    -- PAGE 1 : Contient le contenu existant
+    ----------------------------------------------------------------------------
+    do
+        local page = pages[1]
+
+        -- Tableau pour stocker les références de nos boutons
+        local buttonRefs = {}
+
+        -- Création de tous les boutons à partir de buttonDefs
+        for _, def in ipairs(buttonDefs) do
+            CreateGMButton(page, def, self, buttonRefs)
+        end
+
+        ------------------------------------------------------------------
+        -- Création du champ "Appear" et son bouton Go
+        ------------------------------------------------------------------
+        local anchor = buttonRefs["btnMailbox"]
+        if anchor then
+            local appearLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            appearLabel:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -20)
+            appearLabel:SetText("Appear Function")
+
+            local appearEdit = CreateFrame("EditBox", "TrinityAdminAppearEditBox", page, "InputBoxTemplate")
+            appearEdit:SetAutoFocus(false)
+            appearEdit:SetSize(120, 22)
+            appearEdit:SetPoint("TOPLEFT", appearLabel, "BOTTOMLEFT", 0, -5)
+            appearEdit:SetText("Character Name")
+            appearEdit:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(TrinityAdmin_Translations["Tele_to_Player"], 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            appearEdit:SetScript("OnLeave", function()
+                GameTooltip:Hide()
+            end)
+            appearEdit:SetScript("OnEnterPressed", function(self)
+                self:ClearFocus()
+            end)
+
+            local btnAppearGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
+            btnAppearGo:SetSize(40, 22)
+            btnAppearGo:SetText("Go")
+            btnAppearGo:SetPoint("LEFT", appearEdit, "RIGHT", 10, 0)
+            btnAppearGo:SetScript("OnClick", function()
+                local playerName = appearEdit:GetText()
+                if playerName and playerName ~= "" then
+                    SendChatMessage(".appear " .. playerName, "SAY")
+                else
+                    print("Veuillez saisir le nom du joueur pour .appear.")
+                end
+            end)
+        else
+            print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le champ Appear.")
+        end
+
+        ------------------------------------------------------------------
+        -- CREATION DU CHAMP "MORPH" ET SON BOUTON GO
+        ------------------------------------------------------------------
+        local anchor2 = buttonRefs["btnMailbox"]
+        if anchor2 then
+            local morphLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            morphLabel:SetPoint("TOPLEFT", anchor2, "BOTTOMLEFT", 180, -20)
+            morphLabel:SetText("Morph Function")
+
+            local morphEdit = CreateFrame("EditBox", "TrinityAdminMorphEditBox", page, "InputBoxTemplate")
+            morphEdit:SetAutoFocus(false)
+            morphEdit:SetSize(120, 22)
+            morphEdit:SetPoint("TOPLEFT", morphLabel, "BOTTOMLEFT", 0, -5)
+            morphEdit:SetText("Display ID")
+            morphEdit:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Change your current model id to #displayid.", 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            morphEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            morphEdit:SetScript("OnEditFocusGained", function(self)
+                if self:GetText() == "Display ID" then
+                    self:SetText("")
+                end
+            end)
+            morphEdit:SetScript("OnEditFocusLost", function(self)
+                if self:GetText() == "" then
+                    self:SetText("Display ID")
+                end
+            end)
+            morphEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
+
+            local btnMorphGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
+            btnMorphGo:SetSize(40, 22)
+            btnMorphGo:SetText("Go")
+            btnMorphGo:SetPoint("LEFT", morphEdit, "RIGHT", 10, 0)
+            btnMorphGo:SetScript("OnClick", function()
+                local displayId = morphEdit:GetText()
+                if displayId and displayId ~= "" and displayId ~= "Display ID" then
+                    SendChatMessage(".morph " .. displayId, "SAY")
+                else
+                    print("Veuillez saisir un Display ID pour .morph.")
+                end
+            end)
+        else
+            print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le champ Morph.")
+        end
+
+        ------------------------------------------------------------------
+        -- CREATION DU CHAMP "Custom Mute" et son bouton Go
+        ------------------------------------------------------------------
+        local anchorMute = buttonRefs["btnMailbox"]
+        if anchorMute then
+            local muteLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            muteLabel:SetPoint("TOPLEFT", anchorMute, "BOTTOMLEFT", 0, -80)
+            muteLabel:SetText("Mute Function")
+
+            local muteDropdown = CreateFrame("Frame", "TrinityAdminMuteDropdown", page, "UIDropDownMenuTemplate")
+            muteDropdown:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -5)
+            UIDropDownMenu_SetWidth(muteDropdown, 110)
+            UIDropDownMenu_SetButtonWidth(muteDropdown, 240)
+            local muteOptions = {
+                { text = "mute", command = ".mute", tooltip = "Syntax : PlayerName TimeInMinutes Reason" },
+                { text = "unmute", command = ".unmute", tooltip = "" },
+                { text = "mutehistory", command = ".mutehistory", tooltip = "" },
+            }
+            if not muteDropdown.selectedID then 
+                muteDropdown.selectedID = 1 
+            end
+
+            UIDropDownMenu_Initialize(muteDropdown, function(dropdownFrame, level, menuList)
+                local info = UIDropDownMenu_CreateInfo()
+                for i, option in ipairs(muteOptions) do
+                    info.text = option.text
+                    info.value = option.command
+                    info.checked = (i == muteDropdown.selectedID)
+                    info.func = function(buttonFrame)
+                        muteDropdown.selectedID = i
+                        UIDropDownMenu_SetSelectedID(muteDropdown, i)
+                        UIDropDownMenu_SetText(muteDropdown, option.text)
+                        muteDropdown.selectedOption = option
+                    end
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            UIDropDownMenu_SetSelectedID(muteDropdown, muteDropdown.selectedID)
+            UIDropDownMenu_SetText(muteDropdown, muteOptions[muteDropdown.selectedID].text)
+            muteDropdown.selectedOption = muteOptions[muteDropdown.selectedID]
+
+            local muteEdit = CreateFrame("EditBox", "TrinityAdminMuteEditBox", page, "InputBoxTemplate")
+            muteEdit:SetAutoFocus(false)
+            muteEdit:SetSize(180, 22)
+            muteEdit:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -35)
+            muteEdit:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                if muteDropdown.selectedOption.text == "mute" then
+                    GameTooltip:SetText("Syntax : PlayerName TimeInMinutes Reason", 1, 1, 1, 1, true)
+                else
+                    GameTooltip:SetText("", 1, 1, 1, 1, true)
+                end
+                GameTooltip:Show()
+            end)
+            muteEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            muteEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
+
+            local btnMuteGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
+            btnMuteGo:SetSize(40, 22)
+            btnMuteGo:SetText("Go")
+            btnMuteGo:SetPoint("LEFT", muteEdit, "RIGHT", 10, 0)
+            btnMuteGo:SetScript("OnClick", function()
+                local inputText = muteEdit:GetText()
+                local option = muteDropdown.selectedOption
+                local cmd = option.command
+                local finalCommand = ""
+                if option.text == "mute" then
+                    local targetName = UnitName("target")
+                    if targetName then
+                        local time, reason = string.match(inputText, "^(%S+)%s+(.+)$")
+                        if not time or not reason then
+                            print("Veuillez saisir le temps (minutes) et la raison, séparés par un espace.")
+                            return
+                        else
+                            finalCommand = cmd .. " " .. targetName .. " " .. time .. " " .. reason
+                        end
+                    else
+                        if not inputText or inputText == "" then
+                            print("Veuillez saisir le nom du joueur, le temps et la raison pour .mute.")
+                            return
+                        else
+                            finalCommand = cmd .. " " .. inputText
+                        end
+                    end
+                else
+                    if not inputText or inputText == "" then
+                        local targetName = UnitName("target")
+                        if targetName then
+                            finalCommand = cmd .. " " .. targetName
+                        else
+                            print("Veuillez saisir un nom ou cibler un joueur.")
+                            return
+                        end
+                    else
+                        finalCommand = cmd .. " " .. inputText
+                    end
+                end
+                SendChatMessage(finalCommand, "SAY")
+            end)
+        else
+            print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le bloc Mute.")
+        end
+    end
+
+    ----------------------------------------------------------------------------
+    -- PAGE 2 : Fonctions de développement et annonces
+    ----------------------------------------------------------------------------
+    do
+        local page = pages[2]
+        local row
+
+        -- Ligne 1 : Dev Status, boutons radio (ON/OFF) et bouton SET
+        row = CreateRow(page, 30)
+        local devStatusLabel = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        devStatusLabel:SetPoint("LEFT", row, "LEFT", 0, -40)
+        devStatusLabel:SetText("Dev Status")
 
         -- Valeur par défaut
-        morphEdit:SetText("Display ID")
+        local devStatusValue = "on"
 
-        -- Tooltip du champ
-        morphEdit:SetScript("OnEnter", function(self)
+        local radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        radioOn:SetPoint("LEFT", devStatusLabel, "RIGHT", 10, 0)
+        radioOn.text:SetText("ON")
+        radioOn:SetChecked(true)
+        radioOn:SetScript("OnClick", function(self)
+            radioOff:SetChecked(false)
+            devStatusValue = "on"
+        end)
+
+        local radioOff = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        radioOff:SetPoint("LEFT", radioOn, "RIGHT", 10, 0)
+        radioOff.text:SetText("OFF")
+        radioOff:SetChecked(false)
+        radioOff:SetScript("OnClick", function(self)
+            radioOn:SetChecked(false)
+            devStatusValue = "off"
+        end)
+
+        local btnDevSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnDevSet:SetSize(40, 22)
+        btnDevSet:SetText("SET")
+        btnDevSet:SetPoint("LEFT", radioOff, "RIGHT", 20, 0)
+        btnDevSet:SetScript("OnClick", function()
+            SendChatMessage(".dev " .. devStatusValue, "SAY")
+        end)
+        btnDevSet:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Change your current model id to #displayid.", 1, 1, 1, 1, true)
+            GameTooltip:SetText("Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.", 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
-        morphEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        btnDevSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        -- Au focus, si c'est "Display ID", on l'efface
-        morphEdit:SetScript("OnEditFocusGained", function(self)
-            if self:GetText() == "Display ID" then
-                self:SetText("")
-            end
-        end)
-        morphEdit:SetScript("OnEditFocusLost", function(self)
-            if self:GetText() == "" then
-                self:SetText("Display ID")
-            end
-        end)
-
-        morphEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
-
-        -- Bouton "Go" Morph
-        local btnMorphGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-        btnMorphGo:SetSize(40, 22)
-        btnMorphGo:SetText("Go")
-        btnMorphGo:SetPoint("LEFT", morphEdit, "RIGHT", 10, 0)
-        btnMorphGo:SetScript("OnClick", function()
-            local displayId = morphEdit:GetText()
-            if displayId and displayId ~= "" and displayId ~= "Display ID" then
-                SendChatMessage(".morph "..displayId, "SAY")
+        -- Ligne 2 : Champ d'annonce globale .announce
+        row = CreateRow(page, 30)
+        local announceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        announceEdit:SetSize(150, 22)
+        announceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+        announceEdit:SetAutoFocus(false)
+        announceEdit:SetText("Message")
+        local btnAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnAnnounce:SetSize(60, 22)
+        btnAnnounce:SetText("Send")
+        btnAnnounce:SetPoint("LEFT", announceEdit, "RIGHT", 10, 0)
+        btnAnnounce:SetScript("OnClick", function()
+            local text = announceEdit:GetText()
+            if not text or text == "" or text == "Message" then
+                print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .announce.")
             else
-                print("Veuillez saisir un Display ID pour .morph.")
+                SendChatMessage('.announce "' .. text .. '"', "SAY")
             end
         end)
-    else
-        print("Erreur: impossible de trouver 'btnRevive' pour ancrer le champ Morph.")
-    end
-	
-	------------------------------------------------------------------
-    -- CREATION DU CHAMP "Custom Mute" et son bouton Go
-    ------------------------------------------------------------------
-    local anchorMute = buttonRefs["btnMailbox"]
-    if anchorMute then
-        -- On ancre le label "Custom Mute" sous btnMailbox avec un offset vertical de -80 pixels
-        local muteLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        muteLabel:SetPoint("TOPLEFT", anchorMute, "BOTTOMLEFT", 0, -80)
-        muteLabel:SetText("Mute Function")
-
-        -- Création du menu déroulant pour choisir l'option mute
-        local muteDropdown = CreateFrame("Frame", "TrinityAdminMuteDropdown", panel, "UIDropDownMenuTemplate")
-        muteDropdown:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -5)
-        UIDropDownMenu_SetWidth(muteDropdown, 110)
-        UIDropDownMenu_SetButtonWidth(muteDropdown, 240)
-        local muteOptions = {
-            { text = "mute", command = ".mute", tooltip = "Syntax : PlayerName TimeInMinutes Reason" },
-            { text = "unmute", command = ".unmute", tooltip = "" },
-            { text = "mutehistory", command = ".mutehistory", tooltip = "" },
-        }
-
-		-- Initialisation de muteDropdown pour conserver la sélection
-		if not muteDropdown.selectedID then 
-			muteDropdown.selectedID = 1 
-		end
-		
-		UIDropDownMenu_Initialize(muteDropdown, function(dropdownFrame, level, menuList)
-			local info = UIDropDownMenu_CreateInfo()
-			for i, option in ipairs(muteOptions) do
-				info.text = option.text
-				info.value = option.command
-				info.checked = (i == muteDropdown.selectedID)  -- l'option sélectionnée est cochée
-				info.func = function(buttonFrame)
-					muteDropdown.selectedID = i                           -- mémorise l'ID sélectionné
-					UIDropDownMenu_SetSelectedID(muteDropdown, i)           -- met à jour l'UI
-					UIDropDownMenu_SetText(muteDropdown, option.text)       -- affiche le texte de l'option choisie
-					muteDropdown.selectedOption = option                  -- stocke l'option choisie
-				end
-				UIDropDownMenu_AddButton(info, level)
-			end
-		end)
-		
-		UIDropDownMenu_SetSelectedID(muteDropdown, muteDropdown.selectedID)
-		UIDropDownMenu_SetText(muteDropdown, muteOptions[muteDropdown.selectedID].text)
-		muteDropdown.selectedOption = muteOptions[muteDropdown.selectedID]
-
-        -- Champ de saisie pour la commande mute
-        local muteEdit = CreateFrame("EditBox", "TrinityAdminMuteEditBox", panel, "InputBoxTemplate")
-        muteEdit:SetAutoFocus(false)
-        muteEdit:SetSize(180, 22)
-        muteEdit:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -35)
-        muteEdit:SetScript("OnEnter", function(self)
+        btnAnnounce:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            if muteDropdown.selectedOption.text == "mute" then
-                GameTooltip:SetText("Syntax : PlayerName TimeInMinutes Reason", 1, 1, 1, 1, true)
-            else
-                GameTooltip:SetText("", 1, 1, 1, 1, true)
-            end
+            GameTooltip:SetText("Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.", 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
-        muteEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        muteEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
+        btnAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        -- Bouton "Go" pour la section Mute
-		local btnMuteGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-        btnMuteGo:SetSize(40, 22)
-        btnMuteGo:SetText("Go")
-        btnMuteGo:SetPoint("LEFT", muteEdit, "RIGHT", 10, 0)
-		btnMuteGo:SetScript("OnClick", function()
-		local inputText = muteEdit:GetText()
-		local option = muteDropdown.selectedOption
-		local cmd = option.command
-		local finalCommand = ""
-		
-		if option.text == "mute" then
-			local targetName = UnitName("target")
-			if targetName then
-				-- Si un joueur est ciblé, le champ doit contenir le temps et la raison
-				local time, reason = string.match(inputText, "^(%S+)%s+(.+)$")
-				if not time or not reason then
-					print("Veuillez saisir le temps (minutes) et la raison, séparés par un espace.")
-					return
-				else
-					finalCommand = cmd .. " " .. targetName .. " " .. time .. " " .. reason
-				end
-			else
-				-- Si aucun joueur n'est ciblé, on attend que l'utilisateur saisisse tout : nom, temps, raison
-				if not inputText or inputText == "" then
-					print("Veuillez saisir le nom du joueur, le temps et la raison pour .mute.")
-					return
-				else
-					finalCommand = cmd .. " " .. inputText
-				end
-			end
-		else
-			-- Pour les autres options (unmute, mutehistory)
-			if not inputText or inputText == "" then
-				local targetName = UnitName("target")
-				if targetName then
-					finalCommand = cmd .. " " .. targetName
-				else
-					print("Veuillez saisir un nom ou cibler un joueur.")
-					return
-				end
-			else
-				finalCommand = cmd .. " " .. inputText
-			end
-		end
-		
-		SendChatMessage(finalCommand, "SAY")
-	end)
-    else
-        print("Erreur: impossible de trouver 'btnRevive' pour ancrer le bloc Mute.")
+        -- Ligne 3 : Champ GM Message pour .gmannounce
+        row = CreateRow(page, 30)
+        local gmMessageEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        gmMessageEdit:SetSize(150, 22)
+        gmMessageEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+        gmMessageEdit:SetAutoFocus(false)
+        gmMessageEdit:SetText("GM Message")
+        local btnGmMessage = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnGmMessage:SetSize(60, 22)
+        btnGmMessage:SetText("Send")
+        btnGmMessage:SetPoint("LEFT", gmMessageEdit, "RIGHT", 10, 0)
+        btnGmMessage:SetScript("OnClick", function()
+            local text = gmMessageEdit:GetText()
+            if not text or text == "" or text == "GM Message" then
+                print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .gmannounce.")
+            else
+                SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
+            end
+        end)
+        btnGmMessage:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM's, displaying the name of the sender.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnGmMessage:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        -- Ligne 4 : Champ GM Notification pour .gmnotify
+        row = CreateRow(page, 30)
+        local gmNotifyEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        gmNotifyEdit:SetSize(150, 22)
+        gmNotifyEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+        gmNotifyEdit:SetAutoFocus(false)
+        gmNotifyEdit:SetText("GM Notification")
+        local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnGmNotify:SetSize(60, 22)
+        btnGmNotify:SetText("Send")
+        btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
+        btnGmNotify:SetScript("OnClick", function()
+            local text = gmNotifyEdit:GetText()
+            if not text or text == "" or text == "GM Notification" then
+                print("Erreur : Veuillez saisir une notification différente de la valeur par défaut pour .gmnotify.")
+            else
+                SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
+            end
+        end)
+        btnGmNotify:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        -- Ligne 5 : Champ GM Announcement pour .nameannounce
+        row = CreateRow(page, 30)
+        local gmAnnounceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        gmAnnounceEdit:SetSize(150, 22)
+        gmAnnounceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+        gmAnnounceEdit:SetAutoFocus(false)
+        gmAnnounceEdit:SetText("GM Announcement")
+        local btnGmAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnGmAnnounce:SetSize(60, 22)
+        btnGmAnnounce:SetText("Send")
+        btnGmAnnounce:SetPoint("LEFT", gmAnnounceEdit, "RIGHT", 10, 0)
+        btnGmAnnounce:SetScript("OnClick", function()
+            local text = gmAnnounceEdit:GetText()
+            if not text or text == "" or text == "GM Announcement" then
+                print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .nameannounce.")
+            else
+                SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
+            end
+        end)
+        btnGmAnnounce:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnGmAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
     end
 
-    ------------------------------------------------------------------
-    -- Bouton Back
-    ------------------------------------------------------------------
+    ----------------------------------------------------------------------------
+    -- Bouton Back commun (hors pagination)
+    ----------------------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
     btnBack:SetText(TrinityAdmin_Translations["Back"] or "Back")
-    btnBack:SetHeight(22)
-    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+    btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()
     end)
 
+    ShowPage(1)
     self.panel = panel
 end
