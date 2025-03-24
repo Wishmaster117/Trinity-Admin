@@ -184,8 +184,8 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton AddLearn -->
-			<Button name="$parentAddLearnButton" inherits="UIPanelButtonTemplate" text="AddLearn">
+			<!-- Bouton AddItem -->
+			<Button name="$parentAddItemButton" inherits="UIPanelButtonTemplate" text="Add Item">
 				<Size>
 					<AbsDimension x="105" y="30"/>
 				</Size>
@@ -198,7 +198,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						TrinityAdmin_ShowAddLearnPanel()
+						TrinityAdmin_ShowAddItemPanel()
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -208,7 +208,7 @@
 					<AbsDimension x="120" y="30"/>
 				</Size>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parentAddLearnButton" relativePoint="RIGHT">
+					<Anchor point="LEFT" relativeTo="$parentAddItemButton" relativePoint="RIGHT">
 						<Offset>
 							<AbsDimension x="10" y="0"/>
 						</Offset>

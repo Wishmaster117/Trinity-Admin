@@ -34,7 +34,7 @@ local GMFunctionsModule = TrinityAdmin:NewModule("GMFunctionsPanel")
 local DatabaseModule = TrinityAdmin:NewModule("DatabasePanel")
 local ServerAdminModule = TrinityAdmin:NewModule("ServerAdmin") -- Module gestion serveur
 local GameObjectsModule = TrinityAdmin:NewModule("GameObjects") -- Module gestion des objets
-local AddLearnModule = TrinityAdmin:NewModule("AddLearn") -- Module pour ajouter et apprendre
+local AddItemModule = TrinityAdmin:NewModule("AddItem") -- Module pour ajouter et apprendre
 local AdvancedItemsModule = TrinityAdmin:NewModule("AdvancedItems") -- Advanced items
 local ModuleCharacterModule = TrinityAdmin:NewModule("ModuleCharacter") -- Character Module
 local WaypointsModule = TrinityAdmin:NewModule("Waypoints")
@@ -79,8 +79,8 @@ function TrinityAdmin_ShowGameObjectsPanel()
     GameObjectsModule:ShowGameObjectsPanel()
 end
 
-function TrinityAdmin_ShowAddLearnPanel()
-    AddLearnModule:ShowAddLearnPanel()
+function TrinityAdmin_ShowAddItemPanel()
+    AddItemModule:ShowAddItemPanel()
 end
 
 function TrinityAdmin_ShowAdvancedItemsPanel()
@@ -172,7 +172,7 @@ function TrinityAdmin:ShowMainMenu()
 	if DatabaseModule.panel then DatabaseModule.panel:Hide() end
 	if ServerAdminModule.panel then ServerAdminModule.panel:Hide() end
     if GameObjectsModule.panel then GameObjectsModule.panel:Hide() end
-    if AddLearnModule.panel then AddLearnModule.panel:Hide() end
+    if AddItemModule.panel then AddItemModule.panel:Hide() end
 	if AdvancedItemsModule.panel then AdvancedItemsModule.panel:Hide() end
 	if ModuleCharacterModule.panel then ModuleCharacterModule.panel:Hide() end
 	if WaypointsModule.panel then WaypointsModule.panel:Hide() end
@@ -189,7 +189,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameDatabaseButton:Show()
 	TrinityAdminMainFrameServerAdminButton:Show()
     TrinityAdminMainFrameGameObjectsButton:Show()
-    TrinityAdminMainFrameAddLearnButton:Show()
+    TrinityAdminMainFrameAddItemButton:Show()
 	TrinityAdminMainFrameAdvancedItemsButton:Show()
 	TrinityAdminMainFrameModuleCharacterButton:Show()
 	TrinityAdminMainFrameWaypointsButton:Show()
@@ -212,7 +212,7 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameDatabaseButton:Hide()
 	TrinityAdminMainFrameServerAdminButton:Hide()
     TrinityAdminMainFrameGameObjectsButton:Hide()
-    TrinityAdminMainFrameAddLearnButton:Hide()
+    TrinityAdminMainFrameAddItemButton:Hide()
 	TrinityAdminMainFrameAdvancedItemsButton:Hide()
 	TrinityAdminMainFrameModuleCharacterButton:Hide()
 	TrinityAdminMainFrameWaypointsButton:Hide()

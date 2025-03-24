@@ -56,7 +56,7 @@ GMFunctionsPAnel.lua
 DatabasePanel.lua
 ServerAdmin.lua
 GameObjects.lua
-AddLearn.lua
+AddItem.lua
 AdvancedItems.lua
 ModuleCharacters.lua
 Waypoints.lua
