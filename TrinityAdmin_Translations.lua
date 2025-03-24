@@ -841,8 +841,32 @@ if locale == "frFR" then
 	L["The Five Thunders"] = "Les Cinq tonnerres"
 	L["Thrall's Regalia"] = "Tenue de parade de Thrall de conquête"
 	L["Trappings of Vaulted Secrets"] = "Ornements des secrets scellés"
-
 	-- Fin traduction des sets
+	L["Add Item Module"]  = "Module d'ajout d'Items"
+	L["Advanced Add Functions"] = "Fonctions d'ajout Avancées"
+	L["Choose a action"] = "Choisir Action"
+	L["AdditemSyntax"] = "Syntax: .additem #itemid/[#itemname] #itemcount #bonusListIDs\n\nAdds the specified number of items to inventory. (#itemcount and #bonusListIDs are optional)"
+	L["ID or Name"] = " ID ou Nom"
+	L["How many?"] = "Quantité ?"
+	L["BonusList id's separated by ;"] = "Bonus séparée par ;"
+	L["Search..."] = "Rechercher..."
+	L["Next"] = "Suivant"
+	L["Preview"] = "Précédent"
+	L["Nothing found"] = "Auncune correspondance trouvée"
+	L["Reset"] = "Reset"
+	L["Item Set Easy Add"] = "Ajouts de Sets Simplifié"
+	L["Please enter at least 3 characters for the search."] = "Veuillez entrer au moins 3 caractères pour la recherche."
+	L["The 'ItemSet ID' field is required."] = "Le champ 'ItemSet ID' est obligatoire."
+	L["The 'ID or Name' field is required."] = "Le champ 'ID or Name' est obligatoire."
+	L["Please fill in the required field."] = "Veuillez remplir le champ requis."
+	L["ItemSet ID"] = "ID du Set"
+	L["Don't use"] = "N/A"
+	L["Item Name"] = "Nom de l'Item"
+	L["Item ID"] = "ID de l'Item"
+	L["Choose"] = "Choisir"
+	
+
+
 
 
 	
@@ -1072,6 +1096,7 @@ elseif locale == "enUS" then
 	L["bnetaccount set"] = "Syntax: .bnetaccount set $subcommand\nType .bnetaccount set to see the list of possible subcommands or .help bnetaccount set $subcommand to see info on subcommands."
 	L["bnetaccount set password"] = "Syntax: .bnetaccount set password $account $password $password\nSet password for account."
 	L["bnetaccount unlink"] = "Syntax: .bnetaccount unlink $gameaccount $password\nRemoves battle.net account link from $gameaccount"
+	L["AdditemSyntax"] = "Syntax: .additem #itemid/[#itemname] #itemcount #bonusListIDs\n\nAdds the specified number of items to inventory. (#itemcount and #bonusListIDs are optional)"
 
 
 
