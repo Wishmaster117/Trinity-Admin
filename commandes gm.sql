@@ -14,13 +14,7 @@ voir les commandes .gobject
 	
 	Amettre dans le panneau GM:
 	
-	('dev', 'Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.'),
-	('announce', 'Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.'), --> Mettre dans le panneau GM
-	('gmannounce', 'Syntax: .gmannounce $announcement\r\nSend an announcement to online Gamemasters.'),
-	('gmnameannounce', 'Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM\'s, displaying the name of the sender.'),
-	('gmnotify', 'Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM\'s.'),
-	('nameannounce', 'Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.'),
-	('cometome', 'Syntax: .cometome\nMake selected creature come to your current location (new position not saved to DB).'),
+	
 	('guid', 'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
 	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
 	
