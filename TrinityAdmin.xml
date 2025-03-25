@@ -291,7 +291,25 @@
 				TrinityAdmin_ShowGuildPanel()
 				</OnClick>
 			</Scripts>
-			</Button>						
+			</Button>	
+			<!-- Bouton Module LearnDamage -->
+			<Button name="$parentLearnDamageButton" inherits="UIPanelButtonTemplate" text="Learn And Damages">
+			<Size>
+				<AbsDimension x="135" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentGuildButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowLearnDamagePanel()
+				</OnClick>
+			</Scripts>
+			</Button>								
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

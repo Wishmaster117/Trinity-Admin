@@ -314,7 +314,29 @@ local buttonDefs = {
         anchorOffsetX = 10,
         anchorOffsetY = 0,
         linkTo = "btncometome",
+    },
+    {
+        name = "btndismount",
+        text = "Dismount",
+        tooltip = "Dismount you, if you are mounted.",
+        command = ".dismount",
+        isToggle = false,
+        anchorTo = "LEFT",
+        anchorOffsetX = 10,
+        anchorOffsetY = 0,
+        linkTo = "btnguid",
     },	
+    {
+        name = "btnpossess",
+        text = "Possess",
+        tooltip = "Possesses indefinitely the selected creature.",
+        command = ".possess",
+        isToggle = false,
+        anchorTo = "LEFT",
+        anchorOffsetX = 10,
+        anchorOffsetY = 0,
+        linkTo = "btndismount",
+    },			
 }
 
 ------------------------------------------------------------------

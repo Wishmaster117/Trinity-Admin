@@ -40,6 +40,7 @@ local ModuleCharacterModule = TrinityAdmin:NewModule("ModuleCharacter") -- Chara
 local WaypointsModule = TrinityAdmin:NewModule("Waypoints")
 local AhBotModule = TrinityAdmin:NewModule("AhBot")
 local GuildModule = TrinityAdmin:NewModule("Guild")
+local LearnDamageModule = TrinityAdmin:NewModule("LearnDamage")
 
 
 
@@ -102,6 +103,11 @@ end
 function TrinityAdmin_ShowGuildPanel()
     GuildModule:ShowGuildPanel()
 end
+
+function TrinityAdmin_ShowLearnDamagePanel()
+    LearnDamageModule:ShowLearnDamagePanel()
+end
+
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
@@ -178,6 +184,7 @@ function TrinityAdmin:ShowMainMenu()
 	if WaypointsModule.panel then WaypointsModule.panel:Hide() end
 	if AhBotModule.panel then AhBotModule.panel:Hide() end
 	if GuildModule.panel then GuildModule.panel:Hide() end
+	if LearnDamageModule.panel then LearnDamageModule.panel:Hide() end
 	
 	
 
@@ -195,6 +202,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameWaypointsButton:Show()
 	TrinityAdminMainFrameAhBotButton:Show()
 	TrinityAdminMainFrameGuildButton:Show()
+	TrinityAdminMainFrameLearnDamageButton:Show()
 	
 
 	TrinityAdminMainFrame:Show()
@@ -218,6 +226,7 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameWaypointsButton:Hide()
 	TrinityAdminMainFrameAhBotButton:Hide()
 	TrinityAdminMainFrameGuildButton:Hide()
+	TrinityAdminMainFrameLearnDamageButton:Hide()
 	
     TrinityAdminMainFrame:Show()
 end

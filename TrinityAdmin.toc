@@ -63,3 +63,4 @@ ModuleCharacters.lua
 Waypoints.lua
 AhBot.lua
 Guild.lua
+LearnDamage.lua
