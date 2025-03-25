@@ -44,6 +44,7 @@ ItemsDataPart2.lua
 ItemsDataPart3.lua
 # TeleportData
 TeleportTable.lua
+SkillsData.lua
 # Interface XML
 TrinityAdmin.xml
 # Code principal

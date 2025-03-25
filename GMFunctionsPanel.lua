@@ -1,5 +1,108 @@
 local module = TrinityAdmin:GetModule("GMFunctionsPanel")
 
+-------------------------------------------------------------
+-- Variables et fonctions pour la capture du .guild info
+-------------------------------------------------------------
+local capturingGuidInfo = false
+local guidInfoCollected = {}
+local guidInfoTimer = nil
+
+-- Fonction appelée quand on arrête la capture
+local function FinishGuidInfoCapture()
+    capturingGuidInfo = false
+    if #guidInfoCollected > 0 then
+        -- Concatène toutes les lignes
+        local fullText = table.concat(guidInfoCollected, "\n")
+        
+        -- Affiche dans la popup
+        GuidInfoPopup_SetText(fullText)
+        GuidInfoPopup:Show()
+    else
+        -- Aucun message capturé
+        TrinityAdmin:Print("Nothing Captures.")
+    end
+end
+
+-------------------------------------------------------------
+-- Fenêtre popup GuildInfoPopup pour afficher le .guild info
+-------------------------------------------------------------
+local GuidInfoPopup = CreateFrame("Frame", "GuidInfoPopup", UIParent, "BackdropTemplate")
+GuidInfoPopup:SetSize(400, 300)
+GuidInfoPopup:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -100, -100)
+GuidInfoPopup:SetMovable(true)
+GuidInfoPopup:EnableMouse(true)
+GuidInfoPopup:RegisterForDrag("LeftButton")
+GuidInfoPopup:SetScript("OnDragStart", GuidInfoPopup.StartMoving)
+GuidInfoPopup:SetScript("OnDragStop", GuidInfoPopup.StopMovingOrSizing)
+GuidInfoPopup:SetBackdrop({
+    bgFile = "Interface/DialogFrame/UI-DialogBox-Background",
+    edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
+    tile = true, tileSize = 32, edgeSize = 32,
+    insets = { left=8, right=8, top=8, bottom=8 }
+})
+GuidInfoPopup:Hide()  -- Caché par défaut
+
+-- Titre de la fenêtre
+local title = GuidInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+title:SetPoint("TOP", 0, -15)
+title:SetText("Guild Info")
+
+-- Bouton Close
+local closeButton = CreateFrame("Button", nil, GuidInfoPopup, "UIPanelCloseButton")
+closeButton:SetPoint("TOPRIGHT", GuidInfoPopup, "TOPRIGHT")
+
+-- ScrollFrame
+local scrollFrame = CreateFrame("ScrollFrame", "GuidInfoScrollFrame", GuidInfoPopup, "UIPanelScrollFrameTemplate")
+scrollFrame:SetPoint("TOPLEFT", 15, -50)
+scrollFrame:SetSize(370, 230)
+
+-- Conteneur du texte
+local content = CreateFrame("Frame", nil, scrollFrame)
+content:SetSize(370, 230)
+scrollFrame:SetScrollChild(content)
+
+-- FontString pour le texte
+local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+infoText:SetPoint("TOPLEFT")
+infoText:SetWidth(350)          -- un peu moins que 370 pour la marge
+infoText:SetJustifyH("LEFT")
+infoText:SetJustifyV("TOP")
+
+-- Fonction pour régler le texte et ajuster la taille
+function GuidInfoPopup_SetText(text)
+    infoText:SetText(text or "")
+    local textHeight = infoText:GetStringHeight()
+    content:SetHeight(textHeight + 5)
+    scrollFrame:SetVerticalScroll(0) -- revient en haut
+end
+
+-------------------------------------------------------------
+-- CaptureFrame pour écouter CHAT_MSG_SYSTEM
+-------------------------------------------------------------
+local guidCaptureFrame = CreateFrame("Frame")
+guidCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+guidCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingGuidInfo then
+        return
+    end
+    
+    -- Nettoyage éventuel des codes couleur, etc.
+    local cleanMsg = msg
+    cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "") -- Retire codes couleurs
+    cleanMsg = cleanMsg:gsub("|r", "")
+    cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")     -- Retire liens
+    cleanMsg = cleanMsg:gsub("|T.-|t", "")             -- Retire textures
+    -- Retire quelques caractères "box drawing"
+    cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
+
+    -- Ajoute la ligne au tableau
+    table.insert(guidInfoCollected, cleanMsg)
+
+    -- On redémarre le timer (1 seconde sans nouveau message => fin capture)
+    if guidInfoTimer then guidInfoTimer:Cancel() end
+    guidInfoTimer = C_Timer.NewTimer(1, FinishGuidInfoCapture)
+end)
+
 ------------------------------------------------------------------
 -- Table listant tous les boutons (sans le bouton Appear).
 ------------------------------------------------------------------
@@ -200,7 +303,18 @@ local buttonDefs = {
         anchorOffsetX = 10,
         anchorOffsetY = 0,
         linkTo = "btnBank",
-    },			
+    },	
+    {
+        name = "btnguid",
+        text = "Character Guid",
+        tooltip = "Display the GUID for the selected character.",
+        command = ".guid",
+        isToggle = false,
+        anchorTo = "LEFT",
+        anchorOffsetX = 10,
+        anchorOffsetY = 0,
+        linkTo = "btncometome",
+    },	
 }
 
 ------------------------------------------------------------------
@@ -407,6 +521,25 @@ function module:CreateGMFunctionsPanel()
             CreateGMButton(page, def, self, buttonRefs)
         end
 
+        -- Ajout du comportement personnalisé pour le bouton "btnguid"
+		if buttonRefs["btnguid"] then
+			buttonRefs["btnguid"]:SetScript("OnClick", function()
+				local targetName = UnitName("target")
+				if not targetName or not UnitIsPlayer("target") then
+					print("Merci de selectionner un personnage valide")
+					return
+				end
+				capturingGuidInfo = true
+				guidInfoCollected = {}
+				if guidInfoTimer then
+					guidInfoTimer:Cancel()
+					guidInfoTimer = nil
+				end
+				SendChatMessage(".guid", "SAY")
+			end)
+		end
+
+
         ------------------------------------------------------------------
         -- Création du champ "Appear" et son bouton Go
         ------------------------------------------------------------------
@@ -602,158 +735,289 @@ function module:CreateGMFunctionsPanel()
         end
     end
 
-    ----------------------------------------------------------------------------
-    -- PAGE 2 : Fonctions de développement et annonces
-    ----------------------------------------------------------------------------
-    do
-        local page = pages[2]
-        local row
+        ----------------------------------------------------------------------------
+        -- PAGE 2 : Fonctions de développement et annonces
+        ----------------------------------------------------------------------------
+        do
+            local page = pages[2]
+            local row
 
-        -- Ligne 1 : Dev Status, boutons radio (ON/OFF) et bouton SET
-        row = CreateRow(page, 30)
-        local devStatusLabel = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        devStatusLabel:SetPoint("LEFT", row, "LEFT", 0, -40)
-        devStatusLabel:SetText("Dev Status")
+            -- Ligne 1 : Dev Status, boutons radio (ON/OFF) et bouton SET
+            row = CreateRow(page, 30)
+            local devStatusLabel = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            devStatusLabel:SetPoint("LEFT", row, "LEFT", 0, -40)
+            devStatusLabel:SetText("Dev Status")
 
-        -- Valeur par défaut
-        local devStatusValue = "on"
+            -- Valeur par défaut
+            local devStatusValue = "on"
 
-        local radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
-        radioOn:SetPoint("LEFT", devStatusLabel, "RIGHT", 10, 0)
-        radioOn.text:SetText("ON")
-        radioOn:SetChecked(true)
-        radioOn:SetScript("OnClick", function(self)
+            local radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+            radioOn:SetPoint("LEFT", devStatusLabel, "RIGHT", 10, 0)
+            radioOn.text:SetText("ON")
+            radioOn:SetChecked(true)
+            radioOn:SetScript("OnClick", function(self)
+                radioOff:SetChecked(false)
+                devStatusValue = "on"
+            end)
+
+            local radioOff = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+            radioOff:SetPoint("LEFT", radioOn, "RIGHT", 20, 0)
+            radioOff.text:SetText("OFF")
             radioOff:SetChecked(false)
-            devStatusValue = "on"
-        end)
+            radioOff:SetScript("OnClick", function(self)
+                radioOn:SetChecked(false)
+                devStatusValue = "off"
+            end)
 
-        local radioOff = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
-        radioOff:SetPoint("LEFT", radioOn, "RIGHT", 10, 0)
-        radioOff.text:SetText("OFF")
-        radioOff:SetChecked(false)
-        radioOff:SetScript("OnClick", function(self)
-            radioOn:SetChecked(false)
-            devStatusValue = "off"
-        end)
+            local btnDevSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+            btnDevSet:SetSize(40, 22)
+            btnDevSet:SetText("SET")
+            btnDevSet:SetPoint("LEFT", radioOff, "RIGHT", 20, 0)
+            btnDevSet:SetScript("OnClick", function()
+                SendChatMessage(".dev " .. devStatusValue, "SAY")
+            end)
+            btnDevSet:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.", 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            btnDevSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        local btnDevSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnDevSet:SetSize(40, 22)
-        btnDevSet:SetText("SET")
-        btnDevSet:SetPoint("LEFT", radioOff, "RIGHT", 20, 0)
-        btnDevSet:SetScript("OnClick", function()
-            SendChatMessage(".dev " .. devStatusValue, "SAY")
-        end)
-        btnDevSet:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.", 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        btnDevSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            -- Ligne 2 : Champ d'annonce globale .announce
+            row = CreateRow(page, 30)
+            local announceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+            announceEdit:SetSize(150, 22)
+            announceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+            announceEdit:SetAutoFocus(false)
+            announceEdit:SetText("Message")
+            local btnAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+            btnAnnounce:SetSize(60, 22)
+            btnAnnounce:SetText("Send")
+            btnAnnounce:SetPoint("LEFT", announceEdit, "RIGHT", 10, 0)
+            btnAnnounce:SetScript("OnClick", function()
+                local text = announceEdit:GetText()
+                if not text or text == "" or text == "Message" then
+                    print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .announce.")
+                else
+                    SendChatMessage('.announce "' .. text .. '"', "SAY")
+                end
+            end)
+            btnAnnounce:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.", 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            btnAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        -- Ligne 2 : Champ d'annonce globale .announce
-        row = CreateRow(page, 30)
-        local announceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        announceEdit:SetSize(150, 22)
-        announceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
-        announceEdit:SetAutoFocus(false)
-        announceEdit:SetText("Message")
-        local btnAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnAnnounce:SetSize(60, 22)
-        btnAnnounce:SetText("Send")
-        btnAnnounce:SetPoint("LEFT", announceEdit, "RIGHT", 10, 0)
-        btnAnnounce:SetScript("OnClick", function()
-            local text = announceEdit:GetText()
-            if not text or text == "" or text == "Message" then
-                print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .announce.")
-            else
-                SendChatMessage('.announce "' .. text .. '"', "SAY")
-            end
-        end)
-        btnAnnounce:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.", 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        btnAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            -- Ligne 3 : Champ GM Message pour .gmannounce
+            row = CreateRow(page, 30)
+            local gmMessageEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+            gmMessageEdit:SetSize(150, 22)
+            gmMessageEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+            gmMessageEdit:SetAutoFocus(false)
+            gmMessageEdit:SetText("GM Message")
+            local btnGmMessage = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+            btnGmMessage:SetSize(60, 22)
+            btnGmMessage:SetText("Send")
+            btnGmMessage:SetPoint("LEFT", gmMessageEdit, "RIGHT", 10, 0)
+            btnGmMessage:SetScript("OnClick", function()
+                local text = gmMessageEdit:GetText()
+                if not text or text == "" or text == "GM Message" then
+                    print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .gmannounce.")
+                else
+                    SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
+                end
+            end)
+            btnGmMessage:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM's, displaying the name of the sender.", 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            btnGmMessage:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        -- Ligne 3 : Champ GM Message pour .gmannounce
-        row = CreateRow(page, 30)
-        local gmMessageEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        gmMessageEdit:SetSize(150, 22)
-        gmMessageEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
-        gmMessageEdit:SetAutoFocus(false)
-        gmMessageEdit:SetText("GM Message")
-        local btnGmMessage = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnGmMessage:SetSize(60, 22)
-        btnGmMessage:SetText("Send")
-        btnGmMessage:SetPoint("LEFT", gmMessageEdit, "RIGHT", 10, 0)
-        btnGmMessage:SetScript("OnClick", function()
-            local text = gmMessageEdit:GetText()
-            if not text or text == "" or text == "GM Message" then
-                print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .gmannounce.")
-            else
-                SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
-            end
-        end)
-        btnGmMessage:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM's, displaying the name of the sender.", 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        btnGmMessage:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            -- Ligne 4 : Champ GM Notification pour .gmnotify
+            row = CreateRow(page, 30)
+            local gmNotifyEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+            gmNotifyEdit:SetSize(150, 22)
+            gmNotifyEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+            gmNotifyEdit:SetAutoFocus(false)
+            gmNotifyEdit:SetText("GM Notification")
+            local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+            btnGmNotify:SetSize(60, 22)
+            btnGmNotify:SetText("Send")
+            btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
+            btnGmNotify:SetScript("OnClick", function()
+                local text = gmNotifyEdit:GetText()
+                if not text or text == "" or text == "GM Notification" then
+                    print("Erreur : Veuillez saisir une notification différente de la valeur par défaut pour .gmnotify.")
+                else
+                    SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
+                end
+            end)
+            btnGmNotify:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's.", 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        -- Ligne 4 : Champ GM Notification pour .gmnotify
-        row = CreateRow(page, 30)
-        local gmNotifyEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        gmNotifyEdit:SetSize(150, 22)
-        gmNotifyEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
-        gmNotifyEdit:SetAutoFocus(false)
-        gmNotifyEdit:SetText("GM Notification")
-        local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnGmNotify:SetSize(60, 22)
-        btnGmNotify:SetText("Send")
-        btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
-        btnGmNotify:SetScript("OnClick", function()
-            local text = gmNotifyEdit:GetText()
-            if not text or text == "" or text == "GM Notification" then
-                print("Erreur : Veuillez saisir une notification différente de la valeur par défaut pour .gmnotify.")
-            else
-                SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
-            end
-        end)
-        btnGmNotify:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's.", 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            -- Ligne 5 : Champ GM Announcement pour .nameannounce
+            row = CreateRow(page, 30)
+            local gmAnnounceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+            gmAnnounceEdit:SetSize(150, 22)
+            gmAnnounceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+            gmAnnounceEdit:SetAutoFocus(false)
+            gmAnnounceEdit:SetText("GM Announcement")
+            local btnGmAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+            btnGmAnnounce:SetSize(60, 22)
+            btnGmAnnounce:SetText("Send")
+            btnGmAnnounce:SetPoint("LEFT", gmAnnounceEdit, "RIGHT", 10, 0)
+            btnGmAnnounce:SetScript("OnClick", function()
+                local text = gmAnnounceEdit:GetText()
+                if not text or text == "" or text == "GM Announcement" then
+                    print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .nameannounce.")
+                else
+                    SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
+                end
+            end)
+            btnGmAnnounce:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.", 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            btnGmAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-        -- Ligne 5 : Champ GM Announcement pour .nameannounce
-        row = CreateRow(page, 30)
-        local gmAnnounceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        gmAnnounceEdit:SetSize(150, 22)
-        gmAnnounceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
-        gmAnnounceEdit:SetAutoFocus(false)
-        gmAnnounceEdit:SetText("GM Announcement")
-        local btnGmAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnGmAnnounce:SetSize(60, 22)
-        btnGmAnnounce:SetText("Send")
-        btnGmAnnounce:SetPoint("LEFT", gmAnnounceEdit, "RIGHT", 10, 0)
-        btnGmAnnounce:SetScript("OnClick", function()
-            local text = gmAnnounceEdit:GetText()
-            if not text or text == "" or text == "GM Announcement" then
-                print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .nameannounce.")
-            else
-                SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
-            end
-        end)
-        btnGmAnnounce:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.", 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        btnGmAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
-    end
+		-----------------------------------------------------------------------------
+		-- Ligne 6 : Dropdown Skill, champs Level et Max pour .setskill
+		-----------------------------------------------------------------------------
+		row = CreateRow(page, 30)
+		
+		-- Création d'un bouton d'affichage qui montrera le menu personnalisé
+		local displayButton = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+		displayButton:SetSize(220, 22)
+		displayButton:SetPoint("LEFT", row, "LEFT", 0, -40)
+		displayButton:SetText("Select Skill")
+		-- On stocke la sélection dans displayButton.selectedSkill
+		
+		-- Création du cadre du menu déroulant personnalisé (initialement caché)
+		local customDropdown = CreateFrame("Frame", "SkillDropdownFrame", row)
+		customDropdown:SetSize(220, 10 * 16)  -- 10 boutons de 16 pixels de haut chacun
+		customDropdown:SetPoint("TOPLEFT", displayButton, "BOTTOMLEFT", 0, -5)
+		customDropdown:Hide()
+		
+		-- Ajout d'une texture d'arrière-plan pour changer la couleur de fond
+		local bg = customDropdown:CreateTexture(nil, "BACKGROUND")
+		bg:SetAllPoints(customDropdown)
+		bg:SetColorTexture(0, 0, 0, 0.5)  -- Noir à 50% d'opacité (ajustez selon vos besoins)
+		
+		-- Création d'un faux scroll frame couvrant tout le cadre du menu
+		local scrollFrame = CreateFrame("ScrollFrame", "SkillScrollFrame", customDropdown, "FauxScrollFrameTemplate")
+		scrollFrame:SetAllPoints(customDropdown)
+		
+		-- Création de 10 boutons qui seront réutilisés pour afficher les entrées
+		local numButtons = 10
+		local buttons = {}
+		for i = 1, numButtons do
+			local btn = CreateFrame("Button", "SkillDropdownButton"..i, customDropdown)
+			btn:SetSize(120, 16)
+			if i == 1 then
+				btn:SetPoint("TOPLEFT", customDropdown, "TOPLEFT", 35, 0)
+			else
+				btn:SetPoint("TOPLEFT", buttons[i-1], "BOTTOMLEFT", 0, 0)
+			end
+			btn:SetNormalFontObject("GameFontNormal")
+			btn:SetHighlightFontObject("GameFontHighlight")
+			btn:SetScript("OnClick", function(self)
+				displayButton.selectedSkill = SkillsData[self.index]
+				--displayButton:SetText(SkillsData[self.index].name)
+				displayButton:SetText(TrinityAdmin_Translations[SkillsData[self.index].name] or SkillsData[self.index].name)
+				customDropdown:Hide()
+			end)
+			buttons[i] = btn
+		end
+		
+		-- Fonction de mise à jour du menu déroulant en fonction du défilement
+		local function UpdateDropdown()
+			local offset = FauxScrollFrame_GetOffset(scrollFrame)
+			for i = 1, numButtons do
+				local index = i + offset
+				if index <= #SkillsData then
+					local skill = SkillsData[index]
+					-- buttons[i]:SetText(skill.name)
+					buttons[i]:SetText(TrinityAdmin_Translations[skill.name] or skill.name)
+					buttons[i].index = index
+					buttons[i]:Show()
+				else
+					buttons[i]:Hide()
+				end
+			end
+		end
+		
+		scrollFrame:SetScript("OnVerticalScroll", function(self, offset)
+			FauxScrollFrame_OnVerticalScroll(self, offset, 16, UpdateDropdown)
+		end)
+		
+		-- Initialisation du scroll frame dès l'affichage du menu
+		customDropdown:SetScript("OnShow", function(self)
+			FauxScrollFrame_Update(scrollFrame, #SkillsData, numButtons, 16)
+			UpdateDropdown()
+		end)
+		
+		-- Affichage/Masquage du menu déroulant au clic sur le bouton d'affichage
+		displayButton:SetScript("OnClick", function(self)
+			if customDropdown:IsShown() then
+				customDropdown:Hide()
+			else
+				customDropdown:Show()
+			end
+		end)
+		
+		-----------------------------------------------------------------------
+		-- Les autres éléments restent inchangés
+		-----------------------------------------------------------------------
+		local levelEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+		levelEdit:SetSize(60, 22)
+		levelEdit:SetPoint("LEFT", displayButton, "RIGHT", 20, 0)
+		levelEdit:SetAutoFocus(false)
+		levelEdit:SetText("Level")
+		
+		local maxEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+		maxEdit:SetSize(60, 22)
+		maxEdit:SetPoint("LEFT", levelEdit, "RIGHT", 10, 0)
+		maxEdit:SetAutoFocus(false)
+		maxEdit:SetText("Max")
+		
+		local btnSetSkill = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+		btnSetSkill:SetSize(60, 22)
+		btnSetSkill:SetText("Set")
+		btnSetSkill:SetPoint("LEFT", maxEdit, "RIGHT", 10, 0)
+		btnSetSkill:SetScript("OnClick", function()
+			local selectedSkill = displayButton.selectedSkill
+			if not selectedSkill then
+				print("Erreur : Veuillez sélectionner une compétence.")
+				return
+			end
+			local level = levelEdit:GetText()
+			if not level or level == "" or level == "Level" then
+				print("Erreur : Veuillez saisir une valeur pour Level.")
+				return
+			end
+			local command = ".setskill " .. selectedSkill.entry .. " " .. level
+			local max = maxEdit:GetText()
+			if max and max ~= "" and max ~= "Max" then
+				command = command .. " " .. max
+			end
+			SendChatMessage(command, "SAY")
+		end)
+		btnSetSkill:SetScript("OnEnter", function(self)
+			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+			GameTooltip:SetText("Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill.", 1, 1, 1, 1, true)
+			GameTooltip:Show()
+		end)
+		btnSetSkill:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+			end
+
 
     ----------------------------------------------------------------------------
     -- Bouton Back commun (hors pagination)

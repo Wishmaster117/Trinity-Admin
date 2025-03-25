@@ -14,10 +14,6 @@ voir les commandes .gobject
 	
 	Amettre dans le panneau GM:
 	
-	
-	('guid', 'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
-	('setskill', 'Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provide) for the selected character. If no character is selected, you learn the skill.'),
-	
 	.account delete Syntax: .account delete $account Delete account with all characters.
 	.refaire bnetaccountset car il y'a les sous commandes en fait faut le virer de la liste
 	-- voir pour les . learn des proffessions etc...
