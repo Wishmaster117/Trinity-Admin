@@ -20,25 +20,15 @@ voir les commandes .gobject
 	-- finir de mettre les noms des sets et leurs traduction
 	-- Revoir les boutond radio de battlenet account et mettre des textes par defaut
 	
-
-	.learn all crafts
-	.learn all debug
-	.learn all languages
-	.learn all pettalents
-	.learn all recipes
-	.learn all talents
-	.learn my quests
-	.learn my trainer -- Apprends tous les sorts 
-	.learn <spell> [all] all pour tous les ranks du spell
-	.learn all my talents 3 Syntax: .learn all my talents Learn all talents (and spells with first rank learned as talent) available for his class. 
-	.learn all my spells 3 Syntax: .learn all my spells Learn all spells (except talents and spells with first rank learned as talent) available for his class.
-    .learn all my pettalents 3 Syntax: .learn all my pettalents Learn all talents for your pet available for his creature type (only for hunter pets).
-    .learn all my class 3 Syntax: .learn all my class Learn all spells and talents available for his class.
-    .learn all blizzard 2 Syntax: .learn all blizzard Learn all default spells for Game Masters.
-    .learn all lang Syntax: .learn all lang Learn all languages
-    .learn all default 1 Syntax: .learn all default [$playername] Learn for selected/$playername player all default spells for his race/class and spells rewarded by completed quests.
-    .learn 3 Syntax: .learn #spell [all] Selected character learn a spell of id #spell. If 'all' provided then all ranks learned.
+    Il me faut pour mon nouveau module le code pour les fonctions suivantes qui sera a intégrer à la page 1:
+	Un champ de saisie avec le texte par defaut "Spell ID", suivi d'un champ de saisie avec texte "Option" et un bouton "Learn", quand on clique
+	sur ce bouton on envoi la commande : .learn "Valeur du champ Spell ID" "Valeur du champ Option" (ce champ est facultatif, si il est vide ou contient le texte par defaut, on ne le prends pas dans la commande envoyée),
+	cette commande doit être envoyée sur je joueur selectionné par le GM donc si il ne selectionne pas de joueur, on envoi une erreur. Le bouton devra avoir ce tooltip : Syntax: .learn #spell [all] Selected character learn a spell of id #spell. If 'all' provided then all ranks learned.
 	
+	-- Tester les .learn 
+    -- essayer de trouver une commande reversse à .possess	
+    
+    
 	('gps', 'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
 	
 		
@@ -90,9 +80,8 @@ voir les commandes .gobject
 	('commands', 'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
 	(
 	'cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
-	('damage', 'Syntax: .damage $damage_amount [$school [$spellid]]\r\n\r\nApply $damage to target. If not $school and $spellid provided then this flat clean melee damage without any modifiers. If $school provided then damage modified by armor reduction (if school physical), and target absorbing modifiers and result applied as melee damage to target. If spell provided then damage modified and applied as spell damage. $spellid can be shift-link.'),
-	('damage go', 'Syntax: .damage go $guid|$link $damage_amount\n\nApply $damage to destructible gameobject.'),
 	
+
 	('debug', 'Syntax: .debug $subcommand\nType .debug to see the list of possible subcommands or .help debug $subcommand to see info on subcommands'),
 	('debug anim', 'Syntax: '),
 	('debug areatriggers', 'Syntax: .debug areatriggers\nToggle debug mode for areatriggers. In debug mode GM will be notified if reaching an areatrigger'),
@@ -175,7 +164,7 @@ voir les commandes .gobject
 	('disable remove spell', 'Syntax: .disable remove spell $entry'),
 	('disable remove vmap', 'Syntax: .disable remove vmap $entry'),
 	
-	('dismount', 'Syntax: .dismount\r\n\r\nDismount you, if you are mounted.'),
+
 	('distance', 'Syntax: .distance [link]\r\n\r\nDisplay the distance from your character to the selected unit or given creature, player or gameobject.'),
 	
 	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
@@ -286,7 +275,6 @@ voir les commandes .gobject
 	
 
 	('playall', 'Syntax: .playall #soundid\r\n\r\nPlayer a sound to whole server.'),
-	('possess', 'Syntax: .possess\r\n\r\nPossesses indefinitely the selected creature.'),
 	
 	('pvpstats', 'Shows number of battleground victories in the last 7 days'),
 	
