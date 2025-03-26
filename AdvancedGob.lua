@@ -83,7 +83,37 @@ end
 -------------------------------------------------------------
 -- Déclaration globale dans le module (accessible par l'événement)
 local posXEB, posYEB, posZEB, deleteGuidEB
+local initialX, initialY, initialZ
 
+-- local GobCaptureFrame = CreateFrame("Frame")
+-- GobCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+-- GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+--     if capturingMemory then
+--         local x, y, z = string.match(msg, "location %(([%d%.%-]+),%s*([%d%.%-]+),%s*([%d%.%-]+)%)")
+--         if x and y and z then
+--             posXEB:SetText(tostring(x))
+--             posYEB:SetText(tostring(y))
+--             posZEB:SetText(tostring(z))
+--             print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z)
+--             capturingMemory = false
+--             return  -- Arrête le traitement pour ce message
+--         end
+--     end
+-- 
+--     if not capturingGobInfo then
+--         return
+--     end
+--     
+--     -- Traitement habituel pour capturer le .gobject info
+--     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+--     cleanMsg = cleanMsg:gsub("|r", "")
+--     cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
+--     cleanMsg = cleanMsg:gsub("|T.-|t", "")
+--     cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
+--     table.insert(GobInfoCollected, cleanMsg)
+--     if GobInfoTimer then GobInfoTimer:Cancel() end
+--     GobInfoTimer = C_Timer.NewTimer(1, FinishGobInfoCapture)
+-- end)
 local GobCaptureFrame = CreateFrame("Frame")
 GobCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
@@ -93,7 +123,15 @@ GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
             posXEB:SetText(tostring(x))
             posYEB:SetText(tostring(y))
             posZEB:SetText(tostring(z))
-            print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z)
+            -- Mémorisation de la position initiale
+            initialX = tonumber(x)
+            initialY = tonumber(y)
+            initialZ = tonumber(z)
+            local spawnID = string.match(msg, "SpawnID:%s*([%d]+)")
+            if spawnID and deleteGuidEB then
+                deleteGuidEB:SetText(tostring(spawnID))
+            end
+            --print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z .. " GUID=" .. (spawnID or ""))
             capturingMemory = false
             return  -- Arrête le traitement pour ce message
         end
@@ -103,7 +141,6 @@ GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
         return
     end
     
-    -- Traitement habituel pour capturer le .gobject info
     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
     cleanMsg = cleanMsg:gsub("|r", "")
     cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
@@ -141,7 +178,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
     
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Adanced GameObjects")
+    panel.title:SetText("Advanced GameObjects")
 
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
@@ -222,7 +259,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
     
     local page1Title = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     page1Title:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, 0)
-    page1Title:SetText("Adanced GameObjects 1")
+    page1Title:SetText("Advanced GameObjects 1")
 
     -- Sous-titre "Game Objects Near"
     local gameObjectsNearTitle = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -254,20 +291,14 @@ function AdvancedGob:CreateAdvancedGobPanel()
         local distance = distanceEditBox:GetText()
         if distance == "" or distance == "Distance" then
             SendChatMessage(".gobject near", "SAY")
-            print("Commande envoyée: .gobject near")
+            --print("Commande envoyée: .gobject near")
         else
             SendChatMessage(".gobject near " .. distance, "SAY")
-            print("Commande envoyée: .gobject near " .. distance)
+            --print("Commande envoyée: .gobject near " .. distance)
         end
-
-        -- 1) On efface l'ancien texte et vide la table
         GobInfoPopup_SetText("")
         GobInfoCollected = {}
-
-        -- 2) Active le mode capture
         capturingGobInfo = true
-
-        -- 3) Lance un timer pour clôturer la capture s'il n'y a plus de message
         if GobInfoTimer then
             GobInfoTimer:Cancel()
         end
@@ -277,84 +308,65 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	--------------------------------
 	-- Move du gameobject
 	--------------------------------
--- Champ de saisie pour le GUID du gameobject
-local gameObjectGuidEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-gameObjectGuidEB:SetSize(200, 22)
-gameObjectGuidEB:SetPoint("TOPLEFT", distanceEditBox, "BOTTOMLEFT", 0, -20)
-gameObjectGuidEB:SetAutoFocus(false)
-gameObjectGuidEB:SetText("Enter GameObject Guid")
-
--- Bouton "Memory" à droite du champ GUID (reste inchangé)
-local capturingMemory = false  -- variable pour détecter la réponse du memory
-local btnMemory = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnMemory:SetSize(80, 22)
-btnMemory:SetPoint("LEFT", gameObjectGuidEB, "RIGHT", 5, 0)
-btnMemory:SetText("Memorize")
-btnMemory:SetScript("OnClick", function(self)
-    local guid = gameObjectGuidEB:GetText()
-    if guid == "" or guid == "Enter GameObject Guid" then
-        print("Veuillez entrer un GameObject Guid valide.")
-        return
-    end
-    capturingMemory = true
-    SendChatMessage(".gobject info guid " .. guid, "SAY")
-    print("Commande envoyée: .gobject info guid " .. guid)
-    C_Timer.NewTimer(3, function() capturingMemory = false end)
-end)
-
-
--- Mise à jour de la fonction de capture pour extraire les coordonnées de la réponse
--- GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
---     if capturingMemory then
---         -- Recherche le texte "location (x, y, z)" dans le message
---         local x, y, z = string.match(msg, "location %(([%d%.%-]+),%s*([%d%.%-]+),%s*([%d%.%-]+)%)")
---         if x and y and z then
---             posXEB:SetText(tostring(x))
---             posYEB:SetText(tostring(y))
---             posZEB:SetText(tostring(z))
---             print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z)
---             capturingMemory = false
---             return  -- Arrête le traitement pour ce message
---         end
---     end
--- 
---     if not capturingGobInfo then
---         return
---     end
---     
---     -- Traitement habituel pour capturer le .gobject info
---     local cleanMsg = msg
---     cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "")
---     cleanMsg = cleanMsg:gsub("|r", "")
---     cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
---     cleanMsg = cleanMsg:gsub("|T.-|t", "")
---     cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
---     table.insert(GobInfoCollected, cleanMsg)
---     if GobInfoTimer then GobInfoTimer:Cancel() end
---     GobInfoTimer = C_Timer.NewTimer(1, FinishGobInfoCapture)
--- end)
-
-GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
-    if capturingMemory then
-        -- Recherche le texte "location (x, y, z)" dans le message
-        local x, y, z = string.match(msg, "location %(([%d%.%-]+),%s*([%d%.%-]+),%s*([%d%.%-]+)%)")
-        if x and y and z then
-            posXEB:SetText(tostring(x))
-            posYEB:SetText(tostring(y))
-            posZEB:SetText(tostring(z))
-            local spawnID = string.match(msg, "SpawnID:%s*([%d]+)")
-            if spawnID and deleteGuidEB then
-                deleteGuidEB:SetText(tostring(spawnID))
-            end
-            print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z .. " GUID=" .. (spawnID or ""))
-            capturingMemory = false
-            return  -- Arrête le traitement pour ce message
-        end
-    end
-
-    if not capturingGobInfo then
-        return
-    end
+	-- Champ de saisie pour le GUID du gameobject
+	local gameObjectGuidEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
+	gameObjectGuidEB:SetSize(200, 22)
+	gameObjectGuidEB:SetPoint("TOPLEFT", distanceEditBox, "BOTTOMLEFT", 0, -20)
+	gameObjectGuidEB:SetAutoFocus(false)
+	gameObjectGuidEB:SetText("Enter GameObject Guid")
+	
+	-- Bouton "Memory" à droite du champ GUID (reste inchangé)
+	local capturingMemory = false  -- variable pour détecter la réponse du memory
+	local btnMemory = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
+	btnMemory:SetSize(80, 22)
+	btnMemory:SetPoint("LEFT", gameObjectGuidEB, "RIGHT", 5, 0)
+	btnMemory:SetText("Memorize")
+	btnMemory:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Click to save positions before making changes.", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnMemory:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)
+	
+	btnMemory:SetScript("OnClick", function(self)
+		local guid = gameObjectGuidEB:GetText()
+		if guid == "" or guid == "Enter GameObject Guid" then
+			print("Veuillez entrer un GameObject Guid valide.")
+			return
+		end
+		capturingMemory = true
+		SendChatMessage(".gobject info guid " .. guid, "SAY")
+		--print("Commande envoyée: .gobject info guid " .. guid)
+		C_Timer.NewTimer(3, function() capturingMemory = false end)
+	end)
+	
+	GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+		if capturingMemory then
+			-- Recherche le texte "location (x, y, z)" dans le message
+			local x, y, z = string.match(msg, "location %(([%d%.%-]+),%s*([%d%.%-]+),%s*([%d%.%-]+)%)")
+			if x and y and z then
+				posXEB:SetText(tostring(x))
+				posYEB:SetText(tostring(y))
+				posZEB:SetText(tostring(z))
+				-- Mémorisation de la position initiale
+				initialX = tonumber(x)
+				initialY = tonumber(y)
+				initialZ = tonumber(z)
+				local spawnID = string.match(msg, "SpawnID:%s*([%d]+)")
+				if spawnID and deleteGuidEB then
+					deleteGuidEB:SetText(tostring(spawnID))
+				end
+				-- print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z .. " GUID=" .. (spawnID or ""))
+				capturingMemory = false
+				return  -- Arrête le traitement pour ce message
+			end
+		end
+	
+		if not capturingGobInfo then
+			return
+		end
     
     -- Traitement habituel pour capturer le .gobject info
     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
@@ -365,155 +377,231 @@ GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
     table.insert(GobInfoCollected, cleanMsg)
     if GobInfoTimer then GobInfoTimer:Cancel() end
     GobInfoTimer = C_Timer.NewTimer(1, FinishGobInfoCapture)
-end)
+	end)
+	
+	-- Création des champs de position et affectation aux variables globales
+	posXEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
+	posXEB:SetSize(80, 22)
+	posXEB:SetPoint("TOPLEFT", gameObjectGuidEB, "BOTTOMLEFT", 0, -10)
+	posXEB:SetAutoFocus(false)
+	posXEB:EnableKeyboard(false)
+	posXEB:SetText("0")
+	
+	posYEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
+	posYEB:SetSize(80, 22)
+	posYEB:SetPoint("LEFT", posXEB, "RIGHT", 10, 0)
+	posYEB:SetAutoFocus(false)
+	posYEB:EnableKeyboard(false)
+	posYEB:SetText("0")
+	
+	posZEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
+	posZEB:SetSize(80, 22)
+	posZEB:SetPoint("LEFT", posYEB, "RIGHT", 10, 0)
+	posZEB:SetAutoFocus(false)
+	posZEB:EnableKeyboard(false)
+	posZEB:SetText("0")
+	
+	-- Nouveau champ pour le GUID à supprimer
+	deleteGuidEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
+	deleteGuidEB:SetSize(120, 22)
+	deleteGuidEB:SetPoint("LEFT", posXEB, "BOTTOMLEFT", 0, -20)
+	deleteGuidEB:SetAutoFocus(false)
+	deleteGuidEB:EnableKeyboard(false)
+	deleteGuidEB:SetText("GUID")
+	
+	-- Bouton "Delete" à droite du nouvel editbox
+	local btnDelete = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
+	btnDelete:SetPoint("LEFT", deleteGuidEB, "RIGHT", 5, 0)
+	btnDelete:SetHeight(22)
+	btnDelete:SetText("Delete")
+	btnDelete:SetWidth(btnDelete:GetTextWidth() + 10)
+	btnDelete:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Delete The GameObject.", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnDelete:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)	
+	btnDelete:SetScript("OnClick", function(self)
+		local guid = deleteGuidEB:GetText()
+		if guid == "" or guid == "Enter GUID to delete" then
+			print("Please enter a valid GUID.")
+			return
+		end
+		local command = ".gobject delete " .. guid
+		SendChatMessage(command, "SAY")
+		print("Commande envoyée: " .. command)
+	end)
+	
+	-- Conteneur pour les boutons fléchés (placé à droite des champs de position)
+	local arrowContainer = CreateFrame("Frame", nil, commandsFramePage1)
+	arrowContainer:SetSize(100, 100)
+	arrowContainer:SetPoint("LEFT", posZEB, "RIGHT", 135, 30)
+	
+	-- Création d'un font string pour afficher le mode d'emploi au-dessus du bloc de flèches
+	local instructionsText = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+	instructionsText:SetPoint("TOPRIGHT", arrowContainer, "TOPLEFT", 250, 70)
+	instructionsText:SetWidth(300)
+	instructionsText:SetJustifyH("LEFT")
+	instructionsText:SetText("Instructions: Get the object's GUID using the 'Show' button, enter this GUID in the 'Enter GameObject GUID' field and press Memorize to save the positions. Then, use the buttons to move the GameObject.")
+	
+	-- Bouton flèche haut (correspond à z+)
+	local btnUp = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
+	btnUp:SetHeight(22)
+	btnUp:SetPoint("TOP", arrowContainer, "TOP", 0, -5)
+	btnUp:SetText("Move Up")
+	btnUp:SetWidth(btnUp:GetTextWidth() + 10)
+	btnUp:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Move GameObject Up (+Z Position).", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnUp:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)
+	
+	btnUp:SetScript("OnClick", function(self)
+		local guid = gameObjectGuidEB:GetText()
+		if guid == "" or guid == "Enter GameObject Guid" then
+			print("Veuillez entrer un GameObject Guid valide.")
+			return
+		end
+		local x = tonumber(posXEB:GetText()) or 0
+		local y = tonumber(posYEB:GetText()) or 0
+		local z = tonumber(posZEB:GetText()) or 0
+		z = z + 0.5  -- Incrémente Z (bouge vers le haut)
+		posZEB:SetText(tostring(z))
+		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
+		SendChatMessage(command, "SAY")
+		print("Commande envoyée: " .. command)
+	end)
+	
+	-- Bouton flèche gauche (correspond à +X)
+	local btnLeft = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
+	btnLeft:SetHeight(22)
+	btnLeft:SetPoint("LEFT", btnUp, "BOTTOMLEFT", 70, -20)
+	btnLeft:SetText("Move Right")
+	btnLeft:SetWidth(btnLeft:GetTextWidth() + 10)
+	btnLeft:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Move GameObject to Right (+X Position).", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnLeft:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)
+	
+	btnLeft:SetScript("OnClick", function(self)
+		local guid = gameObjectGuidEB:GetText()
+		if guid == "" or guid == "Enter GameObject Guid" then
+			print("Veuillez entrer un GameObject Guid valide.")
+			return
+		end
+		local x = tonumber(posXEB:GetText()) or 0
+		local y = tonumber(posYEB:GetText()) or 0
+		local z = tonumber(posZEB:GetText()) or 0
+		x = x + 0.5  -- Décrémente X (bouge vers la gauche)
+		posXEB:SetText(tostring(x))
+		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
+		SendChatMessage(command, "SAY")
+		print("Commande envoyée: " .. command)
+	end)
+	
+	-- Bouton flèche droite (correspond à -X)
+	local btnRight = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
+	btnRight:SetHeight(22)
+	btnRight:SetPoint("RIGHT", btnUp, "BOTTOMRIGHT", -70, -20)
+	btnRight:SetText("Move Left")
+	btnRight:SetWidth(btnRight:GetTextWidth() + 10)
+	btnRight:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Move GameObject to Left (-X Position).", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnRight:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)
+	
+	btnRight:SetScript("OnClick", function(self)
+		local guid = gameObjectGuidEB:GetText()
+		if guid == "" or guid == "Enter GameObject Guid" then
+			print("Veuillez entrer un GameObject Guid valide.")
+			return
+		end
+		local x = tonumber(posXEB:GetText()) or 0
+		local y = tonumber(posYEB:GetText()) or 0
+		local z = tonumber(posZEB:GetText()) or 0
+		x = x - 0.5  -- Incrémente X (bouge vers la droite)
+		posXEB:SetText(tostring(x))
+		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
+		SendChatMessage(command, "SAY")
+		print("Commande envoyée: " .. command)
+	end)
+	
+	-- Bouton flèche bas (correspond à z-)
+	local btnDown = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
+	btnDown:SetHeight(22)
+	btnDown:SetPoint("BOTTOM", arrowContainer, "BOTTOM", 0, 5)
+	btnDown:SetText("Move Down")
+	btnDown:SetWidth(btnDown:GetTextWidth() + 10)
+	btnDown:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Move GameObject Down (-Z Position).", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnDown:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)
+	
+	btnDown:SetScript("OnClick", function(self)
+		local guid = gameObjectGuidEB:GetText()
+		if guid == "" or guid == "Enter GameObject Guid" then
+			print("Veuillez entrer un GameObject Guid valide.")
+			return
+		end
+		local x = tonumber(posXEB:GetText()) or 0
+		local y = tonumber(posYEB:GetText()) or 0
+		local z = tonumber(posZEB:GetText()) or 0
+		z = z - 0.5  -- Décrémente Z (bouge vers le bas)
+		posZEB:SetText(tostring(z))
+		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
+		SendChatMessage(command, "SAY")
+		print("Commande envoyée: " .. command)
+	end)
+	
+	local btnReset = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
+	btnReset:SetHeight(22)
+	btnReset:SetText("Reset")
+	btnReset:SetWidth(btnReset:GetTextWidth() + 10)
+	btnReset:SetPoint("CENTER", btnDown, "BOTTOM", 0, -30)
+	btnReset:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Reset GameObject to its initial coordinates.", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnReset:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+    end)
+	
+	btnReset:SetScript("OnClick", function(self)
+		if not initialX or not initialY or not initialZ then
+			print("Aucune position initiale mémorisée.")
+			return
+		end
+		posXEB:SetText(tostring(initialX))
+		posYEB:SetText(tostring(initialY))
+		posZEB:SetText(tostring(initialZ))
+		local guid = gameObjectGuidEB:GetText()
+		if guid == "" or guid == "Enter GameObject Guid" then
+			print("Veuillez entrer un GameObject Guid valide.")
+			return
+		end
+		local command = ".gobject move " .. guid .. " " .. initialX .. " " .. initialY .. " " .. initialZ
+		SendChatMessage(command, "SAY")
+		print("Reset: " .. command)
+	end)
 
-
--- Création des champs de position et affectation aux variables globales
-posXEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-posXEB:SetSize(80, 22)
-posXEB:SetPoint("TOPLEFT", gameObjectGuidEB, "BOTTOMLEFT", 0, -10)
-posXEB:SetAutoFocus(false)
-posXEB:EnableKeyboard(false)
-posXEB:SetText("0")
-
-posYEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-posYEB:SetSize(80, 22)
-posYEB:SetPoint("LEFT", posXEB, "RIGHT", 10, 0)
-posYEB:SetAutoFocus(false)
-posYEB:EnableKeyboard(false)
-posYEB:SetText("0")
-
-posZEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-posZEB:SetSize(80, 22)
-posZEB:SetPoint("LEFT", posYEB, "RIGHT", 10, 0)
-posZEB:SetAutoFocus(false)
-posZEB:EnableKeyboard(false)
-posZEB:SetText("0")
-
--- Nouveau champ pour le GUID à supprimer
-deleteGuidEB = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-deleteGuidEB:SetSize(120, 22)
-deleteGuidEB:SetPoint("LEFT", posXEB, "BOTTOMLEFT", 0, -20)
-deleteGuidEB:SetAutoFocus(false)
-deleteGuidEB:EnableKeyboard(false)
-deleteGuidEB:SetText("GUID")
-
--- Bouton "Delete" à droite du nouvel editbox
-local btnDelete = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnDelete:SetPoint("LEFT", deleteGuidEB, "RIGHT", 5, 0)
-btnDelete:SetHeight(22)
-btnDelete:SetText("Delete")
-btnDelete:SetWidth(btnDelete:GetTextWidth() + 10)
-btnDelete:SetScript("OnClick", function(self)
-    local guid = deleteGuidEB:GetText()
-    if guid == "" or guid == "Enter GUID to delete" then
-        print("Please enter a valid GUID.")
-        return
-    end
-    local command = ".gobject delete " .. guid
-    SendChatMessage(command, "SAY")
-    print("Commande envoyée: " .. command)
-end)
-
--- Conteneur pour les boutons fléchés (placé à droite des champs de position)
-local arrowContainer = CreateFrame("Frame", nil, commandsFramePage1)
-arrowContainer:SetSize(100, 100)
-arrowContainer:SetPoint("LEFT", posZEB, "RIGHT", 135, 30)
-
--- Création d'un font string pour afficher le mode d'emploi au-dessus du bloc de flèches
-local instructionsText = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-instructionsText:SetPoint("TOPRIGHT", arrowContainer, "TOPLEFT", 250, 70)
-instructionsText:SetWidth(300)
-instructionsText:SetJustifyH("LEFT")
-instructionsText:SetText("Mode d'emploi : Obtenir le GUID de l'object grâce au bouton 'Show', saisir ce GUID dans le champ 'Enter GameObject GUID' et appuyer sur Memory pour mémoriser les positions, puis utiliser les boutons pour bouger le Gobject.")
-
--- Bouton flèche haut (correspond à z+)
-local btnUp = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
-btnUp:SetHeight(22)
-btnUp:SetPoint("TOP", arrowContainer, "TOP", 0, -5)
-btnUp:SetText("Up")
-btnUp:SetWidth(btnUp:GetTextWidth() + 10)
-btnUp:SetScript("OnClick", function(self)
-    local guid = gameObjectGuidEB:GetText()
-    if guid == "" or guid == "Enter GameObject Guid" then
-        print("Veuillez entrer un GameObject Guid valide.")
-        return
-    end
-    local x = tonumber(posXEB:GetText()) or 0
-    local y = tonumber(posYEB:GetText()) or 0
-    local z = tonumber(posZEB:GetText()) or 0
-    z = z + 1  -- Incrémente Z (bouge vers le haut)
-    posZEB:SetText(tostring(z))
-    local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-    SendChatMessage(command, "SAY")
-    print("Commande envoyée: " .. command)
-end)
-
--- Bouton flèche gauche (correspond à +X)
-local btnLeft = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
-btnLeft:SetHeight(22)
-btnLeft:SetPoint("LEFT", btnUp, "BOTTOMLEFT", 50, -20)
-btnLeft:SetText("Right")
-btnLeft:SetWidth(btnLeft:GetTextWidth() + 10)
-btnLeft:SetScript("OnClick", function(self)
-    local guid = gameObjectGuidEB:GetText()
-    if guid == "" or guid == "Enter GameObject Guid" then
-        print("Veuillez entrer un GameObject Guid valide.")
-        return
-    end
-    local x = tonumber(posXEB:GetText()) or 0
-    local y = tonumber(posYEB:GetText()) or 0
-    local z = tonumber(posZEB:GetText()) or 0
-    x = x + 1  -- Décrémente X (bouge vers la gauche)
-    posXEB:SetText(tostring(x))
-    local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-    SendChatMessage(command, "SAY")
-    print("Commande envoyée: " .. command)
-end)
-
--- Bouton flèche droite (correspond à -X)
-local btnRight = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
-btnRight:SetHeight(22)
-btnRight:SetPoint("RIGHT", btnUp, "BOTTOMRIGHT", -55, -20)
-btnRight:SetText("Left")
-btnRight:SetWidth(btnRight:GetTextWidth() + 10)
-btnRight:SetScript("OnClick", function(self)
-    local guid = gameObjectGuidEB:GetText()
-    if guid == "" or guid == "Enter GameObject Guid" then
-        print("Veuillez entrer un GameObject Guid valide.")
-        return
-    end
-    local x = tonumber(posXEB:GetText()) or 0
-    local y = tonumber(posYEB:GetText()) or 0
-    local z = tonumber(posZEB:GetText()) or 0
-    x = x - 1  -- Incrémente X (bouge vers la droite)
-    posXEB:SetText(tostring(x))
-    local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-    SendChatMessage(command, "SAY")
-    print("Commande envoyée: " .. command)
-end)
-
--- Bouton flèche bas (correspond à z-)
-local btnDown = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
-btnDown:SetHeight(22)
-btnDown:SetPoint("BOTTOM", arrowContainer, "BOTTOM", 0, 5)
-btnDown:SetText("Down")
-btnDown:SetWidth(btnDown:GetTextWidth() + 10)
-btnDown:SetScript("OnClick", function(self)
-    local guid = gameObjectGuidEB:GetText()
-    if guid == "" or guid == "Enter GameObject Guid" then
-        print("Veuillez entrer un GameObject Guid valide.")
-        return
-    end
-    local x = tonumber(posXEB:GetText()) or 0
-    local y = tonumber(posYEB:GetText()) or 0
-    local z = tonumber(posZEB:GetText()) or 0
-    z = z - 1  -- Décrémente Z (bouge vers le bas)
-    posZEB:SetText(tostring(z))
-    local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-    SendChatMessage(command, "SAY")
-    print("Commande envoyée: " .. command)
-end)
 
     --------------------------------
     -- Pour la page 2 :
@@ -524,7 +612,7 @@ end)
     
     local page2Title = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     page2Title:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, 0)
-    page2Title:SetText("Adanced GameObjects 2")
+    page2Title:SetText("Advanced GameObjects 2")
     -- Ici, vous ajoutez les boutons pour la page 2
 
     -------------------------------------------------------------------------------
