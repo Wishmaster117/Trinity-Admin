@@ -85,35 +85,6 @@ end
 local posXEB, posYEB, posZEB, deleteGuidEB
 local initialX, initialY, initialZ
 
--- local GobCaptureFrame = CreateFrame("Frame")
--- GobCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
--- GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
---     if capturingMemory then
---         local x, y, z = string.match(msg, "location %(([%d%.%-]+),%s*([%d%.%-]+),%s*([%d%.%-]+)%)")
---         if x and y and z then
---             posXEB:SetText(tostring(x))
---             posYEB:SetText(tostring(y))
---             posZEB:SetText(tostring(z))
---             print("Coordonnées capturées: X=" .. x .. " Y=" .. y .. " Z=" .. z)
---             capturingMemory = false
---             return  -- Arrête le traitement pour ce message
---         end
---     end
--- 
---     if not capturingGobInfo then
---         return
---     end
---     
---     -- Traitement habituel pour capturer le .gobject info
---     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
---     cleanMsg = cleanMsg:gsub("|r", "")
---     cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
---     cleanMsg = cleanMsg:gsub("|T.-|t", "")
---     cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
---     table.insert(GobInfoCollected, cleanMsg)
---     if GobInfoTimer then GobInfoTimer:Cancel() end
---     GobInfoTimer = C_Timer.NewTimer(1, FinishGobInfoCapture)
--- end)
 local GobCaptureFrame = CreateFrame("Frame")
 GobCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 GobCaptureFrame:SetScript("OnEvent", function(self, event, msg)
