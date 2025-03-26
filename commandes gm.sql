@@ -20,11 +20,15 @@ voir les commandes .gobject
 	-- finir de mettre les noms des sets et leurs traduction
 	-- Revoir les boutond radio de battlenet account et mettre des textes par defaut
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	
     Il me faut pour mon nouveau module le code pour les fonctions suivantes qui sera a intégrer à la page 1:
 	Un champ de saisie avec le texte par defaut "Spell ID", suivi d'un champ de saisie avec texte "Option" et un bouton "Learn", quand on clique
 	sur ce bouton on envoi la commande : .learn "Valeur du champ Spell ID" "Valeur du champ Option" (ce champ est facultatif, si il est vide ou contient le texte par defaut, on ne le prends pas dans la commande envoyée),
 	cette commande doit être envoyée sur je joueur selectionné par le GM donc si il ne selectionne pas de joueur, on envoi une erreur. Le bouton devra avoir ce tooltip : Syntax: .learn #spell [all] Selected character learn a spell of id #spell. If 'all' provided then all ranks learned.
+=======
+	-- Tester les commandes .learn
+>>>>>>> Stashed changes
 =======
 	-- Tester les commandes .learn
 >>>>>>> Stashed changes
