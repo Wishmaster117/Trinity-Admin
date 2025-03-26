@@ -41,6 +41,7 @@ local WaypointsModule = TrinityAdmin:NewModule("Waypoints")
 local AhBotModule = TrinityAdmin:NewModule("AhBot")
 local GuildModule = TrinityAdmin:NewModule("Guild")
 local LearnDamageModule = TrinityAdmin:NewModule("LearnDamage")
+local AdvancedGobModule = TrinityAdmin:NewModule("AdvancedGob")
 
 
 
@@ -106,6 +107,10 @@ end
 
 function TrinityAdmin_ShowLearnDamagePanel()
     LearnDamageModule:ShowLearnDamagePanel()
+end
+
+function TrinityAdmin_ShowAdvancedGobPanel()
+    AdvancedGobModule:ShowAdvancedGobPanel()
 end
 
 ------------------------------------------------------------
@@ -185,6 +190,7 @@ function TrinityAdmin:ShowMainMenu()
 	if AhBotModule.panel then AhBotModule.panel:Hide() end
 	if GuildModule.panel then GuildModule.panel:Hide() end
 	if LearnDamageModule.panel then LearnDamageModule.panel:Hide() end
+	if AdvancedGobModule.panel then AdvancedGobModule.panel:Hide() end
 	
 	
 
@@ -203,6 +209,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameAhBotButton:Show()
 	TrinityAdminMainFrameGuildButton:Show()
 	TrinityAdminMainFrameLearnDamageButton:Show()
+	TrinityAdminMainFrameAdvancedGobButton:Show()
 	
 
 	TrinityAdminMainFrame:Show()
@@ -227,6 +234,9 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameAhBotButton:Hide()
 	TrinityAdminMainFrameGuildButton:Hide()
 	TrinityAdminMainFrameLearnDamageButton:Hide()
+	TrinityAdminMainFrameAdvancedGobButton:Hide()
+	
+	
 	
     TrinityAdminMainFrame:Show()
 end

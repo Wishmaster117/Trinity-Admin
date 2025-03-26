@@ -147,7 +147,6 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Module gestion serveur -->
 			<!-- Bouton Server Admin -->
 			<Button name="$parentServerAdminButton" inherits="UIPanelButtonTemplate" text="Server Admin">
 				<Size>
@@ -156,7 +155,7 @@
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="0" y="-30"/>
+							<AbsDimension x="0" y="-45"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -244,7 +243,7 @@
 				<AbsDimension x="135" y="30"/>
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentServerAdminButton" relativePoint="RIGHT">
+				<Anchor point="LEFT" relativeTo="$parentServerAdminButton" relativePoint="BOTTOMLEFT">
 				<Offset>
 					<AbsDimension x="0" y="-45"/>
 				</Offset>
@@ -307,6 +306,24 @@
 			<Scripts>
 				<OnClick>
 				TrinityAdmin_ShowLearnDamagePanel()
+				</OnClick>
+			</Scripts>
+			</Button>	
+			<!-- Bouton Module AdvancedGob -->
+			<Button name="$parentAdvancedGobButton" inherits="UIPanelButtonTemplate" text="Advanced GameObjects">
+			<Size>
+				<AbsDimension x="170" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentWaypointsButton" relativePoint="BOTTOMLEFT">
+				<Offset>
+					<AbsDimension x="0" y="-45"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowAdvancedGobPanel()
 				</OnClick>
 			</Scripts>
 			</Button>								

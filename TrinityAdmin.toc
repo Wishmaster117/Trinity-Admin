@@ -64,3 +64,4 @@ Waypoints.lua
 AhBot.lua
 Guild.lua
 LearnDamage.lua
+AdvancedGob.lua
