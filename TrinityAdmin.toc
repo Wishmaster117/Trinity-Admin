@@ -42,6 +42,14 @@ ItemSetData.lua
 ItemsDataPart1.lua
 ItemsDataPart2.lua
 ItemsDataPart3.lua
+# NpcData
+NpcDataPart1.lua
+NpcDataPart2.lua
+NpcDataPart3.lua
+NpcDataPart4.lua
+NpcDataPart5.lua
+NpcDataPart6.lua
+NpcDataPart7.lua
 # TeleportData
 TeleportTable.lua
 SkillsData.lua
@@ -65,3 +73,4 @@ AhBot.lua
 Guild.lua
 LearnDamage.lua
 AdvancedGob.lua
+AdvancedNpc.lua

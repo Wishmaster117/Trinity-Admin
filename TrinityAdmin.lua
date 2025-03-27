@@ -42,6 +42,9 @@ local AhBotModule = TrinityAdmin:NewModule("AhBot")
 local GuildModule = TrinityAdmin:NewModule("Guild")
 local LearnDamageModule = TrinityAdmin:NewModule("LearnDamage")
 local AdvancedGobModule = TrinityAdmin:NewModule("AdvancedGob")
+local AdvancedNpcModule = TrinityAdmin:NewModule("AdvancedNpc")
+
+
 
 
 
@@ -113,11 +116,15 @@ function TrinityAdmin_ShowAdvancedGobPanel()
     AdvancedGobModule:ShowAdvancedGobPanel()
 end
 
+function TrinityAdmin_ShowAdvancedNpcPanel()
+    AdvancedNpcModule:ShowAdvancedNpcPanel()
+end
+
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
 function TrinityAdmin:OnInitialize()
-    self:Print("TrinityAdmin OnInitialize fired")
+    self:Print("Welcome to TrinityCore GM Tools By TheWarlock : http://www.leeroylegacy.online")
     self:RegisterChatCommand("trinityadmin", "ToggleUI")
     self.gmFlyOn = false
 end
@@ -191,6 +198,7 @@ function TrinityAdmin:ShowMainMenu()
 	if GuildModule.panel then GuildModule.panel:Hide() end
 	if LearnDamageModule.panel then LearnDamageModule.panel:Hide() end
 	if AdvancedGobModule.panel then AdvancedGobModule.panel:Hide() end
+	if AdvancedNpcModule.panel then AdvancedNpcModule.panel:Hide() end
 	
 	
 
@@ -210,6 +218,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameGuildButton:Show()
 	TrinityAdminMainFrameLearnDamageButton:Show()
 	TrinityAdminMainFrameAdvancedGobButton:Show()
+	TrinityAdminMainFrameAdvancedNpcButton:Show()
 	
 
 	TrinityAdminMainFrame:Show()
@@ -235,6 +244,7 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameGuildButton:Hide()
 	TrinityAdminMainFrameLearnDamageButton:Hide()
 	TrinityAdminMainFrameAdvancedGobButton:Hide()
+	TrinityAdminMainFrameAdvancedNpcButton:Hide()
 	
 	
 	

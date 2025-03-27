@@ -326,7 +326,25 @@
 				TrinityAdmin_ShowAdvancedGobPanel()
 				</OnClick>
 			</Scripts>
-			</Button>								
+			</Button>	
+			<!-- Bouton Module AdvancedNpc -->
+			<Button name="$parentAdvancedNpcButton" inherits="UIPanelButtonTemplate" text="Advanced NPC Add">
+			<Size>
+				<AbsDimension x="170" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentAdvancedGobButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowAdvancedNpcPanel()
+				</OnClick>
+			</Scripts>
+			</Button>										
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

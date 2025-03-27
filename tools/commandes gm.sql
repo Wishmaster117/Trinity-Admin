@@ -11,6 +11,8 @@ Pour npc show loot, afficher les loots dans une fenetre séparée
 Pour npc info il faut trier les données a afficher.gobject info il faut trier les données a afficher et creer un builder pour bouger l objet
 
 voir les commandes .gobject et voir si on peut mettre une frame de preview
+
+modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 	Amettre dans le panneau GM:
 	

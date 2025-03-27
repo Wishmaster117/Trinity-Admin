@@ -246,6 +246,20 @@ if locale == "frFR" then
 	L["bnetaccount set"] = "Syntaxe : .bnetaccount set $subcommand\nTapez .bnetaccount set pour voir la liste des sous-commandes possibles ou .help bnetaccount set $subcommand pour voir les informations sur une sous-commande spécifique."
 	L["bnetaccount set password"] = "Syntaxe : .bnetaccount set password $account $password $password\nDéfinit le mot de passe pour le compte spécifié."
 	L["bnetaccount unlink"] = "Syntaxe : .bnetaccount unlink $gameaccount $password\nSupprime le lien entre le compte battle.net et le compte de jeu $gameaccount."
+	L["Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."] = "Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."
+	L["Error : Please enter a value for Level."] = "Erreur : Veuillez saisir une valeur pour le level."
+	L["Error : Please select a skill."] = "Erreur : Veuillez sélectionner une compétence."
+	L["Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."] = "Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."
+	L["Error : Please enter a message for nameannounce."] = "Erreur : Veuillez saisir un message différent de la valeur par défaut pour .nameannounce."
+	L["Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."] = "Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."
+	L["Error : Please enter a message."] = "Erreur : Veuillez saisir une notification différente de la valeur par défaut pour .gmnotify."
+	L["Error : Please enter a message."] = "Erreur : Veuillez saisir un message."
+	L["Please enter a Player NAme or Select a Player"] = "Veuillez saisir le Nom du Joeur ou le cibler"
+	L["Please enter a reason for the mute."] = "Veuillez saisir une raison pour le mute"
+	L["Please, enter time in minuts."] = "Veuillez entrer le temps du mute en minutes."
+	L["Mute reason (required)"] = "Raison du mute (obligatoire)"
+	
+	
 	-- Traductions des sets
 	L["Fangs of the Father"] = "Crocs du père"
 	L["Oath of the Aureate Sentry"] = "Serment de la sentinelle aurique"
@@ -1388,7 +1402,22 @@ elseif locale == "enUS" then
 	L["bnetaccount set password"] = "Syntax: .bnetaccount set password $account $password $password\nSet password for account."
 	L["bnetaccount unlink"] = "Syntax: .bnetaccount unlink $gameaccount $password\nRemoves battle.net account link from $gameaccount"
 	L["AdditemSyntax"] = "Syntax: .additem #itemid/[#itemname] #itemcount #bonusListIDs\n\nAdds the specified number of items to inventory. (#itemcount and #bonusListIDs are optional)"
-
+	L["Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."] = "Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."
+	L["Error : Please enter a value for Level."] = "Error : Please enter a value for Level."
+	L["Error : Please select a skill."] = "Error : Please select a skill."
+	L["Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."] = "Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."
+	L["Error : Please enter a message for nameannounce."] = "Error : Please enter a message for nameannounce."
+	L["Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."] = "Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."
+	L["Error : Please enter a message."] = "Error : Please enter a message."
+	L["Please enter a Player NAme or Select a Player"] = "Please enter a Player NAme or Select a Player"
+	L["Please enter a reason for the mute."] = "Please enter a reason for the mute."
+	L["Please, enter time in minuts."] = "Please, enter time in minuts."
+	L["Mute reason (required)"] = "Mute reason (required)"
+	
+	
+	
+	
+	
 ----------------------- DE Translations
 elseif locale == "deDE" then
 ----------------------- ItemsSet Translate
