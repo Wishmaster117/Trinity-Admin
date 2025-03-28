@@ -16,7 +16,6 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 	Amettre dans le panneau GM:
 	
-	.account delete Syntax: .account delete $account Delete account with all characters.
 	.refaire bnetaccountset car il y'a les sous commandes en fait faut le virer de la liste
 	-- voir pour les . learn des proffessions etc...
 	-- finir de mettre les noms des sets et leurs traduction
