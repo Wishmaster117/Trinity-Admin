@@ -31,8 +31,8 @@ function GMModule:CreateGMPanel()
     modifyInput:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 
     -- Dropdown
-    local modifyDropdown = CreateFrame("Frame", "TrinityAdminModifyDropdown", panel, "TrinityAdminDropdownTemplate")
-    modifyDropdown:SetPoint("LEFT", modifyInput, "RIGHT", 10, 0)
+    local modifyDropdown = CreateFrame("Frame", "TrinityAdminModifyDropdown", panel, "UIDropDownMenuTemplate")
+    modifyDropdown:SetPoint("LEFT", modifyInput, "RIGHT", 0, -2)
 
     -- Définir les options globalement
     local options = {
@@ -153,7 +153,7 @@ function GMModule:CreateGMPanel()
     -- Bouton "Set"
     local btnSet = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     -- btnSet:SetSize(60, 22)
-    btnSet:SetPoint("LEFT", modifyDropdown, "RIGHT", 10, 0)
+    btnSet:SetPoint("LEFT", modifyDropdown, "RIGHT", 120, 2)
     btnSet:SetText("Set")
     btnSet:SetHeight(22)
     btnSet:SetWidth(btnSet:GetTextWidth() + 20)

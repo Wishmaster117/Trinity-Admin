@@ -1,6 +1,142 @@
+--------------------------------------------------------------
+-- ServerAdmin Module (ServerAdmin.lua)
+--------------------------------------------------------------
+
 local ServerAdmin = TrinityAdmin:GetModule("ServerAdmin")
 
--- Fonction pour afficher le panneau ServerAdmin
+-- Variables de capture pour .server info
+local capturingServerInfo = false
+local serverInfoCollected = {}
+local serverInfoTimer = nil
+
+-- 1) Fonction de parsing
+local function ParseServerInfo(fullText)
+    local lines = {}
+    for line in fullText:gmatch("[^\r\n]+") do
+        table.insert(lines, line)
+    end
+
+    local versionCore = ""
+    local onlinePlayers, onlinePlayersMax = "", ""
+    local activeConnections, activeConnectionsMax = "", ""
+    local queuedConnections, queuedConnectionsMax = "", ""
+    local serverUptime = ""
+    local updateTimeDiff = ""
+
+    for _, line in ipairs(lines) do
+        line = line:match("^%s*(.-)%s*$")  -- trim
+
+        if line:find("TrinityCore rev") then
+            versionCore = line
+        end
+
+        local online = line:match("Online players:%s*(%d+)")
+        local onlineMax = line:match("Online players:%s*%d+ %(%s*max:%s*(%d+)%)")
+        if online then
+            onlinePlayers = online
+            if onlineMax then
+                onlinePlayersMax = onlineMax
+            end
+        end
+
+        local act = line:match("Active connections:%s*(%d+)")
+        local actMax = line:match("Active connections:%s*%d+ %(%s*max:%s*(%d+)%)")
+        if act then
+            activeConnections = act
+            if actMax then
+                activeConnectionsMax = actMax
+            end
+        end
+        local queue = line:match("Queued connections:%s*(%d+)")
+        local queueMax = line:match("Queued connections:%s*%d+ %(%s*max:%s*(%d+)%)")
+        if queue then
+            queuedConnections = queue
+            if queueMax then
+                queuedConnectionsMax = queueMax
+            end
+        end
+
+        local uptime = line:match("Server uptime:%s*(.+)")
+        if uptime then
+            serverUptime = uptime
+        end
+
+        local utd = line:match("Update time diff:%s*(%d+)")
+        if utd then
+            updateTimeDiff = utd
+        end
+    end
+
+    local infoTable = {}
+    table.insert(infoTable, { label="Version du core",    value=versionCore })
+    table.insert(infoTable, { label="Online Players",     value=onlinePlayers.." (max: "..(onlinePlayersMax or "")..")" })
+    table.insert(infoTable, { label="Active Connections", value=activeConnections.." (max: "..(activeConnectionsMax or "")..")" })
+    table.insert(infoTable, { label="Queued Connections", value=queuedConnections.." (max: "..(queuedConnectionsMax or "")..")" })
+    table.insert(infoTable, { label="Server Uptime",      value=serverUptime })
+    table.insert(infoTable, { label="Update time diff",   value=updateTimeDiff })
+
+    return infoTable
+end
+
+-- 2) ShowServerInfoAceGUI : crée la fenêtre AceGUI et y place des EditBox
+local AceGUI = LibStub("AceGUI-3.0")
+local function ShowServerInfoAceGUI(fullText)
+    local infoTable = ParseServerInfo(fullText)
+
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("Server Info")
+    frame:SetStatusText("Server informations")
+    frame:SetLayout("Flow")
+    frame:SetWidth(500)
+    frame:SetHeight(400)
+
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    frame:AddChild(scroll)
+
+    local function AddEditBox(lbl, val)
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("|cffffff00" .. lbl .. "|r")
+        edit:SetText(val or "")
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
+
+    for _, row in ipairs(infoTable) do
+        AddEditBox(row.label, row.value)
+    end
+
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Fermer")
+    btnClose:SetWidth(80)
+    btnClose:SetCallback("OnClick", function() frame:Hide() end)
+    frame:AddChild(btnClose)
+end
+
+-- 3) Frame de capture : écoute CHAT_MSG_SYSTEM
+local serverInfoCaptureFrame = CreateFrame("Frame")
+serverInfoCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+serverInfoCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingServerInfo then return end
+
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                        :gsub("|r", "")
+                        :gsub("|H.-|h(.-)|h", "%1")
+                        :gsub("|T.-|t", "")
+                        :gsub("\226[\148-\149][\128-\191]", "")
+
+    table.insert(serverInfoCollected, cleanMsg)
+    if serverInfoTimer then serverInfoTimer:Cancel() end
+    serverInfoTimer = C_Timer.NewTimer(1, function()
+        capturingServerInfo = false
+        local fullText = table.concat(serverInfoCollected, "\n")
+        ShowServerInfoAceGUI(fullText)
+    end)
+end)
+
+-- 4) ShowServerAdminPanel / CreateServerAdminPanel
 function ServerAdmin:ShowServerAdminPanel()
     TrinityAdmin:HideMainMenu()
     if not self.panel then
@@ -9,7 +145,6 @@ function ServerAdmin:ShowServerAdminPanel()
     self.panel:Show()
 end
 
--- Fonction pour créer le panneau ServerAdmin
 function ServerAdmin:CreateServerAdminPanel()
     local panel = CreateFrame("Frame", "TrinityAdminServerAdminPanel", TrinityAdminMainFrame)
     panel:ClearAllPoints()
@@ -25,35 +160,32 @@ function ServerAdmin:CreateServerAdminPanel()
     panel.title:SetText("Server Admin Panel")
 
     -------------------------------------------------------------------------------
-    -- Création de plusieurs pages dans le panneau
+    -- Création de plusieurs pages
     -------------------------------------------------------------------------------
-	local totalPages = 2  -- nombre de pages
-	local pages = {}
-	for i = 1, totalPages do
-		pages[i] = CreateFrame("Frame", nil, panel)
-		pages[i]:SetAllPoints(panel)
-		pages[i]:Hide()  -- on cache toutes les pages au départ
-	end
-	
-	-- Label de navigation unique (affiché en bas du panneau)
-	local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-	navPageLabel:SetText("Page 1 / " .. totalPages)
-	
-	-- Fonction de changement de page
-	local function ShowPage(pageIndex)
-		for i = 1, totalPages do
-			if i == pageIndex then
-				pages[i]:Show()
-			else
-				pages[i]:Hide()
-			end
-		end
-		navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-	end
-	
-	ShowPage(1)
+    local totalPages = 2
+    local pages = {}
+    for i = 1, totalPages do
+        pages[i] = CreateFrame("Frame", nil, panel)
+        pages[i]:SetAllPoints(panel)
+        pages[i]:Hide()
+    end
 
+    local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
+    navPageLabel:SetText("Page 1 / " .. totalPages)
+
+    local function ShowPage(pageIndex)
+        for i = 1, totalPages do
+            if i == pageIndex then
+                pages[i]:Show()
+            else
+                pages[i]:Hide()
+            end
+        end
+        navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+    end
+
+    ShowPage(1)
 
     -------------------------------------------------------------------------------
     -- PAGE 1
@@ -72,8 +204,7 @@ function ServerAdmin:CreateServerAdminPanel()
         currentY1 = currentY1 - height - 5
         return pos
     end
-
-    -- Fonction d'aide pour créer des boutons sur la page 1
+	
     local function CreateServerButtonPage1(name, text, tooltip, cmd)
         local btn = CreateFrame("Button", name, commandsFramePage1, "UIPanelButtonTemplate")
         btn:SetSize(150, 22)
@@ -92,7 +223,7 @@ function ServerAdmin:CreateServerAdminPanel()
         end)
         return btn
     end
-
+	
     -- Ajout des boutons sur la page 1
     local btnServerCorpses = CreateServerButtonPage1("ServerCorpsesButton", "server corpses", "Syntax: .server corpses\r\nTrigger corpses expire check.", ".server corpses")
     btnServerCorpses:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, NextPosition1(22))
@@ -103,8 +234,29 @@ function ServerAdmin:CreateServerAdminPanel()
      local btnServerMotd = CreateServerButtonPage1("ServerMotdButton", "server motd", "Syntax: .server motd\r\nShow server Message of the day.", ".server motd")
     btnServerMotd:SetPoint("TOPLEFT", btnServerDebug, "TOPRIGHT", 10, 0)
 
-    local btnServerInfo = CreateServerButtonPage1("ServerInfoButton", "server info", "Syntax: .server info\r\nDisplay server version and connected players.", ".server info")
+    -- Bouton server info => active la capture
+    local btnServerInfo = CreateFrame("Button", "ServerInfoButton", panel, "UIPanelButtonTemplate")
+    btnServerInfo:SetSize(150, 22)
+    btnServerInfo:SetText("server info")
     btnServerInfo:SetPoint("TOPLEFT", btnServerMotd, "TOPRIGHT", 10, 0)
+    btnServerInfo:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Syntax: .server info\r\nDisplay server version and connected players.", 1, 1, 1, 1, true)
+        GameTooltip:Show()
+    end)
+    btnServerInfo:SetScript("OnLeave", function() GameTooltip:Hide() end)
+    btnServerInfo:SetScript("OnClick", function()
+        capturingServerInfo = true
+        serverInfoCollected = {}
+        if serverInfoTimer then serverInfoTimer:Cancel() end
+        serverInfoTimer = C_Timer.NewTimer(1, function()
+            capturingServerInfo = false
+            local fullText = table.concat(serverInfoCollected, "\n")
+            ShowServerInfoAceGUI(fullText)
+        end)
+        SendChatMessage(".server info", "SAY")
+        print("Commande envoyée: .server info")
+    end)
 
     local btnServerIdleRestart = CreateFrame("Button", "ServerIdleRestartButton", commandsFramePage1, "UIPanelButtonTemplate")
     btnServerIdleRestart:SetSize(150, 22)
@@ -556,7 +708,7 @@ function ServerAdmin:CreateServerAdminPanel()
     -- Bouton Back final
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBackFinal:SetPoint("TOPRIGHT", panel, "TOPRIGHT", 0, -10)
+    btnBackFinal:SetPoint("TOPRIGHT", navPageLabel, "TOPRIGHT", 0, 30)
     btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)

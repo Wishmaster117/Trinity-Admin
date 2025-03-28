@@ -80,7 +80,7 @@ local function CreateServerButtonPage1(name, text, tooltip, cmd)
     btn:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
     btn:SetScript("OnClick", function(self)
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)
     return btn
 end
@@ -121,7 +121,7 @@ btnAddAura:SetScript("OnClick", function()
     end
     local cmd = ".aura " .. spellId
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 -- Ajout du champ de saisie et bouton Remove Aura
@@ -159,7 +159,7 @@ btnAddAuraRemove:SetScript("OnClick", function()
     end
     local cmd = ".unaura " .. spellId
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 -- Champ de saisie "Player Name"
@@ -215,7 +215,7 @@ btnFreeze:SetScript("OnClick", function()
     if playerName == "" or playerName == playerNameInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            print("La Cible est : " .. playerName) -- Pour debug
+            -- print("La Cible est : " .. playerName) -- Pour debug
         else
             print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
             return
@@ -229,7 +229,7 @@ btnFreeze:SetScript("OnClick", function()
 
     local cmd = ".freeze " .. playerName .. " " .. duration
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 -- Champ de saisie "Player Name" pour UnFreeze
@@ -267,7 +267,7 @@ btnUnfreeze:SetScript("OnClick", function()
     if playerName == "" or playerName == playerNameUnfreezeInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            print("La Cible est : " .. playerName) -- Pour debug
+            -- print("La Cible est : " .. playerName) -- Pour debug
         else
             print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
             return
@@ -276,7 +276,7 @@ btnUnfreeze:SetScript("OnClick", function()
 	
     local cmd = ".unfreeze " .. playerName
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 
@@ -335,7 +335,7 @@ local function CreateServerButtonPage2(name, text, tooltip, cmd)
         end
 
         SendChatMessage(finalCmd, "SAY")
-        print("Commande envoyée: " .. finalCmd)
+        -- print("Commande envoyée: " .. finalCmd)
     end)
     return btn
 end
@@ -425,7 +425,7 @@ btnUnstuck:SetScript("OnClick", function()
     if playerName == "" or playerName == playerNameunstuckInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            print("La Cible est : " .. playerName) -- Pour debug
+            -- print("La Cible est : " .. playerName) -- Pour debug
         else
             print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
             return
@@ -434,7 +434,7 @@ btnUnstuck:SetScript("OnClick", function()
 	
     local cmd = ".unstuck " .. playerName .. " " .. selectedLocation
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -493,7 +493,7 @@ btnKick:SetScript("OnClick", function()
     if playerName == "" or playerName == kickNameInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            print("La Cible est : " .. playerName) -- Pour debug
+            -- print("La Cible est : " .. playerName) -- Pour debug
         else
             print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
             return
@@ -507,7 +507,7 @@ btnKick:SetScript("OnClick", function()
 
     local cmd = ".kick " .. playerName .. " " .. reason
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -567,7 +567,7 @@ btnLevelup:SetScript("OnClick", function()
     if playerName == "" or playerName == levelupNameInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            print("La Cible est : " .. playerName)
+            -- print("La Cible est : " .. playerName)
         else
             print("Aucune cible sélectionnée.")
             print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
@@ -582,7 +582,7 @@ btnLevelup:SetScript("OnClick", function()
 
     local cmd = ".levelup " .. playerName .. " " .. level
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -681,7 +681,7 @@ btnRename:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -730,7 +730,7 @@ btnReputation:SetScript("OnClick", function()
     local cmd = ".character reputation " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -779,7 +779,7 @@ btnTitles:SetScript("OnClick", function()
     local cmd = ".character titles " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -825,7 +825,7 @@ btnChangeRace:SetScript("OnClick", function()
     local cmd = ".character changerace " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -871,7 +871,7 @@ btnChangefaction:SetScript("OnClick", function()
     local cmd = ".character changefaction " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -917,7 +917,7 @@ btnCustomize:SetScript("OnClick", function()
     local cmd = ".character customize " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -991,7 +991,7 @@ btnSetLevel:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 ----------------------------
 -- Bouton Reset Inputs
@@ -1083,7 +1083,7 @@ btnRename:SetScript("OnClick", function()
     local cmd = ".character changeaccount " .. nameValue .. " " ..newAccountValue
 	
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1169,7 +1169,7 @@ btnExecute:SetScript("OnClick", function()
     local finalCmd = selectedOption.command .. " " .. inputValue
 
     SendChatMessage(finalCmd, "SAY")
-    print("Commande envoyée : " .. finalCmd)
+    -- print("Commande envoyée : " .. finalCmd)
 end)
 
 
@@ -1265,7 +1265,7 @@ btnRestore:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+    -- print("Commande envoyée : " .. cmd)
 end)
 
 
@@ -1307,7 +1307,7 @@ local function CreateServerButtonPage5(name, text, tooltip, cmd)
         end
 
         SendChatMessage(finalCmd, "SAY")
-        print("Commande envoyée: " .. finalCmd)
+        -- print("Commande envoyée: " .. finalCmd)
     end)
     return btn
 end
@@ -1367,7 +1367,7 @@ btnLearnPet:SetScript("OnClick", function()
 		end
     local cmd = ".pet learn " .. petName
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+   --  print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1410,7 +1410,7 @@ btnPetlevel:SetScript("OnClick", function()
 		end
     local cmd = ".pet level " .. petLevel
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+   --  print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1454,7 +1454,7 @@ btnPetUnlearn:SetScript("OnClick", function()
 	
     local cmd = ".pet unleran " .. petSpell
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+   --  print("Commande envoyée : " .. cmd)
 end)
 	
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
@@ -1495,7 +1495,7 @@ local function CreateServerButtonPage5(name, text, tooltip, cmd)
         end
 
         SendChatMessage(finalCmd, "SAY")
-        print("Commande envoyée: " .. finalCmd)
+       --  print("Commande envoyée: " .. finalCmd)
     end)
     return btn
 end
@@ -1609,7 +1609,7 @@ btnDumpCopy:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+   --  print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1712,7 +1712,7 @@ btnDumpLoad:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+   --  print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1776,7 +1776,7 @@ btnDumpWrite:SetScript("OnClick", function()
     local cmd = ".pdump write " .. nameValueWrite .. " " .. accountValueWrite
 
     SendChatMessage(cmd, "SAY")
-    print("Commande envoyée : " .. cmd)
+   --  print("Commande envoyée : " .. cmd)
 end)
 	
 -----------------------------
@@ -1791,6 +1791,121 @@ btnResetInputs:SetScript("OnClick", ResetInputs)
 -- Page 7 : Player Info Capture (.pinfo) [DEBUG MODE]
 ---------------------------------------------------------------
 
+-- local commandsFramePage7 = CreateFrame("Frame", nil, pages[7])
+-- commandsFramePage7:SetPoint("TOPLEFT", pages[7], "TOPLEFT", 20, -40)
+-- commandsFramePage7:SetSize(500, 350)
+-- 
+-- local page7Title = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+-- page7Title:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, 0)
+-- page7Title:SetText("Player Info Capture")
+-- 
+-- -- Création d'un ScrollFrame pour afficher les informations
+-- local scrollFrame = CreateFrame("ScrollFrame", "MyInfoScrollFrame", commandsFramePage7, "UIPanelScrollFrameTemplate")
+-- scrollFrame:SetPoint("TOPLEFT", page7Title, "TOPRIGHT", 100, 30)
+-- scrollFrame:SetSize(300, 300)
+-- 
+-- -- Conteneur dans lequel on mettra le FontString
+-- local content = CreateFrame("Frame", nil, scrollFrame)
+-- content:SetSize(300, 300)  -- Taille initiale, pourra être ajustée dynamiquement
+-- scrollFrame:SetScrollChild(content)
+-- 
+-- -- FontString qui contiendra les infos
+-- local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+-- infoText:SetPoint("TOPLEFT")
+-- infoText:SetWidth(300)        -- Largeur du texte (ou un peu moins pour la marge)
+-- infoText:SetJustifyH("LEFT")
+-- infoText:SetJustifyV("TOP")
+-- infoText:SetText("")          -- Initialement vide
+-- 
+-- -- Variables pour la capture des messages
+-- local capturingPinfo = false
+-- local collectedInfo = {}
+-- local captureTimer = nil
+-- 
+-- local function FinishCapture()
+--     capturingPinfo = false
+--     if #collectedInfo > 0 then
+--         local fullText = table.concat(collectedInfo, "\n")
+--         infoText:SetText(fullText)
+--         
+--         -- Ajuste dynamiquement la hauteur de 'content' en fonction du texte
+--         local textHeight = infoText:GetStringHeight()
+--         content:SetHeight(textHeight + 5)  -- +5 px de marge, ajustez selon besoin
+-- 
+--         -- Remet le scroll en haut
+--         scrollFrame:SetVerticalScroll(0)
+-- 
+--         print("[DEBUG] Capture terminée. Affichage dans la page.")
+--     else
+--         print("[DEBUG] Fin de capture mais aucune info capturée.")
+--     end
+-- end
+-- 
+-- -- Bouton cumulé : envoie la commande .pinfo et déclenche la capture
+-- local btnCapturePinfo = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
+-- btnCapturePinfo:SetSize(180, 24)
+-- btnCapturePinfo:SetPoint("TOPLEFT", page7Title, "TOPLEFT", 0, -30)
+-- btnCapturePinfo:SetText("Advanced .Pinfo")
+-- btnCapturePinfo:SetScript("OnClick", function()
+--     SendChatMessage(".pinfo", "SAY")
+--     capturingPinfo = true
+--     collectedInfo = {}  -- réinitialise la capture
+--     if captureTimer then captureTimer:Cancel() end
+--     captureTimer = C_Timer.NewTimer(1, FinishCapture)
+--     print("[DEBUG] .pinfo envoyé, capture activée")
+-- end)
+-- 
+-- -- Frame pour capturer les événements CHAT_MSG_SYSTEM
+-- local captureFrame = CreateFrame("Frame")
+-- captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+-- captureFrame:SetScript("OnEvent", function(self, event, msg)
+--     if not capturingPinfo then return end
+--     
+--     print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
+--     
+-- local function DebugStringBytes(str)
+--     print("=== Début DebugStringBytes ===")
+--     for i = 1, #str do
+--         local c = str:sub(i, i)
+--         print(i, c, string.byte(c))
+--     end
+--     print("=== Fin DebugStringBytes ===")
+-- end
+-- 
+-- DebugStringBytes(msg)
+-- 
+-- -- Exemple de nettoyage
+-- local cleanMsg = msg
+-- -- Retire les codes couleur, liens, textures, etc. (optionnel)
+-- cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "")
+-- cleanMsg = cleanMsg:gsub("|r", "")
+-- cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
+-- cleanMsg = cleanMsg:gsub("|T.-|t", "")
+-- 
+-- -- Retire spécifiquement le caractère U+2502 (box drawing vertical)
+-- --cleanMsg = cleanMsg:gsub("\226\148\130", "")
+-- cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
+-- 
+--     -- Détection du début de la capture (pinfo) s'il y a "Player" et "guid"
+--     if cleanMsg:find("Player") and cleanMsg:find("guid") then
+--         collectedInfo = {}  -- démarre une nouvelle capture
+--         table.insert(collectedInfo, cleanMsg)
+--         print("[DEBUG] Début de capture détecté.")
+--         if captureTimer then captureTimer:Cancel() end
+--         captureTimer = C_Timer.NewTimer(1, FinishCapture)
+--         return
+--     end
+-- 
+--     table.insert(collectedInfo, cleanMsg)
+--     print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
+--     if captureTimer then captureTimer:Cancel() end
+--     captureTimer = C_Timer.NewTimer(1, FinishCapture)
+-- end)
+
+---------------------------------------------------------------
+-- Page 7 : Player Info Capture (.pinfo) [DEBUG MODE]
+---------------------------------------------------------------
+
 local commandsFramePage7 = CreateFrame("Frame", nil, pages[7])
 commandsFramePage7:SetPoint("TOPLEFT", pages[7], "TOPLEFT", 20, -40)
 commandsFramePage7:SetSize(500, 350)
@@ -1799,49 +1914,383 @@ local page7Title = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFont
 page7Title:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, 0)
 page7Title:SetText("Player Info Capture")
 
--- Création d'un ScrollFrame pour afficher les informations
-local scrollFrame = CreateFrame("ScrollFrame", "MyInfoScrollFrame", commandsFramePage7, "UIPanelScrollFrameTemplate")
-scrollFrame:SetPoint("TOPLEFT", page7Title, "TOPRIGHT", 100, 30)
-scrollFrame:SetSize(300, 300)
-
--- Conteneur dans lequel on mettra le FontString
-local content = CreateFrame("Frame", nil, scrollFrame)
-content:SetSize(300, 300)  -- Taille initiale, pourra être ajustée dynamiquement
-scrollFrame:SetScrollChild(content)
-
--- FontString qui contiendra les infos
-local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-infoText:SetPoint("TOPLEFT")
-infoText:SetWidth(300)        -- Largeur du texte (ou un peu moins pour la marge)
-infoText:SetJustifyH("LEFT")
-infoText:SetJustifyV("TOP")
-infoText:SetText("")          -- Initialement vide
-
--- Variables pour la capture des messages
+-- ============================================================
+-- 1) Variables de capture
+-- ============================================================
 local capturingPinfo = false
 local collectedInfo = {}
 local captureTimer = nil
 
+-- ============================================================
+-- 2) Fonction de parsing (votre version finale)
+-- ============================================================
+local function ParseCapturedPinfo(lines)
+    local infoTable = {}
+    local fullText = table.concat(lines, "\n")  -- on réunit toutes les lignes
+
+    -- 1) Player / GUID
+    local playerName, playerGUID = fullText:match("Player%s*%[(.-)%]%s*%((.-)%)")
+
+    -- 2) GM Mode / Phase
+    local gmMode = fullText:match("GM Mode%s*(%S+)")
+    local phase = fullText:match("Phase:%s*([%-]?%d+)")
+
+    -- 3) Account / GMLevel
+    local account = fullText:match("Account:%s*(.-),%s*GMLevel") or ""
+    local gmLevel = fullText:match("GMLevel:%s*(%d+)") or ""
+
+    -- 4) Last Login
+    local lastLogin = fullText:match("Last Login:%s*([^\n]+)") or ""
+
+    -- 5) OS + Latency
+    local osLine = fullText:match("OS:%s*([^\n]+)") or ""
+    local os, latency = osLine:match("(.-)%s*%- Latency:%s*([%S]+)")
+    os = os or ""
+    latency = latency or ""
+
+    -- 6) Registration Email + Email
+    local registrationEmailLine = fullText:match("Registration Email:%s*([^\n]+)") or ""
+    local regEmail, normalEmail = registrationEmailLine:match("^(.-)%s*%-+%s*Email:%s*(.-)$")
+
+    -- 7) Last IP
+    local lastIP = fullText:match("Last IP:%s*([^\n]+)") or ""
+
+    -- 8) Level
+    local level = fullText:match("Level:%s*(%d+)") or ""
+
+    -- 9) Race
+    local race = fullText:match("Race:%s*([^\n]+)") or ""
+
+    -- 10) Alive
+    local alive = fullText:match("Alive %?:%s*(%S+)") or ""
+
+    -- 11) PhaseShift
+    local phaseShiftLine = fullText:match("PhaseShift:[^\n]*")
+
+    -- 12) Flags + PersonalGuid
+    local flagsLine = fullText:match("%*%s*(.-)\n") or fullText:match("%*%s*(.+)$") or ""
+
+    -- 13) VisibleMapAreaSwaps (ou UiWorldMapAreaSwaps)
+    local visibleSwaps = fullText:match("VisibleMapAreaSwaps:%s*([^\n]+)")
+                      or fullText:match("UiWorldMapAreaSwaps:%s*([^\n]+)")
+                      or ""
+
+    -- 14) Money
+    local money = fullText:match("Money:%s*([^\n]+)") or ""
+
+    -- 15) Map / Zone / Area
+    local mapVal, zoneVal, areaVal = "", "", ""
+    local m, z, a = fullText:match("Map:%s*([^,]+),%s*Zone:%s*([^,]+),%s*Area:%s*([^\n]+)")
+    if m and z and a then
+        m = m:gsub("^%s*(.-)%s*$", "%1")
+        z = z:gsub("^%s*(.-)%s*$", "%1")
+        a = a:gsub("^%s*(.-)%s*$", "%1")
+        mapVal, zoneVal, areaVal = m, z, a
+    end
+
+    -- 16) Played time
+    local playedTime = fullText:match("Played time:%s*([^\n]+)") or ""
+	
+	-- 17) Guild : On capture la partie après "Guild:" et extrait le nom et l'ID s'ils sont au format "GuildName (ID: 1234)"
+    local guildLine = fullText:match("Guild:%s*([^\n]+)") or ""
+    local guildName, guildID = "", ""
+    if guildLine ~= "" then
+        guildName, guildID = guildLine:match("^(.-)%s*%(%s*ID:%s*(%d+)%s*%)")
+    end
+
+    -- 18) Rank : capture ce qui suit "Rank:"
+    -- On récupère la ligne après "Rank:"
+	local rankLine = fullText:match("Rank:%s*([^\n]+)") or ""
+	
+	local rankName, rankID
+	if rankLine ~= "" then
+		-- On tente de capturer le format "Guild Master, ID: 0"
+		-- c.-à-d. tout ce qui précède la virgule = rankName
+		-- et le nombre après "ID:" = rankID
+		rankName, rankID = rankLine:match("^(.-),%s*ID:%s*(%d+)$")
+	end
+
+
+    -- Insère tout dans infoTable
+    table.insert(infoTable, { label = "Player", value = playerName })
+    table.insert(infoTable, { label = "GUID",   value = playerGUID })
+    table.insert(infoTable, { label = "GM Mode",value = gmMode })
+    table.insert(infoTable, { label = "Phase",  value = phase })
+    table.insert(infoTable, { label="Account",  value=account })
+    table.insert(infoTable, { label="GMLevel",  value=gmLevel })
+    table.insert(infoTable, { label="Last Login", value=lastLogin })
+    table.insert(infoTable, { label="OS",         value=os })
+    table.insert(infoTable, { label="Latency",    value=latency })
+
+    if regEmail and normalEmail then
+        table.insert(infoTable, { label = "Registration Email", value = regEmail })
+        table.insert(infoTable, { label = "Email",              value = normalEmail })
+    else
+        table.insert(infoTable, { label = "Registration Email", value = registrationEmailLine })
+    end
+
+    table.insert(infoTable, { label="Last IP",   value=lastIP })
+    table.insert(infoTable, { label="Level",     value=level })
+    table.insert(infoTable, { label="Race",      value=race })
+    table.insert(infoTable, { label="Alive",     value=alive })
+
+    -- PhaseShift si non vide
+    if phaseShiftLine then
+        local shift = phaseShiftLine:gsub("PhaseShift:", "")
+        shift = shift:gsub("^%s*(.-)%s*$", "%1")
+        if shift ~= "" and not shift:match("^%*") then
+            table.insert(infoTable, { label="PhaseShift", value=shift })
+        end
+    end
+
+    -- Flags + PersonalGuid
+    if flagsLine ~= "" then
+        local fl, pg = flagsLine:match("Flags%s+([^,]+),%s*PersonalGuid:%s*(.+)")
+        if fl then
+            fl = fl:gsub("^%s*(.-)%s*$", "%1")
+            table.insert(infoTable, { label = "Flags", value = fl })
+        end
+        if pg then
+            pg = pg:gsub("^%s*(.-)%s*$", "%1")
+            table.insert(infoTable, { label = "PersonalGuid", value = pg })
+        end
+    end
+
+    if visibleSwaps ~= "" then
+        table.insert(infoTable, { label="VisibleMapAreaSwaps", value=visibleSwaps })
+    end
+
+    table.insert(infoTable, { label="Money",  value=money })
+    table.insert(infoTable, { label="Map",    value=mapVal })
+    table.insert(infoTable, { label="Zone",   value=zoneVal })
+    table.insert(infoTable, { label="Area",   value=areaVal })
+	if guildName ~= "" then
+    table.insert(infoTable, { label = "Guild", value = guildName })
+    end
+    if guildID ~= "" then
+        table.insert(infoTable, { label = "GuildID", value = guildID })
+    end
+	if rankName and rankID then
+    -- Si on a trouvé le nom de rang + ID, on peut les insérer séparément
+    table.insert(infoTable, { label = "RankName", value = rankName })
+    table.insert(infoTable, { label = "RankID",   value = rankID   })
+	else
+    -- Sinon, on stocke la ligne brute dans un seul champ "Rank"
+    if rankLine ~= "" then
+        table.insert(infoTable, { label = "RankName", value = rankLine })
+    end
+	end
+    table.insert(infoTable, { label="Played time", value=playedTime })
+
+    return infoTable
+end
+
+-- ============================================================
+-- 3) Fenêtre AceGUI : affichage + redimensionnement
+-- ============================================================
+local AceGUI = LibStub("AceGUI-3.0")
+local pinfoAceFrame
+
+-- Petite fonction utilitaire pour créer une "ligne" (SimpleGroup) en Flow
+local function CreateRow(parent)
+    local row = AceGUI:Create("SimpleGroup")
+    row:SetFullWidth(true)
+    row:SetLayout("Flow")
+    parent:AddChild(row)
+    return row
+end
+
+local function ShowPlayerInfoAceGUI(infoTable)
+    if pinfoAceFrame then
+        AceGUI:Release(pinfoAceFrame)
+        pinfoAceFrame = nil
+    end
+
+    pinfoAceFrame = AceGUI:Create("Frame")
+    pinfoAceFrame:SetTitle("Informations du joueur")
+    pinfoAceFrame:SetStatusText("Player Infos")
+    pinfoAceFrame:SetLayout("Flow")
+    pinfoAceFrame:SetWidth(600)
+    pinfoAceFrame:SetHeight(500)
+    pinfoAceFrame:SetCallback("OnClose", function(widget)
+        AceGUI:Release(widget)
+        pinfoAceFrame = nil
+    end)
+
+    -- On crée un ScrollFrame AceGUI pour gérer le contenu vertical
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    pinfoAceFrame:AddChild(scroll)
+
+    -- Dans le ScrollFrame, on crée un InlineGroup qui contiendra le contenu
+    local group = AceGUI:Create("InlineGroup")
+    group:SetTitle("Informations générales")
+    group:SetFullWidth(true)
+    group:SetLayout("Flow")
+    scroll:AddChild(group)
+
+    ---------------------------------------------------
+    -- On range infoTable dans un dictionnaire data[label] = value
+    ---------------------------------------------------
+    local data = {}
+    for _, row in ipairs(infoTable) do
+        data[row.label] = row.value or ""
+    end
+
+    -- Pour créer rapidement un EditBox
+    local function AddEditBox(parent, lbl, val, width)
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("|cffffff00" .. lbl .. "|r")
+        edit:SetText(val or "")
+        if width == "full" then
+            edit:SetFullWidth(true)
+        else
+            edit:SetWidth(width or 200)
+        end
+        parent:AddChild(edit)
+        return edit
+    end
+
+    ---------------------------------------------------
+    -- Lignes de champs
+    ---------------------------------------------------
+
+     ---------------------------------------------------
+    -- Lignes de champs (exemple)
+    ---------------------------------------------------
+    -- 1) Player, GUID
+    local row1 = AceGUI:Create("SimpleGroup")
+    row1:SetFullWidth(true)
+    row1:SetLayout("Flow")
+    group:AddChild(row1)
+    AddEditBox(row1, "Player", data["Player"], 200)
+    AddEditBox(row1, "GUID", data["GUID"], 250)
+
+    -- 2) GM Mode, Phase
+    local row2 = AceGUI:Create("SimpleGroup")
+    row2:SetFullWidth(true)
+    row2:SetLayout("Flow")
+    group:AddChild(row2)
+    AddEditBox(row2, "GM Mode", data["GM Mode"], 150)
+    AddEditBox(row2, "Phase", data["Phase"], 80)
+
+    -- 3) Account, GMLevel
+    local row3 = AceGUI:Create("SimpleGroup")
+    row3:SetFullWidth(true)
+    row3:SetLayout("Flow")
+    group:AddChild(row3)
+    AddEditBox(row3, "Account", data["Account"], 200)
+    AddEditBox(row3, "GMLevel", data["GMLevel"], 80)
+
+    -- 4) Last Login (ligne entière)
+    AddEditBox(group, "Last Login", data["Last Login"], "full")
+
+    -- 5) OS, Latency
+    local row5 = AceGUI:Create("SimpleGroup")
+    row5:SetFullWidth(true)
+    row5:SetLayout("Flow")
+    group:AddChild(row5)
+    AddEditBox(row5, "OS", data["OS"], 150)
+    AddEditBox(row5, "Latency", data["Latency"], 50)
+
+    -- 6) Registration Email, Email
+    local row6 = AceGUI:Create("SimpleGroup")
+    row6:SetFullWidth(true)
+    row6:SetLayout("Flow")
+    group:AddChild(row6)
+    AddEditBox(row6, "Registration Email", data["Registration Email"], 200)
+    AddEditBox(row6, "Email", data["Email"], 200)
+
+    -- 7) Last IP, Level
+    local row7 = AceGUI:Create("SimpleGroup")
+    row7:SetFullWidth(true)
+    row7:SetLayout("Flow")
+    group:AddChild(row7)
+    AddEditBox(row7, "Last IP", data["Last IP"], 200)
+    AddEditBox(row7, "Level", data["Level"], 50)
+
+    -- 8) Race, Alive
+    local row8 = AceGUI:Create("SimpleGroup")
+    row8:SetFullWidth(true)
+    row8:SetLayout("Flow")
+    group:AddChild(row8)
+    AddEditBox(row8, "Race", data["Race"], 200)
+    AddEditBox(row8, "Alive", data["Alive"], 50)
+
+    -- 9) PhaseShift (ligne entière si existant)
+    if data["PhaseShift"] and data["PhaseShift"] ~= "" then
+        AddEditBox(group, "PhaseShift", data["PhaseShift"], "full")
+    end
+
+    -- 10) Flags, PersonalGuid
+    local row10 = AceGUI:Create("SimpleGroup")
+    row10:SetFullWidth(true)
+    row10:SetLayout("Flow")
+    group:AddChild(row10)
+    AddEditBox(row10, "Flags", data["Flags"], 80)
+    AddEditBox(row10, "PersonalGuid", data["PersonalGuid"], 200)
+
+    -- 11) VisibleMapAreaSwaps, Money
+    local row11 = AceGUI:Create("SimpleGroup")
+    row11:SetFullWidth(true)
+    row11:SetLayout("Flow")
+    group:AddChild(row11)
+    AddEditBox(row11, "VisibleMapAreaSwaps", data["VisibleMapAreaSwaps"], 200)
+    AddEditBox(row11, "Money", data["Money"], 100)
+
+    -- 12) Map, Zone, Area (sur la même ligne)
+    local row12 = AceGUI:Create("SimpleGroup")
+    row12:SetFullWidth(true)
+    row12:SetLayout("Flow")
+    group:AddChild(row12)
+    AddEditBox(row12, "Map", data["Map"], 150)
+    AddEditBox(row12, "Zone", data["Zone"], 150)
+    AddEditBox(row12, "Area", data["Area"], 150)
+
+    -- 13) Guild, Guild ID, Rank (sur la même ligne)
+    local row13 = AceGUI:Create("SimpleGroup")
+    row13:SetFullWidth(true)
+    row13:SetLayout("Flow")
+    group:AddChild(row13)
+    AddEditBox(row13, "Guild", data["Guild"], 150)
+    AddEditBox(row13, "Guild ID", data["GuildID"], 150)
+    AddEditBox(row13, "Rank", data["RankName"], 150)
+	AddEditBox(row13, "Rank ID", data["RankID"], 150)
+	
+    -- 14) Played time (ligne entière)
+    AddEditBox(group, "Played time", data["Played time"], "full")
+
+    -- Bouton Fermer (optionnel)
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Fermer")
+    btnClose:SetWidth(100)
+    btnClose:SetCallback("OnClick", function()
+        if pinfoAceFrame then
+            pinfoAceFrame:Hide()
+        end
+    end)
+    pinfoAceFrame:AddChild(btnClose)
+end
+
+-- ============================================================
+-- 4) Fonction de fin de capture
+-- ============================================================
 local function FinishCapture()
     capturingPinfo = false
     if #collectedInfo > 0 then
-        local fullText = table.concat(collectedInfo, "\n")
-        infoText:SetText(fullText)
-        
-        -- Ajuste dynamiquement la hauteur de 'content' en fonction du texte
-        local textHeight = infoText:GetStringHeight()
-        content:SetHeight(textHeight + 5)  -- +5 px de marge, ajustez selon besoin
-
-        -- Remet le scroll en haut
-        scrollFrame:SetVerticalScroll(0)
-
-        print("[DEBUG] Capture terminée. Affichage dans la page.")
+        local infoTable = ParseCapturedPinfo(collectedInfo)
+        ShowPlayerInfoAceGUI(infoTable)
+        -- print("[DEBUG] Capture terminée. Affichage AceGUI.")
     else
-        print("[DEBUG] Fin de capture mais aucune info capturée.")
+        -- print("[DEBUG] Fin de capture mais aucune info capturée.")
     end
 end
 
--- Bouton cumulé : envoie la commande .pinfo et déclenche la capture
+-- ============================================================
+-- 5) Bouton .pinfo sur la page 7
+-- ============================================================
 local btnCapturePinfo = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
 btnCapturePinfo:SetSize(180, 24)
 btnCapturePinfo:SetPoint("TOPLEFT", page7Title, "TOPLEFT", 0, -30)
@@ -1849,60 +2298,33 @@ btnCapturePinfo:SetText("Advanced .Pinfo")
 btnCapturePinfo:SetScript("OnClick", function()
     SendChatMessage(".pinfo", "SAY")
     capturingPinfo = true
-    collectedInfo = {}  -- réinitialise la capture
+    collectedInfo = {}
     if captureTimer then captureTimer:Cancel() end
     captureTimer = C_Timer.NewTimer(1, FinishCapture)
-    print("[DEBUG] .pinfo envoyé, capture activée")
+    -- print("[DEBUG] .pinfo envoyé, capture activée")
 end)
 
--- Frame pour capturer les événements CHAT_MSG_SYSTEM
+-- ============================================================
+-- 6) Frame caché : écoute CHAT_MSG_SYSTEM et stocke les messages
+-- ============================================================
 local captureFrame = CreateFrame("Frame")
 captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 captureFrame:SetScript("OnEvent", function(self, event, msg)
     if not capturingPinfo then return end
-    
-    print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
-    
-local function DebugStringBytes(str)
-    print("=== Début DebugStringBytes ===")
-    for i = 1, #str do
-        local c = str:sub(i, i)
-        print(i, c, string.byte(c))
-    end
-    print("=== Fin DebugStringBytes ===")
-end
 
-DebugStringBytes(msg)
+    -- print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
 
--- Exemple de nettoyage
-local cleanMsg = msg
--- Retire les codes couleur, liens, textures, etc. (optionnel)
-cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "")
-cleanMsg = cleanMsg:gsub("|r", "")
-cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
-cleanMsg = cleanMsg:gsub("|T.-|t", "")
-
--- Retire spécifiquement le caractère U+2502 (box drawing vertical)
---cleanMsg = cleanMsg:gsub("\226\148\130", "")
-cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
-
-    -- Détection du début de la capture (pinfo) s'il y a "Player" et "guid"
-    if cleanMsg:find("Player") and cleanMsg:find("guid") then
-        collectedInfo = {}  -- démarre une nouvelle capture
-        table.insert(collectedInfo, cleanMsg)
-        print("[DEBUG] Début de capture détecté.")
-        if captureTimer then captureTimer:Cancel() end
-        captureTimer = C_Timer.NewTimer(1, FinishCapture)
-        return
-    end
-
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                       :gsub("|r", "")
+                       :gsub("|H.-|h(.-)|h", "%1")
+                       :gsub("|T.-|t", "")
+                       :gsub("\226[\148-\149][\128-\191]", "")
     table.insert(collectedInfo, cleanMsg)
-    print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
+    -- print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
     if captureTimer then captureTimer:Cancel() end
     captureTimer = C_Timer.NewTimer(1, FinishCapture)
 end)
 
-    -- Ajoutez d'autres boutons de la page 7…	
      ------------------------------------------------------------------------------
     -- Boutons de navigation (précédent / suivant)
     ------------------------------------------------------------------------------
@@ -1935,7 +2357,7 @@ end)
     -- Bouton Back final (commun aux pages)
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBackFinal:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -10)
+    btnBackFinal:SetPoint("CENTER", navPageLabel, "CENTER", 0, 20)
     btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)

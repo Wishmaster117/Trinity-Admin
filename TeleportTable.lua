@@ -451,10 +451,6 @@ TeleportData = {
       ["The Three Corners"]                 = ".go xyz -3239.780762 -2461.007568 15.600349 0",
       ["Whelgar's Excavation Site"]         = ".go xyz -3522.96 -1848.58 25.1502 0",
     },
-  
-  },
-  
-  ["Outreterre"] = {
 	["Ashenvale"] = {
         ["Astranaar"]                             = ".go xyz 2745.85 -378.33 108.253 1",
         ["Bough Shadow"]                          = ".go xyz 3141.823730 -3707.343262 121.049583 1",
@@ -1262,8 +1258,8 @@ TeleportData = {
       ["Battle - Warsong - Horde"]                = ".go xyz 992.81 1424.03 345.22 489",
     },
 },
-["I Easter Kindom"] = {
-	    ["Blackrock Depths"] = {
+["Instances Easter Kindom"] = {
+	["Blackrock Depths"] = {
       ["Detention Block"]                   = ".go xyz 459.455994 27.085884 -70.655228 230",
     },
     ["Blackrock Spire - Upper"] = {
@@ -1333,7 +1329,7 @@ TeleportData = {
       ["Zul'Gurub"]                         = ".go xyz -11916.095703 -1239.402832 92.287262 309",
     },
 },
-["I_Kalimdor"] = {
+["Instances Kalimdor"] = {
       ["Caverns of Time"] = {
       ["Caverns of Time"]                          = ".go xyz -8195.938477 -4500.128418 8.608192 1",
       ["Caverns of Time End"]                      = ".go xyz -8481.9 -4312.3 -208.442 1",
@@ -1391,7 +1387,7 @@ TeleportData = {
       ["Zul'Farrak"]                        = ".go xyz 1221.820557 840.745728 8.976474 209",
     }, 
    },
-["I_Outland"] = {
+["Instances Outland"] = {
       ["Auchindoun"] = {
       ["Auchenai Crypts"]                   = ".go xyz 0 0 0 558",
       ["Mana-Tombs"]                        = ".go xyz 0.013477 0.930826 -0.954333 557",
@@ -1428,7 +1424,7 @@ TeleportData = {
       ["The Mechanaar"]                     = ".go xyz 0 0 -1.81282 554",
     },
   },
-["I_Northendre"] = {
+["Instances Northendre"] = {
   ["The heart of Acherus"] = {
   ["The heart of Acherus"]                = ".go xyz 2476.1101 -5515.0400 420.6366 609",
   },
@@ -1438,7 +1434,7 @@ TeleportData = {
   ["Ahn'Kahet"] = {
   ["Hall of Conquered Kings"]             = ".go xyz 333.3510 -1109.9399 69.7720 619",
    },
-["The Obsidian Sanctum"] = {
+	["The Obsidian Sanctum"] = {
   ["The Obsidian Sanctum"]                = ".go xyz 3228.5800 385.8599 65.5490 615",
    },
   ["Azjof_Nerub"] = {
@@ -1538,7 +1534,7 @@ TeleportData = {
     ["Horde"]                                             = ".go xyz -11139.1845 -1742.4421 -29.7365 0",
     ["Official"]                                          = ".go xyz 16228.170898 16403.404297 -63.895161 1",
   },
-  ["1 Gryphon Master"] = {
+  ["Gryphon Master"] = {
     ["[CT]StormWind"]                                     = ".go xyz -8835.76 490.084 109.799 0",
     ["[CT]Ironforge"]                                     = ".go xyz -4821.13 -1152.4 502.295 0",
     ["[EK]Westfall/Sentinel Hill"]                        = ".go xyz -10628.3 1037.27 34.1915 0",
@@ -1564,7 +1560,7 @@ TeleportData = {
     ["[OT]Shadowmoon Valley/Wildhammer Stronghold"]       = ".go xyz -3980.97 2156.29 105.333 530",
     ["[OT]Blade's Edge Mountains/Toshley's Station"]      = ".go xyz 1860.73 5528.27 276.838 530",
   },
-  ["2 Hippogryph Master"] = {
+  ["Hippogryph Master"] = {
     ["[CT]Rut'theran Village"]                            = ".go xyz 8640.58 841.118 23.3464 1",
     ["[CT]The Exodar"]                                    = ".go xyz -4058.45 -11789.7 9.23392 530",
     ["[KL]Darkshore/Auberdine"]                           = ".go xyz 6343.2 561.651 16.1047 1",
@@ -1586,7 +1582,7 @@ TeleportData = {
     ["[OT]Blade's Edge Mountains/Sylvanaar"]              = ".go xyz 2187.88 6794 183.513 530",
     ["[OT]Zangarmarsh/Orebor Harborage"]                  = ".go xyz 963.428 7399.58 29.4317 530",
   },
-  ["3 Wind Rider Master"] = {
+  ["Wind Rider Master"] = {
     ["[CT]Thunder Bluff"]                                 = ".go xyz -1196.75 26.0777 177.033 1",
     ["[CT]Orgrimmar"]                                     = ".go xyz 1676.25 -4313.45 61.7176 1",
     ["[EK]Stranglethorn Vale/Grom'gol Base Camp"]         = ".go xyz -12417.5 144.474 3.36881 0",
@@ -1623,7 +1619,7 @@ TeleportData = {
     ["[OT]Hellfire Peninsula/Spinebreaker Post"]          = ".go xyz -1314.93 2355.39 89.0385 530",
     ["[OT]Zangarmarsh/Cenarion Watchpos"]                 = ".go xyz 87.9806 5213.79 23.3282 530",
   },
-  ["4 Bat Handler"] = {
+  ["Bat Handler"] = {
     ["[CT]Undercity"]                                     = ".go xyz 1567.12 266.345 -43.0194 0",
     ["[CT]Eversong Woods/Silvermoon"]                     = ".go xyz 9376.4 -7164.92 9.01938 530",
     ["[EK]Silverpine Forest/The Sepulcher"]               = ".go xyz 473.939 1533.95 131.96 0",
@@ -1631,11 +1627,77 @@ TeleportData = {
     ["[EK]Eastern Plaguelands/Light's Hope Chapel"]       = ".go xyz 2328.48 -5290.72 81.9957 0",
     ["[EK]Ghostlands/Tranquillien"]                       = ".go xyz 7595.16 -6782.24 86.878 530",
   },
-  ["5 Zeppelin Master"] = {
+  ["Zeppelin Master"] = {
     ["[EK]Tirisfal Glades"]                               = ".go xyz 2054.57 241.679 99.8521 0",
     ["[KL]Durotar"]                                       = ".go xyz 1331.11 -4649.45 53.6269 1",
   },
 },
+
+["Retail"] = {
+ ["The War Within"] = {
+	["Dornogal"]         						= ".go xyz 2871.7 -2444.6 266.761 2552",
+	["Taelloch"]         						= ".go xyz 1024.496338 -4057.271973 127.450256 2601",
+	["Mereldar"]       							= ".go xyz 1889.526611 902.888611 126.953232 2601",
+	["Weaver's Lair"]        					= ".go xyz -351.960938 -1401.111328 -1087.506348 2601",
+  },
+ ["Pandaria"] = {
+	["Sanctuaire des deux lunes Horde"]        	= ".go xyz 1581.477051 918.753906 473.700897, 870",
+	["Sanctuaire des Sept étoiles Alliance"]    = ".go xyz 891.921082 305.094269 506.095520 870",
+	["Rosée de Miel Horde"]        				= ".go xyz 3013.943604 -561.714844 251.631882 870",
+	["Pao'don Alliance"]        				= ".go xyz -268.999146 -1749.277344 61.838829 870",
+  }, 
+ 
+ ["Draenor"] = {
+	["Frostfire Ridge"]        					= ".go xyz 5942.060547 3073.001465 156.752869 1116",
+	["Gorgrond"]       							= ".go xyz 6803.529785 1219.949951 69.685204 1116",
+	["Spires of Arak"]        					= ".go xyz 918.395569 923.785278 179.189331 1116",
+	["Shadowmoon Valley?"]        				= ".go xyz 1426.820679 29.369268 63.870968 1116",
+	["Talador"]        							= ".go xyz 3130.451172 3331.752698 45.991688 1116",
+	["Nagrand"]        							= ".go xyz 3049.108154 4674.790039 132.576553 1116",
+  },
+ 
+ ["Legion"] = {
+	["Azsuna"]        = ".go xyz -119.738823 6696.608887 39.665440 1220",
+	["Suramar"]        = ".go xyz 1718.557861 4622.358398 123.946373 1220",
+	["Stormheim"]        = ".go xyz 3877.694580 2066.170898 248.422531 1220",
+	["Highmountain"]        = ".go xyz 3844.965088 5142.033203 646.669006 1220",
+	["Val'sharah"]        = ".go xyz 2810.769287 6454.503418 208.198471 1220",
+	["Argus"]        = ".go xyz -5646.250000 -6504.490234 177.514999 1669",
+  },
+
+ ["BFA"] = {
+	["Stormsong Valley"]        = ".go xyz 2110.827637 51.675644 111.290985 1643",
+	["Drustvar"]        = ".go xyz -634.309998 3140.370117 323.536987 1643",
+	["Tiragarde Sound"]        = ".go xyz -1224.989868 -878.398560 95.142876 1643",
+	["Vol'dun"]        = ".go xyz 2364.734131 3887.955322 45.039127 1642",
+	["Nazmir"]        = ".go xyz 2146.342773 645.582947 31.128311 1642",
+	["Zuldazar"]        = ".go xyz -750.597656 199.699860 207.755981 1642",
+  },
+
+ ["Shadowlands"] = {
+	["Oribos"]        = ".go xyz -1834.00 1542.00 5274.156250 2222",
+	["Maldraxxus"]        = ".go xyz 2585.715088 -2525.375488 3307.614502 2222",
+	["Bastion"]        = ".go xyz -2943.555664 -4871.619629 6704.122559 2222",
+	["Ardenweald"]        = ".go xyz -6927.196289 884.558716 5668.544434 2222",
+	["Revendreth"]        = ".go xyz -2628.641846 6034.142578 4115.692871 2222",
+	["The Maw"]        = ".go xyz 4608.442871 6795.189941 4868.089844 2222",
+  },
+
+ ["Dragonflight"] = {
+	["Valdrakken"]        = ".go xyz 115.639 -939.723 836.586 2444",
+	["The Concord Observatory"]        = ".go xyz 2934.35 188.591 498.596 2444",
+	["Maruukai"]        = ".go xyz -620.498 2198.33 436.668 2444",
+	["Camp Antonidas"]        = ".go xyz -3817.34 505.7 647.829 2444",
+	["Old Weyrn Grounds"]        = ".go xyz 6510.56 -3318.14 162.985 2444",
+	["Bel'ameth"]        = ".go xyz -1697.679688 7147.415039 200.854599 2444",
+	["Dragonscale Basecamp"]        = ".go xyz -982.407410 3150.312744 44.202740 2454",
+  },
+
+ ["New starting Zone"] = {
+	["Murloc Lair"]        = ".go xyz -441.209320 -2610.271729 0.497681 2175",
+  },
+ },
+  
    -- ["Kalimdor"] = { ... },
   -- ["Outreterre"] = { ... },
    -- ["Kalimdor"] = { ... },

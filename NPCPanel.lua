@@ -14,6 +14,161 @@ function NPCModule:ShowNPCPanel()
     self.panel:Show()
 end
 
+-- Variables de capture
+local capturingNPCInfo = false
+local npcInfoCollected = {}
+local npcInfoTimer = nil
+
+local npcInfoCaptureFrame = CreateFrame("Frame")
+npcInfoCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+npcInfoCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingNPCInfo then return end
+
+    -- Nettoyage minimal
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                       :gsub("|r", "")
+                       :gsub("|H.-|h(.-)|h", "%1")
+                       :gsub("|T.-|t", "")
+                       :gsub("\226[\148-\149][\128-\191]", "")
+
+    table.insert(npcInfoCollected, cleanMsg)
+
+    -- On redémarre le timer (1 seconde)
+    if npcInfoTimer then
+        npcInfoTimer:Cancel()
+    end
+    npcInfoTimer = C_Timer.NewTimer(1, function()
+        capturingNPCInfo = false
+        local fullText = table.concat(npcInfoCollected, "\n")
+        -- On sépare en lignes
+		local lines = {}
+		for line in fullText:gmatch("[^\r\n]+") do
+			-- Ne pas ajouter la ligne si elle commence par "NPC currently selected by player:"
+			if not line:match("^NPC currently selected by player:") then
+				table.insert(lines, line)
+			end
+		end
+        -- On affiche via AceGUI
+        ShowNPCInfoAceGUI(lines)
+    end)
+end)
+
+-- Fonction qui traite le texte complet pour séparer la ligne Flags/PersonalGuid
+local function ProcessCapturedText(input)
+    local text = input
+    if type(input) == "table" then
+        text = table.concat(input, "\n")
+    end
+
+    local processedLines = {}
+    local startCapture = false  -- Flag qui sera activé dès que l'on rencontre "Name:"
+    for line in text:gmatch("[^\r\n]+") do
+        -- On active la capture seulement si la ligne commence par "Name:"
+        if not startCapture then
+            if line:find("^Name:") then
+                startCapture = true
+            end
+        end
+
+        if startCapture then
+            -- Si la ligne commence par "*" et contient "PersonalGuid:", on la découpe en deux parties.
+            if line:find("^%*") and line:find("PersonalGuid:") then
+                local part1, part2 = line:match("^(%*%s*Flags%s*%S+),%s*(PersonalGuid:%s*.+)")
+                if part1 and part2 then
+                    table.insert(processedLines, part1)
+                    table.insert(processedLines, part2)
+                else
+                    table.insert(processedLines, line)
+                end
+            -- Séparation de la ligne "PhaseID: ... , PhaseGroup: ..."
+            elseif line:find("PhaseID:") and line:find("PhaseGroup:") then
+                local part1, part2 = line:match("^(PhaseID:%s*[^,]+),%s*(PhaseGroup:%s*.+)")
+                if part1 and part2 then
+                    table.insert(processedLines, part1)
+                    table.insert(processedLines, part2)
+                else
+                    table.insert(processedLines, line)
+                end
+            -- Séparation de la ligne "Template StringID:" et "Spawn StringID:"
+            elseif line:find("Template StringID:") and line:find("Spawn StringID:") then
+                local part1, part2 = line:match("^(Template StringID:%s*.-)%s+(Spawn StringID:%s*.+)")
+                if part1 and part2 then
+                    table.insert(processedLines, part1)
+                    table.insert(processedLines, part2)
+                else
+                    table.insert(processedLines, line)
+                end
+            else
+                table.insert(processedLines, line)
+            end
+        end
+    end
+    return processedLines
+end
+
+
+
+
+local AceGUI = LibStub("AceGUI-3.0")
+function ShowNPCInfoAceGUI(fullText)
+    -- On traite le texte pour séparer la ligne Flags/PersonalGuid
+    local lines = ProcessCapturedText(fullText)
+    
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("NPC Info")
+    frame:SetStatusText("Information from npc info")
+    frame:SetLayout("Flow")
+    frame:SetWidth(600)
+    frame:SetHeight(500)
+
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    frame:AddChild(scroll)
+
+    -- Chaque ligne => un EditBox
+    -- for i, line in ipairs(lines) do
+    --     local edit = AceGUI:Create("EditBox")
+    --     edit:SetLabel("Line " .. i)
+    --     edit:SetText(line)
+    --     edit:SetFullWidth(true)
+    --     scroll:AddChild(edit)
+    -- end
+    -- for i, line in ipairs(lines) do
+    --     -- Tente d'extraire le label (le texte avant le premier deux-points)
+    --     local labelText = line:match("^(.-):") or ("Line " .. i)
+    --     local edit = AceGUI:Create("EditBox")
+    --     edit:SetLabel("|cffffff00" .. labelText .. ":|r")
+    --     edit:SetText(line)
+    --     edit:SetFullWidth(true)
+    --     scroll:AddChild(edit)
+    -- end
+	
+	for i, line in ipairs(lines) do
+    -- Récupère le label (texte avant le deux-points)
+    local labelText = line:match("^(.-):") or ("Line " .. i)
+    -- Récupère uniquement la valeur (texte après le deux-points)
+    local valueText = line:match("^[^:]+:%s*(.+)") or line
+
+    local edit = AceGUI:Create("EditBox")
+    edit:SetLabel("|cffffff00" .. labelText .. ":|r")
+    edit:SetText(valueText)
+    edit:SetFullWidth(true)
+    scroll:AddChild(edit)
+	end
+
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Fermer")
+    btnClose:SetWidth(100)
+    btnClose:SetCallback("OnClick", function()
+        frame:Hide()
+    end)
+    frame:AddChild(btnClose)
+end
+
+
+
 function NPCModule:CreateNPCPanel()
     local npc = CreateFrame("Frame", "TrinityAdminNPCPanel", TrinityAdminMainFrame)
     npc:ClearAllPoints()
@@ -106,6 +261,31 @@ function NPCModule:CreateNPCPanel()
     actionButton:SetSize(80, 22)
     actionButton:SetText("Action")
     actionButton:SetScript("OnClick", function()
+    -- Vérifie si la commande sélectionnée est .npc info (ou tout autre commande PNJ)
+    if selectedCommand == ".npc info" then
+
+        -- Vérifie qu'un PNJ est bien ciblé
+        if not (UnitExists("target") and UnitIsNPC("target")) then
+            print("Veuillez sélectionner un PNJ.")
+            return
+        end
+
+        -- Active la capture (exemple)
+        npcInfoCollected = {}
+        capturingNPCInfo = true
+        if npcInfoTimer then
+            npcInfoTimer:Cancel()
+        end
+        npcInfoTimer = C_Timer.NewTimer(1, function()
+            capturingNPCInfo = false
+            local fullText = table.concat(npcInfoCollected, "\n")
+            local lines = {}
+            for line in fullText:gmatch("[^\r\n]+") do
+                table.insert(lines, line)
+            end
+            ShowNPCInfoAceGUI(lines)
+        end)
+    end
         local value = inputBox:GetText()
         if value and value ~= "" and value ~= selectedDefaultText then
             SendChatMessage(selectedCommand .. " " .. value, "SAY")
@@ -113,8 +293,8 @@ function NPCModule:CreateNPCPanel()
         else
             if UnitExists("target") and UnitIsNPC("target") then
                 local targetName = UnitName("target")
-                SendChatMessage(selectedCommand .. " " .. targetName, "SAY")
-                print("[DEBUG] Commande envoyée: " .. selectedCommand .. " " .. targetName)
+                SendChatMessage(selectedCommand, "SAY")
+                -- print("[DEBUG] Commande envoyée: " .. selectedCommand .. " " .. targetName)
             else
                 print("Veuillez entrer une valeur pour la commande ou sélectionner un PNJ cible.")
                 return
@@ -541,29 +721,27 @@ function NPCModule:CreateNPCPanel()
     singleDropdown:SetPoint("LEFT", singleEditBox, "RIGHT", 10, 0)
     UIDropDownMenu_SetText(singleDropdown, singleInputCommands[1].name)
 
-UIDropDownMenu_Initialize(singleDropdown, function(self, level, menuList)
-    for i, cmd in ipairs(singleInputCommands) do
-        local info = UIDropDownMenu_CreateInfo()
-        info.text  = cmd.name
-        info.value = i
-        -- Définir si l'option est cochée (petit bouton jaune)
-        info.checked = (UIDropDownMenu_GetSelectedID(singleDropdown) == i)
-
-        info.func = function(button, arg1, arg2, checked)
-            -- Met à jour l'ID sélectionné et le texte du dropdown
-            UIDropDownMenu_SetSelectedID(singleDropdown, i)
-            UIDropDownMenu_SetText(singleDropdown, cmd.name)
-
-            -- Met à jour la commande sélectionnée
-            singleFrame.selectedCommand = singleInputCommands[i]
-            singleEditBox:SetText(cmd.fields[1].defaultText or "")
-        end
-
-        UIDropDownMenu_AddButton(info, level)
-    end
-end)
-
-
+	UIDropDownMenu_Initialize(singleDropdown, function(self, level, menuList)
+		for i, cmd in ipairs(singleInputCommands) do
+			local info = UIDropDownMenu_CreateInfo()
+			info.text  = cmd.name
+			info.value = i
+			-- Définir si l'option est cochée (petit bouton jaune)
+			info.checked = (UIDropDownMenu_GetSelectedID(singleDropdown) == i)
+	
+			info.func = function(button, arg1, arg2, checked)
+				-- Met à jour l'ID sélectionné et le texte du dropdown
+				UIDropDownMenu_SetSelectedID(singleDropdown, i)
+				UIDropDownMenu_SetText(singleDropdown, cmd.name)
+	
+				-- Met à jour la commande sélectionnée
+				singleFrame.selectedCommand = singleInputCommands[i]
+				singleEditBox:SetText(cmd.fields[1].defaultText or "")
+			end
+	
+			UIDropDownMenu_AddButton(info, level)
+		end
+	end)
 
     local singleSendButton = CreateFrame("Button", nil, singleFrame, "UIPanelButtonTemplate")
     singleSendButton:SetSize(60, 22)

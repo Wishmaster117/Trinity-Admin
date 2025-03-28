@@ -348,12 +348,12 @@ local specialOptions = {
 				GameTooltip:Hide()
 			end)
 					
-			btn:SetScript("OnLeave", function(self)
-				GameTooltip:Hide()
-				if self.wowheadTooltip then
-					self.wowheadTooltip:Hide()
-				end
-			end)
+			-- btn:SetScript("OnLeave", function(self)
+			-- 	GameTooltip:Hide()
+			-- 	if self.wowheadTooltip then
+			-- 		self.wowheadTooltip:Hide()
+			-- 	end
+			-- end)
 
 			btn:SetScript("OnClick", function()
 				print("Option cliquée :", fullText, "Entry:", option.entry)

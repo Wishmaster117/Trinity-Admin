@@ -33,7 +33,7 @@ Libs\AceGUI-3.0\widgets\AceGUIWidget-Keybinding.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-Label.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-MultiLineEditBox.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
-
+# Interface\FrameXML\UIPanelTemplates.xml
 
 # TranslationsData
 TrinityAdmin_Translations.lua

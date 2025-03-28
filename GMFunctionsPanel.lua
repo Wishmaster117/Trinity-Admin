@@ -1,5 +1,158 @@
 local module = TrinityAdmin:GetModule("GMFunctionsPanel")
 
+local gpsFrame
+local mapEdit, zoneEdit, areaEdit, xEdit, yEdit, zEdit, oEdit, GridEdit, CellEdit, InstanceIDEdit
+
+print("At top of file: gpsFrame =", gpsFrame)  -- Devrait afficher "nil"
+
+-------------------------------------------------------------
+-- Création de la popup GPS avec les champs de saisie
+-------------------------------------------------------------
+local function CreateGPSFrame()
+ print("CreateGPSFrame() is running...")
+    local AceGUI = LibStub("AceGUI-3.0")
+    gpsFrame = AceGUI:Create("Frame")
+	print("gpsFrame created =>", gpsFrame)
+    gpsFrame:SetTitle("GPS Info")
+    gpsFrame:SetStatusText("Information GPS")
+    gpsFrame:SetCallback("OnClose", function(widget)
+        AceGUI:Release(widget)
+        gpsFrame = nil
+    end)
+    gpsFrame:SetLayout("Flow")
+    
+    local group = AceGUI:Create("InlineGroup")
+    group:SetFullWidth(true)
+    group:SetTitle("Coordonnées")
+    group:SetLayout("Flow")
+    gpsFrame:AddChild(group)
+    
+    mapEdit = AceGUI:Create("EditBox")
+    mapEdit:SetLabel("Map:")
+    mapEdit:SetFullWidth(true)
+    group:AddChild(mapEdit)
+    
+    zoneEdit = AceGUI:Create("EditBox")
+    zoneEdit:SetLabel("Zone:")
+    zoneEdit:SetFullWidth(true)
+    group:AddChild(zoneEdit)
+    
+    areaEdit = AceGUI:Create("EditBox")
+    areaEdit:SetLabel("Area:")
+    areaEdit:SetFullWidth(true)
+    group:AddChild(areaEdit)
+    
+    xEdit = AceGUI:Create("EditBox")
+    xEdit:SetLabel("X:")
+    xEdit:SetWidth(80)
+    group:AddChild(xEdit)
+    
+    yEdit = AceGUI:Create("EditBox")
+    yEdit:SetLabel("Y:")
+    yEdit:SetWidth(80)
+    group:AddChild(yEdit)
+    
+    zEdit = AceGUI:Create("EditBox")
+    zEdit:SetLabel("Z:")
+    zEdit:SetWidth(80)
+    group:AddChild(zEdit)
+    
+    oEdit = AceGUI:Create("EditBox")
+    oEdit:SetLabel("O:")
+    oEdit:SetWidth(80)
+    group:AddChild(oEdit)
+    
+    GridEdit = AceGUI:Create("EditBox")
+    GridEdit:SetLabel("Grid:")
+    GridEdit:SetWidth(80)
+    group:AddChild(GridEdit)
+    
+    CellEdit = AceGUI:Create("EditBox")
+    CellEdit:SetLabel("Cell:")
+    CellEdit:SetWidth(80)
+    group:AddChild(CellEdit)
+    
+    InstanceIDEdit = AceGUI:Create("EditBox")
+    InstanceIDEdit:SetLabel("InstanceID:")
+    InstanceIDEdit:SetWidth(80)
+    group:AddChild(InstanceIDEdit)
+    
+    --gpsFrame:Hide()
+	print("Fin de CreateGPSFrame(), gpsFrame =", gpsFrame)
+end
+
+-------------------------------------------------------------
+-- 1. Déclaration des variables pour la capture GPS
+-------------------------------------------------------------
+local capturingGPSInfo = false
+local gpsInfoCollected = {}
+local gpsInfoTimer = nil
+-- Déclaration forward de la fonction
+local FinishGPSInfoCapture
+
+------------------------------------------------------------
+-- CaptureFrame pour écouter CHAT_MSG_SYSTEM pour la capture GPS
+------------------------------------------------------------
+local gpsCaptureFrame = CreateFrame("Frame")
+gpsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+gpsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingGPSInfo then return end
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
+                         :gsub("|H.-|h(.-)|h", "%1")
+                         :gsub("|T.-|t", "")
+    table.insert(gpsInfoCollected, cleanMsg)
+    if gpsInfoTimer then gpsInfoTimer:Cancel() end
+    gpsInfoTimer = C_Timer.NewTimer(1, FinishGPSInfoCapture)
+end)
+
+------------------------------------------------------------
+-- Fonction de traitement de la capture GPS
+------------------------------------------------------------
+FinishGPSInfoCapture = function()
+print("FinishGPSInfoCapture() => gpsFrame:", gpsFrame)
+    capturingGPSInfo = false
+    if #gpsInfoCollected > 0 then
+        local fullText = table.concat(gpsInfoCollected, "\n")
+        -- Captures pour Map, Zone et Area (numéro et texte entre parenthèses)
+        local mapNum, mapName = fullText:match("Map:%s*(%S+)%s*%(([^)]+)%)")
+        local zoneNum, zoneName = fullText:match("Zone:%s*(%S+)%s*%(([^)]+)%)")
+        local areaNum, areaName = fullText:match("Area:%s*(%S+)%s*%(([^)]+)%)")
+        
+        local x = fullText:match("X:%s*(%S+)")
+        local y = fullText:match("Y:%s*(%S+)")
+        local z = fullText:match("Z:%s*(%S+)")
+        local o = fullText:match("Orientation:%s*(%S+)")
+        local grid = fullText:match("grid%s*(%S+)%s*cell")
+        local cell = fullText:match("cell%s*(%S+)%s*InstanceID")
+        local instanceid = fullText:match("InstanceID:%s*(%S+)")
+        
+        local mapText = mapNum and (mapNum .. (mapName and " (" .. mapName .. ")" or "")) or ""
+        local zoneText = zoneNum and (zoneNum .. (zoneName and " (" .. zoneName .. ")" or "")) or ""
+        local areaText = areaNum and (areaNum .. (areaName and " (" .. areaName .. ")" or "")) or ""
+        
+        if not gpsFrame then
+		print("gpsFrame is nil, so calling CreateGPSFrame() now...")
+            CreateGPSFrame()
+        end
+        
+        mapEdit:SetText(mapText)
+        zoneEdit:SetText(zoneText)
+        areaEdit:SetText(areaText)
+        xEdit:SetText(x or "")
+        yEdit:SetText(y or "")
+        zEdit:SetText(z or "")
+        oEdit:SetText(o or "")
+        GridEdit:SetText(grid or "")
+        CellEdit:SetText(cell or "")
+        InstanceIDEdit:SetText(instanceid or "")
+        
+		print("After CreateGPSFrame(), gpsFrame:", gpsFrame)
+        gpsFrame:Show()
+    else
+        print("Aucune information GPS capturée.")
+    end
+end
+
 -------------------------------------------------------------
 -- Variables et fonctions pour la capture du .guild info
 -------------------------------------------------------------
@@ -85,172 +238,7 @@ guidCaptureFrame:SetScript("OnEvent", function(self, event, msg)
     guidInfoTimer = C_Timer.NewTimer(1, FinishGuidInfoCapture)
 end)
 
--------------------------------------------------------------
--- 1. Déclaration des variables pour la capture GPS
--------------------------------------------------------------
-local capturingGPSInfo = false
-local gpsInfoCollected = {}
-local gpsInfoTimer = nil
--- Déclaration forward de la fonction
-local FinishGPSInfoCapture
 
--------------------------------------------------------------
--- Création de la popup GPS avec les champs de saisie
--------------------------------------------------------------
-local GPSInfoPopup, editMap, editZone, editArea, editX, editY, editZ, editO, editGrid, editCell, editInstanceID
-do 
-    GPSInfoPopup = CreateFrame("Frame", "GPSInfoPopup", UIParent, "BackdropTemplate")
-    GPSInfoPopup:SetSize(400, 300)
-    GPSInfoPopup:SetPoint("CENTER")
-    GPSInfoPopup:SetMovable(true)
-    GPSInfoPopup:EnableMouse(true)
-    GPSInfoPopup:RegisterForDrag("LeftButton")
-    GPSInfoPopup:SetScript("OnDragStart", GPSInfoPopup.StartMoving)
-    GPSInfoPopup:SetScript("OnDragStop", GPSInfoPopup.StopMovingOrSizing)
-    GPSInfoPopup:SetBackdrop({
-        bgFile = "Interface/DialogFrame/UI-DialogBox-Background",
-        edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
-        tile = true, tileSize = 32, edgeSize = 32,
-        insets = { left = 8, right = 8, top = 8, bottom = 8 }
-    })
-    GPSInfoPopup:Hide()
-    
-	    -- Ajout d'un bouton Close dans la popup GPS
-	local closeGPSButton = CreateFrame("Button", nil, GPSInfoPopup, "UIPanelCloseButton")
-	closeGPSButton:SetPoint("TOPRIGHT", GPSInfoPopup, "TOPRIGHT", -5, -5)
-
-    local gpsTitle = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-    gpsTitle:SetPoint("TOP", GPSInfoPopup, "TOP", 0, -15)
-    gpsTitle:SetText("GPS Info")
-    
-    local labelMap = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelMap:SetPoint("TOPLEFT", 20, -40)
-    labelMap:SetText("Map:")
-    editMap = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editMap:SetPoint("LEFT", labelMap, "RIGHT", 10, 0)
-    editMap:SetSize(100, 20)
-    
-    local labelZone = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelZone:SetPoint("TOPLEFT", labelMap, "BOTTOMLEFT", 0, -10)
-    labelZone:SetText("Zone:")
-    editZone = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editZone:SetPoint("LEFT", labelZone, "RIGHT", 10, 0)
-    editZone:SetSize(100, 20)
-    
-    local labelArea = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelArea:SetPoint("TOPLEFT", labelZone, "BOTTOMLEFT", 0, -10)
-    labelArea:SetText("Area:")
-    editArea = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editArea:SetPoint("LEFT", labelArea, "RIGHT", 10, 0)
-    editArea:SetSize(100, 20)
-    
-    local labelX = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelX:SetPoint("TOPLEFT", labelArea, "BOTTOMLEFT", 0, -20)
-    labelX:SetText("X:")
-    editX = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editX:SetPoint("LEFT", labelX, "RIGHT", 10, 0)
-    editX:SetSize(50, 20)
-    
-    local labelY = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelY:SetPoint("TOPLEFT", labelX, "BOTTOMLEFT", 0, -10)
-    labelY:SetText("Y:")
-    editY = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editY:SetPoint("LEFT", labelY, "RIGHT", 10, 0)
-    editY:SetSize(50, 20)
-    
-    local labelZ = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelZ:SetPoint("TOPLEFT", labelY, "BOTTOMLEFT", 0, -10)
-    labelZ:SetText("Z:")
-    editZ = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editZ:SetPoint("LEFT", labelZ, "RIGHT", 10, 0)
-    editZ:SetSize(50, 20)
-    
-    local labelO = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelO:SetPoint("TOPLEFT", labelZ, "BOTTOMLEFT", 0, -10)
-    labelO:SetText("O:")
-    editO = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editO:SetPoint("LEFT", labelO, "RIGHT", 10, 0)
-    editO:SetSize(50, 20)
-    
-    local labelGrid = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelGrid:SetPoint("TOPLEFT", labelO, "BOTTOMLEFT", 0, -20)
-    labelGrid:SetText("Grid:")
-    editGrid = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editGrid:SetPoint("LEFT", labelGrid, "RIGHT", 10, 0)
-    editGrid:SetSize(50, 20)
-    
-    local labelCell = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelCell:SetPoint("TOPLEFT", labelGrid, "BOTTOMLEFT", 0, -10)
-    labelCell:SetText("Cell:")
-    editCell = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editCell:SetPoint("LEFT", labelCell, "RIGHT", 10, 0)
-    editCell:SetSize(50, 20)
-    
-    local labelInstanceID = GPSInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    labelInstanceID:SetPoint("TOPLEFT", labelCell, "BOTTOMLEFT", 0, -10)
-    labelInstanceID:SetText("InstanceID:")
-    editInstanceID = CreateFrame("EditBox", nil, GPSInfoPopup, "InputBoxTemplate")
-    editInstanceID:SetPoint("LEFT", labelInstanceID, "RIGHT", 10, 0)
-    editInstanceID:SetSize(50, 20)
-end
-
-------------------------------------------------------------
--- CaptureFrame pour écouter CHAT_MSG_SYSTEM pour la capture GPS
-------------------------------------------------------------
-local gpsCaptureFrame = CreateFrame("Frame")
-gpsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-gpsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
-    if not capturingGPSInfo then return end
-    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
-                         :gsub("|H.-|h(.-)|h", "%1")
-                         :gsub("|T.-|t", "")
-    table.insert(gpsInfoCollected, cleanMsg)
-    if gpsInfoTimer then gpsInfoTimer:Cancel() end
-    gpsInfoTimer = C_Timer.NewTimer(1, FinishGPSInfoCapture)
-end)
-
-------------------------------------------------------------
--- Fonction de traitement de la capture GPS
-------------------------------------------------------------
-FinishGPSInfoCapture = function()
-    capturingGPSInfo = false
-    if #gpsInfoCollected > 0 then
-        local fullText = table.concat(gpsInfoCollected, "\n")
-        -- Capture pour Map, Zone et Area : numéro + texte entre parenthèses
-        local mapNum, mapName = fullText:match("Map:%s*(%S+)%s*%(([^)]+)%)")
-        local zoneNum, zoneName = fullText:match("Zone:%s*(%S+)%s*%(([^)]+)%)")
-        local areaNum, areaName = fullText:match("Area:%s*(%S+)%s*%(([^)]+)%)")
-        
-        -- Autres captures
-        local x = fullText:match("X:%s*(%S+)")
-        local y = fullText:match("Y:%s*(%S+)")
-        local z = fullText:match("Z:%s*(%S+)")
-        local o = fullText:match("Orientation:%s*(%S+)")
-        local grid = fullText:match("grid%s*(%S+)%s*cell")
-        local cell = fullText:match("cell%s*(%S+)%s*InstanceID")
-        local instanceid = fullText:match("InstanceID:%s*(%S+)")
-        
-        -- Combinaison : affiche le numéro suivi du texte entre parenthèses s'il existe
-        local mapText = mapNum and (mapNum .. (mapName and " (" .. mapName .. ")" or "")) or ""
-        local zoneText = zoneNum and (zoneNum .. (zoneName and " (" .. zoneName .. ")" or "")) or ""
-        local areaText = areaNum and (areaNum .. (areaName and " (" .. areaName .. ")" or "")) or ""
-        
-        editMap:SetText(mapText)
-        editZone:SetText(zoneText)
-        editArea:SetText(areaText)
-        editX:SetText(x or "")
-        editY:SetText(y or "")
-        editZ:SetText(z or "")
-        editO:SetText(o or "")
-        editGrid:SetText(grid or "")
-        editCell:SetText(cell or "")
-        editInstanceID:SetText(instanceid or "")
-        
-        GPSInfoPopup:Show()
-    else
-        print("Aucune information GPS capturée.")
-    end
-end
 ------------------------------------------------------------------
 -- Table listant tous les boutons (sans le bouton Appear).
 ------------------------------------------------------------------
@@ -488,7 +476,7 @@ local buttonDefs = {
 	{
 		name = "btnGPS",
 		text = "GPS",
-		tooltip = "Capture GPS info from chat and display it",
+		tooltip = "Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id",
 		isToggle = false,
 		anchorTo = "LEFT",
 		anchorOffsetX = 10,
@@ -677,19 +665,17 @@ function module:CreateGMFunctionsPanel()
             CreateGMButton(page, def, self, buttonRefs)
         end
 
-        -- Personnalisation du bouton "GPS"
-        if buttonRefs["btnGPS"] then
-            buttonRefs["btnGPS"]:SetScript("OnClick", function()
-                capturingGPSInfo = true
-                gpsInfoCollected = {}
-                if gpsInfoTimer then
-                    gpsInfoTimer:Cancel()
-                    gpsInfoTimer = nil
-                end
-                SendChatMessage(".gps", "SAY")
-            end)
+if buttonRefs["btnGPS"] then
+    buttonRefs["btnGPS"]:SetScript("OnClick", function()
+        capturingGPSInfo = true
+        gpsInfoCollected = {}
+        if gpsInfoTimer then
+            gpsInfoTimer:Cancel()
+            gpsInfoTimer = nil
         end
-
+        SendChatMessage(".gps", "SAY")
+    end)
+end
         -- Ajout du comportement personnalisé pour le bouton "btnguid"
 		if buttonRefs["btnguid"] then
 			buttonRefs["btnguid"]:SetScript("OnClick", function()
@@ -800,111 +786,6 @@ function module:CreateGMFunctionsPanel()
         end
 
         ------------------------------------------------------------------
-        -- CREATION DU CHAMP "Custom Mute" et son bouton Go
-        ------------------------------------------------------------------
-    --     local anchorMute = buttonRefs["btnMailbox"]
-    --     if anchorMute then
-    --         local muteLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    --         muteLabel:SetPoint("TOPLEFT", anchorMute, "BOTTOMLEFT", 0, -80)
-    --         muteLabel:SetText("Mute Function")
-	-- 
-    --         local muteDropdown = CreateFrame("Frame", "TrinityAdminMuteDropdown", page, "UIDropDownMenuTemplate")
-    --         muteDropdown:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -5)
-    --         UIDropDownMenu_SetWidth(muteDropdown, 110)
-    --         UIDropDownMenu_SetButtonWidth(muteDropdown, 240)
-    --         local muteOptions = {
-    --             { text = "mute", command = ".mute", tooltip = "Syntax : PlayerName TimeInMinutes Reason" },
-    --             { text = "unmute", command = ".unmute", tooltip = "" },
-    --             { text = "mutehistory", command = ".mutehistory", tooltip = "" },
-    --         }
-    --         if not muteDropdown.selectedID then 
-    --             muteDropdown.selectedID = 1 
-    --         end
-	-- 
-    --         UIDropDownMenu_Initialize(muteDropdown, function(dropdownFrame, level, menuList)
-    --             local info = UIDropDownMenu_CreateInfo()
-    --             for i, option in ipairs(muteOptions) do
-    --                 info.text = option.text
-    --                 info.value = option.command
-    --                 info.checked = (i == muteDropdown.selectedID)
-    --                 info.func = function(buttonFrame)
-    --                     muteDropdown.selectedID = i
-    --                     UIDropDownMenu_SetSelectedID(muteDropdown, i)
-    --                     UIDropDownMenu_SetText(muteDropdown, option.text)
-    --                     muteDropdown.selectedOption = option
-    --                 end
-    --                 UIDropDownMenu_AddButton(info, level)
-    --             end
-    --         end)
-	-- 
-    --         UIDropDownMenu_SetSelectedID(muteDropdown, muteDropdown.selectedID)
-    --         UIDropDownMenu_SetText(muteDropdown, muteOptions[muteDropdown.selectedID].text)
-    --         muteDropdown.selectedOption = muteOptions[muteDropdown.selectedID]
-	-- 
-    --         local muteEdit = CreateFrame("EditBox", "TrinityAdminMuteEditBox", page, "InputBoxTemplate")
-    --         muteEdit:SetAutoFocus(false)
-    --         muteEdit:SetSize(180, 22)
-    --         muteEdit:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -35)
-    --         muteEdit:SetScript("OnEnter", function(self)
-    --             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    --             if muteDropdown.selectedOption.text == "mute" then
-    --                 GameTooltip:SetText("Syntax : PlayerName TimeInMinutes Reason", 1, 1, 1, 1, true)
-    --             else
-    --                 GameTooltip:SetText("", 1, 1, 1, 1, true)
-    --             end
-    --             GameTooltip:Show()
-    --         end)
-    --         muteEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
-    --         muteEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
-	-- 
-    --         local btnMuteGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-    --         btnMuteGo:SetSize(40, 22)
-    --         btnMuteGo:SetText("Go")
-    --         btnMuteGo:SetPoint("LEFT", muteEdit, "RIGHT", 10, 0)
-    --         btnMuteGo:SetScript("OnClick", function()
-    --             local inputText = muteEdit:GetText()
-    --             local option = muteDropdown.selectedOption
-    --             local cmd = option.command
-    --             local finalCommand = ""
-    --             if option.text == "mute" then
-    --                 local targetName = UnitName("target")
-    --                 if targetName then
-    --                     local time, reason = string.match(inputText, "^(%S+)%s+(.+)$")
-    --                     if not time or not reason then
-    --                         print("Veuillez saisir le temps (minutes) et la raison, séparés par un espace.")
-    --                         return
-    --                     else
-    --                         finalCommand = cmd .. " " .. targetName .. " " .. time .. " " .. reason
-    --                     end
-    --                 else
-    --                     if not inputText or inputText == "" then
-    --                         print("Veuillez saisir le nom du joueur, le temps et la raison pour .mute.")
-    --                         return
-    --                     else
-    --                         finalCommand = cmd .. " " .. inputText
-    --                     end
-    --                 end
-    --             else
-    --                 if not inputText or inputText == "" then
-    --                     local targetName = UnitName("target")
-    --                     if targetName then
-    --                         finalCommand = cmd .. " " .. targetName
-    --                     else
-    --                         print("Veuillez saisir un nom ou cibler un joueur.")
-    --                         return
-    --                     end
-    --                 else
-    --                     finalCommand = cmd .. " " .. inputText
-    --                 end
-    --             end
-    --             SendChatMessage(finalCommand, "SAY")
-    --         end)
-    --     else
-    --         print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le bloc Mute.")
-    --     end
-    -- end
-		
-		------------------------------------------------------------------
         -- CREATION DU CHAMP "Custom Mute" et son bouton Go
         ------------------------------------------------------------------
         local anchorMute = buttonRefs["btnMailbox"]
@@ -1089,26 +970,29 @@ function module:CreateGMFunctionsPanel()
             devStatusLabel:SetPoint("LEFT", row, "LEFT", 0, -40)
             devStatusLabel:SetText("Dev Status")
 
-            -- Valeur par défaut
             local devStatusValue = "on"
-
-            local radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
-            radioOn:SetPoint("LEFT", devStatusLabel, "RIGHT", 10, 0)
-            radioOn.text:SetText("ON")
-            radioOn:SetChecked(true)
-            radioOn:SetScript("OnClick", function(self)
-                radioOff:SetChecked(false)
-                devStatusValue = "on"
-            end)
-
-            local radioOff = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
-            radioOff:SetPoint("LEFT", radioOn, "RIGHT", 20, 0)
-            radioOff.text:SetText("OFF")
-            radioOff:SetChecked(false)
-            radioOff:SetScript("OnClick", function(self)
-                radioOn:SetChecked(false)
-                devStatusValue = "off"
-            end)
+			local radioOn, radioOff
+			
+			-- Puis on crée radioOn
+			radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+			radioOn:SetPoint("LEFT", devStatusLabel, "RIGHT", 10, 0)
+			radioOn.text:SetText("ON")
+			radioOn:SetChecked(true)
+			radioOn:SetScript("OnClick", function(self)
+				-- Ici, radioOff existe déjà, même si on va la définir juste après
+				radioOff:SetChecked(false)
+				devStatusValue = "on"
+			end)
+			
+			-- Enfin, on crée radioOff
+			radioOff = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+			radioOff:SetPoint("LEFT", radioOn, "RIGHT", 20, 0)
+			radioOff.text:SetText("OFF")
+			radioOff:SetChecked(false)
+			radioOff:SetScript("OnClick", function(self)
+				radioOn:SetChecked(false)
+				devStatusValue = "off"
+			end)
 
             local btnDevSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnDevSet:SetSize(40, 22)
@@ -1138,7 +1022,7 @@ function module:CreateGMFunctionsPanel()
             btnAnnounce:SetScript("OnClick", function()
                 local text = announceEdit:GetText()
                 if not text or text == "" or text == "Message" then
-                    print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .announce.")
+                    print(TrinityAdmin_Translations["Error : Please enter a message."])
                 else
                     SendChatMessage('.announce "' .. text .. '"', "SAY")
                 end
@@ -1164,7 +1048,7 @@ function module:CreateGMFunctionsPanel()
             btnGmMessage:SetScript("OnClick", function()
                 local text = gmMessageEdit:GetText()
                 if not text or text == "" or text == "GM Message" then
-                    print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .gmannounce.")
+                    print(TrinityAdmin_Translations["Error : Please enter a message."])
                 else
                     SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
                 end
@@ -1190,14 +1074,14 @@ function module:CreateGMFunctionsPanel()
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
                 if not text or text == "" or text == "GM Notification" then
-                    print("Erreur : Veuillez saisir une notification différente de la valeur par défaut pour .gmnotify.")
+                    print(TrinityAdmin_Translations["Error : Please enter a message."])
                 else
                     SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
                 end
             end)
             btnGmNotify:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's.", 1, 1, 1, 1, true)
+                GameTooltip:SetText(TrinityAdmin_Translations["Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1216,14 +1100,14 @@ function module:CreateGMFunctionsPanel()
             btnGmAnnounce:SetScript("OnClick", function()
                 local text = gmAnnounceEdit:GetText()
                 if not text or text == "" or text == "GM Announcement" then
-                    print("Erreur : Veuillez saisir un message différent de la valeur par défaut pour .nameannounce.")
+                    print(TrinityAdmin_Translations["Error : Please enter a message for nameannounce."])
                 else
                     SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
                 end
             end)
             btnGmAnnounce:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender.", 1, 1, 1, 1, true)
+                GameTooltip:SetText(TrinityAdmin_Translations["Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnGmAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1335,12 +1219,12 @@ function module:CreateGMFunctionsPanel()
 		btnSetSkill:SetScript("OnClick", function()
 			local selectedSkill = displayButton.selectedSkill
 			if not selectedSkill then
-				print("Erreur : Veuillez sélectionner une compétence.")
+				print(TrinityAdmin_Translations["Error : Please select a skill."])
 				return
 			end
 			local level = levelEdit:GetText()
 			if not level or level == "" or level == "Level" then
-				print("Erreur : Veuillez saisir une valeur pour Level.")
+				print(TrinityAdmin_Translations["Error : Please enter a value for Level."])
 				return
 			end
 			local command = ".setskill " .. selectedSkill.entry .. " " .. level
@@ -1352,7 +1236,7 @@ function module:CreateGMFunctionsPanel()
 		end)
 		btnSetSkill:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-			GameTooltip:SetText("Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill.", 1, 1, 1, 1, true)
+			GameTooltip:SetText(TrinityAdmin_Translations["Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."], 1, 1, 1, 1, true)
 			GameTooltip:Show()
 		end)
 		btnSetSkill:SetScript("OnLeave", function() GameTooltip:Hide() end)

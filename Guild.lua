@@ -1,110 +1,184 @@
-----------------------------------------------
--- TrinityAdmin Guild Module (Guild.lua)
-----------------------------------------------
+--------------------------------------------------------------
+-- TrinityAdmin Guild Module (Guild.lua) - version ACEGUI
+--------------------------------------------------------------
 
 local Guild = TrinityAdmin:GetModule("Guild")
 
 -------------------------------------------------------------
--- Variables et fonctions pour la capture du .guild info
+-- 1) Variables pour la capture du .guild info
 -------------------------------------------------------------
 local capturingGuildInfo = false
 local guildInfoCollected = {}
 local guildInfoTimer = nil
 
--- Fonction appelée quand on arrête la capture
+-------------------------------------------------------------
+-- 2) ParseGuildInfo : extrait les infos clés depuis le texte
+-------------------------------------------------------------
+local function ParseGuildInfo(fullText)
+    -- On va découper en lignes
+    local lines = {}
+    for line in fullText:gmatch("[^\r\n]+") do
+        table.insert(lines, line)
+    end
+
+    -- Table de paires (label, value) à retourner
+    local infoTable = {}
+
+    -- Variables qu'on veut extraire
+    local guildName, guildID = "", ""
+    local guildMaster = ""
+    local creationDate = ""
+    local members = ""
+    local bank = ""
+    local level = ""
+    local motd = ""
+    local guildInfo = ""
+
+    -- On parcourt chaque ligne et on fait des match
+    for _, line in ipairs(lines) do
+        line = line:match("^%s*(.-)%s*$")  -- trim
+
+        -- Ex : "Displaying Guild Details for Banana Split (Id: 6)"
+        local name, id = line:match("Displaying Guild Details for (.+) %(Id:%s*(%d+)%)")
+        if name and id then
+            guildName = name
+            guildID = id
+        end
+
+        -- Ex : "Guild Master: Banana (Player-1-00000004)"
+        local gm = line:match("Guild Master:%s*(.+)")
+        if gm then
+            guildMaster = gm
+        end
+
+        -- Ex : "Guild Creation Date: 2025-03-23 15:57:04"
+        local cdate = line:match("Guild Creation Date:%s*(.+)")
+        if cdate then
+            creationDate = cdate
+        end
+
+        -- Ex : "Guild Members: 1"
+        local mem = line:match("Guild Members:%s*(%d+)")
+        if mem then
+            members = mem
+        end
+
+        -- Ex : "Guild Bank: 0 gold"
+        local bk = line:match("Guild Bank:%s*(.+)")
+        if bk then
+            bank = bk
+        end
+
+        -- Ex : "Guild Level: 25"
+        local lvl = line:match("Guild Level:%s*(%d+)")
+        if lvl then
+            level = lvl
+        end
+
+        -- Ex : "Guild MOTD: No message set."
+        local m = line:match("Guild MOTD:%s*(.*)")
+        if m then
+            motd = m
+        end
+
+        -- Ex : "Guild Information:" => les lignes suivantes ?
+        -- Souvent c'est vide ou multi-lignes, ici on suppose c'est la même ligne
+        local gi = line:match("Guild Information:%s*(.*)")
+        if gi then
+            guildInfo = gi
+        end
+    end
+
+    -- Remplir infoTable
+    table.insert(infoTable, { label="Guild Name",       value=guildName })
+    table.insert(infoTable, { label="Guild ID",         value=guildID })
+    table.insert(infoTable, { label="Guild Master",     value=guildMaster })
+    table.insert(infoTable, { label="Creation Date",    value=creationDate })
+    table.insert(infoTable, { label="Members",          value=members })
+    table.insert(infoTable, { label="Bank",             value=bank })
+    table.insert(infoTable, { label="Level",            value=level })
+    table.insert(infoTable, { label="MOTD",             value=motd })
+    table.insert(infoTable, { label="Guild Info",       value=guildInfo })
+
+    return infoTable
+end
+
+-------------------------------------------------------------
+-- 3) Fonction ShowGuildInfoAceGUI : crée la fenêtre AceGUI
+--    et y place des EditBox pour chaque info
+-------------------------------------------------------------
+local AceGUI = LibStub("AceGUI-3.0")
+
+local function ShowGuildInfoAceGUI(fullText)
+    -- Parse
+    local infoTable = ParseGuildInfo(fullText)
+
+    -- Crée la fenêtre
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("Guild Info")
+    frame:SetStatusText("Information about the guild")
+    frame:SetLayout("Flow")
+    frame:SetWidth(500)
+    frame:SetHeight(400)
+
+    -- (Optionnel) Rendez la fenêtre redimensionnable
+    --[[
+    local f = frame.frame
+    f:SetResizable(true)
+    f:SetMinResize(400, 300)
+    f:SetScript("OnSizeChanged", function(self, w, h)
+        frame:SetWidth(w)
+        frame:SetHeight(h)
+    end)
+    ]]
+
+    -- On peut mettre un ScrollFrame si on veut scroller verticalement
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    frame:AddChild(scroll)
+
+    -- Petite fonction utilitaire pour ajouter un EditBox
+    local function AddEditBox(lbl, val)
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("|cffffff00"..lbl.."|r")
+        edit:SetText(val or "")
+        edit:SetFullWidth(true)  -- prend toute la largeur
+        scroll:AddChild(edit)
+    end
+
+    -- Parcourt infoTable et crée un EditBox par champ
+    for _, row in ipairs(infoTable) do
+        AddEditBox(row.label, row.value)
+    end
+
+    -- Bouton Fermer (optionnel, la croix existe déjà)
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Close")
+    btnClose:SetWidth(80)
+    btnClose:SetCallback("OnClick", function()
+        frame:Hide()
+    end)
+    frame:AddChild(btnClose)
+end
+
+-------------------------------------------------------------
+-- 4) FinishGuildInfoCapture : quand la capture se termine,
+--    on ouvre la fenêtre AceGUI
+-------------------------------------------------------------
 local function FinishGuildInfoCapture()
     capturingGuildInfo = false
     if #guildInfoCollected > 0 then
-        -- Concatène toutes les lignes
         local fullText = table.concat(guildInfoCollected, "\n")
-        
-        -- Affiche dans la popup
-        GuildInfoPopup_SetText(fullText)
-        GuildInfoPopup:Show()
+        ShowGuildInfoAceGUI(fullText)
     else
-        -- Aucun message capturé
         TrinityAdmin:Print("No guild info was captured.")
     end
 end
 
 -------------------------------------------------------------
--- Fenêtre popup GuildInfoPopup pour afficher le .guild info
--------------------------------------------------------------
-local GuildInfoPopup = CreateFrame("Frame", "GuildInfoPopup", UIParent, "BackdropTemplate")
-GuildInfoPopup:SetSize(400, 300)
--- GuildInfoPopup:SetPoint("CENTER")
-GuildInfoPopup:ClearAllPoints()
-GuildInfoPopup:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 100, -100)
-
--- GuildInfoPopup:SetBackdrop({
---     bgFile = "Interface/DialogFrame/UI-DialogBox-Background",
---     edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
---     tile = true, tileSize = 32, edgeSize = 32,
---     insets = { left=8, right=8, top=8, bottom=8 }
--- })
-GuildInfoPopup:SetBackdrop({
-    bgFile = "Interface\\FrameGeneral\\UI-Background-Marble",
-    edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-    tile = false, tileSize = 0, edgeSize = 16,
-    insets = { left = 4, right = 4, top = 4, bottom = 4 }
-})
--- Personalisé:
---GuildInfoPopup:SetBackdrop({
---    bgFile = "Interface\\AddOns\\MonAddon\\Textures\\FondPerso",
---    edgeFile = "Interface\\AddOns\\MonAddon\\Textures\\BordurePerso",
---    tile = false, tileSize = 0, edgeSize = 16,
---    insets = { left=5, right=5, top=5, bottom=5 }
---})
-
-GuildInfoPopup:Hide()  -- Caché par défaut
-
--- Rendre la fenêtre déplaçable
-GuildInfoPopup:EnableMouse(true)
-GuildInfoPopup:SetMovable(true)
-GuildInfoPopup:RegisterForDrag("LeftButton")
-GuildInfoPopup:SetScript("OnDragStart", function(self)
-    self:StartMoving()
-end)
-GuildInfoPopup:SetScript("OnDragStop", function(self)
-    self:StopMovingOrSizing()
-end)
-
--- Titre de la fenêtre
-local title = GuildInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-title:SetPoint("TOP", 0, -15)
-title:SetText("Guild Info")
-
--- Bouton Close
-local closeButton = CreateFrame("Button", nil, GuildInfoPopup, "UIPanelCloseButton")
-closeButton:SetPoint("TOPRIGHT", GuildInfoPopup, "TOPRIGHT")
-
--- ScrollFrame
-local scrollFrame = CreateFrame("ScrollFrame", "GuildInfoScrollFrame", GuildInfoPopup, "UIPanelScrollFrameTemplate")
-scrollFrame:SetPoint("TOPLEFT", 15, -50)
-scrollFrame:SetSize(370, 230)
-
--- Conteneur du texte
-local content = CreateFrame("Frame", nil, scrollFrame)
-content:SetSize(370, 230)
-scrollFrame:SetScrollChild(content)
-
--- FontString pour le texte
-local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-infoText:SetPoint("TOPLEFT")
-infoText:SetWidth(350)          -- un peu moins que 370 pour la marge
-infoText:SetJustifyH("LEFT")
-infoText:SetJustifyV("TOP")
-
--- Fonction pour régler le texte et ajuster la taille
-function GuildInfoPopup_SetText(text)
-    infoText:SetText(text or "")
-    local textHeight = infoText:GetStringHeight()
-    content:SetHeight(textHeight + 5)
-    scrollFrame:SetVerticalScroll(0) -- revient en haut
-end
-
--------------------------------------------------------------
--- CaptureFrame pour écouter CHAT_MSG_SYSTEM
+-- 5) Frame caché pour écouter CHAT_MSG_SYSTEM
 -------------------------------------------------------------
 local guildCaptureFrame = CreateFrame("Frame")
 guildCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
@@ -113,19 +187,15 @@ guildCaptureFrame:SetScript("OnEvent", function(self, event, msg)
         return
     end
     
-    -- Nettoyage éventuel des codes couleur, etc.
     local cleanMsg = msg
-    cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "") -- Retire codes couleurs
+    cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "")
     cleanMsg = cleanMsg:gsub("|r", "")
-    cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")     -- Retire liens
-    cleanMsg = cleanMsg:gsub("|T.-|t", "")             -- Retire textures
-    -- Retire quelques caractères "box drawing"
+    cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
+    cleanMsg = cleanMsg:gsub("|T.-|t", "")
     cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
 
-    -- Ajoute la ligne au tableau
     table.insert(guildInfoCollected, cleanMsg)
 
-    -- On redémarre le timer (1 seconde sans nouveau message => fin capture)
     if guildInfoTimer then guildInfoTimer:Cancel() end
     guildInfoTimer = C_Timer.NewTimer(1, FinishGuildInfoCapture)
 end)
@@ -300,48 +370,33 @@ function Guild:CreateGuildPanel()
     infoButton:SetText("Info")
     infoButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild info \"Guild ID\"\r\n\r\nShows information about the guild \"Guild ID\".")
+        GameTooltip:SetText("Syntax: .guild info \"Guild ID\"")
     end)
     infoButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
-    -- infoButton:SetScript("OnClick", function()
-    --     local gName = guildInfoNameEB:GetText()
-	-- 
-    --     if (not gName or gName == "" or gName == "Guild ID") then
-    --         TrinityAdmin:Print("Please specify a valid Guild ID for info!")
-    --         return
-    --     end
-	-- 
-    --     TrinityAdmin:SendCommand('.guild info ' .. gName)
-    -- end)
-	infoButton:SetScript("OnClick", function()
-		local gName = guildInfoNameEB:GetText()
-	
-		if (not gName or gName == "" or gName == "Guild ID") then
-			TrinityAdmin:Print("Please specify a valid Guild ID for info!")
-			return
-		end
-	
-		-- 1) On efface l'ancien texte et vide la table
-		GuildInfoPopup_SetText("")
-		guildInfoCollected = {}
-	
-		-- 2) Active le mode capture
-		capturingGuildInfo = true
-	
-		-- 3) Envoie la commande
-		TrinityAdmin:SendCommand('.guild info ' .. gName)
-	
-		-- 4) Lance un timer pour clôturer la capture s'il n'y a plus de message
-		if guildInfoTimer then
-			guildInfoTimer:Cancel()
-		end
-		guildInfoTimer = C_Timer.NewTimer(1, FinishGuildInfoCapture)
-	
-		-- Facultatif : on peut afficher immédiatement la popup vide.
-		-- GuildInfoPopup:Show()
-	end)
+    infoButton:SetScript("OnClick", function()
+        local gName = guildInfoNameEB:GetText()
+        if (not gName or gName == "" or gName == "Guild ID") then
+            TrinityAdmin:Print("Please specify a valid Guild ID for info!")
+            return
+        end
+
+        -- 1) On efface l'ancien texte et vide la table
+        guildInfoCollected = {}
+
+        -- 2) Active le mode capture
+        capturingGuildInfo = true
+
+        -- 3) Envoie la commande
+        TrinityAdmin:SendCommand('.guild info ' .. gName)
+
+        -- 4) Lance un timer pour clôturer la capture s'il n'y a plus de message
+        if guildInfoTimer then
+            guildInfoTimer:Cancel()
+        end
+        guildInfoTimer = C_Timer.NewTimer(1, FinishGuildInfoCapture)
+    end)
 
     offsetY = offsetY - 40
 
