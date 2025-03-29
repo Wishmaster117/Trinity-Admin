@@ -25,15 +25,15 @@ function AhBot:CreateAhBotPanel()
     panel.title:SetText("AH Bot Control Panel")
 
     -- Bouton Retour commun
-    local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
-    btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
-    btnBack:SetScript("OnClick", function()
-        panel:Hide()
-        TrinityAdmin:ShowMainMenu()
-    end)
-
+    -- local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    -- btnBack:SetPoint("BOTTOM", navPageLabel, "BOTTOM", 0, 30)
+    -- btnBack:SetText(TrinityAdmin_Translations["Back"])
+    -- btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
+    -- btnBack:SetScript("OnClick", function()
+    --     panel:Hide()
+    --     TrinityAdmin:ShowMainMenu()
+    -- end)
+	
     ----------------------------------------------------------------------------
     -- Conteneur principal pour les pages
     ----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ function AhBot:CreateAhBotPanel()
     ----------------------------------------------------------------------------
     local currentPage = 1
     local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 35)
+    navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
     navPageLabel:SetText("Page 1 / " .. totalPages)
 
     local function ShowPage(pageIndex)
@@ -113,18 +113,18 @@ function AhBot:CreateAhBotPanel()
             local row = CreateRow(page, 40)
             local label = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             label:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
-            label:SetText("ahbot items (Set 7 colors)")
+            label:SetText("ahbot items Ammont")
             local defaults = {"GrayItems", "WhiteItems", "GreenItems", "BlueItems", "PurpleItems", "OrangeItems", "YellowItems"}
             local edits = {}
             local fieldX = 0
             for i = 1, 7 do
                 local editBox = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-                editBox:SetSize(80, 22)
+                editBox:SetSize(70, 22)
                 editBox:SetPoint("TOPLEFT", row, "TOPLEFT", fieldX, -20)
                 editBox:SetAutoFocus(false)
                 editBox:SetText(defaults[i])
                 edits[i] = editBox
-                fieldX = fieldX + 85
+                fieldX = fieldX + 77
             end
 
             local btnSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
@@ -389,5 +389,23 @@ function AhBot:CreateAhBotPanel()
     end
 
     ShowPage(1)
+	
+	------------------------------------------------------------------------------
+    -- Bouton Back final (commun aux pages)
+    ------------------------------------------------------------------------------
+    local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnBack:SetPoint("BOTTOM", navPageLabel, "CENTER", 0, 15)
+    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetHeight(22)
+    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+    -- On augmente le niveau pour qu'il apparaisse au-dessus des pages
+    btnBack:SetFrameLevel(panel:GetFrameLevel() + 10)
+    -- ou alternativement : btnBack:SetFrameStrata("HIGH")
+    
+    btnBack:SetScript("OnClick", function()
+        panel:Hide()
+        TrinityAdmin:ShowMainMenu()
+    end)
+	
     self.panel = panel
 end

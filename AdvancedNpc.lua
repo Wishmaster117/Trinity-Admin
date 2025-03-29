@@ -1,6 +1,6 @@
 local AdvancedNpc = TrinityAdmin:GetModule("AdvancedNpc")
 
-ItemsData = {} -- Table globale qui contiendra toutes les entrées
+NPCData = {} -- Table globale qui contiendra toutes les entrées
 
 -- Fonction pour enlever les accents d'une chaîne
 local function removeAccents(str)
@@ -18,12 +18,12 @@ local function removeAccents(str)
 end
 
 -- Initialisation de NpcData en chargeant les 3 fichiers de données
-local function InitializeItemsData()
+local function InitializeNPCData()
     local function loadDataFromPart(dataPart)
         for _, entry in ipairs(dataPart) do
             if entry and entry.name then
                 entry.normalizedName = removeAccents(entry.name:lower())
-                table.insert(ItemsData, entry)
+                table.insert(NPCData, entry)
             end
         end
     end
@@ -35,11 +35,11 @@ local function InitializeItemsData()
 	loadDataFromPart(NpcDataPart5)
 	loadDataFromPart(NpcDataPart6)
 	loadDataFromPart(NpcDataPart7)
-    print("Fin du chargement NpcData. Nombre total chargé :", #ItemsData)
+    print("Fin du chargement NpcData. Nombre total chargé :", #NPCData)
 end
 
 -- Appel unique au démarrage :
-InitializeItemsData()
+InitializeNPCData()
 
 local currentResults = nil  -- variable globale pour stocker les résultats filtrés
 local isFiltered = false
@@ -60,8 +60,8 @@ end
 -- Nouvelle fonction de chargement d'un "chunk" à partir de NpcData
 local function LoadItemsChunk(startIndex, numLines)
     local chunk = {}
-    for i = startIndex, math.min(startIndex + numLines - 1, #ItemsData) do
-        table.insert(chunk, ItemsData[i])
+    for i = startIndex, math.min(startIndex + numLines - 1, #NPCData) do
+        table.insert(chunk, NPCData[i])
     end
     return chunk
 end
@@ -88,7 +88,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     ------------------------------------------------------------
     local entriesPerPage = 100
     local currentPage = 1
-    local totalEntries = #ItemsData  -- Utilisation du nombre d'entrées chargées
+    local totalEntries = #NPCData  -- Utilisation du nombre d'entrées chargées
     local currentOptions = {}    -- Liste courante (lazy loaded ou filtrée)
     
     ------------------------------------------------------------
@@ -148,9 +148,9 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
 	creaturePreviewFrame:Hide()
 	
 	-- Ajout d'un fond semi-transparent (facultatif)
-	local bg = creaturePreviewFrame:CreateTexture(nil, "BACKGROUND")
-	bg:SetAllPoints()
-	bg:SetColorTexture(0, 0, 0, 0.5)
+	-- local bg = creaturePreviewFrame:CreateTexture(nil, "BACKGROUND")
+	-- bg:SetAllPoints()
+	-- bg:SetColorTexture(0, 0, 0, 0.5)
 	
 	-- Création du modèle de la créature dans la frame de prévisualisation
 	local creatureModel = CreateFrame("PlayerModel", "CreaturePreviewModel", creaturePreviewFrame)
@@ -337,11 +337,11 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     currentPage = 1
     PopulateGOScroll()
 
-    local function SearchItems(search)
+    local function SearchNpc(search)
         local results = {}
         local normalizedSearch = removeAccents(search:lower())
 
-        for _, entry in ipairs(ItemsData) do
+        for _, entry in ipairs(NPCData) do
             if entry.normalizedName:find(normalizedSearch, 1, true) or tostring(entry.entry) == search then
                 table.insert(results, entry)
             end
@@ -360,7 +360,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
         end
 
         currentPage = 1
-        currentResults = SearchItems(searchText) or {} -- Assure une table vide, jamais nil
+        currentResults = SearchNpc(searchText) or {} -- Assure une table vide, jamais nil
         PopulateGOScroll(currentResults)
     end)
 

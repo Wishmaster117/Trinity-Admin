@@ -441,7 +441,7 @@ function AddItem:CreateAddItemPanel()
     for i = 1, #ItemSetData do
         table.insert(defaultOptions, ItemSetData[i])
     end
-
+    print("[DEBUG]Nombre d'items dans ItemSetData: " .. #ItemSetData)
     currentPage = 1
     PopulateGOScroll(defaultOptions)
 	

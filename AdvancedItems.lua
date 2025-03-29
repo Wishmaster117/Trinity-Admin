@@ -31,7 +31,7 @@ local function InitializeItemsData()
     loadDataFromPart(ItemsDataPart1)
     loadDataFromPart(ItemsDataPart2)
     loadDataFromPart(ItemsDataPart3)
-    print("Fin du chargement ItemsData. Nombre total chargé :", #ItemsData)
+    print("Fin du chargement ItemsData. Nombre total d'items chargé :", #ItemsData)
 end
 
 -- Appel unique au démarrage :

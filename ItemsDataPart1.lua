@@ -127,7 +127,6 @@ ItemsDataPart1 = {
 { entry = 813,  name = "Broken Cog" },
 { entry = 814,  name = "Flask of Oil" },
 { entry = 816,  name = "Small Hand Blade" },
-
 { entry = 820,  name = "Slicer Blade" },
 { entry = 821,  name = "Riverpaw Leather Vest" },
 { entry = 826,  name = "Brutish Riverpaw Axe" },
@@ -460,7 +459,6 @@ ItemsDataPart1 = {
 { entry = 1523,  name = "Huge Stone Club" },
 { entry = 1524,  name = "Skullsplitter Tusk" },
 { entry = 1528,  name = "Handful of Oats" },
-
 { entry = 1532,  name = "Shrunken Head" },
 { entry = 1537,  name = "Old Blanchy's Feed Pouch" },
 { entry = 1539,  name = "Gnarled Hermit's Staff" },
@@ -473,7 +471,6 @@ ItemsDataPart1 = {
 { entry = 1598,  name = "Rot Blossom" },
 { entry = 1602,  name = "Sickle Axe" },
 { entry = 1604,  name = "Chromatic Sword" },
-
 { entry = 1608,  name = "Skullcrusher Mace" },
 { entry = 1613,  name = "Spiritchaser Staff" },
 { entry = 1624,  name = "Skullsplitter Helm" },
@@ -490,7 +487,6 @@ ItemsDataPart1 = {
 { entry = 1677,  name = "Drake-Scale Vest" },
 { entry = 1678,  name = "Black Ogre Kickers" },
 { entry = 1679,  name = "Korg Bat" },
-
 { entry = 1685,  name = "Troll-Hide Bag" },
 { entry = 1686,  name = "Bristly Whisker" },
 { entry = 1687,  name = "Retractable Claw" },

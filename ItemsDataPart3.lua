@@ -26774,7 +26774,6 @@ ItemsDataPart3 = {
 { entry = 187124,  name = "Bestowed upon Venthyr by The Sire himself. Allows the wearer to exert partial dominion over Revendreth." },
 { entry = 187126,  name = "Penned by the broker Xevveth, this appears to have been misplaced." },
 { entry = 187127,  name = "Memory of Radiant Embers" },
-
 { entry = 187131,  name = "... goopy?" },
 { entry = 187132,  name = "Memory of the Seasons of Plenty" },
 { entry = 187133,  name = "Gift to your Dredger Butler to give him the option of wearing a witch's hat." },
