@@ -53,6 +53,7 @@ NpcDataPart7.lua
 # TeleportData
 TeleportTable.lua
 SkillsData.lua
+TitlesData.lua
 # Interface XML
 TrinityAdmin.xml
 # Code principal
@@ -74,3 +75,4 @@ Guild.lua
 LearnDamage.lua
 AdvancedGob.lua
 AdvancedNpc.lua
+Misc.lua

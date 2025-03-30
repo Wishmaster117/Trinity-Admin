@@ -344,7 +344,25 @@
 				TrinityAdmin_ShowAdvancedNpcPanel()
 				</OnClick>
 			</Scripts>
-			</Button>										
+			</Button>	
+			<!-- Bouton Module Misc -->
+			<Button name="$parentMiscButton" inherits="UIPanelButtonTemplate" text="Misc">
+			<Size>
+				<AbsDimension x="100" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentAdvancedNpcButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowMiscPanel()
+				</OnClick>
+			</Scripts>
+			</Button>									
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

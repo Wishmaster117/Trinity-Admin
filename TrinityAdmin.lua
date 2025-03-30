@@ -43,6 +43,7 @@ local GuildModule = TrinityAdmin:NewModule("Guild")
 local LearnDamageModule = TrinityAdmin:NewModule("LearnDamage")
 local AdvancedGobModule = TrinityAdmin:NewModule("AdvancedGob")
 local AdvancedNpcModule = TrinityAdmin:NewModule("AdvancedNpc")
+local MiscModule = TrinityAdmin:NewModule("Misc")
 
 
 
@@ -118,6 +119,10 @@ end
 
 function TrinityAdmin_ShowAdvancedNpcPanel()
     AdvancedNpcModule:ShowAdvancedNpcPanel()
+end
+
+function TrinityAdmin_ShowMiscPanel()
+    MiscModule:ShowMiscPanel()
 end
 
 ------------------------------------------------------------
@@ -199,6 +204,7 @@ function TrinityAdmin:ShowMainMenu()
 	if LearnDamageModule.panel then LearnDamageModule.panel:Hide() end
 	if AdvancedGobModule.panel then AdvancedGobModule.panel:Hide() end
 	if AdvancedNpcModule.panel then AdvancedNpcModule.panel:Hide() end
+	if MiscModule.panel then MiscModule.panel:Hide() end
 	
 	
 
@@ -219,6 +225,7 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameLearnDamageButton:Show()
 	TrinityAdminMainFrameAdvancedGobButton:Show()
 	TrinityAdminMainFrameAdvancedNpcButton:Show()
+	TrinityAdminMainFrameMiscButton:Show()
 	
 
 	TrinityAdminMainFrame:Show()
@@ -245,6 +252,7 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameLearnDamageButton:Hide()
 	TrinityAdminMainFrameAdvancedGobButton:Hide()
 	TrinityAdminMainFrameAdvancedNpcButton:Hide()
+	TrinityAdminMainFrameMiscButton:Hide()
 	
 	
 	
