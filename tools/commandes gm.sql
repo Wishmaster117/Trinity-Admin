@@ -5,6 +5,75 @@
 -- HeidiSQL Version:             12.10.0.7000
 -- --------------------------------------------------------
 
+-- Panneau reset Management
+	('reset', 'Syntax: .reset $subcommand\nType .reset to see the list of possible subcommands or .help reset $subcommand to see info on subcommands'),
+	('reset achievements', 'Syntax: .reset achievements [$playername]\r\n\r\nReset achievements data for selected or named (online or offline) character. Achievements for persistance progress data like completed quests/etc re-filled at reset. Achievements for events like kills/casts/etc will lost.'),
+	('reset all', 'Syntax: .reset all spells\r\n\r\nSyntax: .reset all talents\r\n\r\nRequest reset spells or talents (including talents for all character\'s pets if any) at next login each existed character.'),
+	('reset honor', 'Syntax: .reset honor [Playername]\r\n  Reset all honor data for targeted character.'),
+	('reset level', 'Syntax: .reset level [Playername]\r\n  Reset level to 1 including reset stats and talents.  Equipped items with greater level requirement can be lost.'),
+	('reset spells', 'Syntax: .reset spells [Playername]\r\n  Removes all non-original spells from spellbook.\r\n. Playername can be name of offline character.'),
+	('reset stats', 'Syntax: .reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
+	('reset talents', 'Syntax: .reset talents [Playername]\r\n  Removes all talents of the targeted player or pet or named player. Playername can be name of offline character. With player talents also will be reset talents for all character\'s pets if any.'),
+	
+-- Panneau Arena Management		
+	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
+	('arena captain', 'Syntax: .arena captain #TeamID $name\n\nA command to set new captain to the team $name must be in the team'),
+	('arena create', 'Syntax: .arena create $name "arena name" #type\n\nA command to create a new Arena-team in game. #type  = [2/3/5]'),
+	('arena disband', 'Syntax: .arena disband #TeamID\n\nA command to disband Arena-team in game.'),
+	('arena info', 'Syntax: .arena info #TeamID\n\nA command that show info about arena team'),
+	('arena lookup', 'Syntax: .arena lookup $name\n\nA command that give a list of arenateam with the given $name'),
+	('arena rename', 'Syntax: .arena rename "oldname" "newname"\n\nA command to rename Arena-team name.'),	
+	
+-- Lookup functions	
+	('lookup', 'Syntax: .lookup $subcommand\nType .lookup to see the list of possible subcommands or .help lookup $subcommand to see info on subcommands'),
+	('lookup area', 'Syntax: .lookup area $namepart\r\n\r\nLooks up an area by $namepart, and returns all matches with their area ID\'s.'),
+	('lookup creature', 'Syntax: .lookup creature $namepart\r\n\r\nLooks up a creature by $namepart, and returns all matches with their creature ID\'s.'),
+	('lookup event', 'Syntax: .lookup event $name\r\nAttempts to find the ID of the event with the provided $name.'),
+	('lookup faction', 'Syntax: .lookup faction $name\r\nAttempts to find the ID of the faction with the provided $name.'),
+	('lookup item', 'Syntax: .lookup item $itemname\r\n\r\nLooks up an item by $itemname, and returns all matches with their Item ID\'s.'),
+	('lookup item set', 'Syntax: .lookup itemset $itemname\r\n\r\nLooks up an item set by $itemname, and returns all matches with their Item set ID\'s.'),
+	('lookup map', 'Syntax: .lookup map $namepart\r\n\r\nLooks up a map by $namepart, and returns all matches with their map ID\'s.'),
+	('lookup object', 'Syntax: .lookup object $objname\r\n\r\nLooks up an gameobject by $objname, and returns all matches with their Gameobject ID\'s.'),
+	('lookup player', 'Syntax: '),
+	('lookup player account', 'Syntax: .lookup player account $account ($limit) \r\n\r\n Searchs players, which account username is $account with optional parametr $limit of results.'),
+	('lookup player email', 'Syntax: .lookup player email $email ($limit) \r\n\r\n Searchs players, which account email is $email with optional parametr $limit of results.'),
+	('lookup player ip', 'Syntax: .lookup player ip $ip ($limit) \r\n\r\n Searchs players, which account ast_ip is $ip with optional parametr $limit of results.'),
+	('lookup quest', 'Syntax: .lookup quest $namepart\r\n\r\nLooks up a quest by $namepart, and returns all matches with their quest ID\'s.'),
+	('lookup skill', 'Syntax: .lookup skill $$namepart\r\n\r\nLooks up a skill by $namepart, and returns all matches with their skill ID\'s.'),
+	('lookup spell', 'Syntax: .lookup spell $namepart\r\n\r\nLooks up a spell by $namepart, and returns all matches with their spell ID\'s.'),
+	('lookup spell id', 'Syntax: .lookup spell id #spellid\n\nLooks up a spell by #spellid, and returns the match with its spell name.'),
+	('lookup taxinode', 'Syntax: .lookup taxinode $substring\r\n\r\nSearch and output all taxinodes with provide $substring in name.'),
+	('lookup tele', 'Syntax: .lookup tele $substring\r\n\r\nSearch and output all .tele command locations with provide $substring in name.'),
+	('lookup title', 'Syntax: .lookup title $$namepart\r\n\r\nLooks up a title by $namepart, and returns all matches with their title ID\'s and index\'s.'),	
+
+-- Groups management
+
+	('group', 'Syntax: .group $subcommand\nType .group to see the list of possible subcommands or .help group $subcommand to see info on subcommands'),
+	('group disband', 'Syntax: .group disband [$characterName]\n\nDisbands the given character\'s group.'),
+	('group join', 'Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName] \r\nAdds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).'),
+	('group leader', 'Syntax: .group leader [$characterName]\n\nSets the given character as his group\'s leader.'),
+	('group level', 'Syntax: .group level [$charactername] Set the level of the given character and his group to #numberoflevels (only positive values 1+). Modify only online group characters level but original selected group member can be offline. All stats and dependent values are not recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost. If no character is selected and name not provided, it will modify your level.'),
+	('group list', 'Syntax: .group list [$CharacterName] \r\nLists all the members of the group/party the player is in.'),
+	('group remove', 'Syntax: .group remove [$characterName]\n\nRemoves the given character from his group.'),
+	('group repair', 'Syntax: .group repair [$charactername] Repair the given character and his group. Repair only online group characters but original selected group member can be offline. If no character is selected and name not provided, it will repair yourself.'),
+	('group revive', 'Syntax: .group revive [$charactername] Revive the given character and his group. Revive only online group characters but original selected group member can be offline. If no character is selected and name not provided, it will revive yourself.'),
+	('group set assistant', 'Syntax: .group set assistant [$characterName]\n\nToggles the given character\'s assistant state in his raid group.'),
+	('group set leader', 'Syntax: .group set leader [$characterName]\n\nSets the given character (or selected) as his group\'s leader. Alias for \'.group leader\'.'),
+	('group set mainassist', 'Syntax: .group set mainassist [$characterName]\n\nToggles the given character\'s main assist flag in his raid group.'),
+	('group set maintank', 'Syntax: .group set maintank [$characterName]\n\nToggles the given character\'s main tank flag in his raid group.'),
+	('group summon', 'Syntax: .group summon [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
+	
+-- Quests management
+	('quest', 'Syntax: .quest $subcommand\nType .quest to see the list of possible subcommands or .help quest $subcommand to see info on subcommands'),
+	('quest add', 'Syntax: .quest add #quest_id\r\n\r\nAdd to character quest log quest #quest_id. Quest started from item can\'t be added by this command but correct .additem call provided in command output.'),
+	('quest complete', 'Syntax: .quest complete #questid\r\nMark all quest objectives as completed for target character active quest. After this target character can go and get quest reward.'),
+	('quest objective complete', 'Syntax: .quest objective complete #questObjectiveId\nMark specific quest objective as completed for target character.'),
+	('quest remove', 'Syntax: .quest remove #quest_id\r\n\r\nSet quest #quest_id state to not completed and not active (and remove from active quest list) for selected player.'),
+	('quest reward', 'Syntax: .quest reward #questId\n\nGrants quest reward to selected player and removes quest from his log (quest must be in completed state).'),
+	
+	
+
+	
 idées:
 
 Pour npc show loot, afficher les loots dans une fenetre séparée
@@ -14,7 +83,19 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 
 modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
-	Amettre dans le panneau GM:
+	-- Amettre dans le panneau GM:
+	('notify', 'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
+	('distance', 'Syntax: .distance [link]\r\n\r\nDisplay the distance from your character to the selected unit or given creature, player or gameobject.'),
+	('hidearea', 'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
+	('neargrave', 'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
+	('showarea', 'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
+	('summon', 'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
+	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
+	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
+	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
+
+	
+	
 	
 	.refaire bnetaccountset car il y'a les sous commandes en fait faut le virer de la liste
 	-- voir pour les . learn des proffessions etc...
@@ -30,17 +111,24 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	-- Tester les commandes .learn
     -- essayer de trouver une commande reversse à .possess	
     
+
+
+	('instance unbind', 'Syntax: .instance unbind <mapid|all> [difficulty]\r\n  Clear all/some of player\'s binds'),
+	('instance listbinds', 'Syntax: .instance listbinds\r\n  Lists the binds of the selected player.'),		
+	('combatstop', 'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),		
+	('honor', 'Syntax: .honor $subcommand\nType .honor to see the list of possible subcommands or .help honor $subcommand to see info on subcommands'),
+	('honor add', 'Syntax: .honor add $amount\r\n\r\nAdd a certain amount of honor (gained today) to the selected player.'),
+	('honor add kill', 'Syntax: .honor add kill\r\n\r\nAdd the targeted unit as one of your pvp kills today (you only get honor if it\'s a racial leader or a player)'),	
 	
-		
-	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
-	('arena captain', 'Syntax: .arena captain #TeamID $name\n\nA command to set new captain to the team $name must be in the team'),
-	('arena create', 'Syntax: .arena create $name "arena name" #type\n\nA command to create a new Arena-team in game. #type  = [2/3/5]'),
-	('arena disband', 'Syntax: .arena disband #TeamID\n\nA command to disband Arena-team in game.'),
-	('arena info', 'Syntax: .arena info #TeamID\n\nA command that show info about arena team'),
-	('arena lookup', 'Syntax: .arena lookup $name\n\nA command that give a list of arenateam with the given $name'),
-	('arena rename', 'Syntax: .arena rename "oldname" "newname"\n\nA command to rename Arena-team name.'),
+
 	
-	
+	('deserter', 'Syntax: deserter $subcommand\n Type .deserter to see a list of possible subcommands\n or .help deserter $subcommand to see info on the subcommand.'),
+	('deserter bg', 'Syntax: '),
+	('deserter bg add', 'Syntax: .deserter bg add $time \n\n Adds the bg deserter debuff to your target with $time duration.'),
+	('deserter bg remove', 'Syntax: .deserter bg remove \n\n Removes the bg deserter debuff from your target.'),
+	('deserter instance', 'Syntax: '),
+	('deserter instance add', 'Syntax: .deserter instance add $time \n\n Adds the instance deserter debuff to your target with $time duration.'),
+	('deserter instance remove', 'Syntax: .deserter instance remove \n\n Removes the instance deserter debuff from your target.'),
 	
 
 	
@@ -135,13 +223,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	('debug warden force', 'Syntax: .debug warden force id1 [id2 [id3 [...]]]\n\nQueues the specified Warden checks for your client. They will be sent according to your Warden settings.'),
 	('debug worldstate', 'Syntax: debug worldstate $stateId $value\n\nSends a world state update for the specified state to your client.'),
 	
-	('deserter', 'Syntax: deserter $subcommand\n Type .deserter to see a list of possible subcommands\n or .help deserter $subcommand to see info on the subcommand.'),
-	('deserter bg', 'Syntax: '),
-	('deserter bg add', 'Syntax: .deserter bg add $time \n\n Adds the bg deserter debuff to your target with $time duration.'),
-	('deserter bg remove', 'Syntax: .deserter bg remove \n\n Removes the bg deserter debuff from your target.'),
-	('deserter instance', 'Syntax: '),
-	('deserter instance add', 'Syntax: .deserter instance add $time \n\n Adds the instance deserter debuff to your target with $time duration.'),
-	('deserter instance remove', 'Syntax: .deserter instance remove \n\n Removes the instance deserter debuff from your target.'),
+
 
 	
 	('disable', 'Syntax: disable $subcommand\n Type .disable to see a list of possible subcommands\n or .help disable $subcommand to see info on the subcommand.'),
@@ -165,7 +247,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	('disable remove vmap', 'Syntax: .disable remove vmap $entry'),
 	
 
-	('distance', 'Syntax: .distance [link]\r\n\r\nDisplay the distance from your character to the selected unit or given creature, player or gameobject.'),
+	
 	
 	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
 	('event info', 'Syntax: .event info #event_id\r\nShow details about event with #event_id.'),
@@ -176,25 +258,11 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 	
 	
-	('group', 'Syntax: .group $subcommand\nType .group to see the list of possible subcommands or .help group $subcommand to see info on subcommands'),
-	('group disband', 'Syntax: .group disband [$characterName]\n\nDisbands the given character\'s group.'),
-	('group join', 'Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName] \r\nAdds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).'),
-	('group leader', 'Syntax: .group leader [$characterName]\n\nSets the given character as his group\'s leader.'),
-	('group level', 'Syntax: .group level [$charactername] Set the level of the given character and his group to #numberoflevels (only positive values 1+). Modify only online group characters level but original selected group member can be offline. All stats and dependent values are not recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost. If no character is selected and name not provided, it will modify your level.'),
-	('group list', 'Syntax: .group list [$CharacterName] \r\nLists all the members of the group/party the player is in.'),
-	('group remove', 'Syntax: .group remove [$characterName]\n\nRemoves the given character from his group.'),
-	('group repair', 'Syntax: .group repair [$charactername] Repair the given character and his group. Repair only online group characters but original selected group member can be offline. If no character is selected and name not provided, it will repair yourself.'),
-	('group revive', 'Syntax: .group revive [$charactername] Revive the given character and his group. Revive only online group characters but original selected group member can be offline. If no character is selected and name not provided, it will revive yourself.'),
-	('group set assistant', 'Syntax: .group set assistant [$characterName]\n\nToggles the given character\'s assistant state in his raid group.'),
-	('group set leader', 'Syntax: .group set leader [$characterName]\n\nSets the given character (or selected) as his group\'s leader. Alias for \'.group leader\'.'),
-	('group set mainassist', 'Syntax: .group set mainassist [$characterName]\n\nToggles the given character\'s main assist flag in his raid group.'),
-	('group set maintank', 'Syntax: .group set maintank [$characterName]\n\nToggles the given character\'s main tank flag in his raid group.'),
-	('group summon', 'Syntax: .group summon [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
-	
+
 
 	
 	('help', 'Syntax: .help [$command]\r\n\r\nDisplay usage instructions for the given $command. If no $command provided show list available commands.'),
-	('hidearea', 'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
+	
 	
 
 	
@@ -229,27 +297,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	('list scenes', 'Syntax: .list scenes\nList of all active scenes for targeted character.'),
 	('list spawnpoints', 'Syntax: .list spawnpoints\n\nLists all spawn points (both creatures and GOs) in the current zone.'),
 	
-	
-	('lookup', 'Syntax: .lookup $subcommand\nType .lookup to see the list of possible subcommands or .help lookup $subcommand to see info on subcommands'),
-	('lookup area', 'Syntax: .lookup area $namepart\r\n\r\nLooks up an area by $namepart, and returns all matches with their area ID\'s.'),
-	('lookup creature', 'Syntax: .lookup creature $namepart\r\n\r\nLooks up a creature by $namepart, and returns all matches with their creature ID\'s.'),
-	('lookup event', 'Syntax: .lookup event $name\r\nAttempts to find the ID of the event with the provided $name.'),
-	('lookup faction', 'Syntax: .lookup faction $name\r\nAttempts to find the ID of the faction with the provided $name.'),
-	('lookup item', 'Syntax: .lookup item $itemname\r\n\r\nLooks up an item by $itemname, and returns all matches with their Item ID\'s.'),
-	('lookup item set', 'Syntax: .lookup itemset $itemname\r\n\r\nLooks up an item set by $itemname, and returns all matches with their Item set ID\'s.'),
-	('lookup map', 'Syntax: .lookup map $namepart\r\n\r\nLooks up a map by $namepart, and returns all matches with their map ID\'s.'),
-	('lookup object', 'Syntax: .lookup object $objname\r\n\r\nLooks up an gameobject by $objname, and returns all matches with their Gameobject ID\'s.'),
-	('lookup player', 'Syntax: '),
-	('lookup player account', 'Syntax: .lookup player account $account ($limit) \r\n\r\n Searchs players, which account username is $account with optional parametr $limit of results.'),
-	('lookup player email', 'Syntax: .lookup player email $email ($limit) \r\n\r\n Searchs players, which account email is $email with optional parametr $limit of results.'),
-	('lookup player ip', 'Syntax: .lookup player ip $ip ($limit) \r\n\r\n Searchs players, which account ast_ip is $ip with optional parametr $limit of results.'),
-	('lookup quest', 'Syntax: .lookup quest $namepart\r\n\r\nLooks up a quest by $namepart, and returns all matches with their quest ID\'s.'),
-	('lookup skill', 'Syntax: .lookup skill $$namepart\r\n\r\nLooks up a skill by $namepart, and returns all matches with their skill ID\'s.'),
-	('lookup spell', 'Syntax: .lookup spell $namepart\r\n\r\nLooks up a spell by $namepart, and returns all matches with their spell ID\'s.'),
-	('lookup spell id', 'Syntax: .lookup spell id #spellid\n\nLooks up a spell by #spellid, and returns the match with its spell name.'),
-	('lookup taxinode', 'Syntax: .lookup taxinode $substring\r\n\r\nSearch and output all taxinodes with provide $substring in name.'),
-	('lookup tele', 'Syntax: .lookup tele $substring\r\n\r\nSearch and output all .tele command locations with provide $substring in name.'),
-	('lookup title', 'Syntax: .lookup title $$namepart\r\n\r\nLooks up a title by $namepart, and returns all matches with their title ID\'s and index\'s.'),
+
 	
 	
 	('mmap', 'Syntax: Syntax: .mmaps $subcommand Type .mmaps to see the list of possible subcommands or .help mmaps $subcommand to see info on subcommands'),
@@ -267,8 +315,8 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 
 
 
-	('neargrave', 'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
-	('notify', 'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
+	
+
 
 	
 
@@ -278,12 +326,6 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 	('pvpstats', 'Shows number of battleground victories in the last 7 days'),
 	
-	('quest', 'Syntax: .quest $subcommand\nType .quest to see the list of possible subcommands or .help quest $subcommand to see info on subcommands'),
-	('quest add', 'Syntax: .quest add #quest_id\r\n\r\nAdd to character quest log quest #quest_id. Quest started from item can\'t be added by this command but correct .additem call provided in command output.'),
-	('quest complete', 'Syntax: .quest complete #questid\r\nMark all quest objectives as completed for target character active quest. After this target character can go and get quest reward.'),
-	('quest objective complete', 'Syntax: .quest objective complete #questObjectiveId\nMark specific quest objective as completed for target character.'),
-	('quest remove', 'Syntax: .quest remove #quest_id\r\n\r\nSet quest #quest_id state to not completed and not active (and remove from active quest list) for selected player.'),
-	('quest reward', 'Syntax: .quest reward #questId\n\nGrants quest reward to selected player and removes quest from his log (quest must be in completed state).'),
 	
 	('rbac', 'Syntax: bf $subcommand\n Type .rbac to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
 	('rbac account', 'Syntax: rbac account $subcommand\n Type .rbac account to see a list of possible subcommands\n or .help rbac account $subcommand to see info on the subcommand.'),
@@ -312,8 +354,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 
 	
 	
-	('showarea', 'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
-	('summon', 'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
+
 	
 	
 	('ticket', 'Syntax: .ticket $subcommand\nType .ticket to see the list of possible subcommands or .help ticket $subcommand to see info on subcommands'),
@@ -356,41 +397,17 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
    -- .bindsight permet de voir le jeu à travers les yeux d'une cible sélectionnée, très utile pour surveiller discrètement un joueur (pour s'assurer qu'il respecte les règles ou vérifier des anomalies en jeu).
    -- Lorsque tu as terminé de surveiller ou que tu veux retourner à ta propre vue, tu dois utiliser la commande inverse : .unbindsight.
 
-	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
-	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
+	
 	
 En dessous du chanp de saisie de Freeze je voudrais ajouter un champ de saisi avec defaut texte "Player Name" et à coté de ce champ un bouton "UnFreeze" avec le tooltip sur le bouton "Syntax: .unfreeze (#player)\r\n"Unfreezes" #player and enables his chat again. When using this without #name it will unfreeze your target.3
 quand on clique sur le bouton UnFreeze on envoi la commande .unfreeze [valeur de player] il faut aussi integrer la possiblilité de reset les champs de saisie à leurs valeur par défaut et que si le champ Player Name n'est pas renseigné il faut unfreeze la cible du GM
 	
 	
-	('instance unbind', 'Syntax: .instance unbind <mapid|all> [difficulty]\r\n  Clear all/some of player\'s binds'),
-	('instance listbinds', 'Syntax: .instance listbinds\r\n  Lists the binds of the selected player.'),		
-	('combatstop', 'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),		
-	('honor', 'Syntax: .honor $subcommand\nType .honor to see the list of possible subcommands or .help honor $subcommand to see info on subcommands'),
-	('honor add', 'Syntax: .honor add $amount\r\n\r\nAdd a certain amount of honor (gained today) to the selected player.'),
-	('honor add kill', 'Syntax: .honor add kill\r\n\r\nAdd the targeted unit as one of your pvp kills today (you only get honor if it\'s a racial leader or a player)'),	
 
 
-	('titles add', 'Syntax: .titles add #title\r\nAdd title #title (id or shift-link) to known titles list for selected player.'),
-	('titles current', 'Syntax: .titles current #title\r\nSet title #title (id or shift-link) as current selected title for selected player. If title is not in known title list for player then it will be added to list.'),
-	('titles remove', 'Syntax: .titles remove #title\r\nRemove title #title (id or shift-link) from known titles list for selected player.'),
-	('titles set mask', 'Syntax: .titles set mask #mask\r\n\r\nAllows user to use all titles from #mask.\r\n\r\n #mask=0 disables the title-choose-field'),
-
-	('reset', 'Syntax: .reset $subcommand\nType .reset to see the list of possible subcommands or .help reset $subcommand to see info on subcommands'),
-	('reset achievements', 'Syntax: .reset achievements [$playername]\r\n\r\nReset achievements data for selected or named (online or offline) character. Achievements for persistance progress data like completed quests/etc re-filled at reset. Achievements for events like kills/casts/etc will lost.'),
-	('reset all', 'Syntax: .reset all spells\r\n\r\nSyntax: .reset all talents\r\n\r\nRequest reset spells or talents (including talents for all character\'s pets if any) at next login each existed character.'),
-	('reset honor', 'Syntax: .reset honor [Playername]\r\n  Reset all honor data for targeted character.'),
-	('reset level', 'Syntax: .reset level [Playername]\r\n  Reset level to 1 including reset stats and talents.  Equipped items with greater level requirement can be lost.'),
-	('reset spells', 'Syntax: .reset spells [Playername]\r\n  Removes all non-original spells from spellbook.\r\n. Playername can be name of offline character.'),
-	('reset stats', 'Syntax: .reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
-	('reset talents', 'Syntax: .reset talents [Playername]\r\n  Removes all talents of the targeted player or pet or named player. Playername can be name of offline character. With player talents also will be reset talents for all character\'s pets if any.'),
-	
-	('pinfo', 'Syntax: .pinfo [$player_name/#GUID]\r\n\r\nOutput account information and guild information for selected player or player find by $player_name or #GUID.'), -> Creer une page speciale avec des champs pour afficher les infos "Player advances Infos" A finaliser
 
 	
 	
 	
+
 	
-
-	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
-
