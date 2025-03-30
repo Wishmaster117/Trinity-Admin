@@ -4,6 +4,7 @@
 -- SE du serveur:                Win64
 -- HeidiSQL Version:             12.10.0.7000
 -- --------------------------------------------------------
+-- Mettre les autres traductions pour les titres, es, pt, it, etc....
 
 -- Panneau reset Management
 	('reset', 'Syntax: .reset $subcommand\nType .reset to see the list of possible subcommands or .help reset $subcommand to see info on subcommands'),
