@@ -7,49 +7,40 @@
 -- Mettre les autres traductions pour les titres, es, pt, it, etc....
 
 -- Panneau reset Management
-	('reset', 'Syntax: .reset $subcommand\nType .reset to see the list of possible subcommands or .help reset $subcommand to see info on subcommands'),
-	('reset achievements', 'Syntax: .reset achievements [$playername]\r\n\r\nReset achievements data for selected or named (online or offline) character. Achievements for persistance progress data like completed quests/etc re-filled at reset. Achievements for events like kills/casts/etc will lost.'),
-	('reset all', 'Syntax: .reset all spells\r\n\r\nSyntax: .reset all talents\r\n\r\nRequest reset spells or talents (including talents for all character\'s pets if any) at next login each existed character.'),
-	('reset honor', 'Syntax: .reset honor [Playername]\r\n  Reset all honor data for targeted character.'),
-	('reset level', 'Syntax: .reset level [Playername]\r\n  Reset level to 1 including reset stats and talents.  Equipped items with greater level requirement can be lost.'),
-	('reset spells', 'Syntax: .reset spells [Playername]\r\n  Removes all non-original spells from spellbook.\r\n. Playername can be name of offline character.'),
-	('reset stats', 'Syntax: .reset stats [Playername]\r\n  Resets(recalculate) all stats of the targeted player to their original VALUESat current level.'),
-	('reset talents', 'Syntax: .reset talents [Playername]\r\n  Removes all talents of the targeted player or pet or named player. Playername can be name of offline character. With player talents also will be reset talents for all character\'s pets if any.'),
+
+Dans ce panneau, 
+
+Il me faut un champ de saisie et un menu déroulant suivi d'un bouton "Lookup"
+Le menue déroulant aura ces options et le texte par defaut du champ de saisie devra s'adapter dynamiquement suivant l'option choisie, et le tooltip sur le bouton devra changer aussi dynamiquement:
+lookup area - Texte defaut : Enter Area Name part - Actioan à réaliser au click du bouton: .lookup area [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup area $namepart\r\n\r\nLooks up an area by $namepart, and returns all matches with their area ID\'s.
+lookup creature - Texte defaut : Enter Creature Name part - Actioan à réaliser au click du bouton: .lookup creature [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup creature $namepart\r\n\r\nLooks up a creature by $namepart, and returns all matches with their creature ID\'s.
+lookup event - Texte defaut : Enter Event Neme - Actioan à réaliser au click du bouton: .lookup event [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup event $name\r\nAttempts to find the ID of the event with the provided $name.
+lookup faction - Texte defaut : Enter Faction Name - Actioan à réaliser au click du bouton: .lookup faction [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup faction $name\r\nAttempts to find the ID of the faction with the provided $name.
+lookup item - Texte defaut : Enter Item Name - Actioan à réaliser au click du bouton: .lookup item [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup item $itemname\r\n\r\nLooks up an item by $itemname, and returns all matches with their Item ID\'s.
+lookup item set - Texte defaut : Enter ItemSet Name - Actioan à réaliser au click du bouton: .lookup item set [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup itemset $itemname\r\n\r\nLooks up an item set by $itemname, and returns all matches with their Item set ID\'s.
+lookup map - Texte defaut : Enter Map Name Part - Actioan à réaliser au click du bouton: .lookup map [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup map $namepart\r\n\r\nLooks up a map by $namepart, and returns all matches with their map ID\'s.
+lookup object - Texte defaut : Enter Object Name - Actioan à réaliser au click du bouton: .lookup object [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup object $objname\r\n\r\nLooks up an gameobject by $objname, and returns all matches with their Gameobject ID\'s.
+lookup quest - Texte defaut : Enter Quest Name Part - Actioan à réaliser au click du bouton: .lookup quest [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup quest $namepart\r\n\r\nLooks up a quest by $namepart, and returns all matches with their quest ID\'s.
+lookup skill - Texte defaut : Enter Skill Name Part - Actioan à réaliser au click du bouton: .lookup skill [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup skill $$namepart\r\n\r\nLooks up a skill by $namepart, and returns all matches with their skill ID\'s.
+lookup spell - Texte defaut : Enter Spell Name Part - Actioan à réaliser au click du bouton: .lookup spell [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup spell $namepart\r\n\r\nLooks up a spell by $namepart, and returns all matches with their spell ID\'s.
+lookup spell id - Texte defaut : Enter Spell ID - Actioan à réaliser au click du bouton: .lookup spell id [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup spell id #spellid\n\nLooks up a spell by #spellid, and returns the match with its spell name.
+lookup taxinode - Texte defaut : Enter Taxinode Substring - Actioan à réaliser au click du bouton: . lookup taxinode [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup taxinode $substring\r\n\r\nSearch and output all taxinodes with provide $substring in name.
+lookup tele - Texte defaut : Enter Teleport Substring - Actioan à réaliser au click du bouton: .lookup tele [Valeur du champ de saisie] - Tooltip bouton: yntax: .lookup tele $substring\r\n\r\nSearch and output all .tele command locations with provide $substring in name.
+lookup title - Texte defaut : Enter Title Name Part - Actioan à réaliser au click du bouton: .lookup title [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup title $$namepart\r\n\r\nLooks up a title by $namepart, and returns all matches with their title ID\'s and index\'s.
+
+
+En dessous il me faut deux champs de saisie et un menu déroulant suivi d'un bouton Lookup, les deux textes par defaut doivent être dynamiques suivant l'option choisie.
+Options du menu déroulant:
+lookup player ip - Texte defaut premier champ "Enter IP", texte defaut deuxieme champ "Limit" - Action à réaliser au click du bouton: .lookup player ip [Valeur du champ IP] [Valeur du champ Limite] - Tooltip : Syntax: .lookup player ip $ip ($limit) \r\n\r\n Searchs players, which account ast_ip is $ip with optional parametr $limit of results.
+lookup player email - Texte defaut premier champ "Enter Email", texte defaut deuxieme champ "Limit" - Action à réaliser au click du bouton: .lookup player email [Valeur du Enter Email] [Valeur du champ Limite] - Tooltip :Syntax: .lookup player email $email ($limit) \r\n\r\n Searchs players, which account email is $email with optional parametr $limit of results.
+lookup player account - Texte defaut premier champ "Enter a Usernane", texte defaut deuxieme champ "Limit" - Action à réaliser au click du bouton: .lookupplayer account [Valeur du Enter a Usernane] [Valeur du champ Limite] - Tooltip :Syntax: .lookup player account $account ($limit) \r\n\r\n Searchs players, which account username is $account with optional parametr $limit of results.
+Pour tous les boutons, une fois le bouton cliqué il faut remettre le texte par défaut. Et doivent s'adapter à la longueur du texte.
+
+Chaque action va retouner des informations dans le chat, alors il faut les capturer les insérer dans une fenêtre ACE3 comme nous avons déjà fait pour d'autres modules, et créer un champ de saisie par ligne du chat et y incrémenter la valeur dans la fenetre en générant le nom de la ligne comme nous avons déjà fait aussi pour un module
 	
--- Panneau Arena Management		
-	('arena', 'Syntax: arena $subcommand\n Type .arena to see a list of possible subcommands\n or .help arena $subcommand to see info on the subcommand.'),
-	('arena captain', 'Syntax: .arena captain #TeamID $name\n\nA command to set new captain to the team $name must be in the team'),
-	('arena create', 'Syntax: .arena create $name "arena name" #type\n\nA command to create a new Arena-team in game. #type  = [2/3/5]'),
-	('arena disband', 'Syntax: .arena disband #TeamID\n\nA command to disband Arena-team in game.'),
-	('arena info', 'Syntax: .arena info #TeamID\n\nA command that show info about arena team'),
-	('arena lookup', 'Syntax: .arena lookup $name\n\nA command that give a list of arenateam with the given $name'),
-	('arena rename', 'Syntax: .arena rename "oldname" "newname"\n\nA command to rename Arena-team name.'),	
-	
--- Lookup functions	
-	('lookup', 'Syntax: .lookup $subcommand\nType .lookup to see the list of possible subcommands or .help lookup $subcommand to see info on subcommands'),
-	('lookup area', 'Syntax: .lookup area $namepart\r\n\r\nLooks up an area by $namepart, and returns all matches with their area ID\'s.'),
-	('lookup creature', 'Syntax: .lookup creature $namepart\r\n\r\nLooks up a creature by $namepart, and returns all matches with their creature ID\'s.'),
-	('lookup event', 'Syntax: .lookup event $name\r\nAttempts to find the ID of the event with the provided $name.'),
-	('lookup faction', 'Syntax: .lookup faction $name\r\nAttempts to find the ID of the faction with the provided $name.'),
-	('lookup item', 'Syntax: .lookup item $itemname\r\n\r\nLooks up an item by $itemname, and returns all matches with their Item ID\'s.'),
-	('lookup item set', 'Syntax: .lookup itemset $itemname\r\n\r\nLooks up an item set by $itemname, and returns all matches with their Item set ID\'s.'),
-	('lookup map', 'Syntax: .lookup map $namepart\r\n\r\nLooks up a map by $namepart, and returns all matches with their map ID\'s.'),
-	('lookup object', 'Syntax: .lookup object $objname\r\n\r\nLooks up an gameobject by $objname, and returns all matches with their Gameobject ID\'s.'),
-	('lookup player', 'Syntax: '),
-	('lookup player account', 'Syntax: .lookup player account $account ($limit) \r\n\r\n Searchs players, which account username is $account with optional parametr $limit of results.'),
-	('lookup player email', 'Syntax: .lookup player email $email ($limit) \r\n\r\n Searchs players, which account email is $email with optional parametr $limit of results.'),
-	('lookup player ip', 'Syntax: .lookup player ip $ip ($limit) \r\n\r\n Searchs players, which account ast_ip is $ip with optional parametr $limit of results.'),
-	('lookup quest', 'Syntax: .lookup quest $namepart\r\n\r\nLooks up a quest by $namepart, and returns all matches with their quest ID\'s.'),
-	('lookup skill', 'Syntax: .lookup skill $$namepart\r\n\r\nLooks up a skill by $namepart, and returns all matches with their skill ID\'s.'),
-	('lookup spell', 'Syntax: .lookup spell $namepart\r\n\r\nLooks up a spell by $namepart, and returns all matches with their spell ID\'s.'),
-	('lookup spell id', 'Syntax: .lookup spell id #spellid\n\nLooks up a spell by #spellid, and returns the match with its spell name.'),
-	('lookup taxinode', 'Syntax: .lookup taxinode $substring\r\n\r\nSearch and output all taxinodes with provide $substring in name.'),
-	('lookup tele', 'Syntax: .lookup tele $substring\r\n\r\nSearch and output all .tele command locations with provide $substring in name.'),
-	('lookup title', 'Syntax: .lookup title $$namepart\r\n\r\nLooks up a title by $namepart, and returns all matches with their title ID\'s and index\'s.'),	
 
 -- Groups management
 
-	('group', 'Syntax: .group $subcommand\nType .group to see the list of possible subcommands or .help group $subcommand to see info on subcommands'),
 	('group disband', 'Syntax: .group disband [$characterName]\n\nDisbands the given character\'s group.'),
 	('group join', 'Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName] \r\nAdds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).'),
 	('group leader', 'Syntax: .group leader [$characterName]\n\nSets the given character as his group\'s leader.'),
@@ -64,13 +55,7 @@
 	('group set maintank', 'Syntax: .group set maintank [$characterName]\n\nToggles the given character\'s main tank flag in his raid group.'),
 	('group summon', 'Syntax: .group summon [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
 	
--- Quests management
-	('quest', 'Syntax: .quest $subcommand\nType .quest to see the list of possible subcommands or .help quest $subcommand to see info on subcommands'),
-	('quest add', 'Syntax: .quest add #quest_id\r\n\r\nAdd to character quest log quest #quest_id. Quest started from item can\'t be added by this command but correct .additem call provided in command output.'),
-	('quest complete', 'Syntax: .quest complete #questid\r\nMark all quest objectives as completed for target character active quest. After this target character can go and get quest reward.'),
-	('quest objective complete', 'Syntax: .quest objective complete #questObjectiveId\nMark specific quest objective as completed for target character.'),
-	('quest remove', 'Syntax: .quest remove #quest_id\r\n\r\nSet quest #quest_id state to not completed and not active (and remove from active quest list) for selected player.'),
-	('quest reward', 'Syntax: .quest reward #questId\n\nGrants quest reward to selected player and removes quest from his log (quest must be in completed state).'),
+
 	
 	
 
