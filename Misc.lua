@@ -57,7 +57,7 @@ function Misc:CreateMiscPanel()
     panel.title:SetPoint("TOPLEFT", 10, -10)
     panel.title:SetText("Misc Functions")
     
-    -- Ajoute les boutons de gestion (la méthode est maintenant bien définie)
+    -- Ajoute les boutons de gestion
     self:AddManagementButtons(panel)
     
     -- Bouton Retour
@@ -86,124 +86,105 @@ function Misc:ShowMiscPanel()
 end
 
 ------------------------------------------------------------
--- Implémentation du panneau Titles Management
+-- TITLES MANAGEMENT
 ------------------------------------------------------------
 function Misc:OpenTitlesManagement()
     if self.panel then
         self.panel:Hide()
     end
+    
+    -- Si le panneau n'existe pas déjà, on le crée
     if not self.titlesPanel then
+        
+        -- Création du frame principal
         self.titlesPanel = CreateFrame("Frame", "TrinityAdminTitlesPanel", TrinityAdminMainFrame)
         self.titlesPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
         self.titlesPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
-        
+
         local bg = self.titlesPanel:CreateTexture(nil, "BACKGROUND")
         bg:SetAllPoints(self.titlesPanel)
         bg:SetColorTexture(0.3, 0.3, 0.6, 0.7)
-        
+
         self.titlesPanel.title = self.titlesPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.titlesPanel.title:SetPoint("TOPLEFT", 10, -10)
         self.titlesPanel.title:SetText("Titles Management")
-        
+
         ------------------------------------------------------------
-        -- (1) Variables locales pour la pagination, checkboxes, etc.
+        -- VARIABLES LOCALES POUR LA PAGINATION, CHECKBOXES, ETC.
         ------------------------------------------------------------
         local entriesPerPage = 10
         local currentPage = 1
-        local currentOptions = {}  -- la liste courante (filtrée ou non)
-
-        -- Checkboxes et champ de saisie
+        local currentOptions = {}  -- la liste courante
+        local filterEditBox, scrollFrame, scrollChild
+        local btnPrev, btnNext, btnPage
         local chkAdd, chkRemove, chkCurrent
         local editMask, btnSetMask
 
         ------------------------------------------------------------
-        -- (2) Création du champ de saisie filtrage + scrollFrame
+        -- CHAMP DE RECHERCHE + SCROLLFRAME
         ------------------------------------------------------------
-        local filterEditBox = CreateFrame("EditBox", nil, self.titlesPanel, "InputBoxTemplate")
+        filterEditBox = CreateFrame("EditBox", nil, self.titlesPanel, "InputBoxTemplate")
         filterEditBox:SetSize(150, 22)
         filterEditBox:SetPoint("TOPLEFT", self.titlesPanel, "TOPLEFT", 10, -40)
         filterEditBox:SetText("Search...")
         filterEditBox:SetAutoFocus(false)
         filterEditBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
-        
-        local scrollFrame = CreateFrame("ScrollFrame", nil, self.titlesPanel, "UIPanelScrollFrameTemplate")
+
+        scrollFrame = CreateFrame("ScrollFrame", nil, self.titlesPanel, "UIPanelScrollFrameTemplate")
         scrollFrame:SetSize(220, 200)
         scrollFrame:SetPoint("TOPLEFT", filterEditBox, "BOTTOMLEFT", 0, -5)
         scrollFrame:SetPoint("BOTTOMLEFT", self.titlesPanel, "BOTTOMLEFT", 10, 50)
 
-        local scrollChild = CreateFrame("Frame", nil, scrollFrame)
-        scrollChild:SetSize(220, 400) -- hauteur ajustée dynamiquement
+        scrollChild = CreateFrame("Frame", nil, scrollFrame)
+        scrollChild:SetSize(220, 400)
         scrollFrame:SetScrollChild(scrollChild)
 
         ------------------------------------------------------------
-        -- Boutons de pagination (Preview, Next, Page Label)
+        -- BOUTONS DE PAGINATION
         ------------------------------------------------------------
-        local btnPage = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
+        btnPage = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnPage:SetSize(90, 22)
         btnPage:SetPoint("BOTTOMRIGHT", self.titlesPanel, "BOTTOM", -160, 10)
         btnPage:SetText("Page 1 / 1")
 
-        local btnPrev = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
+        btnPrev = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnPrev:SetSize(80, 22)
         btnPrev:SetText("Preview")
         btnPrev:SetPoint("RIGHT", btnPage, "LEFT", -5, 0)
 
-        local btnNext = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
+        btnNext = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnNext:SetSize(80, 22)
         btnNext:SetText("Next")
         btnNext:SetPoint("LEFT", btnPage, "RIGHT", 5, 0)
 
         ------------------------------------------------------------
-        -- (2 bis) Création du conteneur d'options (cases à cocher)
+        -- CREATION DU CONTENEUR D'OPTIONS (CHECKBOXES)
         ------------------------------------------------------------
         local optionsFrame = CreateFrame("Frame", nil, self.titlesPanel)
-        optionsFrame:SetSize(200, 150) 
+        optionsFrame:SetSize(200, 150)
         optionsFrame:SetPoint("RIGHT", self.titlesPanel, "RIGHT", -100, 0)
         optionsFrame:SetPoint("CENTER", self.titlesPanel, "CENTER", -self.titlesPanel:GetWidth()/4, 0)
 
-        -- chkAdd
+        -- CHECKBOXES : add, remove, current
         chkAdd = CreateFrame("CheckButton", nil, optionsFrame, "UICheckButtonTemplate")
         chkAdd:SetPoint("TOPLEFT", optionsFrame, "TOPLEFT", 0, -10)
         chkAdd.text = chkAdd:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         chkAdd.text:SetPoint("LEFT", chkAdd, "RIGHT", 5, 0)
         chkAdd.text:SetText("Add a Title")
-		chkAdd:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .titles add #title\r\nAdd title #title (id or shift-link) to known titles list for selected player.", 1, 1, 1, 1, true)
-		end)
-		chkAdd:SetScript("OnLeave", function(self)
-			GameTooltip:Hide()
-		end)
 
-        -- chkRemove
         chkRemove = CreateFrame("CheckButton", nil, optionsFrame, "UICheckButtonTemplate")
         chkRemove:SetPoint("TOPLEFT", chkAdd, "BOTTOMLEFT", 0, -10)
         chkRemove.text = chkRemove:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         chkRemove.text:SetPoint("LEFT", chkRemove, "RIGHT", 5, 0)
         chkRemove.text:SetText("Remove a Title")
-		chkRemove:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .titles remove #title\r\nRemove title #title (id or shift-link) from known titles list for selected player.", 1, 1, 1, 1, true)
-		end)
-		chkRemove:SetScript("OnLeave", function(self)
-			GameTooltip:Hide()
-		end)		
 
-        -- chkCurrent
         chkCurrent = CreateFrame("CheckButton", nil, optionsFrame, "UICheckButtonTemplate")
         chkCurrent:SetPoint("TOPLEFT", chkRemove, "BOTTOMLEFT", 0, -10)
         chkCurrent.text = chkCurrent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         chkCurrent.text:SetPoint("LEFT", chkCurrent, "RIGHT", 5, 0)
         chkCurrent.text:SetText("Set Title as Current")
-		chkCurrent:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .titles current #title\r\nSet title #title (id or shift-link) as current selected title for selected player. If title is not in known title list for player then it will be added to list.", 1, 1, 1, 1, true)
-		end)
-		chkCurrent:SetScript("OnLeave", function(self)
-			GameTooltip:Hide()
-		end)				
 
-        -- editMask et btnSetMask
+        -- EDItBOX & BOUTON "SET" : titles set mask
         editMask = CreateFrame("EditBox", nil, optionsFrame, "InputBoxTemplate")
         editMask:SetSize(100, 22)
         editMask:SetPoint("TOPLEFT", chkCurrent, "BOTTOMLEFT", 0, -10)
@@ -213,16 +194,9 @@ function Misc:OpenTitlesManagement()
         btnSetMask:SetSize(80, 22)
         btnSetMask:SetPoint("LEFT", editMask, "RIGHT", 5, 0)
         btnSetMask:SetText("Set")
-		btnSetMask:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .titles set mask #mask\r\n\r\nAllows user to use all titles from #mask.\r\n\r\n #mask=0 disables the title-choose-field", 1, 1, 1, 1, true)
-		end)
-		btnSetMask:SetScript("OnLeave", function(self)
-			GameTooltip:Hide()
-		end)		
 
         ------------------------------------------------------------
-        -- Scripts OnClick pour les checkboxes + bouton Set
+        -- FORCER LA SELECTION EXCLUSIVE DES CHECKBOXES
         ------------------------------------------------------------
         chkAdd:SetScript("OnClick", function(self)
             if self:GetChecked() then
@@ -242,6 +216,7 @@ function Misc:OpenTitlesManagement()
                 chkRemove:SetChecked(false)
             end
         end)
+
         btnSetMask:SetScript("OnClick", function()
             local targetName = UnitName("target")
             if not targetName then
@@ -249,28 +224,31 @@ function Misc:OpenTitlesManagement()
                 return
             end
             local maskValue = editMask:GetText()
-			if maskValue == "" or maskValue == "Set titles mask" then
-				print("Veuillez saisir une valeur pour le mask.")
-				return
+            if maskValue == "" or maskValue == "Set titles mask" then
+                print("Veuillez saisir une valeur pour le mask.")
+                return
             end
             -- Envoie la commande
             SendChatMessage(".titles set mask " .. maskValue, "SAY")
-			editMask:SetText("Set titles mask")
+            editMask:SetText("Set titles mask")
         end)
 
         ------------------------------------------------------------
-        -- (3) Déclaration de la fonction PopulateTitlescroll
+        -- FONCTION LOCALE "PopulateTitlescroll"
         ------------------------------------------------------------
         local function PopulateTitlescroll(options)
             currentOptions = options
+            local targetName = UnitName("target")  -- nil si aucune cible
 
             local totalEntries = #options
-            local totalPages = math.ceil(totalEntries / entriesPerPage)
+            local totalPages   = math.ceil(totalEntries / entriesPerPage)
             if totalPages < 1 then totalPages = 1 end
 
+            -- Ajuster currentPage
             if currentPage > totalPages then currentPage = totalPages end
             if currentPage < 1 then currentPage = 1 end
 
+            -- Cache d'éventuels anciens boutons
             if scrollChild.buttons then
                 for _, btn in ipairs(scrollChild.buttons) do
                     btn:Hide()
@@ -284,6 +262,7 @@ function Misc:OpenTitlesManagement()
 
             local lastButton = nil
             local maxTextLength = 20
+
             for i = startIdx, endIdx do
                 local option = options[i]
                 local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
@@ -295,13 +274,20 @@ function Misc:OpenTitlesManagement()
                     btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
                 end
 
-                local fullText = option.name or ("Item " .. i)
+                -- Construire le texte (remplace %s par targetName)
+                local fullText = TrinityAdmin_Translations[option.name] or ("Item " .. i)
+                if targetName then
+                    fullText = fullText:gsub("%%s", targetName)
+                end
+
                 local truncatedText = fullText
                 if #fullText > maxTextLength then
                     truncatedText = fullText:sub(1, maxTextLength) .. "..."
                 end
 
                 btn:SetText(truncatedText)
+                
+                -- Tooltip au survol
                 btn:SetScript("OnEnter", function(self)
                     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                     GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
@@ -311,11 +297,10 @@ function Misc:OpenTitlesManagement()
                     GameTooltip:Hide()
                 end)
 
-                -- ICI : on utilise chkAdd/chkRemove/chkCurrent sans erreur,
-                -- car ils sont déjà déclarés dans cette portée.
+                -- OnClick : vérifie la cible + envoie la commande
                 btn:SetScript("OnClick", function()
-                    local targetName = UnitName("target")
-                    if not targetName then
+                    local targ = UnitName("target")
+                    if not targ then
                         print("Veuillez sélectionner un joueur.")
                         return
                     end
@@ -334,17 +319,34 @@ function Misc:OpenTitlesManagement()
                 table.insert(scrollChild.buttons, btn)
             end
 
+            -- Ajuster la hauteur du scrollChild
             local visibleCount = endIdx - startIdx + 1
             local contentHeight = (visibleCount * 25) + 10
             scrollChild:SetHeight(contentHeight)
 
+            -- Mettre à jour le label de page
             btnPage:SetText(currentPage .. " / " .. totalPages)
+
             btnPrev:SetEnabled(currentPage > 1)
             btnNext:SetEnabled(currentPage < totalPages)
         end
 
         ------------------------------------------------------------
-        -- (4) Scripts pour la pagination, filtre, etc.
+        -- EVENT LISTENER : PLAYER_TARGET_CHANGED
+        ------------------------------------------------------------
+        local targetListener = CreateFrame("Frame")
+        targetListener:RegisterEvent("PLAYER_TARGET_CHANGED")
+        targetListener:SetScript("OnEvent", function(self, event)
+            if event == "PLAYER_TARGET_CHANGED" then
+                -- Réactualise la liste si on a déjà des options
+                if currentOptions and #currentOptions > 0 then
+                    PopulateTitlescroll(currentOptions)
+                end
+            end
+        end)
+
+        ------------------------------------------------------------
+        -- Scripts pagination, filtre, Reset, etc.
         ------------------------------------------------------------
         btnPrev:SetScript("OnClick", function()
             if currentPage > 1 then
@@ -381,17 +383,19 @@ function Misc:OpenTitlesManagement()
             local filteredOptions = {}
             for _, option in ipairs(TitlesData) do
                 if (option.name and option.name:lower():find(searchText))
-                or (tostring(option.entry) == searchText) then
+                   or (tostring(option.entry) == searchText) then
                     table.insert(filteredOptions, option)
                 end
             end
 
             if #filteredOptions == 0 then
+                -- Cache les anciens boutons
                 if scrollChild.buttons then
                     for _, btn in ipairs(scrollChild.buttons) do
                         btn:Hide()
                     end
                 end
+                -- Affiche "Nothing found"
                 if not scrollChild.noResultText then
                     scrollChild.noResultText = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
                     scrollChild.noResultText:SetPoint("TOP", scrollChild, "TOP", 0, -10)
@@ -404,7 +408,7 @@ function Misc:OpenTitlesManagement()
                     scrollChild.noResultText:Hide()
                 end
                 currentPage = 1
-                PopulateTitlesscroll(filteredOptions)
+                PopulateTitlescroll(filteredOptions)
             end
         end)
 
@@ -416,7 +420,7 @@ function Misc:OpenTitlesManagement()
         btnReset:SetScript("OnClick", function()
             filterEditBox:SetText("")
             currentPage = 1
-            PopulateTitlesscroll(TitlesData)
+            PopulateTitlescroll(TitlesData)
             if scrollChild.noResultText then
                 scrollChild.noResultText:Hide()
             end
@@ -434,8 +438,8 @@ function Misc:OpenTitlesManagement()
             self.titlesPanel:Hide()
             self.panel:Show()
         end)
-
     end
+
     TrinityAdmin:HideMainMenu()
     self.titlesPanel:Show()
 end
