@@ -9,8 +9,8 @@
 -- make into AceHook.
 -- @class file
 -- @name AceHook-3.0
--- @release $Id: AceHook-3.0.lua 1284 2022-09-25 09:15:30Z nevcairiel $
-local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 9
+-- @release $Id: AceHook-3.0.lua 877 2009-11-02 15:56:50Z nevcairiel $
+local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 5
 local AceHook, oldminor = LibStub:NewLibrary(ACEHOOK_MAJOR, ACEHOOK_MINOR)
 
 if not AceHook then return end -- No upgrade needed
@@ -139,11 +139,11 @@ function hook(self, obj, method, handler, script, secure, raw, forceSecure, usag
 		error(format("%s: 'handler' - Handler specified does not exist at self[handler]", usage), 3)
 	end
 	if script then
+		if not secure and obj:IsProtected() and protectedScripts[method] then
+			error(format("Cannot hook secure script %q; Use SecureHookScript(obj, method, [handler]) instead.", method), 3)
+		end
 		if not obj or not obj.GetScript or not obj:HasScript(method) then
 			error(format("%s: You can only hook a script on a frame object", usage), 3)
-		end
-		if not secure and obj.IsProtected and obj:IsProtected() and protectedScripts[method] then
-			error(format("Cannot hook secure script %q; Use SecureHookScript(obj, method, [handler]) instead.", method), 3)
 		end
 	else
 		local issecure
@@ -195,6 +195,7 @@ function hook(self, obj, method, handler, script, secure, raw, forceSecure, usag
 			registry[self][method] = nil
 		end
 		handlers[uid], actives[uid], scripts[uid] = nil, nil, nil
+		uid = nil
 	end
 
 	local orig
@@ -222,9 +223,12 @@ function hook(self, obj, method, handler, script, secure, raw, forceSecure, usag
 		end
 
 		if script then
-			if not secure then
+			-- If the script is empty before, HookScript will not work, so use SetScript instead
+			-- This will make the hook insecure, but shouldnt matter, since it was empty before.
+			-- It does not taint the full frame.
+			if not secure or orig == donothing then
 				obj:SetScript(method, uid)
-			else
+			elseif secure then
 				obj:HookScript(method, uid)
 			end
 		else
@@ -477,10 +481,10 @@ function AceHook:UnhookAll()
 	for key, value in pairs(registry[self]) do
 		if type(key) == "table" then
 			for method in pairs(value) do
-				AceHook.Unhook(self, key, method)
+				self:Unhook(key, method)
 			end
 		else
-			AceHook.Unhook(self, key)
+			self:Unhook(key)
 		end
 	end
 end

@@ -1,7 +1,5 @@
 local Misc = TrinityAdmin:GetModule("Misc")
 
-local Misc = TrinityAdmin:GetModule("Misc")
-
 -------------------------------------------------------------------------------
 -- Variables de capture "lookup"
 -------------------------------------------------------------------------------
@@ -152,6 +150,18 @@ function Misc:AddManagementButtons(panel)
     btnQuests:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
     btnQuests:SetText("Quests Management")
     btnQuests:SetScript("OnClick", function() self:OpenQuestsManagement() end)
+	
+	local BattlefieldAndPvp = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    BattlefieldAndPvp:SetSize(150, 22)
+    BattlefieldAndPvp:SetPoint("TOPLEFT", btnLookup, "BOTTOMLEFT", 0, -10)
+    BattlefieldAndPvp:SetText("Battlefield And Pvp")
+    BattlefieldAndPvp:SetScript("OnClick", function() self:OpenBattlefieldAndPvpManagement() end)
+	
+	local DunjonsFunc = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    DunjonsFunc:SetSize(150, 22)
+    DunjonsFunc:SetPoint("LEFT", BattlefieldAndPvp, "RIGHT", 10, 0)
+    DunjonsFunc:SetText("Dungeons Funcs")
+    DunjonsFunc:SetScript("OnClick", function() self:OpenDunjonsFuncManagement() end)
 end
 
 ------------------------------------------------------------
@@ -1606,8 +1616,9 @@ function Misc:OpenGroupsManagement()
         self.panel:Hide()
     end
     if not self.groupsPanel then
+        -- Crée le panneau principal
         self.groupsPanel = CreateFrame("Frame", "TrinityAdminGroupsPanel", TrinityAdminMainFrame)
-        self.groupsPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.groupsPanel:SetPoint("TOPLEFT",  TrinityAdminMainFrame, "TOPLEFT",     10, -50)
         self.groupsPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
         
         local bg = self.groupsPanel:CreateTexture(nil, "BACKGROUND")
@@ -1617,9 +1628,274 @@ function Misc:OpenGroupsManagement()
         self.groupsPanel.title = self.groupsPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.groupsPanel.title:SetPoint("TOPLEFT", 10, -10)
         self.groupsPanel.title:SetText("Groups Management")
-        
-        -- Ajoutez ici vos éléments et fonctions spécifiques à la gestion des groupes.
-        
+
+        -------------------------------------------------------------------------
+        -- Fonction utilitaire : obtenir le nom du champ ou la cible
+        -- Si 'textValue' est vide ou égal au texte par défaut => on prend le joueur ciblé
+        -- Sinon, si on n'a pas de cible => on met "$playername"
+        -------------------------------------------------------------------------
+        local function GetNameOrTarget(textValue, defaultText)
+            if textValue and textValue ~= "" and textValue ~= defaultText then
+                return textValue
+            end
+            local target = UnitName("target")
+            if target then
+                return target
+            end
+            return "$playername"
+        end
+
+        -------------------------------------------------------------------------
+        -- Conteneur principal
+        -------------------------------------------------------------------------
+        local container = CreateFrame("Frame", nil, self.groupsPanel)
+        container:SetPoint("TOPLEFT", self.groupsPanel, "TOPLEFT", 10, -40)
+        container:SetSize(self.groupsPanel:GetWidth() - 20, self.groupsPanel:GetHeight() - 80)
+
+        local yOffset = 0
+
+        -------------------------------------------------------------------------
+        -- (1) BLOCK : Two EditBoxes + "Join" Button
+        -------------------------------------------------------------------------
+        do
+            -- 1) "Player Name From Group"
+            local editFrom = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
+            editFrom:SetSize(140, 22)
+            editFrom:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+            editFrom:SetAutoFocus(false)
+            editFrom:SetText("Player Name From Group")
+
+            -- 2) "Player Name to Add"
+            local editTo = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
+            editTo:SetSize(140, 22)
+            editTo:SetPoint("LEFT", editFrom, "RIGHT", 10, 0)
+            editTo:SetAutoFocus(false)
+            editTo:SetText("Player Name to Add")
+
+            -- 3) "Join" button
+            local btnJoin = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
+            btnJoin:SetText("Join")
+            btnJoin:SetSize(btnJoin:GetTextWidth() + 20, 22)
+            btnJoin:SetPoint("LEFT", editTo, "RIGHT", 10, 0)
+
+            -- Tooltip
+            btnJoin:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName]\r\n" ..
+                    "Adds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).",
+                    1,1,1,1,true
+                )
+            end)
+            btnJoin:SetScript("OnLeave", function()
+                GameTooltip:Hide()
+            end)
+
+            -- OnClick => envoie la commande
+            btnJoin:SetScript("OnClick", function()
+                local fromValue = editFrom:GetText()
+                local toValue   = editTo:GetText()
+
+                -- 'fromValue' doit être non vide
+                if (not fromValue or fromValue == "" or fromValue == "Player Name From Group") then
+                    print("Veuillez renseigner un nom valide pour 'Player Name From Group'.")
+                    return
+                end
+
+                -- 'toValue' peut être vide => on prend la cible
+                -- ou "$playername" si pas de cible
+                local finalTo   = GetNameOrTarget(toValue, "Player Name to Add")
+
+                local cmd = ".group join " .. fromValue .. " " .. finalTo
+                SendChatMessage(cmd, "SAY")
+
+                -- Reset
+                editFrom:SetText("Player Name From Group")
+                editTo:SetText("Player Name to Add")
+            end)
+
+            yOffset = yOffset - 40
+        end
+
+        -------------------------------------------------------------------------
+        -- (2) BLOCK : Un champ + menu déroulant + bouton "Execute"
+        -------------------------------------------------------------------------
+        local groupOptions = {
+            {
+                text        = "group leader",
+                command     = ".group leader",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group leader [$characterName]\n\n" ..
+                              "Sets the given character as his group’s leader."
+            },
+            {
+                text        = "group level",
+                command     = ".group level",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group level [$charactername]\n" ..
+                              "Set the level of the given character and his group to #numberoflevels (only 1+). " ..
+                              "Modify only online group chars, but the original selected group member can be offline. " ..
+                              "At level decrease, items or talents can be lost. If no name or target given => modifies your level."
+            },
+            {
+                text        = "group list",
+                command     = ".group list",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group list [$CharacterName]\r\n" ..
+                              "Lists all the members of the group/party the player is in."
+            },
+            {
+                text        = "group repair",
+                command     = ".group repair",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group repair [$charactername]\n" ..
+                              "Repair the given character and his group (only online). Original selected can be offline. " ..
+                              "If no name or target => repairs yourself."
+            },
+            {
+                text        = "group revive",
+                command     = ".group revive",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group revive [$charactername]\n" ..
+                              "Revive the given character and his group (only online). Original selected can be offline. " ..
+                              "If no name or target => revives yourself."
+            },
+            {
+                text        = "group set assistant",
+                command     = ".group set assistant",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group set assistant [$characterName]\n\n" ..
+                              "Toggles the given character’s assistant state in his raid group."
+            },
+            {
+                text        = "group set leader",
+                command     = ".group set leader",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group set leader [$characterName]\n\n" ..
+                              "Sets the given character (or selected) as his group’s leader.\nAlias for '.group leader'."
+            },
+            {
+                text        = "group set mainassist",
+                command     = ".group set mainassist",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group set mainassist [$characterName]\n\n" ..
+                              "Toggles the given character’s main assist flag in his raid group."
+            },
+            {
+                text        = "group set maintank",
+                command     = ".group set maintank",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group set maintank [$characterName]\n\n" ..
+                              "Toggles the given character’s main tank flag in his raid group."
+            },
+            {
+                text        = "group summon",
+                command     = ".group summon",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group summon [$charactername]\r\n\r\n" ..
+                              "Teleport the given character and his group to you (only online). " ..
+                              "Original selected can be offline. If no name => yourself."
+            },
+            {
+                text        = "group remove",
+                command     = ".group remove",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group remove [$characterName]\n\n" ..
+                              "Removes the given character from his group."
+            },
+            {
+                text        = "group disband",
+                command     = ".group disband",
+                defaultEB   = "Enter Player Name",
+                tooltip     = "Syntax: .group disband [$characterName]\n\n" ..
+                              "Disbands the given character’s group."
+            },
+        }
+
+        do
+            local block2 = CreateFrame("Frame", nil, container)
+            block2:SetSize(600, 50)
+            block2:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+            -- EditBox
+            local editName = CreateFrame("EditBox", nil, block2, "InputBoxTemplate")
+            editName:SetSize(140, 22)
+            editName:SetPoint("TOPLEFT", block2, "TOPLEFT", 0, 0)
+            editName:SetAutoFocus(false)
+
+            -- Dropdown
+            local dropdown = CreateFrame("Frame", "TrinityAdminGroupsDropdown", block2, "UIDropDownMenuTemplate")
+            dropdown:SetPoint("LEFT", editName, "RIGHT", 10, 0)
+            UIDropDownMenu_SetWidth(dropdown, 200)
+            
+            -- Par défaut
+            dropdown.selectedOption = groupOptions[1]
+            UIDropDownMenu_SetText(dropdown, groupOptions[1].text)
+            editName:SetText(dropdown.selectedOption.defaultEB)
+
+            local btnExecute = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
+            btnExecute:SetText("Execute")
+            btnExecute:SetSize(btnExecute:GetTextWidth() + 20, 22)
+            btnExecute:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
+
+            -- Fonction OnClick pour l'option du menu
+            local function Dropdown_OnClick(opt)
+                dropdown.selectedOption = opt
+                UIDropDownMenu_SetSelectedName(dropdown, opt.text)
+                UIDropDownMenu_SetText(dropdown, opt.text)
+                -- Mettre à jour le champ
+                editName:SetText(opt.defaultEB)
+            end
+
+            UIDropDownMenu_Initialize(dropdown, function(frame, level, menuList)
+                for i, opt in ipairs(groupOptions) do
+                    local info = UIDropDownMenu_CreateInfo()
+                    info.text    = opt.text
+                    info.value   = i
+                    info.func    = function() Dropdown_OnClick(opt) end
+                    info.checked = (opt == dropdown.selectedOption)
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            -- Tooltip dynamique du bouton "Execute"
+            btnExecute:SetScript("OnEnter", function(self)
+                local opt = dropdown.selectedOption
+                if not opt then return end
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(opt.tooltip, 1,1,1,1,true)
+            end)
+            btnExecute:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            -- OnClick => envoie la commande
+            btnExecute:SetScript("OnClick", function()
+                local opt = dropdown.selectedOption
+                if not opt then return end
+
+                local textValue = editName:GetText()
+                if not textValue or textValue == "" or textValue == opt.defaultEB then
+                    -- On prend la cible du GM ou "$playername"
+                    local target = UnitName("target")
+                    if target then
+                        textValue = target
+                    else
+                        textValue = "$playername"
+                    end
+                end
+
+                local cmd = opt.command .. " " .. textValue
+                SendChatMessage(cmd, "SAY")
+
+                -- Reset
+                editName:SetText(opt.defaultEB)
+            end)
+
+            yOffset = yOffset - 60
+        end
+
+        -------------------------------------------------------------------------
+        -- Bouton Retour commun
+        -------------------------------------------------------------------------
         local btnBack = CreateFrame("Button", nil, self.groupsPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.groupsPanel, "BOTTOM", 0, 10)
         btnBack:SetText(TrinityAdmin_Translations["Back"])
@@ -1630,6 +1906,7 @@ function Misc:OpenGroupsManagement()
             self.panel:Show()
         end)
     end
+
     TrinityAdmin:HideMainMenu()
     self.groupsPanel:Show()
 end
@@ -1914,3 +2191,910 @@ function Misc:OpenQuestsManagement()
     self.questsPanel:Show()
 end
 
+
+-- Ouvre le panneau BattlefieldAndPvpManagement en masquant le panneau principal
+function Misc:OpenBattlefieldAndPvpManagement()
+    if self.panel then
+        self.panel:Hide()
+    end
+    if not self.BattlefieldAndPvpPanel then
+        self.BattlefieldAndPvpPanel = CreateFrame("Frame", "TrinityAdminBattlefieldAndPvpPanel", TrinityAdminMainFrame)
+        self.BattlefieldAndPvpPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.BattlefieldAndPvpPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+        
+        local bg = self.BattlefieldAndPvpPanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.BattlefieldAndPvpPanel)
+        bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)
+        
+        self.BattlefieldAndPvpPanel.title = self.BattlefieldAndPvpPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.BattlefieldAndPvpPanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.BattlefieldAndPvpPanel.title:SetText("Battlefield / PvP Management")
+
+        ----------------------------------------------------------------------------
+        -- Fonction utilitaire : obtenir le nom du champ ou la cible GM
+        ----------------------------------------------------------------------------
+        local function GetNameOrTarget(value, defaultText)
+            if value and value ~= "" and value ~= defaultText then
+                return value
+            end
+            local target = UnitName("target")
+            if target then
+                return target
+            end
+            return nil  -- signifier qu'on n'a pas de cible du tout
+        end
+
+        ----------------------------------------------------------------------------
+        -- Conteneur global
+        ----------------------------------------------------------------------------
+        local container = CreateFrame("Frame", nil, self.BattlefieldAndPvpPanel)
+        container:SetPoint("TOPLEFT", self.BattlefieldAndPvpPanel, "TOPLEFT", 10, -40)
+        container:SetSize(
+            self.BattlefieldAndPvpPanel:GetWidth() - 20,
+            self.BattlefieldAndPvpPanel:GetHeight() - 80
+        )
+
+        ----------------------------------------------------------------------------
+        -- On crée deux "colonnes" : leftContainer et rightContainer
+        ----------------------------------------------------------------------------
+        local leftContainer = CreateFrame("Frame", nil, container)
+        leftContainer:SetSize(container:GetWidth()/2 - 10, container:GetHeight())
+        leftContainer:SetPoint("TOPLEFT", container, "TOPLEFT", 0, 0)
+
+        local rightContainer = CreateFrame("Frame", nil, container)
+        rightContainer:SetSize(container:GetWidth()/2 - 10, container:GetHeight())
+        rightContainer:SetPoint("TOPRIGHT", container, "TOPRIGHT", 0, 0)
+
+        -- Offsets indépendants
+        local yLeft = 0
+        local yRight = 0
+
+        ----------------------------------------------------------------------------
+        -- (1) Sous-titre : "Bg Deserter Management" (dans la colonne de gauche)
+        ----------------------------------------------------------------------------
+        do
+            local title = leftContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            title:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+            title:SetText("|cff00ff00Bg Deserter Management|r")
+
+            yLeft = yLeft - 20
+        end
+
+        ----------------------------------------------------------------------------
+        -- (1) Un champ + un menu + un bouton "Set" (Deserter BG) - colonne gauche
+        ----------------------------------------------------------------------------
+        local deserterBgOptions = {
+            {
+                text      = "deserter bg add",
+                cmd       = ".deserter bg add",
+                defaultEB = "Time",
+                tooltip   = "Syntax: .deserter bg add $time \n\nAdds the bg deserter debuff to your target with $time duration.",
+                needValue = true,  -- champ obligatoire
+            },
+            {
+                text      = "deserter bg remove",
+                cmd       = ".deserter bg remove",
+                defaultEB = "N/A",
+                tooltip   = "Syntax: .deserter bg remove \n\nRemoves the bg deserter debuff from your target.",
+                needValue = false, -- champ non utilisé
+            },
+        }
+
+        do
+            local block = CreateFrame("Frame", nil, leftContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+
+            local editBox = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editBox:SetSize(100, 22)
+            editBox:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editBox:SetAutoFocus(false)
+
+            local dropdown = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
+            dropdown:SetPoint("LEFT", editBox, "RIGHT", 5, 0)
+            UIDropDownMenu_SetWidth(dropdown, 120)
+
+            -- Par défaut
+            dropdown.selectedOption = deserterBgOptions[1]
+            UIDropDownMenu_SetText(dropdown, dropdown.selectedOption.text)
+            editBox:SetText(dropdown.selectedOption.defaultEB)
+
+            -- Bouton "Set"
+            local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnSet:SetText("Set")
+            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            btnSet:SetPoint("LEFT", dropdown, "RIGHT", 5, 0)
+
+            -- Dropdown init
+            local function OnClickOption(opt)
+                dropdown.selectedOption = opt
+                UIDropDownMenu_SetSelectedName(dropdown, opt.text)
+                UIDropDownMenu_SetText(dropdown, opt.text)
+                editBox:SetText(opt.defaultEB)
+            end
+
+            UIDropDownMenu_Initialize(dropdown, function(frame, level, menuList)
+                for i, opt in ipairs(deserterBgOptions) do
+                    local info = UIDropDownMenu_CreateInfo()
+                    info.text    = opt.text
+                    info.value   = i
+                    info.func    = function() OnClickOption(opt) end
+                    info.checked = (opt == dropdown.selectedOption)
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            -- Tooltip dynamique du bouton
+            btnSet:SetScript("OnEnter", function(self)
+                local opt = dropdown.selectedOption
+                if not opt then return end
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(opt.tooltip, 1,1,1,1,true)
+            end)
+            btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            -- OnClick => envoi de la commande
+            btnSet:SetScript("OnClick", function()
+                local opt = dropdown.selectedOption
+                if not opt then return end
+
+                local target = UnitName("target")
+                if not target then
+                    print("Erreur: Veuillez cibler un joueur.")
+                    return
+                end
+
+                if opt.needValue then
+                    local val = editBox:GetText()
+                    if not val or val == "" or val == opt.defaultEB then
+                        print("Erreur: Le champ est obligatoire pour '" .. opt.text .. "'.")
+                        return
+                    end
+                    local cmd = opt.cmd .. " " .. val
+                    SendChatMessage(cmd, "SAY")
+					print("[DEBUG] Commande envoyée : " .. cmd)
+                else
+                    local cmd = opt.cmd
+                    SendChatMessage(cmd, "SAY")
+					print("[DEBUG] Commande envoyée : " .. cmd)
+                end
+            end)
+
+            yLeft = yLeft - 50
+        end
+
+        ----------------------------------------------------------------------------
+        -- (2) Sous-titre : "Instance Deserter Management" (colonne gauche)
+        ----------------------------------------------------------------------------
+        do
+            local title = leftContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            title:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+            title:SetText("|cff00ff00Instance Deserter Management|r")
+
+            yLeft = yLeft - 20
+        end
+
+        ----------------------------------------------------------------------------
+        -- (2) Un champ + menu + bouton "Set" (Deserter Instance) - colonne gauche
+        ----------------------------------------------------------------------------
+        local deserterInstanceOptions = {
+            {
+                text      = "deserter instance add",
+                cmd       = ".deserter instance add",
+                defaultEB = "Time",
+                tooltip   = "Syntax: .deserter instance add $time \n\nAdds the instance deserter debuff to your target with $time duration.",
+                needValue = true,
+            },
+            {
+                text      = "deserter instance remove",
+                cmd       = ".deserter instance remove",
+                defaultEB = "N/A",
+                tooltip   = "Syntax: .deserter instance remove \n\nRemoves the instance deserter debuff from your target.",
+                needValue = false,
+            },
+        }
+
+        do
+            local block = CreateFrame("Frame", nil, leftContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+
+            local editBox = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editBox:SetSize(100, 22)
+            editBox:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editBox:SetAutoFocus(false)
+
+            local dropdown = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
+            dropdown:SetPoint("LEFT", editBox, "RIGHT", 5, 0)
+            UIDropDownMenu_SetWidth(dropdown, 120)
+
+            dropdown.selectedOption = deserterInstanceOptions[1]
+            UIDropDownMenu_SetText(dropdown, dropdown.selectedOption.text)
+            editBox:SetText(dropdown.selectedOption.defaultEB)
+
+            local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnSet:SetText("Set")
+            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            btnSet:SetPoint("LEFT", dropdown, "RIGHT", 5, 0)
+
+            local function OnClickOption(opt)
+                dropdown.selectedOption = opt
+                UIDropDownMenu_SetSelectedName(dropdown, opt.text)
+                UIDropDownMenu_SetText(dropdown, opt.text)
+                editBox:SetText(opt.defaultEB)
+            end
+
+            UIDropDownMenu_Initialize(dropdown, function(frame, level, menuList)
+                for i, opt in ipairs(deserterInstanceOptions) do
+                    local info = UIDropDownMenu_CreateInfo()
+                    info.text    = opt.text
+                    info.value   = i
+                    info.func    = function() OnClickOption(opt) end
+                    info.checked = (opt == dropdown.selectedOption)
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            btnSet:SetScript("OnEnter", function(self)
+                local opt = dropdown.selectedOption
+                if not opt then return end
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(opt.tooltip, 1,1,1,1,true)
+            end)
+            btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnSet:SetScript("OnClick", function()
+                local opt = dropdown.selectedOption
+                if not opt then return end
+
+                local target = UnitName("target")
+                if not target then
+                    print("Erreur: Veuillez cibler un joueur.")
+                    return
+                end
+
+                if opt.needValue then
+                    local val = editBox:GetText()
+                    if not val or val == "" or val == opt.defaultEB then
+                        print("Erreur: Le champ est obligatoire pour '" .. opt.text .. "'.")
+                        return
+                    end
+                    local cmd = opt.cmd .. " " .. val
+                    SendChatMessage(cmd, "SAY")
+                else
+                    SendChatMessage(opt.cmd, "SAY")
+                end
+            end)
+
+            yLeft = yLeft - 50
+        end
+
+        ----------------------------------------------------------------------------
+        -- PVP MANAGEMENT : on le place en haut à droite
+        ----------------------------------------------------------------------------
+
+        do
+            local title = rightContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            title:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
+            title:SetText("|cff00ff00PvP Management|r")
+            yRight = yRight - 20
+        end
+
+        -- (A) Un champ "Enter Player Name" + bouton "Stop Combat"
+        do
+            local block = CreateFrame("Frame", nil, rightContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
+
+            local editName = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editName:SetSize(140, 22)
+            editName:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editName:SetAutoFocus(false)
+            editName:SetText("Enter Player Name")
+
+            local btnStopCombat = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnStopCombat:SetText("Stop Combat")
+            btnStopCombat:SetSize(btnStopCombat:GetTextWidth() + 20, 22)
+            btnStopCombat:SetPoint("LEFT", editName, "RIGHT", 10, 0)
+
+            btnStopCombat:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .combatstop [$playername]\r\n" ..
+                    "Stop combat for selected character. If selected non-player then command applied to self. " ..
+                    "If $playername provided then attempt applied to online player $playername.",
+                    1,1,1,1,true
+                )
+            end)
+            btnStopCombat:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnStopCombat:SetScript("OnClick", function()
+                local val = editName:GetText()
+                if val and val ~= "" and val ~= "Enter Player Name" then
+                    SendChatMessage(".combatstop " .. val, "SAY")
+                else
+                    local target = UnitName("target")
+                    if not target then
+                        print("Erreur: vous devez saisir un nom ou cibler un joueur.")
+                        return
+                    end
+                    SendChatMessage(".combatstop " .. target, "SAY")
+                end
+                editName:SetText("Enter Player Name")
+            end)
+
+            yRight = yRight - 50
+        end
+
+        -- (B) Un champ "Amount" + bouton "Add Honor" + bouton "Add Honor Kill"
+        do
+            local block = CreateFrame("Frame", nil, rightContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
+
+            local editAmount = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editAmount:SetSize(80, 22)
+            editAmount:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editAmount:SetAutoFocus(false)
+            editAmount:SetText("Amount")
+
+            local btnAddHonor = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnAddHonor:SetText("Add Honor")
+            btnAddHonor:SetSize(btnAddHonor:GetTextWidth() + 20, 22)
+            btnAddHonor:SetPoint("LEFT", editAmount, "RIGHT", 10, 0)
+
+            btnAddHonor:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .honor add $amount\r\n\r\n" ..
+                    "Add a certain amount of honor (gained today) to the selected player.",
+                    1,1,1,1,true
+                )
+            end)
+            btnAddHonor:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnAddHonor:SetScript("OnClick", function()
+                local amountVal = editAmount:GetText()
+                if not amountVal or amountVal == "" or amountVal == "Amount" then
+                    print("Erreur: veuillez saisir un montant d'honneur.")
+                    return
+                end
+                -- Vérifier la cible
+                local target = UnitName("target")
+                if not target then
+                    print("Erreur: veuillez cibler un joueur pour lui ajouter de l'honneur.")
+                    return
+                end
+
+                SendChatMessage(".honor add " .. amountVal, "SAY")
+                editAmount:SetText("Amount")
+            end)
+
+            local btnAddHonorKill = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnAddHonorKill:SetText("Add Honor Kill")
+            btnAddHonorKill:SetSize(btnAddHonorKill:GetTextWidth() + 20, 22)
+            btnAddHonorKill:SetPoint("LEFT", btnAddHonor, "RIGHT", 20, 0)
+
+            btnAddHonorKill:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .honor add kill\r\n\r\n" ..
+                    "Add the targeted unit as one of your pvp kills today (only if player or racial leader).",
+                    1,1,1,1,true
+                )
+            end)
+            btnAddHonorKill:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnAddHonorKill:SetScript("OnClick", function()
+                -- S'applique directement au GM
+                SendChatMessage(".honor add kill", "SAY")
+            end)
+
+            yRight = yRight - 50
+        end
+
+        -- (C) Bouton "PvP Stats"
+        do
+            local block = CreateFrame("Frame", nil, rightContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
+
+            local btnPvPStats = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnPvPStats:SetText("PvP Stats")
+            btnPvPStats:SetSize(btnPvPStats:GetTextWidth() + 20, 22)
+            btnPvPStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+
+            btnPvPStats:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Shows number of battleground victories in the last 7 days", 1,1,1,1,true)
+            end)
+            btnPvPStats:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnPvPStats:SetScript("OnClick", function()
+                SendChatMessage(".pvpstats", "SAY")
+            end)
+
+            yRight = yRight - 50
+        end
+
+        ----------------------------------------------------------------------------
+        -- (4) Sous-titre "Battlefield Management" (toujours colonne gauche)
+        ----------------------------------------------------------------------------
+        do
+            local titleBF = leftContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            titleBF:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+            titleBF:SetText("|cff00ff00Battlefield Management|r")
+
+            yLeft = yLeft - 20
+        end
+
+        ----------------------------------------------------------------------------
+        -- (4a) Premier menu (bf enable/start/stop/switch) + second menu (WinterGrasp/Tol Barad) + bouton "Set"
+        --      (toujours colonne gauche)
+        ----------------------------------------------------------------------------
+        local bfOptions1 = {
+            { text = "bf enable",  cmd = ".bf enable",  tooltip = "Syntax: .bf enable #battleid", },
+            { text = "bf start",   cmd = ".bf start",   tooltip = "Syntax: .bf start #battleid", },
+            { text = "bf stop",    cmd = ".bf stop",    tooltip = "Syntax: .bf stop #battleid", },
+            { text = "bf switch",  cmd = ".bf switch",  tooltip = "Syntax: .bf switch #battleid", },
+        }
+
+        local bfOptions2 = {
+            { text = "WinterGrasp", id = 1 },
+            { text = "Tol Barad",   id = 2 },
+        }
+
+        do
+            local block = CreateFrame("Frame", nil, leftContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+
+            local dropdown1 = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
+            dropdown1:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            UIDropDownMenu_SetWidth(dropdown1, 80)
+
+            local dropdown2 = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
+            dropdown2:SetPoint("LEFT", dropdown1, "RIGHT", 10, 0)
+            UIDropDownMenu_SetWidth(dropdown2, 80)
+
+            dropdown1.selectedOption = bfOptions1[1]
+            UIDropDownMenu_SetText(dropdown1, bfOptions1[1].text)
+
+            dropdown2.selectedOption = bfOptions2[1]
+            UIDropDownMenu_SetText(dropdown2, bfOptions2[1].text)
+
+            local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnSet:SetText("Set")
+            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            btnSet:SetPoint("LEFT", dropdown2, "RIGHT", 10, 0)
+
+            local function OnClickOption1(opt)
+                dropdown1.selectedOption = opt
+                UIDropDownMenu_SetSelectedName(dropdown1, opt.text)
+                UIDropDownMenu_SetText(dropdown1, opt.text)
+            end
+            UIDropDownMenu_Initialize(dropdown1, function(frame, level, menuList)
+                for i, opt in ipairs(bfOptions1) do
+                    local info = UIDropDownMenu_CreateInfo()
+                    info.text    = opt.text
+                    info.value   = i
+                    info.func    = function() OnClickOption1(opt) end
+                    info.checked = (opt == dropdown1.selectedOption)
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            local function OnClickOption2(opt)
+                dropdown2.selectedOption = opt
+                UIDropDownMenu_SetSelectedName(dropdown2, opt.text)
+                UIDropDownMenu_SetText(dropdown2, opt.text)
+            end
+            UIDropDownMenu_Initialize(dropdown2, function(frame, level, menuList)
+                for i, opt in ipairs(bfOptions2) do
+                    local info = UIDropDownMenu_CreateInfo()
+                    info.text    = opt.text
+                    info.value   = i
+                    info.func    = function() OnClickOption2(opt) end
+                    info.checked = (opt == dropdown2.selectedOption)
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            btnSet:SetScript("OnEnter", function(self)
+                if not dropdown1.selectedOption then return end
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(dropdown1.selectedOption.tooltip, 1,1,1,1,true)
+            end)
+            btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnSet:SetScript("OnClick", function()
+                local opt1 = dropdown1.selectedOption
+                local opt2 = dropdown2.selectedOption
+                if not opt1 or not opt2 then return end
+
+                local battleid = opt2.id
+                local cmd = opt1.cmd .. " " .. tostring(battleid)
+                SendChatMessage(cmd, "SAY")
+            end)
+
+            yLeft = yLeft - 60
+        end
+
+        ----------------------------------------------------------------------------
+        -- (4b) menu : "WinterGrasp/Tol Barad", champ "Timer", bouton "Set"
+        ----------------------------------------------------------------------------
+        local bfTimerOptions = {
+            { text = "WinterGrasp", id = 1 },
+            { text = "Tol Barad",   id = 2 },
+        }
+
+        do
+            local block = CreateFrame("Frame", nil, leftContainer)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
+
+            local dropdown3 = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
+            dropdown3:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            UIDropDownMenu_SetWidth(dropdown3, 80)
+
+            dropdown3.selectedOption = bfTimerOptions[1]
+            UIDropDownMenu_SetText(dropdown3, bfTimerOptions[1].text)
+
+            local editTimer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editTimer:SetSize(80, 22)
+            editTimer:SetPoint("LEFT", dropdown3, "RIGHT", 10, 0)
+            editTimer:SetAutoFocus(false)
+            editTimer:SetText("Timer")
+
+            local btnTimer = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnTimer:SetText("Set")
+            btnTimer:SetSize(btnTimer:GetTextWidth() + 20, 22)
+            btnTimer:SetPoint("LEFT", editTimer, "RIGHT", 10, 0)
+
+            local function OnClickOption3(opt)
+                dropdown3.selectedOption = opt
+                UIDropDownMenu_SetSelectedName(dropdown3, opt.text)
+                UIDropDownMenu_SetText(dropdown3, opt.text)
+            end
+            UIDropDownMenu_Initialize(dropdown3, function(frame, level, menuList)
+                for i, opt in ipairs(bfTimerOptions) do
+                    local info = UIDropDownMenu_CreateInfo()
+                    info.text    = opt.text
+                    info.value   = i
+                    info.func    = function() OnClickOption3(opt) end
+                    info.checked = (opt == dropdown3.selectedOption)
+                    UIDropDownMenu_AddButton(info, level)
+                end
+            end)
+
+            btnTimer:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .bf timer #battleid #timer", 1,1,1,1,true)
+            end)
+            btnTimer:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnTimer:SetScript("OnClick", function()
+                local opt = dropdown3.selectedOption
+                local val = editTimer:GetText()
+                if not val or val == "" or val == "Timer" then
+                    print("Veuillez saisir une valeur de timer.")
+                    return
+                end
+                local battleid = opt.id
+                local cmd = ".bf timer " .. tostring(battleid) .. " " .. val
+                SendChatMessage(cmd, "SAY")
+
+                editTimer:SetText("Timer")
+            end)
+
+            yLeft = yLeft - 50
+        end
+
+        ----------------------------------------------------------------------------
+        -- Bouton Retour
+        ----------------------------------------------------------------------------
+        local btnBack = CreateFrame("Button", nil, self.BattlefieldAndPvpPanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.BattlefieldAndPvpPanel, "BOTTOM", 0, 10)
+        btnBack:SetText(TrinityAdmin_Translations["Back"])
+        btnBack:SetHeight(22)
+        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        btnBack:SetScript("OnClick", function()
+            self.BattlefieldAndPvpPanel:Hide()
+            self.panel:Show()
+        end)
+    end
+    TrinityAdmin:HideMainMenu()
+    self.BattlefieldAndPvpPanel:Show()
+end
+
+function Misc:OpenDunjonsFuncManagement()
+    if self.panel then
+        self.panel:Hide()
+    end
+    if not self.DunjonsFuncPanel then
+        self.DunjonsFuncPanel = CreateFrame("Frame", "TrinityAdminDunjonsFuncPanel", TrinityAdminMainFrame)
+        self.DunjonsFuncPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.DunjonsFuncPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+        
+        local bg = self.DunjonsFuncPanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.DunjonsFuncPanel)
+        bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)  -- couleur de fond
+
+        self.DunjonsFuncPanel.title = self.DunjonsFuncPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.DunjonsFuncPanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.DunjonsFuncPanel.title:SetText("Dungeons Funcs")
+
+        -- Petit container pour tout disposer
+        local container = CreateFrame("Frame", nil, self.DunjonsFuncPanel)
+        container:SetPoint("TOPLEFT", self.DunjonsFuncPanel, "TOPLEFT", 10, -40)
+        container:SetSize(
+            self.DunjonsFuncPanel:GetWidth() - 20,
+            self.DunjonsFuncPanel:GetHeight() - 80
+        )
+
+        local yOffset = 0  -- position verticale courante
+
+        -- --------------------------------------------------------------------------------
+        -- 1) Un champ "Enter MapID or all" + champ "Difficulty" + bouton "Unbind"
+        -- --------------------------------------------------------------------------------
+        do
+            local block = CreateFrame("Frame", nil, container)
+            block:SetSize(500, 40)
+            block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+            local editMapID = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editMapID:SetSize(120, 22)
+            editMapID:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editMapID:SetAutoFocus(false)
+            editMapID:SetText("Enter MapID or all")
+
+            local editDifficulty = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editDifficulty:SetSize(80, 22)
+            editDifficulty:SetPoint("LEFT", editMapID, "RIGHT", 10, 0)
+            editDifficulty:SetAutoFocus(false)
+            editDifficulty:SetText("Difficulty")
+
+            local btnUnbind = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnUnbind:SetText("Unbind")
+            btnUnbind:SetSize(btnUnbind:GetTextWidth() + 20, 22)
+            btnUnbind:SetPoint("LEFT", editDifficulty, "RIGHT", 10, 0)
+
+            btnUnbind:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .instance unbind <mapid|all> [difficulty]\n  Clear all/some of player's binds",
+                    1,1,1,1,true
+                )
+            end)
+            btnUnbind:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnUnbind:SetScript("OnClick", function()
+                -- On vérifie si on a une cible GM (obligatoire)
+                local target = UnitName("target")
+                if not target then
+                    print("Erreur: veuillez cibler un joueur.")
+                    return
+                end
+
+                local valMapID = editMapID:GetText()
+                if not valMapID or valMapID == "" or valMapID == "Enter MapID or all" then
+                    print("Veuillez entrer un mapid ou 'all'.")
+                    return
+                end
+                -- On peut vérifier que si ce n'est pas 'all', alors c'est un nombre ?
+                if (valMapID ~= "all") and (not tonumber(valMapID)) then
+                    print("MapID incorrect: doit être 'all' ou un nombre.")
+                    return
+                end
+
+                local valDiff = editDifficulty:GetText()
+                -- si c'est "Difficulty" ou "", on n'envoie pas
+                local cmd = ".instance unbind " .. valMapID
+                if valDiff and valDiff ~= "" and valDiff ~= "Difficulty" then
+                    cmd = cmd .. " " .. valDiff
+                end
+
+                SendChatMessage(cmd, "SAY")
+            end)
+
+            yOffset = yOffset - 50
+        end
+
+        -- --------------------------------------------------------------------------------
+        -- 2) Un bouton "List Binds"
+        -- --------------------------------------------------------------------------------
+        do
+            local block = CreateFrame("Frame", nil, container)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+            local btnList = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnList:SetText("List Binds")
+            btnList:SetSize(btnList:GetTextWidth() + 20, 22)
+            btnList:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+
+            btnList:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .instance listbinds\nLists the binds of the selected player.",
+                    1,1,1,1,true
+                )
+            end)
+            btnList:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+			btnList:SetScript("OnClick", function()
+				local target = UnitName("target")
+				if not target then
+					print("Erreur: veuillez cibler un joueur.")
+					return
+				end
+				-- On n'inclut pas son nom dans la commande, mais la commande s’applique à la cible
+				SendChatMessage(".instance listbinds", "SAY")
+			end)
+
+            yOffset = yOffset - 50
+        end
+
+        -- --------------------------------------------------------------------------------
+        -- 3) 2 champs ("Boss ID", "Player Name") + bouton "Get"
+        -- --------------------------------------------------------------------------------
+        do
+            local block = CreateFrame("Frame", nil, container)
+            block:SetSize(500, 40)
+            block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+            local editBossID = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editBossID:SetSize(80, 22)
+            editBossID:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editBossID:SetAutoFocus(false)
+            editBossID:SetText("Boss ID")
+
+            local editPlayer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editPlayer:SetSize(120, 22)
+            editPlayer:SetPoint("LEFT", editBossID, "RIGHT", 10, 0)
+            editPlayer:SetAutoFocus(false)
+            editPlayer:SetText("Player Name")
+
+            local btnGet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnGet:SetText("Get")
+            btnGet:SetSize(btnGet:GetTextWidth() + 20, 22)
+            btnGet:SetPoint("LEFT", editPlayer, "RIGHT", 10, 0)
+
+            btnGet:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .instance getbossstate $bossId [$Name]\nGets the current EncounterState for the bossId.\nIf no name is provided, the current map is used.",
+                    1,1,1,1,true
+                )
+            end)
+            btnGet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnGet:SetScript("OnClick", function()
+                local bossIdVal = editBossID:GetText()
+                if not bossIdVal or bossIdVal == "" or bossIdVal == "Boss ID" then
+                    print("Veuillez saisir un Boss ID.")
+                    return
+                end
+
+                local playerVal = editPlayer:GetText()
+                local cmd = ".instance getbossstate " .. bossIdVal
+
+                if playerVal and playerVal ~= "" and playerVal ~= "Player Name" then
+                    cmd = cmd .. " " .. playerVal
+                end
+
+                SendChatMessage(cmd, "SAY")
+            end)
+
+            yOffset = yOffset - 50
+        end
+
+        -- --------------------------------------------------------------------------------
+        -- 4) 3 champs ("Boss ID", "Encounter State", "Player Name") + bouton "Set"
+        -- --------------------------------------------------------------------------------
+        do
+            local block = CreateFrame("Frame", nil, container)
+            block:SetSize(600, 40)
+            block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+            local editBossID = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editBossID:SetSize(80, 22)
+            editBossID:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            editBossID:SetAutoFocus(false)
+            editBossID:SetText("Boss ID")
+
+            local editEncounter = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editEncounter:SetSize(120, 22)
+            editEncounter:SetPoint("LEFT", editBossID, "RIGHT", 10, 0)
+            editEncounter:SetAutoFocus(false)
+            editEncounter:SetText("Encounter State")
+
+            local editPlayer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
+            editPlayer:SetSize(120, 22)
+            editPlayer:SetPoint("LEFT", editEncounter, "RIGHT", 10, 0)
+            editPlayer:SetAutoFocus(false)
+            editPlayer:SetText("Player Name")
+
+            local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnSet:SetText("Set")
+            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            btnSet:SetPoint("LEFT", editPlayer, "RIGHT", 10, 0)
+
+            btnSet:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(
+                    "Syntax: .instance setbossstate $bossId $encounterState [$Name]\n" ..
+                    "Sets the EncounterState for the boss. Range 0..5.\n" ..
+                    "If no name, uses current map as target.",
+                    1,1,1,1,true
+                )
+            end)
+            btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnSet:SetScript("OnClick", function()
+                local bossIdVal = editBossID:GetText()
+                if not bossIdVal or bossIdVal == "" or bossIdVal == "Boss ID" then
+                    print("Veuillez saisir un Boss ID.")
+                    return
+                end
+
+                local encVal = editEncounter:GetText()
+                if not encVal or encVal == "" or encVal == "Encounter State" then
+                    print("Veuillez saisir une Encounter State (0..5).")
+                    return
+                end
+
+                local cmd = ".instance setbossstate " .. bossIdVal .. " " .. encVal
+                local playerVal = editPlayer:GetText()
+                if playerVal and playerVal ~= "" and playerVal ~= "Player Name" then
+                    cmd = cmd .. " " .. playerVal
+                end
+
+                SendChatMessage(cmd, "SAY")
+            end)
+
+            yOffset = yOffset - 50
+        end
+
+        -- --------------------------------------------------------------------------------
+        -- 5) Bouton "Show Instances Stats"
+        -- --------------------------------------------------------------------------------
+        do
+            local block = CreateFrame("Frame", nil, container)
+            block:SetSize(300, 40)
+            block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+            local btnStats = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnStats:SetText("Show Instances Stats")
+            btnStats:SetSize(btnStats:GetTextWidth() + 20, 22)
+            btnStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+
+            btnStats:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .instance stats\n  Shows statistics about instances.", 1,1,1,1,true)
+            end)
+            btnStats:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+            btnStats:SetScript("OnClick", function()
+                SendChatMessage(".instance stats", "SAY")
+            end)
+
+            yOffset = yOffset - 50
+        end
+
+        ----------------------------------------------------------------------------
+        -- Bouton Retour (en bas)
+        ----------------------------------------------------------------------------
+        local btnBack = CreateFrame("Button", nil, self.DunjonsFuncPanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.DunjonsFuncPanel, "BOTTOM", 0, 10)
+        btnBack:SetText(TrinityAdmin_Translations["Back"])
+        btnBack:SetHeight(22)
+        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        btnBack:SetScript("OnClick", function()
+            self.DunjonsFuncPanel:Hide()
+            self.panel:Show()
+        end)
+    end
+    TrinityAdmin:HideMainMenu()
+    self.DunjonsFuncPanel:Show()
+end
