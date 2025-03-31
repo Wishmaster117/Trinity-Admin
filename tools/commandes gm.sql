@@ -6,58 +6,7 @@
 -- --------------------------------------------------------
 -- Mettre les autres traductions pour les titres, es, pt, it, etc....
 
--- Panneau reset Management
 
-Dans ce panneau, 
-
-Il me faut un champ de saisie et un menu déroulant suivi d'un bouton "Lookup"
-Le menue déroulant aura ces options et le texte par defaut du champ de saisie devra s'adapter dynamiquement suivant l'option choisie, et le tooltip sur le bouton devra changer aussi dynamiquement:
-lookup area - Texte defaut : Enter Area Name part - Actioan à réaliser au click du bouton: .lookup area [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup area $namepart\r\n\r\nLooks up an area by $namepart, and returns all matches with their area ID\'s.
-lookup creature - Texte defaut : Enter Creature Name part - Actioan à réaliser au click du bouton: .lookup creature [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup creature $namepart\r\n\r\nLooks up a creature by $namepart, and returns all matches with their creature ID\'s.
-lookup event - Texte defaut : Enter Event Neme - Actioan à réaliser au click du bouton: .lookup event [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup event $name\r\nAttempts to find the ID of the event with the provided $name.
-lookup faction - Texte defaut : Enter Faction Name - Actioan à réaliser au click du bouton: .lookup faction [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup faction $name\r\nAttempts to find the ID of the faction with the provided $name.
-lookup item - Texte defaut : Enter Item Name - Actioan à réaliser au click du bouton: .lookup item [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup item $itemname\r\n\r\nLooks up an item by $itemname, and returns all matches with their Item ID\'s.
-lookup item set - Texte defaut : Enter ItemSet Name - Actioan à réaliser au click du bouton: .lookup item set [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup itemset $itemname\r\n\r\nLooks up an item set by $itemname, and returns all matches with their Item set ID\'s.
-lookup map - Texte defaut : Enter Map Name Part - Actioan à réaliser au click du bouton: .lookup map [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup map $namepart\r\n\r\nLooks up a map by $namepart, and returns all matches with their map ID\'s.
-lookup object - Texte defaut : Enter Object Name - Actioan à réaliser au click du bouton: .lookup object [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup object $objname\r\n\r\nLooks up an gameobject by $objname, and returns all matches with their Gameobject ID\'s.
-lookup quest - Texte defaut : Enter Quest Name Part - Actioan à réaliser au click du bouton: .lookup quest [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup quest $namepart\r\n\r\nLooks up a quest by $namepart, and returns all matches with their quest ID\'s.
-lookup skill - Texte defaut : Enter Skill Name Part - Actioan à réaliser au click du bouton: .lookup skill [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup skill $$namepart\r\n\r\nLooks up a skill by $namepart, and returns all matches with their skill ID\'s.
-lookup spell - Texte defaut : Enter Spell Name Part - Actioan à réaliser au click du bouton: .lookup spell [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup spell $namepart\r\n\r\nLooks up a spell by $namepart, and returns all matches with their spell ID\'s.
-lookup spell id - Texte defaut : Enter Spell ID - Actioan à réaliser au click du bouton: .lookup spell id [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup spell id #spellid\n\nLooks up a spell by #spellid, and returns the match with its spell name.
-lookup taxinode - Texte defaut : Enter Taxinode Substring - Actioan à réaliser au click du bouton: . lookup taxinode [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup taxinode $substring\r\n\r\nSearch and output all taxinodes with provide $substring in name.
-lookup tele - Texte defaut : Enter Teleport Substring - Actioan à réaliser au click du bouton: .lookup tele [Valeur du champ de saisie] - Tooltip bouton: yntax: .lookup tele $substring\r\n\r\nSearch and output all .tele command locations with provide $substring in name.
-lookup title - Texte defaut : Enter Title Name Part - Actioan à réaliser au click du bouton: .lookup title [Valeur du champ de saisie] - Tooltip bouton: Syntax: .lookup title $$namepart\r\n\r\nLooks up a title by $namepart, and returns all matches with their title ID\'s and index\'s.
-
-
-En dessous il me faut deux champs de saisie et un menu déroulant suivi d'un bouton Lookup, les deux textes par defaut doivent être dynamiques suivant l'option choisie.
-Options du menu déroulant:
-lookup player ip - Texte defaut premier champ "Enter IP", texte defaut deuxieme champ "Limit" - Action à réaliser au click du bouton: .lookup player ip [Valeur du champ IP] [Valeur du champ Limite] - Tooltip : Syntax: .lookup player ip $ip ($limit) \r\n\r\n Searchs players, which account ast_ip is $ip with optional parametr $limit of results.
-lookup player email - Texte defaut premier champ "Enter Email", texte defaut deuxieme champ "Limit" - Action à réaliser au click du bouton: .lookup player email [Valeur du Enter Email] [Valeur du champ Limite] - Tooltip :Syntax: .lookup player email $email ($limit) \r\n\r\n Searchs players, which account email is $email with optional parametr $limit of results.
-lookup player account - Texte defaut premier champ "Enter a Usernane", texte defaut deuxieme champ "Limit" - Action à réaliser au click du bouton: .lookupplayer account [Valeur du Enter a Usernane] [Valeur du champ Limite] - Tooltip :Syntax: .lookup player account $account ($limit) \r\n\r\n Searchs players, which account username is $account with optional parametr $limit of results.
-Pour tous les boutons, une fois le bouton cliqué il faut remettre le texte par défaut. Et doivent s'adapter à la longueur du texte.
-
-Chaque action va retouner des informations dans le chat, alors il faut les capturer les insérer dans une fenêtre ACE3 comme nous avons déjà fait pour d'autres modules, et créer un champ de saisie par ligne du chat et y incrémenter la valeur dans la fenetre en générant le nom de la ligne comme nous avons déjà fait aussi pour un module
-	
-
--- Groups management
-
-	('group disband', 'Syntax: .group disband [$characterName]\n\nDisbands the given character\'s group.'),
-	('group join', 'Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName] \r\nAdds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).'),
-	('group leader', 'Syntax: .group leader [$characterName]\n\nSets the given character as his group\'s leader.'),
-	('group level', 'Syntax: .group level [$charactername] Set the level of the given character and his group to #numberoflevels (only positive values 1+). Modify only online group characters level but original selected group member can be offline. All stats and dependent values are not recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost. If no character is selected and name not provided, it will modify your level.'),
-	('group list', 'Syntax: .group list [$CharacterName] \r\nLists all the members of the group/party the player is in.'),
-	('group remove', 'Syntax: .group remove [$characterName]\n\nRemoves the given character from his group.'),
-	('group repair', 'Syntax: .group repair [$charactername] Repair the given character and his group. Repair only online group characters but original selected group member can be offline. If no character is selected and name not provided, it will repair yourself.'),
-	('group revive', 'Syntax: .group revive [$charactername] Revive the given character and his group. Revive only online group characters but original selected group member can be offline. If no character is selected and name not provided, it will revive yourself.'),
-	('group set assistant', 'Syntax: .group set assistant [$characterName]\n\nToggles the given character\'s assistant state in his raid group.'),
-	('group set leader', 'Syntax: .group set leader [$characterName]\n\nSets the given character (or selected) as his group\'s leader. Alias for \'.group leader\'.'),
-	('group set mainassist', 'Syntax: .group set mainassist [$characterName]\n\nToggles the given character\'s main assist flag in his raid group.'),
-	('group set maintank', 'Syntax: .group set maintank [$characterName]\n\nToggles the given character\'s main tank flag in his raid group.'),
-	('group summon', 'Syntax: .group summon [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
-	
-
-	
-	
 
 	
 idées:
@@ -152,8 +101,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 
 	
 	('commands', 'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
-	(
-	'cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
+	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
 	
 
 	('debug', 'Syntax: .debug $subcommand\nType .debug to see the list of possible subcommands or .help debug $subcommand to see info on subcommands'),
