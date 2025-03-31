@@ -28,7 +28,8 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
 	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
 	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
-
+    ('recall', 'Syntax: .recall [$playername]\r\n\r\nTeleport $playername or selected player to the place where he has been before last use of a teleportation command. If no $playername is entered and no player is selected, it will teleport you.'),
+	('channel set ownership', 'Syntax: .channel set ownership $channel [on/off]\n\nGrant ownership to the first person that joins the channel.'),
 	
 	
 	
@@ -37,55 +38,32 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	-- finir de mettre les noms des sets et leurs traduction
 	-- Revoir les boutond radio de battlenet account et mettre des textes par defaut
 
-	
-    Il me faut pour mon nouveau module le code pour les fonctions suivantes qui sera a intégrer à la page 1:
-	Un champ de saisie avec le texte par defaut "Spell ID", suivi d'un champ de saisie avec texte "Option" et un bouton "Learn", quand on clique
-	sur ce bouton on envoi la commande : .learn "Valeur du champ Spell ID" "Valeur du champ Option" (ce champ est facultatif, si il est vide ou contient le texte par defaut, on ne le prends pas dans la commande envoyée),
-	cette commande doit être envoyée sur je joueur selectionné par le GM donc si il ne selectionne pas de joueur, on envoi une erreur. Le bouton devra avoir ce tooltip : Syntax: .learn #spell [all] Selected character learn a spell of id #spell. If 'all' provided then all ranks learned.
-
 	-- Tester les commandes .learn
     -- essayer de trouver une commande reversse à .possess	
     
-
-
-	('instance unbind', 'Syntax: .instance unbind <mapid|all> [difficulty]\r\n  Clear all/some of player\'s binds'),
-	('instance listbinds', 'Syntax: .instance listbinds\r\n  Lists the binds of the selected player.'),		
-	('combatstop', 'Syntax: .combatstop [$playername]\r\nStop combat for selected character. If selected non-player then command applied to self. If $playername provided then attempt applied to online player $playername.'),		
-	('honor', 'Syntax: .honor $subcommand\nType .honor to see the list of possible subcommands or .help honor $subcommand to see info on subcommands'),
-	('honor add', 'Syntax: .honor add $amount\r\n\r\nAdd a certain amount of honor (gained today) to the selected player.'),
-	('honor add kill', 'Syntax: .honor add kill\r\n\r\nAdd the targeted unit as one of your pvp kills today (you only get honor if it\'s a racial leader or a player)'),	
-	
+	-- Tester le panneau donjons
 
 	
-	('deserter', 'Syntax: deserter $subcommand\n Type .deserter to see a list of possible subcommands\n or .help deserter $subcommand to see info on the subcommand.'),
-	('deserter bg', 'Syntax: '),
-	('deserter bg add', 'Syntax: .deserter bg add $time \n\n Adds the bg deserter debuff to your target with $time duration.'),
-	('deserter bg remove', 'Syntax: .deserter bg remove \n\n Removes the bg deserter debuff from your target.'),
-	('deserter instance', 'Syntax: '),
-	('deserter instance add', 'Syntax: .deserter instance add $time \n\n Adds the instance deserter debuff to your target with $time duration.'),
-	('deserter instance remove', 'Syntax: .deserter instance remove \n\n Removes the instance deserter debuff from your target.'),
-	
+
+    -- Events management
+	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
+	('event info', 'Syntax: .event info #event_id\r\nShow details about event with #event_id.'),
+	('event start', 'Syntax: .event start #event_id\r\nStart event #event_id. Set start time for event to current moment (change not saved in DB).'),
+	('event stop', 'Syntax: .event stop #event_id\r\nStop event #event_id. Set start time for event to time in past that make current moment is event stop time (change not saved in DB).'),
 
 	
-	('bf', 'Syntax: bf $subcommand\n Type .bf to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
-	('bf enable', 'Syntax: .bf enable #battleid'),
-	('bf start', 'Syntax: .bf start #battleid'),
-	('bf stop', 'Syntax: .bf stop #battleid'),
-	('bf switch', 'Syntax: .bf switch #battleid'),
-	('bf timer', 'Syntax: .bf timer #battleid #timer'),
-	
-	
-	
+	-- Cast Commands
 	('cast', 'Syntax: .cast #spellid [triggered]\r\n  Cast #spellid to selected target. If no target selected cast to self. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast back', 'Syntax: .cast back #spellid [triggered]\r\n  Selected target will cast #spellid to your character. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast dest', 'Syntax: .cast dest #spellid #x #y #z [triggered]\r\n  Selected target will cast #spellid at provided destination. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast dist', 'Syntax: .cast dist #spellid [#dist [triggered]]\r\n  You will cast spell to pint at distance #dist. If \'triggered\' or part provided then spell casted with triggered flag. Not all spells can be casted as area spells.'),
 	('cast self', 'Syntax: .cast self #spellid [triggered]\r\nCast #spellid by target at target itself. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast target', 'Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If \'triggered\' or part provided then spell casted with triggered flag.'),
+	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
 	
-	('channel', 'Syntax: channel $subcommand\n Type .channel to see a list of possible subcommands\n or .help channel $subcommand to see info on the subcommand.'),
-	('channel set', 'Syntax: '),
-	('channel set ownership', 'Syntax: .channel set ownership $channel [on/off]\n\nGrant ownership to the first person that joins the channel.'),
+
+
+
 	
 	
 	('cheat', 'Syntax: .cheat $subcommand\r\nType .cheat to see the list of possible subcommands or .help cheat $subcommand to see info on subcommands'),
@@ -100,8 +78,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 
 	
-	('commands', 'Syntax: .commands\r\n\r\nDisplay a list of available commands for your account level.'),
-	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
+	
 	
 
 	('debug', 'Syntax: .debug $subcommand\nType .debug to see the list of possible subcommands or .help debug $subcommand to see info on subcommands'),
@@ -182,31 +159,6 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 
 	
-	
-	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
-	('event info', 'Syntax: .event info #event_id\r\nShow details about event with #event_id.'),
-	('event start', 'Syntax: .event start #event_id\r\nStart event #event_id. Set start time for event to current moment (change not saved in DB).'),
-	('event stop', 'Syntax: .event stop #event_id\r\nStop event #event_id. Set start time for event to time in past that make current moment is event stop time (change not saved in DB).'),
-	
-
-	
-	
-	
-
-
-	
-	('help', 'Syntax: .help [$command]\r\n\r\nDisplay usage instructions for the given $command. If no $command provided show list available commands.'),
-	
-	
-
-	
-	
-	('instance', 'Syntax: .instance $subcommand\nType .instance to see the list of possible subcommands or .help instance $subcommand to see info on subcommands'),
-	('instance getbossstate', 'Syntax: .instance getbossstate $bossId [$Name]\r\nGets the current EncounterState for the provided boss id.\r\nIf no character name is provided, the current map will be used as target.'),
-	('instance setbossstate', 'Syntax: .instance setbossstate $bossId $encounterState [$Name]\r\nSets the EncounterState for the given boss id to a new value. EncounterStates range from 0 to 5.\r\nIf no character name is provided, the current map will be used as target.'),
-	('instance stats', 'Syntax: .instance stats\r\n  Shows statistics about instances.'),
-
-	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
 	
 	-- Maintenance server
@@ -243,7 +195,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 
 
 	
-	
+	-- A ajouter ans Waypoints
 	('movegens', 'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
 	
 
@@ -258,9 +210,19 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 
 	('playall', 'Syntax: .playall #soundid\r\n\r\nPlayer a sound to whole server.'),
 	
-	('pvpstats', 'Shows number of battleground victories in the last 7 days'),
-	
-	
+
+    -- Gestion des GM	
+	Que fait cette commande ?
+    Elle refuse (deny) une permission spécifique à un compte donné, même si ce compte l’a normalement via son rang.
+
+    En gros : c’est un "override" négatif.
+    Tu dis : « même si ce compte a la permission via son rang, je lui interdis quand même. »
+
+   📘 Syntaxe détaillée :
+	Paramètre	Description
+	$account	(Optionnel) Le nom de compte auquel tu veux retirer la permission. Si rien n’est précisé, c’est le compte actuellement sélectionné.
+	#id	L’ID de permission RBAC que tu veux refuser.
+	#realmId	(Optionnel) Le realm concerné. -1 = tous les royaumes.
 	('rbac', 'Syntax: bf $subcommand\n Type .rbac to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
 	('rbac account', 'Syntax: rbac account $subcommand\n Type .rbac account to see a list of possible subcommands\n or .help rbac account $subcommand to see info on the subcommand.'),
 	('rbac account deny', 'Syntax: rbac account deny [$account] #id [#realmId]\n\nDeny a permission to selected player or given account.\n\n#reamID may be -1 for all realms.'),
@@ -268,7 +230,6 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	('rbac account list', 'Syntax: rbac account list [$account]\n\nView permissions of selected player or given account\nNote: Only those that affect current realm'),
 	('rbac account revoke', 'Syntax: rbac account revoke [$account] #id [#realmId]\n\nRemove a permission from an account\n\nNote: Removes the permission from granted or denied permissions'),
 	('rbac list', 'Syntax: rbac list [$id]\n\nView list of all permissions. If $id is given will show only info for that permission.'),
-	('recall', 'Syntax: .recall [$playername]\r\n\r\nTeleport $playername or selected player to the place where he has been before last use of a teleportation command. If no $playername is entered and no player is selected, it will teleport you.'),
 	
 	
 	
