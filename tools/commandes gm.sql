@@ -30,6 +30,7 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
     ('recall', 'Syntax: .recall [$playername]\r\n\r\nTeleport $playername or selected player to the place where he has been before last use of a teleportation command. If no $playername is entered and no player is selected, it will teleport you.'),
 	('channel set ownership', 'Syntax: .channel set ownership $channel [on/off]\n\nGrant ownership to the first person that joins the channel.'),
+	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'), -> Fonction pour serveur
 	
 	
 	
@@ -44,12 +45,8 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	-- Tester le panneau donjons
 
 	
+Pour ce panneau il me faut:
 
-    -- Events management
-	('event activelist', 'Syntax: .event activelist\r\nShow list of currently active events.'),
-	('event info', 'Syntax: .event info #event_id\r\nShow details about event with #event_id.'),
-	('event start', 'Syntax: .event start #event_id\r\nStart event #event_id. Set start time for event to current moment (change not saved in DB).'),
-	('event stop', 'Syntax: .event stop #event_id\r\nStop event #event_id. Set start time for event to time in past that make current moment is event stop time (change not saved in DB).'),
 
 	
 	-- Cast Commands
@@ -161,14 +158,8 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
 	
-	-- Maintenance server
-	('lfg', 'Syntax: lfg $subcommand\n Type .lfg to see a list of possible subcommands\n or .help lfg $subcommand to see info on the subcommand.'),
-	('lfg clean', 'Syntax: .flg clean\n Cleans current queue, only for debugging purposes.'),
-	('lfg group', 'Syntax: .lfg group\n Shows information about all players in the group  (state, roles, comment, dungeons selected).'),
-	('lfg options', 'Syntax: .lfg options [new value]\n Shows current lfg options. New value is set if extra param is present.'),
-	('lfg player', 'Syntax: .lfg player\n Shows information about player (state, roles, comment, dungeons selected).'),
-	('lfg queue', 'Syntax: .lfg queue\n Shows info about current lfg queues.'),
-	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'), -> Fonction pour serveur
+
+	
 	
 	
 	('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
