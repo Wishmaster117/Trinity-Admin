@@ -162,6 +162,19 @@ function Misc:AddManagementButtons(panel)
     DunjonsFunc:SetPoint("LEFT", BattlefieldAndPvp, "RIGHT", 10, 0)
     DunjonsFunc:SetText("Dungeons Funcs")
     DunjonsFunc:SetScript("OnClick", function() self:OpenDunjonsFuncManagement() end)
+	
+	local LfgManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    LfgManage:SetSize(150, 22)
+    LfgManage:SetPoint("LEFT", DunjonsFunc, "RIGHT", 10, 0)
+    LfgManage:SetText("LFG Management")
+    LfgManage:SetScript("OnClick", function() self:OpenLfgManageManagement() end)
+	
+	local EventsManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    EventsManage:SetSize(150, 22)
+    EventsManage:SetPoint("TOPLEFT", BattlefieldAndPvp, "BOTTOMLEFT", 0, -10)
+    EventsManage:SetText("Events Manager")
+    EventsManage:SetScript("OnClick", function() self:OpenEventsManageManagement() end)
+	
 end
 
 ------------------------------------------------------------
@@ -3097,4 +3110,597 @@ function Misc:OpenDunjonsFuncManagement()
     end
     TrinityAdmin:HideMainMenu()
     self.DunjonsFuncPanel:Show()
+end
+
+
+------------------------------------------------------------
+-- Fonction de traitement du texte si on veut séparer lignes
+------------------------------------------------------------
+local function ProcessLfgCapturedText(input)
+    local text = (type(input) == "table") and table.concat(input, "\n") or input
+    local processedLines = {}
+
+        --    Roles: Dps, Leader"
+    text = text
+        :gsub(",%s*(Dungeons:)", "\n%1")
+        :gsub(",%s*(Roles:)",    "\n%1")
+
+    -- Maintenant on sépare chaque ligne par les retours à la ligne
+    local processedLines = {}
+    for line in text:gmatch("[^\r\n]+") do
+        table.insert(processedLines, line)
+    end
+    return processedLines
+end
+
+------------------------------------------------------------
+-- Variables globales (ou du module) pour la capture "LFG"
+------------------------------------------------------------
+local capturingLfg = false
+local lfgInfoCollected = {}
+local lfgInfoTimer = nil
+
+------------------------------------------------------------
+-- Frame pour écouter l'événement de chat (system ou say)
+--  et capturer la sortie des commandes .lfg
+------------------------------------------------------------
+local lfgCaptureFrame = CreateFrame("Frame")
+lfgCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")  -- On peut aussi écouter "CHAT_MSG_SAY" si nécessaire
+lfgCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingLfg then return end
+
+    -- Nettoyage minimal (suppression codes couleur, textures, etc.)
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                       :gsub("|r", "")
+                       :gsub("|H.-|h(.-)|h", "%1")
+                       :gsub("|T.-|t", "")
+                       :gsub("\226[\148-\149][\128-\191]", "")
+
+    table.insert(lfgInfoCollected, cleanMsg)
+
+    -- Réinitialise / redémarre le timer (par ex. 1 seconde)
+    if lfgInfoTimer then
+        lfgInfoTimer:Cancel()
+    end
+    lfgInfoTimer = C_Timer.NewTimer(1, function()
+        capturingLfg = false
+        local fullText = table.concat(lfgInfoCollected, "\n")
+        local lines = ProcessLfgCapturedText(fullText)
+        ShowLfgAceGUI(lines)
+    end)
+end)
+
+------------------------------------------------------------
+-- Fenêtre AceGUI pour afficher le résultat
+------------------------------------------------------------
+local AceGUI = LibStub("AceGUI-3.0")
+function ShowLfgAceGUI(lines)
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("LFG Info")
+    frame:SetStatusText("Information from lfg command")
+    frame:SetLayout("Flow")
+    frame:SetWidth(600)
+    frame:SetHeight(500)
+
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    frame:AddChild(scroll)
+
+    for i, line in ipairs(lines) do
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel(string.format("Line %d", i))
+        edit:SetText(line)
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
+
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Fermer")
+    btnClose:SetWidth(100)
+    btnClose:SetCallback("OnClick", function() frame:Hide() end)
+    frame:AddChild(btnClose)
+end
+
+------------------------------------------------------------
+-- Pour lancer la capture avant d'envoyer la commande .lfg
+------------------------------------------------------------
+local function StartLfgCapture()
+    wipe(lfgInfoCollected)
+    capturingLfg = true
+    if lfgInfoTimer then
+        lfgInfoTimer:Cancel()
+        lfgInfoTimer = nil
+    end
+end
+
+------------------------------------------------------------
+-- Ouvre le panneau LfgManage en masquant le panneau principal
+------------------------------------------------------------
+function Misc:OpenLfgManageManagement()
+    if self.panel then
+        self.panel:Hide()
+    end
+
+    if not self.LfgManagePanel then
+        -- Crée le panneau principal
+        self.LfgManagePanel = CreateFrame("Frame", "TrinityAdminLfgManagePanel", TrinityAdminMainFrame)
+        self.LfgManagePanel:SetPoint("TOPLEFT",  TrinityAdminMainFrame, "TOPLEFT",     10, -50)
+        self.LfgManagePanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+        
+        local bg = self.LfgManagePanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.LfgManagePanel)
+        bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)
+        
+        self.LfgManagePanel.title = self.LfgManagePanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.LfgManagePanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.LfgManagePanel.title:SetText("LFG Management")
+        
+        ---------------------------------------------------------------------
+        -- Conteneur pour disposer les éléments
+        ---------------------------------------------------------------------
+        local container = CreateFrame("Frame", nil, self.LfgManagePanel)
+        container:SetPoint("TOPLEFT", self.LfgManagePanel, "TOPLEFT", 10, -40)
+        container:SetSize(self.LfgManagePanel:GetWidth() - 20, self.LfgManagePanel:GetHeight() - 80)
+
+        local xOffset = 0
+        local yOffset = 0
+
+        ---------------------------------------------------------------------
+        -- Boutons "Lfg Clean", "Lfg Group", "Lfg Player", "Lfg Queue"
+        ---------------------------------------------------------------------
+        -- On va les placer sur une même ligne, par exemple
+        local blockButtons = CreateFrame("Frame", nil, container)
+        blockButtons:SetSize(600, 40)
+        blockButtons:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+        -- 2) Lfg Group
+        local btnGroup = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
+        btnGroup:SetText("Lfg Group")
+        btnGroup:SetSize(btnGroup:GetTextWidth() + 20, 22)
+        btnGroup:SetPoint("TOPLEFT", blockButtons, "TOPLEFT", 10, 0)
+
+        btnGroup:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .lfg group\nShows info about all players in the group (state, roles...)", 1,1,1,1,true)
+        end)
+        btnGroup:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnGroup:SetScript("OnClick", function()
+            StartLfgCapture()
+            SendChatMessage(".lfg group", "SAY")
+        end)
+
+        -- 3) Lfg Player
+        local btnPlayer = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
+        btnPlayer:SetText("Lfg Player")
+        btnPlayer:SetSize(btnPlayer:GetTextWidth() + 20, 22)
+        btnPlayer:SetPoint("LEFT", btnGroup, "RIGHT", 10, 0)
+
+        btnPlayer:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .lfg player\nShows info about your LFG player state, roles, etc.", 1,1,1,1,true)
+        end)
+        btnPlayer:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnPlayer:SetScript("OnClick", function()
+            StartLfgCapture()
+            SendChatMessage(".lfg player", "SAY")
+        end)
+
+        -- 4) Lfg Queue
+        local btnQueue = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
+        btnQueue:SetText("Lfg Queue")
+        btnQueue:SetSize(btnQueue:GetTextWidth() + 20, 22)
+        btnQueue:SetPoint("LEFT", btnPlayer, "RIGHT", 10, 0)
+
+        btnQueue:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .lfg queue\nShows info about current LFG queues.", 1,1,1,1,true)
+        end)
+        btnQueue:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnQueue:SetScript("OnClick", function()
+            StartLfgCapture()
+            SendChatMessage(".lfg queue", "SAY")
+        end)
+
+        yOffset = yOffset - 50
+
+        ---------------------------------------------------------------------
+        -- En dessous : un champ "New Value" + bouton "Set" => .lfg options ...
+        ---------------------------------------------------------------------
+        local blockOptions = CreateFrame("Frame", nil, container)
+        blockOptions:SetSize(600, 40)
+        blockOptions:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+        local editOptions = CreateFrame("EditBox", nil, blockOptions, "InputBoxTemplate")
+        editOptions:SetSize(120, 22)
+        editOptions:SetPoint("TOPLEFT", blockOptions, "TOPLEFT", 0, 0)
+        editOptions:SetAutoFocus(false)
+        editOptions:SetText("New Value")
+
+        local btnSet = CreateFrame("Button", nil, blockOptions, "UIPanelButtonTemplate")
+        btnSet:SetText("Show/Set Option")
+        btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+        btnSet:SetPoint("LEFT", editOptions, "RIGHT", 10, 0)
+
+        btnSet:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .lfg options [new value]\nShows or sets current lfg options if param is present.", 1,1,1,1,true)
+        end)
+        btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnSet:SetScript("OnClick", function()
+            local val = editOptions:GetText()
+            if not val or val == "" or val == "New Value" then
+                -- On n'envoie pas la valeur
+                SendChatMessage(".lfg options", "SAY")
+            else
+                SendChatMessage(".lfg options " .. val, "SAY")
+            end
+            editOptions:SetText("New Value")
+        end)
+
+        -- Bouton Retour
+        local btnBack = CreateFrame("Button", nil, self.LfgManagePanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.LfgManagePanel, "BOTTOM", 0, 10)
+        btnBack:SetText(TrinityAdmin_Translations["Back"])
+        btnBack:SetHeight(22)
+        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        btnBack:SetScript("OnClick", function()
+            self.LfgManagePanel:Hide()
+            self.panel:Show()
+        end)
+    end
+
+    TrinityAdmin:HideMainMenu()
+    self.LfgManagePanel:Show()
+end
+
+-- Ouvre le panneau EventsManage en masquant le panneau principal
+-----------------------------------------------------------
+-- 1) Variables de capture pour .event [commandes]
+-----------------------------------------------------------
+local capturingEvents = false
+local eventsInfoCollected = {}
+local eventsInfoTimer = nil
+
+-- Frame pour écouter les messages système (CHAT_MSG_SYSTEM)
+local eventsCaptureFrame = CreateFrame("Frame")
+eventsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+eventsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingEvents then return end
+
+    -- Nettoyage minimal
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                       :gsub("|r", "")
+                       :gsub("|H.-|h(.-)|h", "%1")
+                       :gsub("|T.-|t", "")
+                       :gsub("\226[\148-\149][\128-\191]", "")
+
+    table.insert(eventsInfoCollected, cleanMsg)
+
+    -- On redémarre un timer (1 seconde)
+    if eventsInfoTimer then
+        eventsInfoTimer:Cancel()
+    end
+    eventsInfoTimer = C_Timer.NewTimer(1, function()
+        capturingEvents = false
+        local fullText = table.concat(eventsInfoCollected, "\n")
+        local lines = ProcessEventsCapturedText(fullText)
+        ShowEventsAceGUI(lines)
+    end)
+end)
+
+-----------------------------------------------------------
+-- 2) Lance la capture avant d'envoyer la commande
+-----------------------------------------------------------
+local function StartEventsCapture()
+    wipe(eventsInfoCollected)
+    capturingEvents = true
+    if eventsInfoTimer then
+        eventsInfoTimer:Cancel()
+        eventsInfoTimer = nil
+    end
+end
+
+-----------------------------------------------------------
+-- 3) Fonction de parsing (séparer en lignes)
+-----------------------------------------------------------
+function ProcessEventsCapturedText(input)
+    local text = (type(input) == "table") and table.concat(input, "\n") or input
+    local processedLines = {}
+    for line in text:gmatch("[^\r\n]+") do
+        table.insert(processedLines, line)
+    end
+    return processedLines
+end
+
+-----------------------------------------------------------
+-- 4) Fenêtre AceGUI pour afficher le résultat
+-----------------------------------------------------------
+local AceGUI = LibStub("AceGUI-3.0")
+function ShowEventsAceGUI(lines)
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("Events Info")
+    frame:SetStatusText("Information from .event commands")
+    frame:SetLayout("Flow")
+    frame:SetWidth(600)
+    frame:SetHeight(500)
+
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    frame:AddChild(scroll)
+
+    for i, line in ipairs(lines) do
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("Line " .. i)
+        edit:SetText(line)
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
+
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Fermer")
+    btnClose:SetWidth(100)
+    btnClose:SetCallback("OnClick", function() frame:Hide() end)
+    frame:AddChild(btnClose)
+end
+
+----------------------------------------------------------------------------
+-- 5) Création d'une "dropdown" défilante (scrollable) pour EventsData
+----------------------------------------------------------------------------
+local function CreateScrollableEventsDropdown(parent)
+    -- Bouton principal (comme un dropdown)
+    local mainButton = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
+    mainButton:SetSize(180, 22)
+    mainButton:SetText("Select Event")  -- texte par défaut
+
+    mainButton.selectedEventID = nil  -- contiendra l'ID sélectionné
+
+    -- Frame qui contient la liste + scrollbar
+    local menuFrame = CreateFrame("Frame", nil, parent, "BackdropTemplate")
+    menuFrame:SetSize(220, 200)  -- Ajustez la taille à vos besoins
+    menuFrame:SetPoint("TOPLEFT", mainButton, "BOTTOMLEFT", 0, -2)
+    menuFrame:SetBackdrop({
+        bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
+        edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+        tile = true, edgeSize = 14, tileSize = 14,
+    })
+    menuFrame:SetBackdropColor(0, 0, 0, 0.8)
+    menuFrame:Hide()  -- masqué par défaut
+
+    -- ScrollFrame
+    local scrollFrame = CreateFrame("ScrollFrame", nil, menuFrame, "UIPanelScrollFrameTemplate")
+    scrollFrame:SetPoint("TOPLEFT", menuFrame, "TOPLEFT", 5, -5)
+    scrollFrame:SetPoint("BOTTOMRIGHT", menuFrame, "BOTTOMRIGHT", -26, 5)
+
+    local scrollChild = CreateFrame("Frame", nil, scrollFrame)
+    scrollChild:SetSize(1, 1)  -- sera ajusté
+    scrollFrame:SetScrollChild(scrollChild)
+
+    local ITEM_HEIGHT = 20
+    local spacing = 2
+    local currentY = 0
+
+    if not EventsData or #EventsData == 0 then
+        -- Si aucun event
+        local noItem = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        noItem:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, 0)
+        noItem:SetText("No EventsData found.")
+        currentY = ITEM_HEIGHT
+    else
+        for i, data in ipairs(EventsData) do
+            local eventName = data.name
+            local eventID   = data.eventEntry
+
+            local itemBtn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+            itemBtn:SetSize(180, ITEM_HEIGHT)
+            itemBtn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, -currentY)
+            itemBtn:SetText(eventName)
+
+            itemBtn:SetScript("OnClick", function()
+                mainButton:SetText(eventName)
+                mainButton.selectedEventID = eventID
+                menuFrame:Hide()
+            end)
+
+            currentY = currentY + ITEM_HEIGHT + spacing
+        end
+    end
+
+    -- Ajuster la hauteur en fonction du nombre d'items
+    scrollChild:SetHeight(currentY)
+
+    -- Toggle
+    mainButton:SetScript("OnClick", function()
+        if menuFrame:IsShown() then
+            menuFrame:Hide()
+        else
+            menuFrame:Show()
+        end
+    end)
+
+    return mainButton
+end
+
+----------------------------------------------------------------------------
+-- 6) Panneau principal : Events Manager
+----------------------------------------------------------------------------
+function Misc:OpenEventsManageManagement()
+    if self.panel then
+        self.panel:Hide()
+    end
+    if not self.EventsManagePanel then
+        self.EventsManagePanel = CreateFrame("Frame", "TrinityAdminEventsManagePanel", TrinityAdminMainFrame)
+        self.EventsManagePanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.EventsManagePanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+        
+        local bg = self.EventsManagePanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.EventsManagePanel)
+        bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)
+        
+        self.EventsManagePanel.title = self.EventsManagePanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.EventsManagePanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.EventsManagePanel.title:SetText("Events Manager")
+
+        ---------------------------------------------------------------
+        -- 6.2) Bouton "Event Active List"
+        ---------------------------------------------------------------
+		do
+			local blockActiveList = CreateFrame("Frame", nil, self.EventsManagePanel)
+			blockActiveList:SetSize(600, 40)
+			-- On l'ancre en haut, mais sous le titre (ajustez le Y à votre convenance).
+			blockActiveList:SetPoint("TOPLEFT", self.EventsManagePanel, "TOPLEFT", 10, -60)
+		
+			local btnActiveList = CreateFrame("Button", nil, blockActiveList, "UIPanelButtonTemplate")
+			btnActiveList:SetText("Event Active List")
+			btnActiveList:SetSize(btnActiveList:GetTextWidth() + 20, 22)
+			btnActiveList:SetPoint("TOPLEFT", blockActiveList, "TOPLEFT", 0, 0)
+		
+			btnActiveList:SetScript("OnEnter", function(self)
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+				GameTooltip:SetText(".event activelist\nShow list of currently active events.", 1,1,1,1,true)
+			end)
+			btnActiveList:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		
+			btnActiveList:SetScript("OnClick", function()
+				StartEventsCapture()
+				SendChatMessage(".event activelist", "SAY")
+			end)
+		end
+
+		---------------------------------------------------------------
+        -- Container
+        ---------------------------------------------------------------
+        local container = CreateFrame("Frame", nil, self.EventsManagePanel)
+        container:SetPoint("TOPLEFT", self.EventsManagePanel, "TOPLEFT", 10, -100)
+        container:SetSize(self.EventsManagePanel:GetWidth()-20, self.EventsManagePanel:GetHeight()-80)
+
+        local yOffset = 0
+        
+		---------------------------------------------------------------
+		-- Fonction Reset
+		---------------------------------------------------------------
+		local function ResetDropdownSelection(scrollableDropdown, defaultText)
+		scrollableDropdown.selectedEventID = nil
+		scrollableDropdown:SetText(defaultText)
+		end
+        ---------------------------------------------------------------
+        -- 6.1) Créer le dropdown "scrollable" + 3 boutons (Get/Start/Stop)
+        ---------------------------------------------------------------
+        do
+			-- 1) Le bloc principal
+            local block = CreateFrame("Frame", nil, container)
+            block:SetSize(600, 40)
+            block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
+
+			-- Juste après avoir créé local block ...
+			local label = block:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+			label:SetPoint("BOTTOMLEFT", block, "TOPLEFT", 0, -20)
+			label:SetText("Select an event")
+
+
+            -- 2) Le dropdown scrollable
+            local scrollableDropdown = CreateScrollableEventsDropdown(block)
+            scrollableDropdown:SetPoint("TOPLEFT", label, "TOPLEFT", 0, -20)
+
+            scrollableDropdown:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Select an Event in Dopdown list.", 1,1,1,1,true)
+            end)
+            scrollableDropdown:SetScript("OnLeave", function() GameTooltip:Hide() end)
+			
+            -- 3) Bouton "Info"
+            local btnGet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnGet:SetText("Info")
+            btnGet:SetSize(btnGet:GetTextWidth() + 20, 22)
+            btnGet:SetPoint("LEFT", scrollableDropdown, "RIGHT", 10, 0)
+            btnGet:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(".event info #event_id\nShow details about event #event_id.", 1,1,1,1,true)
+            end)
+            btnGet:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            btnGet:SetScript("OnClick", function()
+                local selectedID = scrollableDropdown.selectedEventID
+                if not selectedID then
+                    print("Veuillez sélectionner un événement.")
+                    return
+                end
+                StartEventsCapture()
+                local cmd = ".event info " .. tostring(selectedID)
+                SendChatMessage(cmd, "SAY")
+				-- Réinitialiser après utilisation :
+				ResetDropdownSelection(scrollableDropdown, "Select Event")
+            end)
+
+            -- 4) Bouton "Start"
+            local btnStart = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnStart:SetText("Start Event")
+            btnStart:SetSize(btnStart:GetTextWidth() + 20, 22)
+            btnStart:SetPoint("LEFT", btnGet, "RIGHT", 10, 0)
+            btnStart:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(".event start #event_id\nStart event #event_id.", 1,1,1,1,true)
+            end)
+            btnStart:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            btnStart:SetScript("OnClick", function()
+                local selectedID = scrollableDropdown.selectedEventID
+                if not selectedID then
+                    print("Veuillez sélectionner un événement.")
+                    return
+                end
+                StartEventsCapture()
+                local cmd = ".event start " .. tostring(selectedID)
+                SendChatMessage(cmd, "SAY")
+				-- Réinitialiser après utilisation :
+				ResetDropdownSelection(scrollableDropdown, "Select Event")
+            end)
+
+            -- 5) Bouton "Stop"
+            local btnStop = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
+            btnStop:SetText("Stop Event")
+            btnStop:SetSize(btnStop:GetTextWidth() + 20, 22)
+            btnStop:SetPoint("LEFT", btnStart, "RIGHT", 10, 0)
+            btnStop:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(".event stop #event_id\nStop event #event_id.", 1,1,1,1,true)
+            end)
+            btnStop:SetScript("OnLeave", function() GameTooltip:Hide() end)
+            btnStop:SetScript("OnClick", function()
+                local selectedID = scrollableDropdown.selectedEventID
+                if not selectedID then
+                    print("Veuillez sélectionner un événement.")
+                    return
+                end
+                StartEventsCapture()
+                local cmd = ".event stop " .. tostring(selectedID)
+                SendChatMessage(cmd, "SAY")
+				-- Réinitialiser après utilisation :
+				ResetDropdownSelection(scrollableDropdown, "Select Event")
+            end)
+
+            yOffset = yOffset - 50
+        end
+
+        ---------------------------------------------------------------
+        -- Bouton Retour
+        ---------------------------------------------------------------
+        local btnBack = CreateFrame("Button", nil, self.EventsManagePanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.EventsManagePanel, "BOTTOM", 0, 10)
+        btnBack:SetText(TrinityAdmin_Translations["Back"])
+        btnBack:SetHeight(22)
+        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        btnBack:SetScript("OnClick", function()
+            self.EventsManagePanel:Hide()
+            self.panel:Show()
+        end)
+    end
+
+    TrinityAdmin:HideMainMenu()
+    self.EventsManagePanel:Show()
 end

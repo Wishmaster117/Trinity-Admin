@@ -584,7 +584,7 @@ function module:CreateGMFunctionsPanel()
     contentContainer:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, 30)
     contentContainer:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 40)
 
-    local totalPages = 2
+    local totalPages = 3
     local pages = {}
     for i = 1, totalPages do
         pages[i] = CreateFrame("Frame", nil, contentContainer)
@@ -1111,6 +1111,33 @@ end
                 GameTooltip:Show()
             end)
             btnGmAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
+			
+			
+			-- Ligne 6 : Champ GM Announcement pour .notify
+            row = CreateRow(page, 30)
+            local gmNotifyEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+            gmNotifyEdit:SetSize(150, 22)
+            gmNotifyEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
+            gmNotifyEdit:SetAutoFocus(false)
+            gmNotifyEdit:SetText("GM Notify")
+            local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+            btnGmNotify:SetSize(60, 22)
+            btnGmNotify:SetText("Send")
+            btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
+            btnGmNotify:SetScript("OnClick", function()
+                local text = gmNotifyEdit:GetText()
+                if not text or text == "" or text == "GM Notify" then
+                    print(TrinityAdmin_Translations["Error : Please enter a message to Notify."])
+                else
+                    SendChatMessage('.notify "' .. text .. '"', "SAY")
+                end
+            end)
+            btnGmNotify:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText("Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.")
+                GameTooltip:Show()
+            end)
+            btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 		-----------------------------------------------------------------------------
 		-- Ligne 6 : Dropdown Skill, champs Level et Max pour .setskill
@@ -1243,6 +1270,563 @@ end
 
 			end
 
+--------------------------------------------------------------------------
+-- PAGE 3
+--------------------------------------------------------------------------
+	do
+            local page = pages[3]
+            local row
+		
+        -----------------------------------------------------------
+        -- 1) Button "Distance"
+        -----------------------------------------------------------
+		row = CreateRow(page, 30)  -- create a row 30px high
+        local btnDistance = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnDistance:SetSize(80, 22)
+        btnDistance:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+        btnDistance:SetText("Distance")
+
+        -- Tooltip
+        btnDistance:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .distance [link]\r\n\r\n" ..
+                "Display the distance from your character to the selected unit " ..
+                "or given creature/player/gameobject.",
+                1,1,1,1,true
+            )
+        end)
+        btnDistance:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        -- OnClick => .distance [targetName]
+        btnDistance:SetScript("OnClick", function()
+            local targetName = UnitName("target")
+            if not targetName then
+                print("Erreur: Veuillez cibler une unité pour la commande .distance.")
+                return
+            end
+            local cmd = ".distance "
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+        -----------------------------------------------------------
+        -- 2) EditBox "Area ID" + Button "Hide Area"
+        -----------------------------------------------------------
+        local editAreaHide = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        editAreaHide:SetSize(60, 22)
+        editAreaHide:SetPoint("LEFT", btnDistance, "RIGHT", 30, 0)
+        editAreaHide:SetAutoFocus(false)
+        editAreaHide:SetText("Area ID")
+
+        local btnHideArea = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnHideArea:SetSize(80, 22)
+        btnHideArea:SetPoint("LEFT", editAreaHide, "RIGHT", 5, 0)
+        btnHideArea:SetText("Hide Area")
+
+        btnHideArea:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .hidearea #areaid\r\n\r\n" ..
+                "Hide the area of #areaid to the selected character.\n" ..
+                "If no character is selected, hide this area to you.",
+                1,1,1,1,true
+            )
+        end)
+        btnHideArea:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnHideArea:SetScript("OnClick", function()
+            local val = editAreaHide:GetText()
+            if not val or val == "" or val == "Area ID" then
+                print("Erreur: veuillez saisir un Area ID pour .hidearea.")
+                return
+            end
+            local cmd = ".hidearea " .. val
+            -- We do NOT actually add the target's name to the command,
+            -- so if there's a target, it applies to them; if no target, applies to you.
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+        -----------------------------------------------------------
+        -- 3) EditBox "Area ID" + Button "Show Area"
+        -----------------------------------------------------------
+        local editAreaShow = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        editAreaShow:SetSize(60, 22)
+        editAreaShow:SetPoint("LEFT", btnHideArea, "RIGHT", 10, 0)
+        editAreaShow:SetAutoFocus(false)
+        editAreaShow:SetText("Area ID")
+
+        local btnShowArea = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnShowArea:SetSize(80, 22)
+        btnShowArea:SetPoint("LEFT", editAreaShow, "RIGHT", 5, 0)
+        btnShowArea:SetText("Show Area")
+
+        btnShowArea:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .showarea #areaid\r\n\r\n" ..
+                "Reveal the area of #areaid to the selected character.\n" ..
+                "If no character is selected, reveal this area to you.",
+                1,1,1,1,true
+            )
+        end)
+        btnShowArea:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnShowArea:SetScript("OnClick", function()
+            local val = editAreaShow:GetText()
+            if not val or val == "" or val == "Area ID" then
+                print("Erreur: veuillez saisir un Area ID pour .showarea.")
+                return
+            end
+            local cmd = ".showarea " .. val
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+    ---------------------------------------------------------------
+    -- LINE 2
+    --  - EditBox "Player Name" + Button "Summon"
+    --  - EditBox "Player Name" + Button "Recall"
+    ---------------------------------------------------------------
+        row = CreateRow(page, 30)
+
+        -----------------------------------------------------------
+        -- 1) Summon
+        -----------------------------------------------------------
+        local editSummon = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        editSummon:SetSize(100, 22)
+        editSummon:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+        editSummon:SetAutoFocus(false)
+        editSummon:SetText("Player Name")
+
+        local btnSummon = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnSummon:SetSize(80, 22)
+        btnSummon:SetPoint("LEFT", editSummon, "RIGHT", 5, 0)
+        btnSummon:SetText("Summon")
+
+        btnSummon:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .summon [$charactername]\r\n\r\n" ..
+                "Teleport the given character to you. Character can be offline.",
+                1,1,1,1,true
+            )
+        end)
+        btnSummon:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnSummon:SetScript("OnClick", function()
+            local val = editSummon:GetText()
+            if not val or val == "" or val == "Player Name" then
+                print("Erreur: veuillez saisir un nom de joueur pour .summon.")
+                return
+            end
+            local cmd = ".summon " .. val
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+        -----------------------------------------------------------
+        -- 2) Recall
+        -----------------------------------------------------------
+        local editRecall = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        editRecall:SetSize(100, 22)
+        editRecall:SetPoint("LEFT", btnSummon, "RIGHT", 20, 0)
+        editRecall:SetAutoFocus(false)
+        editRecall:SetText("Player Name")
+
+        local btnRecall = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnRecall:SetSize(80, 22)
+        btnRecall:SetPoint("LEFT", editRecall, "RIGHT", 5, 0)
+        btnRecall:SetText("Recall")
+
+        btnRecall:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .recall [$playername]\r\n\r\n" ..
+                "Teleport $playername or selected player to the place " ..
+                "where he has been before last use of a teleportation command.\n" ..
+                "If no $playername is entered and no player is selected, it will teleport you.",
+                1,1,1,1,true
+            )
+        end)
+        btnRecall:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnRecall:SetScript("OnClick", function()
+            local val = editRecall:GetText()
+            if not val or val == "" or val == "Player Name" then
+                -- If empty => use target
+                local targetName = UnitName("target")
+                if not targetName then
+                    print("Erreur: veuillez saisir un nom ou cibler un joueur pour .recall.")
+                    return
+                end
+                local cmd = ".recall " .. targetName
+                SendChatMessage(cmd, "SAY")
+            else
+                -- Use the typed name
+                local cmd = ".recall " .. val
+                SendChatMessage(cmd, "SAY")
+				print("[DEBUG] Commande envoyée: " ..cmd)
+            end
+        end)
+
+    ---------------------------------------------------------------
+    -- LINE 3
+    --  - Button "Bindsight"
+    --  - Button "Unbindsight"
+    --  - Button "Honor Update"
+    ---------------------------------------------------------------
+        row = CreateRow(page, 30)
+
+        -- 1) Bindsight
+        local btnBindsight = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnBindsight:SetSize(80, 22)
+        btnBindsight:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+        btnBindsight:SetText("Bindsight")
+
+        btnBindsight:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .bindsight\r\n\r\n" ..
+                "Binds vision to the selected unit indefinitely.\n" ..
+                "Cannot be used while currently possessing a target.",
+                1,1,1,1,true
+            )
+        end)
+        btnBindsight:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnBindsight:SetScript("OnClick", function()
+            local targetName = UnitName("target")
+            if not targetName then
+                print("Erreur: vous devez cibler quelqu'un pour .bindsight.")
+                return
+            end
+            local cmd = ".bindsight"
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+        -- 2) Unbindsight
+        local btnUnbindsight = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnUnbindsight:SetSize(100, 22)
+        btnUnbindsight:SetPoint("LEFT", btnBindsight, "RIGHT", 20, 0)
+        btnUnbindsight:SetText("Unbindsight")
+
+        btnUnbindsight:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .unbindsight\r\n\r\n" ..
+                "Removes bound vision. Cannot be used while currently possessing a target.",
+                1,1,1,1,true
+            )
+        end)
+        btnUnbindsight:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnUnbindsight:SetScript("OnClick", function()
+            local targetName = UnitName("target")
+            if not targetName then
+                print("Erreur: vous devez cibler quelqu'un pour .unbindsight.")
+                return
+            end
+            local cmd = ".unbindsight"
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+        -- 3) Honor Update
+        local btnHonorUpdate = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnHonorUpdate:SetSize(100, 22)
+        btnHonorUpdate:SetPoint("LEFT", btnUnbindsight, "RIGHT", 20, 0)
+        btnHonorUpdate:SetText("Honor Update")
+
+        btnHonorUpdate:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .honor update\r\n\r\n" ..
+                "Force the yesterday's honor fields to be updated with today's data,\n" ..
+                "which will get reset for the selected player.",
+                1,1,1,1,true
+            )
+        end)
+        btnHonorUpdate:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnHonorUpdate:SetScript("OnClick", function()
+            local cmd = ".honor update"
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+    ---------------------------------------------------------------
+    -- LINE 4
+    --  - EditBox "Channel"
+    --  - RadioButton "On"
+    --  - RadioButton "Off"
+    --  - Button "Set Ownership"
+    ---------------------------------------------------------------
+        row = CreateRow(page, 30)
+
+        -- EditBox "Channel"
+        local editChannel = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+        editChannel:SetSize(100, 22)
+        editChannel:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+        editChannel:SetAutoFocus(false)
+        editChannel:SetText("Channel")
+
+        -- Radio "On"
+        local radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        radioOn.text = radioOn:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        radioOn.text:SetPoint("LEFT", radioOn, "RIGHT", 2, 1)
+        radioOn.text:SetText("On")
+        radioOn:SetPoint("LEFT", editChannel, "RIGHT", 10, 0)
+        radioOn:SetChecked(false)
+
+        -- Radio "Off"
+        local radioOff = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        radioOff.text = radioOff:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        radioOff.text:SetPoint("LEFT", radioOff, "RIGHT", 2, 1)
+        radioOff.text:SetText("Off")
+        radioOff:SetPoint("LEFT", radioOn, "RIGHT", 40, 0)
+        radioOff:SetChecked(false)
+
+        -- Make them exclusive
+        local function UncheckOther(this, other)
+            this:SetChecked(true)
+            other:SetChecked(false)
+        end
+
+        radioOn:SetScript("OnClick", function(self)
+            if self:GetChecked() then
+                UncheckOther(self, radioOff)
+            else
+                -- If user tries to uncheck On, we re-check it if Off is not selected
+                if not radioOff:GetChecked() then
+                    self:SetChecked(true)
+                end
+            end
+        end)
+
+        radioOff:SetScript("OnClick", function(self)
+            if self:GetChecked() then
+                UncheckOther(self, radioOn)
+            else
+                if not radioOn:GetChecked() then
+                    self:SetChecked(true)
+                end
+            end
+        end)
+
+        -- Button "Set Ownership"
+        local btnSetOwner = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnSetOwner:SetSize(120, 22)
+        btnSetOwner:SetPoint("LEFT", radioOff, "RIGHT", 40, 0)
+        btnSetOwner:SetText("Set Ownership")
+
+        btnSetOwner:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .channel set ownership $channel [on/off]\n\n" ..
+                "Grant ownership to the first person that joins the channel.",
+                1,1,1,1,true
+            )
+        end)
+        btnSetOwner:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnSetOwner:SetScript("OnClick", function()
+            local chanName = editChannel:GetText()
+            if not chanName or chanName == "" or chanName == "Channel" then
+                print("Erreur: veuillez saisir un Channel.")
+                return
+            end
+
+            -- Determine "on" or "off"
+            local state = nil
+            if radioOn:GetChecked() then
+                state = "on"
+            elseif radioOff:GetChecked() then
+                state = "off"
+            end
+
+            if not state then
+                print("Veuillez cocher On ou Off.")
+                return
+            end
+
+            local cmd = ".channel set ownership " .. chanName .. " " .. state
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+    ---------------------------------------------------------------
+    -- LINE 5
+    --  - Dropdown "Weather Type" => (Rain=1, Snow=2, Sand=3)
+    --  - Dropdown "Status" => (Enable=1, Disable=2)
+    --  - Button "Set Weather"
+    ---------------------------------------------------------------
+        row = CreateRow(page, 30)
+
+        -- Weather Type
+        local weatherTypes = {
+            { text="Rain",  id=1 },
+            { text="Snow",  id=2 },
+            { text="Sand",  id=3 },
+        }
+        local weatherDropdown = CreateFrame("Frame", nil, row, "UIDropDownMenuTemplate")
+        weatherDropdown:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+        UIDropDownMenu_SetWidth(weatherDropdown, 100)
+        UIDropDownMenu_SetText(weatherDropdown, "Weather Type")
+        weatherDropdown.selected = nil
+
+        UIDropDownMenu_Initialize(weatherDropdown, function(self, level, menuList)
+            for i, wtype in ipairs(weatherTypes) do
+                local info = UIDropDownMenu_CreateInfo()
+                info.text = wtype.text
+                info.func = function()
+                    weatherDropdown.selected = wtype
+                    UIDropDownMenu_SetText(weatherDropdown, wtype.text)
+                end
+                info.checked = (weatherDropdown.selected and weatherDropdown.selected.id == wtype.id)
+                UIDropDownMenu_AddButton(info, level)
+            end
+        end)
+
+        -- Status
+        local statuses = {
+            { text="Enable",  id=1 },
+            { text="Disable", id=0 },
+        }
+        local statusDropdown = CreateFrame("Frame", nil, row, "UIDropDownMenuTemplate")
+        statusDropdown:SetPoint("LEFT", weatherDropdown, "RIGHT", 20, 0)
+        UIDropDownMenu_SetWidth(statusDropdown, 100)
+        UIDropDownMenu_SetText(statusDropdown, "Status")
+        statusDropdown.selected = nil
+
+        UIDropDownMenu_Initialize(statusDropdown, function(self, level, menuList)
+            for i, st in ipairs(statuses) do
+                local info = UIDropDownMenu_CreateInfo()
+                info.text = st.text
+                info.func = function()
+                    statusDropdown.selected = st
+                    UIDropDownMenu_SetText(statusDropdown, st.text)
+                end
+                info.checked = (statusDropdown.selected and statusDropdown.selected.id == st.id)
+                UIDropDownMenu_AddButton(info, level)
+            end
+        end)
+
+        -- Button "Set Weather"
+        local btnWeather = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnWeather:SetPoint("LEFT", statusDropdown, "RIGHT", 20, 0)
+        btnWeather:SetSize(100, 22)
+        btnWeather:SetText("Set Weather")
+
+        btnWeather:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .wchange #weathertype #status\r\n\r\n" ..
+                "Set current weather to #weathertype with an intensity of #status.\r\n\r\n" ..
+                "#weathertype can be 1 for rain, 2 for snow, 3 for sand.\r\n" ..
+                "#status can be 0 for disabled, 1 for enabled.",
+                1,1,1,1,true
+            )
+        end)
+        btnWeather:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnWeather:SetScript("OnClick", function()
+            if not weatherDropdown.selected then
+                print("Erreur: veuillez sélectionner un Weather Type.")
+                return
+            end
+            if not statusDropdown.selected then
+                print("Erreur: veuillez sélectionner un Status.")
+                return
+            end
+
+            local wID = weatherDropdown.selected.id
+            local sID = statusDropdown.selected.id
+
+            -- For "Enable" we presumably use 1, for "Disable" => 0 or 2?
+            -- The spec said "Desable" means 2, so we interpret 2 => 0? 
+            -- The user said "Desable => 2"? The example is "enable => 1, disable => 2".
+            -- But wchange syntax says #status can be 0 or 1. 
+            -- So let's interpret "Disable => 0" if you want to follow the normal .wchange logic:
+            -- but let's just do the user wants 1 or 2. We'll do .wchange wID sID.
+            -- The user specifically said "for example for snow we do .wchange 2 1" => that means "2 => snow, 1 => enable"
+            -- so we'll just pass them directly:
+            local cmd = ".wchange " .. wID .. " " .. sID
+            SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " ..cmd)
+        end)
+
+    ---------------------------------------------------------------
+    -- LINE 6
+    --  - 2 checkboxes "Alliance" / "Horde"
+    --  - Button "Show Grave"
+    ---------------------------------------------------------------
+
+        row = CreateRow(page, 30)
+
+        local chkAlliance = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        chkAlliance:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+        chkAlliance.text = chkAlliance:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        chkAlliance.text:SetPoint("LEFT", chkAlliance, "RIGHT", 2, 0)
+        chkAlliance.text:SetText("Alliance")
+
+        local chkHorde = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        chkHorde:SetPoint("LEFT", chkAlliance, "RIGHT", 60, 0)
+        chkHorde.text = chkHorde:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        chkHorde.text:SetPoint("LEFT", chkHorde, "RIGHT", 2, 0)
+        chkHorde.text:SetText("Horde")
+
+        -- We do not want both selected => handle OnClick
+        local function UncheckOther(this, other)
+            if this:GetChecked() then
+                other:SetChecked(false)
+            end
+        end
+
+        chkAlliance:SetScript("OnClick", function(self)
+            if self:GetChecked() then
+                UncheckOther(self, chkHorde)
+            end
+        end)
+
+        chkHorde:SetScript("OnClick", function(self)
+            if self:GetChecked() then
+                UncheckOther(self, chkAlliance)
+            end
+        end)
+
+        local btnShowGrave = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+        btnShowGrave:SetSize(100, 22)
+        btnShowGrave:SetPoint("LEFT", chkHorde, "RIGHT", 60, 0)
+        btnShowGrave:SetText("Show Grave")
+
+        btnShowGrave:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(
+                "Syntax: .neargrave [alliance|horde]\r\n\r\n" ..
+                "Find nearest graveyard linked to zone (or only nearest " ..
+                "that accepts alliance/horde ghosts).",
+                1,1,1,1,true
+            )
+        end)
+        btnShowGrave:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+        btnShowGrave:SetScript("OnClick", function()
+            local allianceChecked = chkAlliance:GetChecked()
+            local hordeChecked    = chkHorde:GetChecked()
+
+            if allianceChecked then
+                SendChatMessage(".neargrave alliance", "SAY")
+            elseif hordeChecked then
+                SendChatMessage(".neargrave horde", "SAY")
+            else
+                -- If neither checked, send ".neargrave"
+                SendChatMessage(".neargrave", "SAY")
+            end
+        end)
+end
 
     ----------------------------------------------------------------------------
     -- Bouton Back commun (hors pagination)

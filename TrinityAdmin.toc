@@ -54,6 +54,7 @@ NpcDataPart7.lua
 TeleportTable.lua
 SkillsData.lua
 TitlesData.lua
+Datas\EventsData.lua
 # Interface XML
 TrinityAdmin.xml
 # Code principal
