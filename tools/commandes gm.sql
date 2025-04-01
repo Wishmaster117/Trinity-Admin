@@ -12,12 +12,10 @@
 idées:
 
 Pour npc show loot, afficher les loots dans une fenetre séparée
-Pour npc info il faut trier les données a afficher.gobject info il faut trier les données a afficher et creer un builder pour bouger l objet
+Pour npc info il faut trier les données a afficher
+Pour .gobject info il faut trier les données a afficher
 
 voir les commandes .gobject et voir si on peut mettre une frame de preview
-
-modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
-	
 	
 	
 	.refaire bnetaccountset car il y'a les sous commandes en fait faut le virer de la liste
