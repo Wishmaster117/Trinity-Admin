@@ -1,43 +1,43 @@
 -- Creation du bouton:
-	local DunjonsFunc = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    DunjonsFunc:SetSize(150, 22)
-    DunjonsFunc:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
-    DunjonsFunc:SetText("Battlefield And Pvp")
-    DunjonsFunc:SetScript("OnClick", function() self:OpenDunjonsFuncManagement() end)
+	local EventsManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    EventsManage:SetSize(150, 22)
+    EventsManage:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
+    EventsManage:SetText("Battlefield And Pvp")
+    EventsManage:SetScript("OnClick", function() self:OpenEventsManageManagement() end)
 
 
 
 
--- Ouvre le panneau A dédinir en masquant le panneau principal
-function Misc:OpenDunjonsFuncManagement()
+-- Ouvre le panneau EventsManage en masquant le panneau principal
+function Misc:OpenEventsManageManagement()
     if self.panel then
         self.panel:Hide()
     end
-    if not self.DunjonsFuncPanel then
-        self.DunjonsFuncPanel = CreateFrame("Frame", "TrinityAdminDunjonsFuncPanel", TrinityAdminMainFrame)
-        self.DunjonsFuncPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
-        self.DunjonsFuncPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+    if not self.EventsManagePanel then
+        self.EventsManagePanel = CreateFrame("Frame", "TrinityAdminEventsManagePanel", TrinityAdminMainFrame)
+        self.EventsManagePanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.EventsManagePanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
         
-        local bg = self.DunjonsFuncPanel:CreateTexture(nil, "BACKGROUND")
-        bg:SetAllPoints(self.DunjonsFuncPanel)
+        local bg = self.EventsManagePanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.EventsManagePanel)
         bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)  -- Couleur pour le panneau Groups Management
         
-        self.DunjonsFuncPanel.title = self.DunjonsFuncPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-        self.DunjonsFuncPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.DunjonsFuncPanel.title:SetText("Dungeons Funcs")
+        self.EventsManagePanel.title = self.EventsManagePanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.EventsManagePanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.EventsManagePanel.title:SetText("Dungeons Funcs")
         
         -- Ajoutez ici vos éléments et fonctions spécifiques à la gestion des groupes.
         
-        local btnBack = CreateFrame("Button", nil, self.DunjonsFuncPanel, "UIPanelButtonTemplate")
-        btnBack:SetPoint("BOTTOM", self.DunjonsFuncPanel, "BOTTOM", 0, 10)
+        local btnBack = CreateFrame("Button", nil, self.EventsManagePanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.EventsManagePanel, "BOTTOM", 0, 10)
         btnBack:SetText(TrinityAdmin_Translations["Back"])
         btnBack:SetHeight(22)
         btnBack:SetWidth(btnBack:GetTextWidth() + 20)
         btnBack:SetScript("OnClick", function()
-            self.DunjonsFuncPanel:Hide()
+            self.EventsManagePanel:Hide()
             self.panel:Show()
         end)
     end
     TrinityAdmin:HideMainMenu()
-    self.DunjonsFuncPanel:Show()
+    self.EventsManagePanel:Show()
 end
