@@ -18,20 +18,6 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 
 modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
-	-- Amettre dans le panneau GM:
-	('notify', 'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
-	('distance', 'Syntax: .distance [link]\r\n\r\nDisplay the distance from your character to the selected unit or given creature, player or gameobject.'),
-	('hidearea', 'Syntax: .hidearea #areaid\r\n\r\nHide the area of #areaid to the selected character. If no character is selected, hide this area to you.'),
-	('neargrave', 'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
-	('showarea', 'Syntax: .showarea #areaid\r\n\r\nReveal the area of #areaid to the selected character. If no character is selected, reveal this area to you.'),
-	('summon', 'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
-	('bindsight', 'Syntax: .bindsight\r\n\r\nBinds vision to the selected unit indefinitely. Cannot be used while currently possessing a target.'),
-	('unbindsight', 'Syntax: .unbindsight\r\n\r\nRemoves bound vision. Cannot be used while currently possessing a target.'),
-	('wchange', 'Syntax: .wchange #weathertype #status\r\n\r\nSet current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, and 3 for sand. #status can be 0 for disabled, and 1 for enabled.'),
-    ('recall', 'Syntax: .recall [$playername]\r\n\r\nTeleport $playername or selected player to the place where he has been before last use of a teleportation command. If no $playername is entered and no player is selected, it will teleport you.'),
-	('channel set ownership', 'Syntax: .channel set ownership $channel [on/off]\n\nGrant ownership to the first person that joins the channel.'),
-	('honor update', 'Syntax: .honor update\r\n\r\nForce the yesterday\'s honor fields to be updated with today\'s data, which will get reset for the selected player.'), -> Fonction pour serveur
-	
 	
 	
 	.refaire bnetaccountset car il y'a les sous commandes en fait faut le virer de la liste
@@ -47,7 +33,9 @@ modifier .Modify speed pour vhoisir quelle vitesse modifier, vol courrir marcher
 	
 Pour ce panneau il me faut:
 
-
+A ajouter GmFunctionsPanel page 3
+('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
+	
 	
 	-- Cast Commands
 	('cast', 'Syntax: .cast #spellid [triggered]\r\n  Cast #spellid to selected target. If no target selected cast to self. If \'triggered\' or part provided then spell casted with triggered flag.'),
@@ -162,8 +150,7 @@ Pour ce panneau il me faut:
 	
 	
 	
-	('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
-	
+	(
 	('list', 'Syntax: .list $subcommand\nType .list to see the list of possible subcommands or .help list $subcommand to see info on subcommands'),
 	('list auras', 'Syntax: .list auras\nList auras (passive and active) of selected creature or player. If no creature or player is selected, list your own auras.'),
 	('list creature', 'Syntax: .list creature #creature_id [#max_count]\r\n\r\nOutput creatures with creature id #creature_id found in world. Output creature guids and coordinates sorted by distance from character. Will be output maximum #max_count creatures. If #max_count not provided use 10 as default value.'),
