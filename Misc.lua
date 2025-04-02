@@ -116,64 +116,81 @@ end
 ------------------------------------------------------------
 function Misc:AddManagementButtons(panel)
     local btnTitles = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnTitles:SetSize(150, 22)
     btnTitles:SetPoint("TOPLEFT", panel, "TOPLEFT", 100, -80)
     btnTitles:SetText("Titles Management")
+	btnTitles:SetWidth(btnTitles:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	btnTitles:SetHeight(22)	
     btnTitles:SetScript("OnClick", function() self:OpenTitlesManagement() end)
     
     local btnResets = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnResets:SetSize(150, 22)
     btnResets:SetPoint("LEFT", btnTitles, "RIGHT", 10, 0)
     btnResets:SetText("Resets Management")
+	btnResets:SetWidth(btnResets:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	btnResets:SetHeight(22)	
     btnResets:SetScript("OnClick", function() self:OpenResetsManagement() end)
     
     local btnArena = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnArena:SetSize(150, 22)
     btnArena:SetPoint("LEFT", btnResets, "RIGHT", 10, 0)
     btnArena:SetText("Arena Management")
+	btnArena:SetWidth(btnArena:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	btnArena:SetHeight(22)	
     btnArena:SetScript("OnClick", function() self:OpenArenaManagement() end)
     
     local btnLookup = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnLookup:SetSize(150, 22)
     btnLookup:SetPoint("TOPLEFT", btnTitles, "BOTTOMLEFT", 0, -10)
     btnLookup:SetText("Lookup Functions")
+	btnLookup:SetWidth(btnLookup:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	btnLookup:SetHeight(22)	
     btnLookup:SetScript("OnClick", function() self:OpenLookupFunctions() end)
     
     local btnGroups = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnGroups:SetSize(150, 22)
     btnGroups:SetPoint("LEFT", btnLookup, "RIGHT", 10, 0)
     btnGroups:SetText("Groups Management")
+	btnGroups:SetWidth(btnGroups:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	btnGroups:SetHeight(22)	
     btnGroups:SetScript("OnClick", function() self:OpenGroupsManagement() end)
     
     local btnQuests = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnQuests:SetSize(150, 22)
     btnQuests:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
     btnQuests:SetText("Quests Management")
+	btnQuests:SetWidth(btnQuests:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	btnQuests:SetHeight(22)	
     btnQuests:SetScript("OnClick", function() self:OpenQuestsManagement() end)
 	
 	local BattlefieldAndPvp = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    BattlefieldAndPvp:SetSize(150, 22)
     BattlefieldAndPvp:SetPoint("TOPLEFT", btnLookup, "BOTTOMLEFT", 0, -10)
     BattlefieldAndPvp:SetText("Battlefield And Pvp")
+	BattlefieldAndPvp:SetWidth(BattlefieldAndPvp:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	BattlefieldAndPvp:SetHeight(22)	
     BattlefieldAndPvp:SetScript("OnClick", function() self:OpenBattlefieldAndPvpManagement() end)
 	
 	local DunjonsFunc = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    DunjonsFunc:SetSize(150, 22)
     DunjonsFunc:SetPoint("LEFT", BattlefieldAndPvp, "RIGHT", 10, 0)
     DunjonsFunc:SetText("Dungeons Funcs")
+	DunjonsFunc:SetWidth(DunjonsFunc:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	DunjonsFunc:SetHeight(22)		
     DunjonsFunc:SetScript("OnClick", function() self:OpenDunjonsFuncManagement() end)
 	
 	local LfgManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    LfgManage:SetSize(150, 22)
     LfgManage:SetPoint("LEFT", DunjonsFunc, "RIGHT", 10, 0)
     LfgManage:SetText("LFG Management")
+	LfgManage:SetWidth(LfgManage:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	LfgManage:SetHeight(22)	
     LfgManage:SetScript("OnClick", function() self:OpenLfgManageManagement() end)
 	
 	local EventsManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    EventsManage:SetSize(150, 22)
     EventsManage:SetPoint("TOPLEFT", BattlefieldAndPvp, "BOTTOMLEFT", 0, -10)
     EventsManage:SetText("Events Manager")
+	EventsManage:SetWidth(EventsManage:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	EventsManage:SetHeight(22)	
     EventsManage:SetScript("OnClick", function() self:OpenEventsManageManagement() end)
+	
+	local AurasList = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    AurasList:SetPoint("LEFT", EventsManage, "RIGHT", 10, 0)
+    AurasList:SetText("Auras and Lists Management")
+	AurasList:SetWidth(AurasList:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+	AurasList:SetHeight(22)
+    AurasList:SetScript("OnClick", function() self:OpenAurasListManagement() end)
 	
 end
 
@@ -3703,4 +3720,492 @@ function Misc:OpenEventsManageManagement()
 
     TrinityAdmin:HideMainMenu()
     self.EventsManagePanel:Show()
+end
+
+-- Ouvre le panneau AurasList en masquant le panneau principal
+-----------------------------------------------------------
+-- Partie capture des messages système
+-----------------------------------------------------------
+local capturingEvents = false
+local eventsInfoCollected = {}
+local eventsInfoTimer = nil
+local lastListCommand = nil
+
+-- Frame pour écouter les messages système (CHAT_MSG_SYSTEM)
+local eventsCaptureFrame = CreateFrame("Frame")
+eventsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+eventsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingEvents then return end
+
+    -- Nettoyage minimal du message
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                       :gsub("|r", "")
+                       :gsub("|H.-|h(.-)|h", "%1")
+                       :gsub("|T.-|t", "")
+                       :gsub("\226[\148-\149][\128-\191]", "")
+    table.insert(eventsInfoCollected, cleanMsg)
+
+    -- Redémarrer un timer d'une seconde
+    if eventsInfoTimer then
+        eventsInfoTimer:Cancel()
+    end
+	eventsInfoTimer = C_Timer.NewTimer(1, function()
+		capturingEvents = false
+		local fullText = table.concat(eventsInfoCollected, "\n")
+		local lines = ProcessEventsCapturedText(fullText)
+		if lastListCommand and lastListCommand:find("%.list spawnpoints") then
+			ShowListSpawnsPopup(lines)
+		else
+			ShowEventsAceGUI(lines)
+		end
+		lastListCommand = nil  -- Réinitialisation après traitement
+	end)--Fin du callback du timer
+end)  -- Fin de la fonction OnEvent
+
+-- Lance la capture
+local function StartEventsCapture()
+    wipe(eventsInfoCollected)
+    capturingEvents = true
+    if eventsInfoTimer then
+        eventsInfoTimer:Cancel()
+        eventsInfoTimer = nil
+    end
+end
+
+-- Fonction de parsing : sépare le texte en lignes
+function ProcessEventsCapturedText(input)
+    local text = (type(input) == "table") and table.concat(input, "\n") or input
+    local processedLines = {}
+    for line in text:gmatch("[^\r\n]+") do
+        table.insert(processedLines, line)
+    end
+    return processedLines
+end
+
+-- Affiche les messages capturés dans une popup AceGUI
+function ShowEventsAceGUI(lines)
+    local AceGUI = LibStub("AceGUI-3.0")
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("Captured Events")
+	frame:SetStatusText("Information from other commands")
+    frame:SetLayout("Fill")
+    frame:SetWidth(400)
+    frame:SetHeight(300)
+    
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    frame:AddChild(scroll)
+    
+    for i, line in ipairs(lines) do
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("Line " .. i)
+        edit:SetText(line)
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
+
+    local closeBtn = AceGUI:Create("Button")
+    closeBtn:SetText("Close")
+    closeBtn:SetWidth(100)
+    closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
+    frame:AddChild(closeBtn)
+end
+
+-- Affiche les messages capturés pour List spawns
+-- function ShowListSpawnsPopup(lines)
+--     local AceGUI = LibStub("AceGUI-3.0")
+--     local frame = AceGUI:Create("Frame")
+--     frame:SetTitle("List Spawnpoints")
+-- 	frame:SetStatusText("Information from .List Spawnpoints commands")
+--     frame:SetLayout("Fill")
+--     frame:SetWidth(500)
+--     frame:SetHeight(400)
+--   
+--     local multiline = AceGUI:Create("MultiLineEditBox")
+--     multiline:SetLabel("Spawnpoints")
+--     multiline:SetFullWidth(true)
+--     multiline:SetFullHeight(true)
+--     multiline:SetText(table.concat(lines, "\n"))
+--     if multiline.editBox then
+--         multiline.editBox:HookScript("OnEditFocusGained", function(self)
+--             self:ClearFocus()
+--         end)
+--     end
+--     frame:AddChild(multiline)
+--     
+--     local closeBtn = AceGUI:Create("Button")
+--     closeBtn:SetText("Close")
+--     closeBtn:SetWidth(100)
+--     closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
+--     frame:AddChild(closeBtn)
+-- end
+function ShowListSpawnsPopup(lines)
+    local AceGUI = LibStub("AceGUI-3.0")
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("List Spawnpoints")
+    frame:SetStatusText("Information from .List Spawnpoints commands")
+    frame:SetLayout("List")
+    frame:SetWidth(500)
+    frame:SetHeight(400)
+    
+    local pageSize = 40  -- Nombre de lignes par page
+    local currentPage = 1
+    local totalPages = math.ceil(#lines / pageSize)
+    
+    local function GetPageText(page)
+        local startIndex = (page - 1) * pageSize + 1
+        local endIndex = math.min(page * pageSize, #lines)
+        local pageLines = {}
+        for i = startIndex, endIndex do
+            table.insert(pageLines, lines[i])
+        end
+        return table.concat(pageLines, "\n")
+    end
+
+    -- Zone de texte avec hauteur fixe pour laisser de la place aux boutons
+    local multiline = AceGUI:Create("MultiLineEditBox")
+    multiline:SetLabel("Spawnpoints")
+    multiline:SetFullWidth(true)
+    multiline:SetHeight(250)
+    multiline:SetText(GetPageText(currentPage))
+    if multiline.editBox then
+        multiline.editBox:HookScript("OnEditFocusGained", function(self)
+            self:ClearFocus()
+        end)
+    end
+    frame:AddChild(multiline)
+    
+    -- Groupe de pagination
+    local paginationGroup = AceGUI:Create("SimpleGroup")
+    paginationGroup:SetFullWidth(true)
+    paginationGroup:SetLayout("Flow")
+    paginationGroup:SetHeight(30)
+    
+local btnPrev = AceGUI:Create("Button")
+btnPrev:SetText("Previous")
+btnPrev:SetWidth(100)
+btnPrev:SetCallback("OnClick", function()
+    if currentPage > 1 then
+        currentPage = currentPage - 1
+        multiline:SetText(GetPageText(currentPage))
+        pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+    end
+end)
+paginationGroup:AddChild(btnPrev)
+
+-- Espaceur pour décaler le label de pagination
+local spacer = AceGUI:Create("Label")
+spacer:SetText("")
+spacer:SetWidth(40)  -- ajustez cette largeur selon vos besoins
+paginationGroup:AddChild(spacer)
+
+local pageLabel = AceGUI:Create("Label")
+pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+pageLabel:SetWidth(150)
+paginationGroup:AddChild(pageLabel)
+
+local btnNext = AceGUI:Create("Button")
+btnNext:SetText("Next")
+btnNext:SetWidth(100)
+btnNext:SetCallback("OnClick", function()
+    if currentPage < totalPages then
+        currentPage = currentPage + 1
+        multiline:SetText(GetPageText(currentPage))
+        pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+    end
+end)
+paginationGroup:AddChild(btnNext)
+    
+    frame:AddChild(paginationGroup)
+    
+    -- local closeBtn = AceGUI:Create("Button")
+    -- closeBtn:SetText("Close")
+    -- closeBtn:SetWidth(100)
+    -- closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
+    -- frame:AddChild(closeBtn)
+end
+
+-----------------------------------------------------------
+-- Panneau AurasList Management
+-----------------------------------------------------------
+function Misc:OpenAurasListManagement()
+    if self.panel then
+        self.panel:Hide()
+    end
+    if not self.AurasListPanel then
+        self.AurasListPanel = CreateFrame("Frame", "TrinityAdminAurasListPanel", TrinityAdminMainFrame)
+        self.AurasListPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.AurasListPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+        
+        local bg = self.AurasListPanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.AurasListPanel)
+        bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)
+        
+        self.AurasListPanel.title = self.AurasListPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.AurasListPanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.AurasListPanel.title:SetText("Auras and Lists Funcs")
+        
+        ----------------------------------------------------------------------------
+        -- 1) Boutons "List Auras", "List Scenes" et "List Spawnpoints"
+        ----------------------------------------------------------------------------
+        local btnListAuras = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnListAuras:SetPoint("TOPLEFT", self.AurasListPanel, "TOPLEFT", 10, -40)
+        btnListAuras:SetText("List Auras")
+        btnListAuras:SetWidth(btnListAuras:GetTextWidth() + 20)
+        btnListAuras:SetHeight(22)
+        btnListAuras:SetScript("OnClick", function()
+            StartEventsCapture()
+            local command = ".list auras"
+            SendChatMessage(command, "SAY")
+        end)
+        btnListAuras:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list auras\nList auras (passive and active) of selected creature or player. If no creature or player is selected, list your own auras.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnListAuras:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        local btnListScenes = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnListScenes:SetPoint("LEFT", btnListAuras, "RIGHT", 10, 0)
+        btnListScenes:SetText("List Scenes")
+        btnListScenes:SetWidth(btnListScenes:GetTextWidth() + 20)
+        btnListScenes:SetHeight(22)
+        btnListScenes:SetScript("OnClick", function()
+            StartEventsCapture()
+            local command = ".list scenes"
+            SendChatMessage(command, "SAY")
+        end)
+        btnListScenes:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list scenes\nList of all active scenes for targeted character.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnListScenes:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        local btnListSpawnpoints = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnListSpawnpoints:SetPoint("LEFT", btnListScenes, "RIGHT", 10, 0)
+        btnListSpawnpoints:SetText("List Spawnpoints")
+        btnListSpawnpoints:SetWidth(btnListSpawnpoints:GetTextWidth() + 20)
+        btnListSpawnpoints:SetHeight(22)
+        btnListSpawnpoints:SetScript("OnClick", function()
+    local command = ".list spawnpoints"
+    lastListCommand = command  -- sauvegarde de la commande
+    StartEventsCapture()
+    SendChatMessage(command, "SAY")
+end)
+        btnListSpawnpoints:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list spawnpoints\n\nLists all spawn points (both creatures and GOs) in the current zone.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnListSpawnpoints:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        ----------------------------------------------------------------------------
+        -- 2) Ligne "Creature ID", "Max Count" et bouton "Show Creatures List"
+        ----------------------------------------------------------------------------
+        local editCreatureID = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editCreatureID:SetSize(80, 22)
+        editCreatureID:SetPoint("TOPLEFT", btnListAuras, "BOTTOMLEFT", 0, -20)
+        editCreatureID:SetText("Creature ID")
+        editCreatureID:SetAutoFocus(false)
+        
+        local editCreatureMax = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editCreatureMax:SetSize(80, 22)
+        editCreatureMax:SetPoint("LEFT", editCreatureID, "RIGHT", 10, 0)
+        editCreatureMax:SetText("Max Count")
+        editCreatureMax:SetAutoFocus(false)
+        
+        local btnShowCreatures = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnShowCreatures:SetPoint("LEFT", editCreatureMax, "RIGHT", 10, 0)
+        btnShowCreatures:SetText("Show Creatures List")
+        btnShowCreatures:SetWidth(btnShowCreatures:GetTextWidth() + 20)
+        btnShowCreatures:SetHeight(22)
+        btnShowCreatures:SetScript("OnClick", function()
+            local creatureID = editCreatureID:GetText()
+            local maxCount = editCreatureMax:GetText()
+            if creatureID == "" or creatureID == "Creature ID" then
+                print("Please enter a valid Creature ID.")
+                return
+            end
+            StartEventsCapture()
+            local command = ".list creature " .. creatureID
+            if maxCount ~= "" and maxCount ~= "Max Count" then
+                command = command .. " " .. maxCount
+            end
+            SendChatMessage(command, "SAY")
+            editCreatureID:SetText("Creature ID")
+            editCreatureMax:SetText("Max Count")
+        end)
+        btnShowCreatures:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list creature #creature_id [#max_count]\r\n\r\nOutput creatures with creature id #creature_id found in world. Output creature guids and coordinates sorted by distance from character. Will be output maximum #max_count creatures. If #max_count not provided use 10 as default value.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnShowCreatures:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        ----------------------------------------------------------------------------
+        -- 3) Ligne "Item ID", "Max Count" et bouton "Show Items List"
+        ----------------------------------------------------------------------------
+        local editItemID = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editItemID:SetSize(80, 22)
+        editItemID:SetPoint("TOPLEFT", editCreatureID, "BOTTOMLEFT", 0, -20)
+        editItemID:SetText("Item ID")
+        editItemID:SetAutoFocus(false)
+        
+        local editItemMax = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editItemMax:SetSize(80, 22)
+        editItemMax:SetPoint("LEFT", editItemID, "RIGHT", 10, 0)
+        editItemMax:SetText("Max Count")
+        editItemMax:SetAutoFocus(false)
+        
+        local btnShowItems = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnShowItems:SetPoint("LEFT", editItemMax, "RIGHT", 10, 0)
+        btnShowItems:SetText("Show Items List")
+        btnShowItems:SetWidth(btnShowItems:GetTextWidth() + 20)
+        btnShowItems:SetHeight(22)
+        btnShowItems:SetScript("OnClick", function()
+            local itemID = editItemID:GetText()
+            local maxCount = editItemMax:GetText()
+            if itemID == "" or itemID == "Item ID" then
+                print("Please enter a valid Item ID.")
+                return
+            end
+            StartEventsCapture()
+            local command = ".list item " .. itemID
+            if maxCount ~= "" and maxCount ~= "Max Count" then
+                command = command .. " " .. maxCount
+            end
+            SendChatMessage(command, "SAY")
+            editItemID:SetText("Item ID")
+            editItemMax:SetText("Max Count")
+        end)
+        btnShowItems:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list item #item_id [#max_count]\r\n\r\nOutput items with item id #item_id found in all character inventories, mails, auctions, and guild banks. Output item guids, item owner guid, owner account and owner name (guild name and guid in case guild bank). Will be output maximum #max_count items. If #max_count not provided use 10 as default value.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnShowItems:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        ----------------------------------------------------------------------------
+        -- 4) Ligne "Character Name" et bouton "List Mails"
+        ----------------------------------------------------------------------------
+        local editCharacterName = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editCharacterName:SetSize(120, 22)
+        editCharacterName:SetPoint("TOPLEFT", editItemID, "BOTTOMLEFT", 0, -20)
+        editCharacterName:SetText("Character Name")
+        editCharacterName:SetAutoFocus(false)
+        
+        local btnListMails = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnListMails:SetPoint("LEFT", editCharacterName, "RIGHT", 10, 0)
+        btnListMails:SetText("List Mails")
+        btnListMails:SetWidth(btnListMails:GetTextWidth() + 20)
+        btnListMails:SetHeight(22)
+        btnListMails:SetScript("OnClick", function()
+            local characterName = editCharacterName:GetText()
+            if characterName == "" or characterName == "Character Name" then
+                print("Please enter a valid Character Name.")
+                return
+            end
+            StartEventsCapture()
+            local command = ".list mail " .. characterName
+            SendChatMessage(command, "SAY")
+            editCharacterName:SetText("Character Name")
+        end)
+        btnListMails:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list mail $character\nList of mails the character received.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnListMails:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        ----------------------------------------------------------------------------
+        -- 5) Ligne "Gameobject ID", "Max Count" et bouton "Show Gamobjects List"
+        ----------------------------------------------------------------------------
+        local editGobjectID = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editGobjectID:SetSize(80, 22)
+        editGobjectID:SetPoint("TOPLEFT", editCharacterName, "BOTTOMLEFT", 0, -20)
+        editGobjectID:SetText("Gameobject ID")
+        editGobjectID:SetAutoFocus(false)
+        
+        local editGobjectMax = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editGobjectMax:SetSize(80, 22)
+        editGobjectMax:SetPoint("LEFT", editGobjectID, "RIGHT", 10, 0)
+        editGobjectMax:SetText("Max Count")
+        editGobjectMax:SetAutoFocus(false)
+        
+        local btnShowGobjects = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnShowGobjects:SetPoint("LEFT", editGobjectMax, "RIGHT", 10, 0)
+        btnShowGobjects:SetText("Show Gamobjects List")
+        btnShowGobjects:SetWidth(btnShowGobjects:GetTextWidth() + 20)
+        btnShowGobjects:SetHeight(22)
+        btnShowGobjects:SetScript("OnClick", function()
+            local gobjectID = editGobjectID:GetText()
+            local maxCount = editGobjectMax:GetText()
+            if gobjectID == "" or gobjectID == "Gameobject ID" then
+                print("Please enter a valid Gameobject ID.")
+                return
+            end
+            StartEventsCapture()
+            local command = ".list object " .. gobjectID
+            if maxCount ~= "" and maxCount ~= "Max Count" then
+                command = command .. " " .. maxCount
+            end
+            SendChatMessage(command, "SAY")
+            editGobjectID:SetText("Gameobject ID")
+            editGobjectMax:SetText("Max Count")
+        end)
+        btnShowGobjects:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list object #gameobject_id [#max_count]\r\n\r\nOutput gameobjects with gameobject id #gameobject_id found in world. Output gameobject guids and coordinates sorted by distance from character. Will be output maximum #max_count gameobject. If #max_count not provided use 10 as default value.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnShowGobjects:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        ----------------------------------------------------------------------------
+        -- 6) Ligne "Distance" et bouton "List Respawns"
+        ----------------------------------------------------------------------------
+        local editDistance = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
+        editDistance:SetSize(80, 22)
+        editDistance:SetPoint("TOPLEFT", editGobjectID, "BOTTOMLEFT", 0, -20)
+        editDistance:SetText("Distance")
+        editDistance:SetAutoFocus(false)
+        
+        local btnListRespawns = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnListRespawns:SetPoint("LEFT", editDistance, "RIGHT", 10, 0)
+        btnListRespawns:SetText("List Respawns")
+        btnListRespawns:SetWidth(btnListRespawns:GetTextWidth() + 20)
+        btnListRespawns:SetHeight(22)
+        btnListRespawns:SetScript("OnClick", function()
+            local distance = editDistance:GetText()
+            StartEventsCapture()
+            local command = ".list respawns"
+            if distance ~= "" and distance ~= "Distance" then
+                command = command .. " " .. distance
+            end
+            SendChatMessage(command, "SAY")
+            editDistance:SetText("Distance")
+        end)
+        btnListRespawns:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText("Syntax: .list respawns [distance]\n\nLists all pending respawns within <distance> yards, or within current zone if not specified.", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btnListRespawns:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        
+        ----------------------------------------------------------------------------
+        -- Bouton "Back" pour revenir au panneau principal
+        ----------------------------------------------------------------------------
+        local btnBack = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.AurasListPanel, "BOTTOM", 0, 10)
+        btnBack:SetText(TrinityAdmin_Translations["Back"])
+        btnBack:SetHeight(22)
+        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        btnBack:SetScript("OnClick", function()
+            self.AurasListPanel:Hide()
+            self.panel:Show()
+        end)
+    end
+
+    TrinityAdmin:HideMainMenu()
+    self.AurasListPanel:Show()
 end

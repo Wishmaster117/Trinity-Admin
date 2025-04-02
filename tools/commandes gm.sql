@@ -11,7 +11,6 @@
 	
 idées:
 
-Pour npc show loot, afficher les loots dans une fenetre séparée
 Pour npc info il faut trier les données a afficher
 Pour .gobject info il faut trier les données a afficher
 

@@ -1,43 +1,43 @@
 -- Creation du bouton:
-	local EventsManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    EventsManage:SetSize(150, 22)
-    EventsManage:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
-    EventsManage:SetText("Battlefield And Pvp")
-    EventsManage:SetScript("OnClick", function() self:OpenEventsManageManagement() end)
+	local AurasList = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    AurasList:SetSize(150, 22)
+    AurasList:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
+    AurasList:SetText("Auras Management")
+    AurasList:SetScript("OnClick", function() self:OpenAurasListManagement() end)
 
 
 
 
--- Ouvre le panneau EventsManage en masquant le panneau principal
-function Misc:OpenEventsManageManagement()
+-- Ouvre le panneau AurasList en masquant le panneau principal
+function Misc:OpenAurasListManagement()
     if self.panel then
         self.panel:Hide()
     end
-    if not self.EventsManagePanel then
-        self.EventsManagePanel = CreateFrame("Frame", "TrinityAdminEventsManagePanel", TrinityAdminMainFrame)
-        self.EventsManagePanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
-        self.EventsManagePanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
+    if not self.AurasListPanel then
+        self.AurasListPanel = CreateFrame("Frame", "TrinityAdminAurasListPanel", TrinityAdminMainFrame)
+        self.AurasListPanel:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+        self.AurasListPanel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
         
-        local bg = self.EventsManagePanel:CreateTexture(nil, "BACKGROUND")
-        bg:SetAllPoints(self.EventsManagePanel)
+        local bg = self.AurasListPanel:CreateTexture(nil, "BACKGROUND")
+        bg:SetAllPoints(self.AurasListPanel)
         bg:SetColorTexture(0.6, 0.4, 0.2, 0.7)  -- Couleur pour le panneau Groups Management
         
-        self.EventsManagePanel.title = self.EventsManagePanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-        self.EventsManagePanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.EventsManagePanel.title:SetText("Dungeons Funcs")
+        self.AurasListPanel.title = self.AurasListPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        self.AurasListPanel.title:SetPoint("TOPLEFT", 10, -10)
+        self.AurasListPanel.title:SetText("Auras Funcs")
         
         -- Ajoutez ici vos éléments et fonctions spécifiques à la gestion des groupes.
         
-        local btnBack = CreateFrame("Button", nil, self.EventsManagePanel, "UIPanelButtonTemplate")
-        btnBack:SetPoint("BOTTOM", self.EventsManagePanel, "BOTTOM", 0, 10)
+        local btnBack = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
+        btnBack:SetPoint("BOTTOM", self.AurasListPanel, "BOTTOM", 0, 10)
         btnBack:SetText(TrinityAdmin_Translations["Back"])
         btnBack:SetHeight(22)
         btnBack:SetWidth(btnBack:GetTextWidth() + 20)
         btnBack:SetScript("OnClick", function()
-            self.EventsManagePanel:Hide()
+            self.AurasListPanel:Hide()
             self.panel:Show()
         end)
     end
     TrinityAdmin:HideMainMenu()
-    self.EventsManagePanel:Show()
+    self.AurasListPanel:Show()
 end

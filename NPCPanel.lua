@@ -1,3 +1,4 @@
+-- Vérifie qu'une fonction UnitIsNPC n'existe pas déjà, sinon la crée
 if not UnitIsNPC then
     function UnitIsNPC(unit)
         return true
@@ -6,6 +7,9 @@ end
 
 local NPCModule = TrinityAdmin:GetModule("NPCPanel")
 
+-- -------------------------------------------------------------------------
+-- 1) ShowNPCPanel : Ouvre le panneau
+-- -------------------------------------------------------------------------
 function NPCModule:ShowNPCPanel()
     TrinityAdmin:HideMainMenu()
     if not self.panel then
@@ -14,15 +18,61 @@ function NPCModule:ShowNPCPanel()
     self.panel:Show()
 end
 
--- Variables de capture
+-- -------------------------------------------------------------------------
+-- 2) Variables de capture pour .npc info
+-- -------------------------------------------------------------------------
 local capturingNPCInfo = false
 local npcInfoCollected = {}
 local npcInfoTimer = nil
 
+-- Capture for .npc showloot
+local capturingShowLoot = false
+local showLootCollected = {}
+local showLootTimer = nil
+
+------------------------------------------
+-- Affiche le résultat de ".npc showloot"
+------------------------------------------
+local function ShowShowLootAceGUI(lines)
+    local AceGUI = LibStub("AceGUI-3.0")
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("NPC Loot Info")
+    frame:SetStatusText("Information from .npc showloot")
+    frame:SetLayout("Flow")
+    frame:SetWidth(600)
+    frame:SetHeight(500)
+
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    scroll:SetFullWidth(true)
+    scroll:SetFullHeight(true)
+    frame:AddChild(scroll)
+
+    -- Chaque ligne => un EditBox (ou un Label, ou MultiLineEditBox, etc.)
+    for i, line in ipairs(lines) do
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("Line " .. i)
+        edit:SetText(line)
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
+
+    local btnClose = AceGUI:Create("Button")
+    btnClose:SetText("Fermer")
+    btnClose:SetWidth(100)
+    btnClose:SetCallback("OnClick", function()
+        AceGUI:Release(frame)
+    end)
+    frame:AddChild(btnClose)
+end
+
+
 local npcInfoCaptureFrame = CreateFrame("Frame")
 npcInfoCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 npcInfoCaptureFrame:SetScript("OnEvent", function(self, event, msg)
-    if not capturingNPCInfo then return end
+    if not capturingNPCInfo and not capturingShowLoot then
+        return
+    end
 
     -- Nettoyage minimal
     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
@@ -31,37 +81,59 @@ npcInfoCaptureFrame:SetScript("OnEvent", function(self, event, msg)
                        :gsub("|T.-|t", "")
                        :gsub("\226[\148-\149][\128-\191]", "")
 
-    table.insert(npcInfoCollected, cleanMsg)
+    ----------------------------------------
+    -- Si on est en mode capturingNPCInfo :
+    ----------------------------------------
+    if capturingNPCInfo then
+        table.insert(npcInfoCollected, cleanMsg)
+        if npcInfoTimer then npcInfoTimer:Cancel() end
 
-    -- On redémarre le timer (1 seconde)
-    if npcInfoTimer then
-        npcInfoTimer:Cancel()
+        npcInfoTimer = C_Timer.NewTimer(1, function()
+            capturingNPCInfo = false
+            local fullText = table.concat(npcInfoCollected, "\n")
+            local lines = {}
+            for line in fullText:gmatch("[^\r\n]+") do
+                -- Exclure "NPC currently selected..." si besoin
+                if not line:match("^NPC currently selected by player:") then
+                    table.insert(lines, line)
+                end
+            end
+            ShowNPCInfoAceGUI(lines)
+        end)
     end
-    npcInfoTimer = C_Timer.NewTimer(1, function()
-        capturingNPCInfo = false
-        local fullText = table.concat(npcInfoCollected, "\n")
-        -- On sépare en lignes
-		local lines = {}
-		for line in fullText:gmatch("[^\r\n]+") do
-			-- Ne pas ajouter la ligne si elle commence par "NPC currently selected by player:"
-			if not line:match("^NPC currently selected by player:") then
-				table.insert(lines, line)
-			end
-		end
-        -- On affiche via AceGUI
-        ShowNPCInfoAceGUI(lines)
-    end)
+
+    ----------------------------------------
+    -- Si on est en mode capturingShowLoot :
+    ----------------------------------------
+    if capturingShowLoot then
+        table.insert(showLootCollected, cleanMsg)
+        if showLootTimer then showLootTimer:Cancel() end
+
+        showLootTimer = C_Timer.NewTimer(1, function()
+            capturingShowLoot = false
+            local fullText = table.concat(showLootCollected, "\n")
+
+            -- Ici on split en lignes
+            local lines = {}
+            for line in fullText:gmatch("[^\r\n]+") do
+                table.insert(lines, line)
+            end
+
+            -- Puis on ouvre la popup Ace3 :
+            ShowShowLootAceGUI(lines)
+        end)
+    end
 end)
 
--- Fonction qui traite le texte complet pour séparer la ligne Flags/PersonalGuid
+-- -------------------------------------------------------------------------
+-- 3) Fonction qui traite le texte complet pour séparer la ligne Flags/PersonalGuid
+-- -------------------------------------------------------------------------
 local function ProcessCapturedText(input)
-    local text = input
-    if type(input) == "table" then
-        text = table.concat(input, "\n")
-    end
+    local text = (type(input) == "table") and table.concat(input, "\n") or input
 
     local processedLines = {}
     local startCapture = false  -- Flag qui sera activé dès que l'on rencontre "Name:"
+
     for line in text:gmatch("[^\r\n]+") do
         -- On active la capture seulement si la ligne commence par "Name:"
         if not startCapture then
@@ -71,7 +143,7 @@ local function ProcessCapturedText(input)
         end
 
         if startCapture then
-            -- Si la ligne commence par "*" et contient "PersonalGuid:", on la découpe en deux parties.
+            -- Si la ligne commence par "*" et contient "PersonalGuid:", on la découpe en deux
             if line:find("^%*") and line:find("PersonalGuid:") then
                 local part1, part2 = line:match("^(%*%s*Flags%s*%S+),%s*(PersonalGuid:%s*.+)")
                 if part1 and part2 then
@@ -80,16 +152,18 @@ local function ProcessCapturedText(input)
                 else
                     table.insert(processedLines, line)
                 end
-            -- Séparation de la ligne "PhaseID: ... , PhaseGroup: ..."
+
+            -- Séparation "PhaseID: ... , PhaseGroup: ..."
             elseif line:find("PhaseID:") and line:find("PhaseGroup:") then
-                local part1, part2 = line:match("^(PhaseID:%s*[^,]+),%s*(PhaseGroup:%s*.+)")
-                if part1 and part2 then
-                    table.insert(processedLines, part1)
-                    table.insert(processedLines, part2)
+                local p1, p2 = line:match("^(PhaseID:%s*[^,]+),%s*(PhaseGroup:%s*.+)")
+                if p1 and p2 then
+                    table.insert(processedLines, p1)
+                    table.insert(processedLines, p2)
                 else
                     table.insert(processedLines, line)
                 end
-            -- Séparation de la ligne "Template StringID:" et "Spawn StringID:"
+
+            -- Séparation "Template StringID:" et "Spawn StringID:"
             elseif line:find("Template StringID:") and line:find("Spawn StringID:") then
                 local part1, part2 = line:match("^(Template StringID:%s*.-)%s+(Spawn StringID:%s*.+)")
                 if part1 and part2 then
@@ -98,6 +172,7 @@ local function ProcessCapturedText(input)
                 else
                     table.insert(processedLines, line)
                 end
+
             else
                 table.insert(processedLines, line)
             end
@@ -106,14 +181,13 @@ local function ProcessCapturedText(input)
     return processedLines
 end
 
-
-
-
+-- -------------------------------------------------------------------------
+-- 4) AceGUI pour afficher les infos PNJ
+-- -------------------------------------------------------------------------
 local AceGUI = LibStub("AceGUI-3.0")
 function ShowNPCInfoAceGUI(fullText)
-    -- On traite le texte pour séparer la ligne Flags/PersonalGuid
     local lines = ProcessCapturedText(fullText)
-    
+
     local frame = AceGUI:Create("Frame")
     frame:SetTitle("NPC Info")
     frame:SetStatusText("Information from npc info")
@@ -127,52 +201,33 @@ function ShowNPCInfoAceGUI(fullText)
     scroll:SetFullHeight(true)
     frame:AddChild(scroll)
 
-    -- Chaque ligne => un EditBox
-    -- for i, line in ipairs(lines) do
-    --     local edit = AceGUI:Create("EditBox")
-    --     edit:SetLabel("Line " .. i)
-    --     edit:SetText(line)
-    --     edit:SetFullWidth(true)
-    --     scroll:AddChild(edit)
-    -- end
-    -- for i, line in ipairs(lines) do
-    --     -- Tente d'extraire le label (le texte avant le premier deux-points)
-    --     local labelText = line:match("^(.-):") or ("Line " .. i)
-    --     local edit = AceGUI:Create("EditBox")
-    --     edit:SetLabel("|cffffff00" .. labelText .. ":|r")
-    --     edit:SetText(line)
-    --     edit:SetFullWidth(true)
-    --     scroll:AddChild(edit)
-    -- end
-	
-	for i, line in ipairs(lines) do
-    -- Récupère le label (texte avant le deux-points)
-    local labelText = line:match("^(.-):") or ("Line " .. i)
-    -- Récupère uniquement la valeur (texte après le deux-points)
-    local valueText = line:match("^[^:]+:%s*(.+)") or line
+    for i, line in ipairs(lines) do
+        local labelText = line:match("^(.-):") or ("Line " .. i)
+        local valueText = line:match("^[^:]+:%s*(.+)") or line
 
-    local edit = AceGUI:Create("EditBox")
-    edit:SetLabel("|cffffff00" .. labelText .. ":|r")
-    edit:SetText(valueText)
-    edit:SetFullWidth(true)
-    scroll:AddChild(edit)
-	end
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel("|cffffff00" .. labelText .. ":|r")
+        edit:SetText(valueText)
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
 
     local btnClose = AceGUI:Create("Button")
     btnClose:SetText("Fermer")
     btnClose:SetWidth(100)
     btnClose:SetCallback("OnClick", function()
-        frame:Hide()
+        AceGUI:Release(frame)
     end)
     frame:AddChild(btnClose)
 end
 
-
-
+-- -------------------------------------------------------------------------
+-- 5) Creation du panneau NPC sur 3 pages
+-- -------------------------------------------------------------------------
 function NPCModule:CreateNPCPanel()
     local npc = CreateFrame("Frame", "TrinityAdminNPCPanel", TrinityAdminMainFrame)
     npc:ClearAllPoints()
-    npc:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPLEFT", 10, -50)
+    npc:SetPoint("TOPLEFT",  TrinityAdminMainFrame, "TOPLEFT", 10, -50)
     npc:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
 
     local bg = npc:CreateTexture(nil, "BACKGROUND")
@@ -183,609 +238,36 @@ function NPCModule:CreateNPCPanel()
     npc.title:SetPoint("TOPLEFT", 10, -10)
     npc.title:SetText(TrinityAdmin_Translations["NPC_Panel"])
 
-    ----------------------------------------------------------------------------
-    -- Partie supérieure fixe : champ de saisie principal, dropdown et bouton Action
-    ----------------------------------------------------------------------------
-    local inputBox = CreateFrame("EditBox", "NPCCommandInput", npc, "InputBoxTemplate")
-    inputBox:SetSize(200, 22)
-    inputBox:SetPoint("TOPLEFT", 10, -40)
-    inputBox:SetAutoFocus(false)
-    inputBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
-
-    local dropdown = CreateFrame("Frame", "NPCCommandDropdown", npc, "UIDropDownMenuTemplate")
-    dropdown:SetPoint("LEFT", inputBox, "RIGHT", 10, 0)
-
-    local commands = {
-        { text = "npc add", command = ".npc add", tooltip = TrinityAdmin_Translations["NPC_Add_Tooltip"], defaultText = "Enter Creature ID" },
-        { text = "npc delete", command = ".npc delete", tooltip = TrinityAdmin_Translations["NPC_Delete_Tooltip"], defaultText = "Enter GUID" },
-        { text = "npc move", command = ".npc move", tooltip = TrinityAdmin_Translations["NPC_Move_Tooltip"], defaultText = "Enter GUID" },
-        { text = "npc info", command = ".npc info", tooltip = TrinityAdmin_Translations["NPC_Info_Tooltip"], defaultText = "Select a NPC" },
-        { text = "npc set model", command = ".npc set model", tooltip = TrinityAdmin_Translations["NPC_SetModel_Tooltip"], defaultText = "Enter DisplayID" },
-        { text = "npc set flag", command = ".npc set flag", tooltip = TrinityAdmin_Translations["NPC_SetFlag_Tooltip"], defaultText = "Enter Flag" },
-        { text = "npc set phase", command = ".npc set phase", tooltip = TrinityAdmin_Translations["NPC_SetPhase_Tooltip"], defaultText = "Enter PhaseMask" },
-        { text = "npc set factionid", command = ".npc set factionid", tooltip = TrinityAdmin_Translations["NPC_SetFaction_Tooltip"], defaultText = "Enter Faction ID" },
-        { text = "npc set level", command = ".npc set level", tooltip = TrinityAdmin_Translations["NPC_SetLevel_Tooltip"], defaultText = "Enter Level Number" },
-        { text = "npc delete item", command = ".npc delete item", tooltip = TrinityAdmin_Translations["NPC_DeleteItem_Tooltip"], defaultText = "Enter Item ID" },
-        { text = "npc add formation", command = ".npc add formation", tooltip = TrinityAdmin_Translations["NPC_AddFormation_Tooltip"], defaultText = "Enter Leader" },
-        { text = "npc set entry", command = ".npc set entry", tooltip = TrinityAdmin_Translations["NPC_SetEntry_Tooltip"], defaultText = "Enter New Entry" },
-        { text = "npc set link", command = ".npc set link", tooltip = TrinityAdmin_Translations["NPC_SetLink_Tooltip"], defaultText = "Enter Creature GUID" },
-        { text = "npc say", command = ".npc say", tooltip = TrinityAdmin_Translations["NPC_Say_Tooltip"], defaultText = "Enter Message" },
-        { text = "npc playemote", command = ".npc playemote", tooltip = TrinityAdmin_Translations["NPC_PlayEmote_Tooltip"], defaultText = "Enter Emote ID" },
-        { text = "npc follow", command = ".npc follow", tooltip = TrinityAdmin_Translations["NPC_Follow_Tooltip"], defaultText = "Select Someone" },
-        { text = "npc follow stop", command = ".npc follow stop", tooltip = TrinityAdmin_Translations["NPC_FollowStop_Tooltip"], defaultText = "Select a NPC" },
-        { text = "npc set allowmove", command = ".npc set allowmove", tooltip = TrinityAdmin_Translations["NPC_SetAllowMove_Tooltip"], defaultText = "Select a NPC" },
-    }
-
-    local selectedCommand = commands[1].command
-    local selectedTooltip = commands[1].tooltip or "Aucun tooltip défini"
-    local selectedDefaultText = commands[1].defaultText or ""
-    inputBox:SetText(selectedDefaultText)
-    inputBox:SetScript("OnEnter", function()
-        GameTooltip:SetOwner(inputBox, "ANCHOR_RIGHT")
-        GameTooltip:SetText(selectedTooltip, 1, 1, 1, 1, true)
-        GameTooltip:Show()
-    end)
-    inputBox:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
-
-    UIDropDownMenu_Initialize(dropdown, function(self, level, menuList)
-        local function OnClick(self)
-            UIDropDownMenu_SetSelectedID(dropdown, self:GetID())
-            selectedCommand = commands[self:GetID()].command
-            selectedTooltip = commands[self:GetID()].tooltip or "Aucun tooltip défini"
-            selectedDefaultText = commands[self:GetID()].defaultText or ""
-            inputBox:SetText(selectedDefaultText)
-            if GameTooltip:IsOwned(inputBox) then
-                GameTooltip:SetText(selectedTooltip, 1, 1, 1, 1, true)
-                GameTooltip:Show()
-            end
-        end
-        for i, cmd in ipairs(commands) do
-            local info = UIDropDownMenu_CreateInfo()
-            info.text = cmd.text
-            info.value = cmd.command
-            info.func = OnClick
-            info.tooltipTitle = cmd.text
-            info.tooltipText = cmd.tooltip
-            UIDropDownMenu_AddButton(info)
-        end
-    end)
-    UIDropDownMenu_SetWidth(dropdown, 120)
-    UIDropDownMenu_SetButtonWidth(dropdown, 140)
-    UIDropDownMenu_SetSelectedID(dropdown, 1)
-    UIDropDownMenu_JustifyText(dropdown, "LEFT")
-
-    local actionButton = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
-    actionButton:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
-    actionButton:SetSize(80, 22)
-    actionButton:SetText("Action")
-    actionButton:SetScript("OnClick", function()
-    -- Vérifie si la commande sélectionnée est .npc info (ou tout autre commande PNJ)
-    if selectedCommand == ".npc info" then
-
-        -- Vérifie qu'un PNJ est bien ciblé
-        if not (UnitExists("target") and UnitIsNPC("target")) then
-            print("Veuillez sélectionner un PNJ.")
-            return
-        end
-
-        -- Active la capture (exemple)
-        npcInfoCollected = {}
-        capturingNPCInfo = true
-        if npcInfoTimer then
-            npcInfoTimer:Cancel()
-        end
-        npcInfoTimer = C_Timer.NewTimer(1, function()
-            capturingNPCInfo = false
-            local fullText = table.concat(npcInfoCollected, "\n")
-            local lines = {}
-            for line in fullText:gmatch("[^\r\n]+") do
-                table.insert(lines, line)
-            end
-            ShowNPCInfoAceGUI(lines)
-        end)
-    end
-        local value = inputBox:GetText()
-        if value and value ~= "" and value ~= selectedDefaultText then
-            SendChatMessage(selectedCommand .. " " .. value, "SAY")
-            print("[DEBUG] Commande envoyée: " .. selectedCommand .. " " .. value)
-        else
-            if UnitExists("target") and UnitIsNPC("target") then
-                local targetName = UnitName("target")
-                SendChatMessage(selectedCommand, "SAY")
-                -- print("[DEBUG] Commande envoyée: " .. selectedCommand .. " " .. targetName)
-            else
-                print("Veuillez entrer une valeur pour la commande ou sélectionner un PNJ cible.")
-                return
-            end
-        end
-    end)
-
-    ----------------------------------------------------------------------------
-    -- Création d'un conteneur de contenu paginé
-    ----------------------------------------------------------------------------
-    local contentContainer = CreateFrame("Frame", nil, npc)
-    contentContainer:SetPoint("TOPLEFT", inputBox, "BOTTOMLEFT", 0, -20)
-    contentContainer:SetSize(600, 200)  -- zone de contenu pour les commandes
-
-    local totalPages = 2
-    local pages = {}
-    for i = 1, totalPages do
-        pages[i] = CreateFrame("Frame", nil, contentContainer)
-        pages[i]:SetAllPoints(contentContainer)
-        pages[i]:Hide()  -- on cache toutes les pages au départ
-    end
-
-    ----------------------------------------------------------------------------
-    -- Préparation des données de commandes
-    ----------------------------------------------------------------------------
-    local fullCommands = {
-        {
-            name = "npc add item",
-            command = ".npc add item",
-            tooltip = "'Syntax: .npc add item #itemId <#maxcount><#incrtime><#extendedcost><#bonusListIDs>\r\nAdd item #itemid to item list of selected vendor. Also optionally set max count item in vendor item list and time to item count restoring and items ExtendedCost.\r\n#bonusListIDs is a semicolon separated list of bonuses to add to item (such as Mythic/Heroic/Warforged/socket))",
-            fields = {
-                { defaultText = "Item ID", width = 80 },
-                { defaultText = "Max Count", width = 80 },
-                { defaultText = "Wait Time", width = 80 },
-                { defaultText = "Extendedcost", width = 100 },
-                { defaultText = "Bonus List IDs", width = 120 },
-            },
-        },
-        {
-            name = "npc spawngroup",
-            command = ".npc spawngroup",
-            tooltip = "Syntax: .npc spawngroup $groupId [ignorerespawn] [force]",
-            fields = {
-                { defaultText = "GroupId", width = 100 },
-                { defaultText = "Ignorerespawn", width = 120 },
-                { defaultText = "Force", width = 80 },
-            },
-        },
-    }
-
-    local pairedCommands = {
-        {
-            name = "npc add move",
-            command = ".npc add move",
-            tooltip = "Syntax: .npc add move #creature_guid [#waittime]\r\n\r\nAdd your current location as a waypoint for creature with guid #creature_guid. And optional add wait time.",
-            fields = {
-                { defaultText = "Creature Guid", width = 120 },
-                { defaultText = "Waittime", width = 100 },
-            },
-        },
-        {
-            name = "npc add temp",
-            command = ".npc add temp",
-            tooltip = "Syntax: .npc add temp [loot/noloot] #entry\nAdds temporary NPC, not saved to database.\n  Specify \'loot\' to have the NPC\'s corpse stick around for some time after death, allowing it to be looted.\n  Specify \'noloot\' to have the corpse disappear immediately.).",
-            fields = {
-                { defaultText = "[loot / noloot]", width = 120 },
-                { defaultText = "Entry", width = 100 },
-            },
-        },
-        {
-            name = "npc despawngroup",
-            command = ".npc despawngroup",
-            tooltip = "Syntax: .npc despawngroup $groupId [removerespawntime]",
-            fields = {
-                { defaultText = "GroupId", width = 100 },
-                { defaultText = "Remove Respawntime", width = 120 },
-            },
-        },
-        {
-            name = "npc evade",
-            command = ".npc evade",
-            tooltip = "Syntax: .npc evade [reason] [force]\nMakes the targeted NPC enter evade mode.\nDefaults to specifying EVADE_REASON_OTHER, override this by providing the reason string (ex.: .npc evade EVADE_REASON_BOUNDARY).\nSpecify \'force\' to clear any pre-existing evade state before evading - this may cause weirdness, use at your own risk.",
-            fields = {
-                { defaultText = "Reason", width = 100 },
-                { defaultText = "Force", width = 100 },
-            },
-        },
-        {
-            name = "npc set data",
-            command = ".npc set data",
-            tooltip = "Syntax: .npc set data $field $data\nSets data for the selected creature. Used for testing Scripting.",
-            fields = {
-                { defaultText = "Field", width = 120 },
-                { defaultText = "Data", width = 120 },
-            },
-        },
-        {
-            name = "npc set movetype",
-            command = ".npc set movetype",
-            tooltip = "Syntax: .npc set movetype [#creature_guid] stay/random/way [NODEL]\r\n\r\nSet for creature pointed by #creature_guid (or selected if #creature_guid not provided) movement type and move it to respawn position (if creature alive). Any existing waypoints for creature will be removed from the database if you do not use NODEL. If the creature is dead then movement type will applied at creature respawn.\r\nMake sure you use NODEL, if you want to keep the waypoints.",
-            fields = {
-                { defaultText = "Creature Guid", width = 100 },
-                { defaultText = "Movement type (opt.)", width = 120 },
-            },
-        },
-        {
-            name = "npc set spawntime",
-            command = ".npc set spawntime",
-            tooltip = "Syntax: .npc set spawntime #time \r\n\r\nAdjust spawntime of selected creature to time.",
-            fields = {
-                { defaultText = "Time", width = 120 },
-            },
-        },
-        {
-            name = "npc set wanderdistance",
-            command = ".npc set wanderdistance",
-            tooltip = "Syntax: .npc set wanderdistance #dist\r\n\r\nAdjust wander distance of selected creature to dist.",
-            fields = {
-                { defaultText = "Distance", width = 120 },
-            },
-        },
-        {
-            name = "npc textemote",
-            command = ".npc textemote",
-            tooltip = "Syntax: .npc textemote #emoteid\r\n\r\nMake the selected creature to do textemote with an emote of id #emoteid.",
-            fields = {
-                { defaultText = "Emote ID", width = 120 },
-            },
-        },
-        {
-            name = "npc whisper",
-            command = ".npc whisper",
-            tooltip = "Syntax: .npc whisper #playerguid #text\r\nMake the selected npc whisper #text to  #playerguid.",
-            fields = {
-                { defaultText = "Player Guid", width = 120 },
-                { defaultText = "Text", width = 140 },
-            },
-        },
-        {
-            name = "npc yell",
-            command = ".npc yell",
-            tooltip = "Syntax: .npc yell $message\nMake selected creature yell specified message.",
-            fields = {
-                { defaultText = "Message", width = 200 },
-            },
-        },
-		{
-            name = "npc showloot",
-            command = ".npc showloot",
-            tooltip = "Syntax: .npc showloot [all]\n\nShows the loot contained in targeted dead creature.",
-            fields = {
-                { defaultText = "all", width = 200 },
-            },
-        },
-    }
-
-    local pairedCommandsFiltered = {}
-    local singleInputCommands = {}
-    for i, cmd in ipairs(pairedCommands) do
-        if #cmd.fields == 1 and (cmd.command == ".npc set spawntime" or cmd.command == ".npc set wanderdistance" or cmd.command == ".npc textemote" or cmd.command == ".npc yell" or cmd.command == ".npc showloot") then
-            table.insert(singleInputCommands, cmd)
-        else
-            table.insert(pairedCommandsFiltered, cmd)
-        end
-    end
-
-    ----------------------------------------------------------------------------
-    -- Remplissage de la page 1
-    ----------------------------------------------------------------------------
-    local page1 = pages[1]
-    local yOffset = 0
-
-    -- Affichage des commandes full
-    for i, cmd in ipairs(fullCommands) do
-        local blockFrame = CreateFrame("Frame", nil, page1)
-        blockFrame:SetPoint("TOPLEFT", page1, "TOPLEFT", 0, -yOffset)
-        blockFrame:SetSize(600, 40)
-        local title = blockFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        title:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", 0, 0)
-        title:SetText(cmd.name)
-        title:SetTextColor(1, 1, 0, 1)
-        local fieldXOffset = 0
-        local fieldInputs = {}
-        for j, field in ipairs(cmd.fields) do
-            local editBox = CreateFrame("EditBox", nil, blockFrame, "InputBoxTemplate")
-            editBox:SetSize(field.width, 22)
-            editBox:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", fieldXOffset, -20)
-            editBox:SetAutoFocus(false)
-            editBox:SetText(field.defaultText)
-            fieldInputs[j] = editBox
-            fieldXOffset = fieldXOffset + field.width + 10
-        end
-        local sendButton = CreateFrame("Button", nil, blockFrame, "UIPanelButtonTemplate")
-        sendButton:SetSize(60, 22)
-        sendButton:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", fieldXOffset, -20)
-        sendButton:SetText("Send")
-        sendButton:SetScript("OnClick", function()
-            local args = {}
-            for j, editBox in ipairs(fieldInputs) do
-                table.insert(args, editBox:GetText())
-            end
-            local fullCommand = cmd.command .. " " .. table.concat(args, " ")
-            SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée: " .. fullCommand)
-        end)
-        sendButton:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(cmd.tooltip, 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        sendButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-        yOffset = yOffset + 50
-    end
-
-    ----------------------------------------------------------------------------
-    -- Affichage de la première moitié des commandes par paire sur la page 1
-    ----------------------------------------------------------------------------
-    local totalPaired = #pairedCommandsFiltered
-    local half = math.ceil(totalPaired / 2)
-    local pairIndex = 1  -- Déclaration locale de pairIndex
-    while pairIndex <= half do
-        local rowFrame = CreateFrame("Frame", nil, page1)
-        rowFrame:SetPoint("TOPLEFT", page1, "TOPLEFT", 0, -yOffset)
-        rowFrame:SetSize(600, 40)
-
-        -- Commande 1
-        local cmd1 = pairedCommandsFiltered[pairIndex]
-        local block1 = CreateFrame("Frame", nil, rowFrame)
-        block1:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", 0, 0)
-        block1:SetSize(280, 40)
-        local title1 = block1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        title1:SetPoint("TOPLEFT", block1, "TOPLEFT", 0, 0)
-        title1:SetText(cmd1.name)
-        title1:SetTextColor(1, 1, 0, 1)
-        local fieldXOffset1 = 0
-        local fieldInputs1 = {}
-        for j, field in ipairs(cmd1.fields) do
-            local editBox = CreateFrame("EditBox", nil, block1, "InputBoxTemplate")
-            editBox:SetSize(field.width, 22)
-            editBox:SetPoint("TOPLEFT", block1, "TOPLEFT", fieldXOffset1, -20)
-            editBox:SetAutoFocus(false)
-            editBox:SetText(field.defaultText)
-            fieldInputs1[j] = editBox
-            fieldXOffset1 = fieldXOffset1 + field.width + 5
-        end
-        local sendButton1 = CreateFrame("Button", nil, block1, "UIPanelButtonTemplate")
-        sendButton1:SetSize(60, 22)
-        sendButton1:SetPoint("TOPLEFT", block1, "TOPLEFT", fieldXOffset1, -20)
-        sendButton1:SetText("Send")
-        sendButton1:SetScript("OnClick", function()
-            local args = {}
-            for j, editBox in ipairs(fieldInputs1) do
-                table.insert(args, editBox:GetText())
-            end
-            local fullCommand = cmd1.command .. " " .. table.concat(args, " ")
-            SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée: " .. fullCommand)
-        end)
-        sendButton1:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(cmd1.tooltip, 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        sendButton1:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-        -- Commande 2, si présente
-        if pairIndex + 1 <= half then
-            local cmd2 = pairedCommandsFiltered[pairIndex + 1]
-            local block2 = CreateFrame("Frame", nil, rowFrame)
-            block2:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", 300, 0)
-            block2:SetSize(280, 40)
-            local title2 = block2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-            title2:SetPoint("TOPLEFT", block2, "TOPLEFT", 0, 0)
-            title2:SetText(cmd2.name)
-            title2:SetTextColor(1, 1, 0, 1)
-            local fieldXOffset2 = 0
-            local fieldInputs2 = {}
-            for j, field in ipairs(cmd2.fields) do
-                local editBox = CreateFrame("EditBox", nil, block2, "InputBoxTemplate")
-                editBox:SetSize(field.width, 22)
-                editBox:SetPoint("TOPLEFT", block2, "TOPLEFT", fieldXOffset2, -20)
-                editBox:SetAutoFocus(false)
-                editBox:SetText(field.defaultText)
-                fieldInputs2[j] = editBox
-                fieldXOffset2 = fieldXOffset2 + field.width + 5
-            end
-            local sendButton2 = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
-            sendButton2:SetSize(60, 22)
-            sendButton2:SetPoint("TOPLEFT", block2, "TOPLEFT", fieldXOffset2, -20)
-            sendButton2:SetText("Send")
-            sendButton2:SetScript("OnClick", function()
-                local args = {}
-                for j, editBox in ipairs(fieldInputs2) do
-                    table.insert(args, editBox:GetText())
-                end
-                local fullCommand = cmd2.command .. " " .. table.concat(args, " ")
-                SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
-            end)
-            sendButton2:SetScript("OnEnter", function(self)
-                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(cmd2.tooltip, 1, 1, 1, 1, true)
-                GameTooltip:Show()
-            end)
-            sendButton2:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        end
-
-        yOffset = yOffset + 50
-        pairIndex = pairIndex + 2
-    end
-
-    ----------------------------------------------------------------------------
-    -- Remplissage de la page 2
-    ----------------------------------------------------------------------------
-    local page2 = pages[2]
-    yOffset = 0
-    local totalPairedFiltered = #pairedCommandsFiltered
-    local startIndex = math.floor(totalPairedFiltered / 2) + 1
-    local pairIndex2 = startIndex
-    while pairIndex2 <= totalPairedFiltered do
-        local rowFrame = CreateFrame("Frame", nil, page2)
-        rowFrame:SetPoint("TOPLEFT", page2, "TOPLEFT", 0, -yOffset)
-        rowFrame:SetSize(600, 40)
-        -- Commande 1
-        local cmd1 = pairedCommandsFiltered[pairIndex2]
-        local block1 = CreateFrame("Frame", nil, rowFrame)
-        block1:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", 0, 0)
-        block1:SetSize(280, 40)
-        local title1 = block1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        title1:SetPoint("TOPLEFT", block1, "TOPLEFT", 0, 0)
-        title1:SetText(cmd1.name)
-        title1:SetTextColor(1, 1, 0, 1)
-        local fieldXOffset1 = 0
-        local fieldInputs1 = {}
-        for j, field in ipairs(cmd1.fields) do
-            local editBox = CreateFrame("EditBox", nil, block1, "InputBoxTemplate")
-            editBox:SetSize(field.width, 22)
-            editBox:SetPoint("TOPLEFT", block1, "TOPLEFT", fieldXOffset1, -20)
-            editBox:SetAutoFocus(false)
-            editBox:SetText(field.defaultText)
-            fieldInputs1[j] = editBox
-            fieldXOffset1 = fieldXOffset1 + field.width + 5
-        end
-        local sendButton1 = CreateFrame("Button", nil, block1, "UIPanelButtonTemplate")
-        sendButton1:SetSize(60, 22)
-        sendButton1:SetPoint("TOPLEFT", block1, "TOPLEFT", fieldXOffset1, -20)
-        sendButton1:SetText("Send")
-        sendButton1:SetScript("OnClick", function()
-            local args = {}
-            for j, editBox in ipairs(fieldInputs1) do
-                table.insert(args, editBox:GetText())
-            end
-            local fullCommand = cmd1.command .. " " .. table.concat(args, " ")
-            SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée: " .. fullCommand)
-        end)
-        sendButton1:SetScript("OnEnter", function(self)
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(cmd1.tooltip, 1, 1, 1, 1, true)
-            GameTooltip:Show()
-        end)
-        sendButton1:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        
-        if pairIndex2 + 1 <= totalPairedFiltered then
-            local cmd2 = pairedCommandsFiltered[pairIndex2 + 1]
-            local block2 = CreateFrame("Frame", nil, rowFrame)
-            block2:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", 300, 0)
-            block2:SetSize(280, 40)
-            local title2 = block2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-            title2:SetPoint("TOPLEFT", block2, "TOPLEFT", 0, 0)
-            title2:SetText(cmd2.name)
-            title2:SetTextColor(1, 1, 0, 1)
-            local fieldXOffset2 = 0
-            local fieldInputs2 = {}
-            for j, field in ipairs(cmd2.fields) do
-                local editBox = CreateFrame("EditBox", nil, block2, "InputBoxTemplate")
-                editBox:SetSize(field.width, 22)
-                editBox:SetPoint("TOPLEFT", block2, "TOPLEFT", fieldXOffset2, -20)
-                editBox:SetAutoFocus(false)
-                editBox:SetText(field.defaultText)
-                fieldInputs2[j] = editBox
-                fieldXOffset2 = fieldXOffset2 + field.width + 5
-            end
-            local sendButton2 = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
-            sendButton2:SetSize(60, 22)
-            sendButton2:SetPoint("TOPLEFT", block2, "TOPLEFT", fieldXOffset2, -20)
-            sendButton2:SetText("Send")
-            sendButton2:SetScript("OnClick", function()
-                local args = {}
-                for j, editBox in ipairs(fieldInputs2) do
-                    table.insert(args, editBox:GetText())
-                end
-                local fullCommand = cmd2.command .. " " .. table.concat(args, " ")
-                SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
-            end)
-            sendButton2:SetScript("OnEnter", function(self)
-                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(cmd2.tooltip, 1, 1, 1, 1, true)
-                GameTooltip:Show()
-            end)
-            sendButton2:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        end
-
-        yOffset = yOffset + 50
-        pairIndex2 = pairIndex2 + 2
-    end
-
-    ----------------------------------------------------------------------------
-    -- Insertion du panneau Single Input dans la page 2
-    ----------------------------------------------------------------------------
-    local singleFrame = CreateFrame("Frame", nil, page2)
-    singleFrame:SetPoint("TOPLEFT", page2, "TOPLEFT", 0, -yOffset)
-    singleFrame:SetSize(600, 40)
-
-    local singleEditBox = CreateFrame("EditBox", nil, singleFrame, "InputBoxTemplate")
-    singleEditBox:SetSize(singleInputCommands[1].fields[1].width, 22)
-    singleEditBox:SetPoint("LEFT", singleFrame, "LEFT", 0, 0)
-    singleEditBox:SetAutoFocus(false)
-    singleEditBox:SetText(singleInputCommands[1].fields[1].defaultText)
-
-    local singleDropdown = CreateFrame("Frame", nil, singleFrame, "TrinityAdminDropdownTemplate")
-    singleDropdown:SetPoint("LEFT", singleEditBox, "RIGHT", 10, 0)
-    UIDropDownMenu_SetText(singleDropdown, singleInputCommands[1].name)
-
-	UIDropDownMenu_Initialize(singleDropdown, function(self, level, menuList)
-		for i, cmd in ipairs(singleInputCommands) do
-			local info = UIDropDownMenu_CreateInfo()
-			info.text  = cmd.name
-			info.value = i
-			-- Définir si l'option est cochée (petit bouton jaune)
-			info.checked = (UIDropDownMenu_GetSelectedID(singleDropdown) == i)
-	
-			info.func = function(button, arg1, arg2, checked)
-				-- Met à jour l'ID sélectionné et le texte du dropdown
-				UIDropDownMenu_SetSelectedID(singleDropdown, i)
-				UIDropDownMenu_SetText(singleDropdown, cmd.name)
-	
-				-- Met à jour la commande sélectionnée
-				singleFrame.selectedCommand = singleInputCommands[i]
-				singleEditBox:SetText(cmd.fields[1].defaultText or "")
-			end
-	
-			UIDropDownMenu_AddButton(info, level)
-		end
-	end)
-
-    local singleSendButton = CreateFrame("Button", nil, singleFrame, "UIPanelButtonTemplate")
-    singleSendButton:SetSize(60, 22)
-    singleSendButton:SetPoint("LEFT", singleDropdown, "RIGHT", 10, 0)
-    singleSendButton:SetText("Send")
-    singleSendButton:SetScript("OnClick", function()
-        local value = singleEditBox:GetText()
-        if not value or value == "" or value == "Enter Value" then
-            print("Veuillez entrer une valeur valide.")
-            return
-        end
-        local cmd = singleFrame.selectedCommand or singleInputCommands[1]
-        local fullCommand = cmd.command .. " " .. value
-        SendChatMessage(fullCommand, "SAY")
-        print("[DEBUG] Commande envoyée: " .. fullCommand)
-    end)
-    singleSendButton:SetScript("OnEnter", function(self)
-        local cmd = singleFrame.selectedCommand or singleInputCommands[1]
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(cmd.tooltip, 1, 1, 1, 1, true)
-        GameTooltip:Show()
-    end)
-    singleSendButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-    ----------------------------------------------------------------------------
-    -- Bouton Retour commun
-    ----------------------------------------------------------------------------
-    local btnBack = CreateFrame("Button", "TrinityAdminNPCBackButton", npc, "UIPanelButtonTemplate")
+    -- Bouton Retour (en bas)
+    local btnBack = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", npc, "BOTTOM", 0, 10)
     btnBack:SetText(TrinityAdmin_Translations["Back"])
-    btnBack:SetSize(80, 22)
+    btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
     btnBack:SetScript("OnClick", function()
         npc:Hide()
         TrinityAdmin:ShowMainMenu()
     end)
 
-    ----------------------------------------------------------------------------
-    -- Boutons de navigation pour la pagination (affichés en bas du panneau)
-    ----------------------------------------------------------------------------
-    local currentPage = 1
+    -- Conteneur principal pour la pagination
+    local contentContainer = CreateFrame("Frame", nil, npc)
+    contentContainer:SetPoint("TOPLEFT", npc, "TOPLEFT", 10, -80)
+    contentContainer:SetSize(600, 300)
+
+    local totalPages = 3
+    local pages = {}
+    for i = 1, totalPages do
+        pages[i] = CreateFrame("Frame", nil, contentContainer)
+        pages[i]:SetAllPoints(contentContainer)
+        pages[i]:Hide()
+        pages[i].yOffset = 0
+    end
+
+    -- Boutons de navigation
     local navPageLabel = npc:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     navPageLabel:SetPoint("BOTTOM", npc, "BOTTOM", 0, 40)
     navPageLabel:SetText("Page 1 / " .. totalPages)
 
+    local currentPage = 1
     local function ShowPage(pageIndex)
         for i = 1, totalPages do
             if i == pageIndex then
@@ -819,7 +301,517 @@ function NPCModule:CreateNPCPanel()
         end
     end)
 
-    ShowPage(1)
+    -------------------------------------------------------------------------
+    -- Données de base
+    -------------------------------------------------------------------------
+    local commands = {
+        { text = "npc add",            command = ".npc add",            tooltip = TrinityAdmin_Translations["NPC_Add_Tooltip"],        defaultText = "Enter Creature ID" },
+        { text = "npc delete",         command = ".npc delete",         tooltip = TrinityAdmin_Translations["NPC_Delete_Tooltip"],     defaultText = "Enter GUID" },
+        { text = "npc move",           command = ".npc move",           tooltip = TrinityAdmin_Translations["NPC_Move_Tooltip"],       defaultText = "Enter GUID" },
+        { text = "npc info",           command = ".npc info",           tooltip = TrinityAdmin_Translations["NPC_Info_Tooltip"],       defaultText = "Select a NPC" },
+        { text = "npc set model",      command = ".npc set model",      tooltip = TrinityAdmin_Translations["NPC_SetModel_Tooltip"],   defaultText = "Enter DisplayID" },
+        { text = "npc set flag",       command = ".npc set flag",       tooltip = TrinityAdmin_Translations["NPC_SetFlag_Tooltip"],    defaultText = "Enter Flag" },
+        { text = "npc set phase",      command = ".npc set phase",      tooltip = TrinityAdmin_Translations["NPC_SetPhase_Tooltip"],   defaultText = "Enter PhaseMask" },
+        { text = "npc set factionid",  command = ".npc set factionid",  tooltip = TrinityAdmin_Translations["NPC_SetFaction_Tooltip"], defaultText = "Enter Faction ID" },
+        { text = "npc set level",      command = ".npc set level",      tooltip = TrinityAdmin_Translations["NPC_SetLevel_Tooltip"],   defaultText = "Enter Level Number" },
+        { text = "npc delete item",    command = ".npc delete item",    tooltip = TrinityAdmin_Translations["NPC_DeleteItem_Tooltip"], defaultText = "Enter Item ID" },
+        { text = "npc add formation",  command = ".npc add formation",  tooltip = TrinityAdmin_Translations["NPC_AddFormation_Tooltip"], defaultText = "Enter Leader" },
+        { text = "npc set entry",      command = ".npc set entry",      tooltip = TrinityAdmin_Translations["NPC_SetEntry_Tooltip"],   defaultText = "Enter New Entry" },
+        { text = "npc set link",       command = ".npc set link",       tooltip = TrinityAdmin_Translations["NPC_SetLink_Tooltip"],    defaultText = "Enter Creature GUID" },
+        { text = "npc say",            command = ".npc say",            tooltip = TrinityAdmin_Translations["NPC_Say_Tooltip"],        defaultText = "Enter Message" },
+        { text = "npc playemote",      command = ".npc playemote",      tooltip = TrinityAdmin_Translations["NPC_PlayEmote_Tooltip"],  defaultText = "Enter Emote ID" },
+        { text = "npc follow",         command = ".npc follow",         tooltip = TrinityAdmin_Translations["NPC_Follow_Tooltip"],     defaultText = "Select Someone" },
+        { text = "npc follow stop",    command = ".npc follow stop",    tooltip = TrinityAdmin_Translations["NPC_FollowStop_Tooltip"], defaultText = "Select a NPC" },
+        { text = "npc set allowmove",  command = ".npc set allowmove",  tooltip = TrinityAdmin_Translations["NPC_SetAllowMove_Tooltip"], defaultText = "Select a NPC" },
+    }
 
+    local fullCommands = {
+        {
+            name = "npc add item",
+            command = ".npc add item",
+            tooltip = "Syntax: .npc add item #itemId <#maxcount> <#incrtime> <#extendedcost> <#bonusListIDs>\nAdd an item to selected vendor.",
+            fields = {
+                { defaultText = "Item ID",         width = 80 },
+                { defaultText = "Max Count",       width = 80 },
+                { defaultText = "Wait Time",       width = 80 },
+                { defaultText = "Extendedcost",    width = 100 },
+                { defaultText = "Bonus List IDs",  width = 120 },
+            },
+        },
+        {
+            name = "npc spawngroup",
+            command = ".npc spawngroup",
+            tooltip = "Syntax: .npc spawngroup $groupId [ignorerespawn] [force]",
+            fields = {
+                { defaultText = "GroupId",        width = 100 },
+                { defaultText = "Ignorerespawn",  width = 120 },
+                { defaultText = "Force",          width = 80 },
+            },
+        },
+    }
+
+    local pairedCommands = {
+        {
+            name = "npc add move",
+            command = ".npc add move",
+            tooltip = "Syntax: .npc add move #creature_guid [#waittime]",
+            fields = {
+                { defaultText = "Creature Guid", width = 120 },
+                { defaultText = "Waittime",      width = 100 },
+            },
+        },
+        {
+            name = "npc add temp",
+            command = ".npc add temp",
+            tooltip = "Syntax: .npc add temp [loot/noloot] #entry\nAdds temporary NPC, not saved to DB.",
+            fields = {
+                { defaultText = "[loot / noloot]", width = 120 },
+                { defaultText = "Entry",           width = 100 },
+            },
+        },
+        {
+            name = "npc despawngroup",
+            command = ".npc despawngroup",
+            tooltip = "Syntax: .npc despawngroup $groupId [removerespawntime]",
+            fields = {
+                { defaultText = "GroupId",            width = 100 },
+                { defaultText = "Remove Respawntime", width = 120 },
+            },
+        },
+        {
+            name = "npc evade",
+            command = ".npc evade",
+            tooltip = "Syntax: .npc evade [reason] [force]\nForces targeted NPC to evade mode.",
+            fields = {
+                { defaultText = "Reason", width = 100 },
+                { defaultText = "Force",  width = 100 },
+            },
+        },
+        {
+            name = "npc set data",
+            command = ".npc set data",
+            tooltip = "Syntax: .npc set data $field $data\nSet data for the selected NPC.",
+            fields = {
+                { defaultText = "Field", width = 120 },
+                { defaultText = "Data",  width = 120 },
+            },
+        },
+        {
+            name = "npc set movetype",
+            command = ".npc set movetype",
+            tooltip = "Syntax: .npc set movetype [#creature_guid] stay/random/way [NODEL]",
+            fields = {
+                { defaultText = "Creature Guid",        width = 100 },
+                { defaultText = "Movement type (opt.)", width = 120 },
+            },
+        },
+        {
+            name = "npc set spawntime",
+            command = ".npc set spawntime",
+            tooltip = "Syntax: .npc set spawntime #time\nAdjust spawntime.",
+            fields = {
+                { defaultText = "Time", width = 120 },
+            },
+        },
+        {
+            name = "npc set wanderdistance",
+            command = ".npc set wanderdistance",
+            tooltip = "Syntax: .npc set wanderdistance #dist\nAdjust wander distance.",
+            fields = {
+                { defaultText = "Distance", width = 120 },
+            },
+        },
+        {
+            name = "npc textemote",
+            command = ".npc textemote",
+            tooltip = "Syntax: .npc textemote #emoteid",
+            fields = {
+                { defaultText = "Emote ID", width = 120 },
+            },
+        },
+        {
+            name = "npc whisper",
+            command = ".npc whisper",
+            tooltip = "Syntax: .npc whisper #playerguid #text",
+            fields = {
+                { defaultText = "Player Guid", width = 120 },
+                { defaultText = "Text",        width = 140 },
+            },
+        },
+        {
+            name = "npc yell",
+            command = ".npc yell",
+            tooltip = "Syntax: .npc yell $message\nMake NPC yell a message.",
+            fields = {
+                { defaultText = "Message", width = 200 },
+            },
+        },
+        {
+            name = "npc showloot",
+            command = ".npc showloot",
+            tooltip = "Syntax: .npc showloot [all]\nShow loot in targeted dead creature.",
+            fields = {
+                { defaultText = "all", width = 200 },
+            },
+        },
+    }
+
+    -- Sépare "pairedCommands" en "pairedCommandsFiltered" et "singleInputCommands"
+    local pairedCommandsFiltered = {}
+    local singleInputCommands = {}
+    for _, cmd in ipairs(pairedCommands) do
+        if #cmd.fields == 1 and (
+            cmd.command == ".npc set spawntime" or
+            cmd.command == ".npc set wanderdistance" or
+            cmd.command == ".npc textemote" or
+            cmd.command == ".npc yell" or
+            cmd.command == ".npc showloot"
+        ) then
+            table.insert(singleInputCommands, cmd)
+        else
+            table.insert(pairedCommandsFiltered, cmd)
+        end
+    end
+
+    ----------------------------------------------------------------------------
+    -- PAGE 1 : "header" (inputBox, dropdown, actionButton) + fullCommands
+    ----------------------------------------------------------------------------
+    local page1 = pages[1]
+
+    -- On place inputBox, dropdown, actionButton DANS page1
+    local inputBox = CreateFrame("EditBox", "NPCCommandInput", page1, "InputBoxTemplate")
+    inputBox:SetSize(200, 22)
+    inputBox:SetPoint("TOPLEFT", 10, -10)
+    inputBox:SetAutoFocus(false)
+    inputBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+
+    local dropdown = CreateFrame("Frame", "NPCCommandDropdown", page1, "UIDropDownMenuTemplate")
+    dropdown:SetPoint("LEFT", inputBox, "RIGHT", 10, 0)
+
+    -- On recopie le tableau 'commands' localement
+    local selectedCommand = commands[1].command
+    local selectedTooltip = commands[1].tooltip or "No tooltip"
+    local selectedDefaultText = commands[1].defaultText or ""
+    inputBox:SetText(selectedDefaultText)
+
+    inputBox:SetScript("OnEnter", function()
+        GameTooltip:SetOwner(inputBox, "ANCHOR_RIGHT")
+        GameTooltip:SetText(selectedTooltip, 1, 1, 1, 1, true)
+        GameTooltip:Show()
+    end)
+    inputBox:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+
+    UIDropDownMenu_Initialize(dropdown, function(self, level, menuList)
+        local function OnClick(frameBtn)
+            UIDropDownMenu_SetSelectedID(dropdown, frameBtn:GetID())
+            local idx = frameBtn:GetID()
+            selectedCommand = commands[idx].command
+            selectedTooltip = commands[idx].tooltip or "No tooltip"
+            selectedDefaultText = commands[idx].defaultText or ""
+            inputBox:SetText(selectedDefaultText)
+
+            if GameTooltip:IsOwned(inputBox) then
+                GameTooltip:SetText(selectedTooltip, 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end
+        end
+
+        for i, cmd in ipairs(commands) do
+            local info = UIDropDownMenu_CreateInfo()
+            info.text  = cmd.text
+            info.value = cmd.command
+            info.func  = OnClick
+            UIDropDownMenu_AddButton(info, level)
+        end
+    end)
+
+    UIDropDownMenu_SetWidth(dropdown, 120)
+    UIDropDownMenu_SetButtonWidth(dropdown, 140)
+    UIDropDownMenu_SetSelectedID(dropdown, 1)
+    UIDropDownMenu_JustifyText(dropdown, "LEFT")
+
+    local actionButton = CreateFrame("Button", nil, page1, "UIPanelButtonTemplate")
+    actionButton:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
+    actionButton:SetSize(80, 22)
+    actionButton:SetText("Action")
+    actionButton:SetScript("OnClick", function()
+        if selectedCommand == ".npc info" then
+            if not (UnitExists("target") and UnitIsNPC("target")) then
+                print("Veuillez sélectionner un PNJ.")
+                return
+            end
+            npcInfoCollected = {}
+            capturingNPCInfo = true
+            if npcInfoTimer then npcInfoTimer:Cancel() end
+            npcInfoTimer = C_Timer.NewTimer(1, function()
+                capturingNPCInfo = false
+                local fullText = table.concat(npcInfoCollected, "\n")
+                local lines = {}
+                for line in fullText:gmatch("[^\r\n]+") do
+                    table.insert(lines, line)
+                end
+                ShowNPCInfoAceGUI(lines)
+            end)
+        end
+
+        local value = inputBox:GetText()
+        if value and value ~= "" and value ~= selectedDefaultText then
+            SendChatMessage(selectedCommand .. " " .. value, "SAY")
+            print("[DEBUG] Commande envoyée 1: " .. selectedCommand .. " " .. value)
+        else
+            if UnitExists("target") and UnitIsNPC("target") then
+                -- pas de param => juste .npc ...
+                SendChatMessage(selectedCommand, "SAY")
+            else
+                print("Veuillez entrer une valeur ou sélectionner un PNJ.")
+            end
+        end
+    end)
+
+    -- On place "fullCommands" en dessous
+    local yOffset = 50
+
+    for _, cmd in ipairs(fullCommands) do
+        local blockFrame = CreateFrame("Frame", nil, page1)
+        blockFrame:SetPoint("TOPLEFT", page1, "TOPLEFT", 0, -yOffset)
+        blockFrame:SetSize(600, 40)
+
+        local title = blockFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        title:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", 0, 0)
+        title:SetText(cmd.name)
+        title:SetTextColor(1, 1, 0, 1)
+
+        local fieldXOffset = 0
+        local fieldInputs = {}
+
+        for _, field in ipairs(cmd.fields) do
+            local editBox = CreateFrame("EditBox", nil, blockFrame, "InputBoxTemplate")
+            editBox:SetSize(field.width, 22)
+            editBox:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", fieldXOffset, -20)
+            editBox:SetAutoFocus(false)
+            editBox:SetText(field.defaultText)
+            table.insert(fieldInputs, editBox)
+            fieldXOffset = fieldXOffset + field.width + 10
+        end
+
+        local sendButton = CreateFrame("Button", nil, blockFrame, "UIPanelButtonTemplate")
+        sendButton:SetSize(60, 22)
+        sendButton:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", fieldXOffset, -20)
+        sendButton:SetText("Send")
+        sendButton:SetScript("OnClick", function()
+            local args = {}
+            for _, eb in ipairs(fieldInputs) do
+                table.insert(args, eb:GetText())
+            end
+            local fullCommand = cmd.command .. " " .. table.concat(args, " ")
+            SendChatMessage(fullCommand, "SAY")
+            print("[DEBUG] Commande envoyée 2: " .. fullCommand)
+        end)
+        sendButton:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(cmd.tooltip, 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        sendButton:SetScript("OnLeave", function()
+            GameTooltip:Hide()
+        end)
+
+        yOffset = yOffset + 50
+    end
+
+    -------------------------------------------------------------------------
+    -- PAGE 2 : première moitié de pairedCommandsFiltered
+    -------------------------------------------------------------------------
+    local page2 = pages[2]
+    local yOffset2 = 0
+
+    local totalPaired = #pairedCommandsFiltered
+    local half = math.ceil(totalPaired / 2)
+    local pairIndex = 1
+
+    while pairIndex <= half do
+        local cmd1 = pairedCommandsFiltered[pairIndex]
+        if cmd1 then
+            local rowFrame = CreateFrame("Frame", nil, page2)
+            rowFrame:SetPoint("TOPLEFT", page2, "TOPLEFT", 0, -yOffset2)
+            rowFrame:SetSize(600, 40)
+
+            local title1 = rowFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            title1:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", 0, 0)
+            title1:SetText(cmd1.name)
+            title1:SetTextColor(1, 1, 0, 1)
+
+            local fieldXOffset1 = 0
+            local fieldInputs1 = {}
+            for _, field in ipairs(cmd1.fields) do
+                local eb = CreateFrame("EditBox", nil, rowFrame, "InputBoxTemplate")
+                eb:SetSize(field.width, 22)
+                eb:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", fieldXOffset1, -20)
+                eb:SetAutoFocus(false)
+                eb:SetText(field.defaultText)
+                table.insert(fieldInputs1, eb)
+                fieldXOffset1 = fieldXOffset1 + field.width + 5
+            end
+
+            local sendButton1 = CreateFrame("Button", nil, rowFrame, "UIPanelButtonTemplate")
+            sendButton1:SetSize(60, 22)
+            sendButton1:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", fieldXOffset1, -20)
+            sendButton1:SetText("Send")
+            sendButton1:SetScript("OnClick", function()
+                local args = {}
+                for _, eb in ipairs(fieldInputs1) do
+                    table.insert(args, eb:GetText())
+                end
+                local fullCommand = cmd1.command .. " " .. table.concat(args, " ")
+                SendChatMessage(fullCommand, "SAY")
+                print("[DEBUG] Commande envoyée 3: " .. fullCommand)
+            end)
+            sendButton1:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(cmd1.tooltip, 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            sendButton1:SetScript("OnLeave", function()
+                GameTooltip:Hide()
+            end)
+
+            yOffset2 = yOffset2 + 50
+        end
+
+        pairIndex = pairIndex + 1
+    end
+
+    -------------------------------------------------------------------------
+    -- PAGE 3 : seconde moitié + singleInputCommands
+    -------------------------------------------------------------------------
+    local page3 = pages[3]
+    local yOffset3 = 0
+
+    -- Seconde moitié
+    local pairIndex2 = half + 1
+    while pairIndex2 <= totalPaired do
+        local cmdData = pairedCommandsFiltered[pairIndex2]
+        if cmdData then
+            local rowFrame = CreateFrame("Frame", nil, page3)
+            rowFrame:SetPoint("TOPLEFT", page3, "TOPLEFT", 0, -yOffset3)
+            rowFrame:SetSize(600, 40)
+
+            local title = rowFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            title:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", 0, 0)
+            title:SetText(cmdData.name)
+            title:SetTextColor(1, 1, 0, 1)
+
+            local fieldXOffset = 0
+            local fieldInputs = {}
+            for _, field in ipairs(cmdData.fields) do
+                local eb = CreateFrame("EditBox", nil, rowFrame, "InputBoxTemplate")
+                eb:SetSize(field.width, 22)
+                eb:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", fieldXOffset, -20)
+                eb:SetAutoFocus(false)
+                eb:SetText(field.defaultText)
+                table.insert(fieldInputs, eb)
+                fieldXOffset = fieldXOffset + field.width + 5
+            end
+
+            local sendButton = CreateFrame("Button", nil, rowFrame, "UIPanelButtonTemplate")
+            sendButton:SetSize(60, 22)
+            sendButton:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", fieldXOffset, -20)
+            sendButton:SetText("Send")
+            sendButton:SetScript("OnClick", function()
+                local args = {}
+                for _, eb in ipairs(fieldInputs) do
+                    table.insert(args, eb:GetText())
+                end
+                local fullCommand = cmdData.command .. " " .. table.concat(args, " ")
+                SendChatMessage(fullCommand, "SAY")
+                print("[DEBUG] Commande envoyée 4: " .. fullCommand)
+            end)
+
+            sendButton:SetScript("OnEnter", function(self)
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(cmdData.tooltip, 1, 1, 1, 1, true)
+                GameTooltip:Show()
+            end)
+            sendButton:SetScript("OnLeave", function()
+                GameTooltip:Hide()
+            end)
+
+            yOffset3 = yOffset3 + 50
+        end
+
+        pairIndex2 = pairIndex2 + 1
+    end
+
+    -- Single Input
+    if #singleInputCommands > 0 then
+        local singleFrame = CreateFrame("Frame", nil, page3)
+        singleFrame:SetPoint("TOPLEFT", page3, "TOPLEFT", 0, -yOffset3)
+        singleFrame:SetSize(600, 40)
+        yOffset3 = yOffset3 + 45
+
+        local defaultCmd = singleInputCommands[1]
+        local singleEditBox = CreateFrame("EditBox", nil, singleFrame, "InputBoxTemplate")
+        singleEditBox:SetSize(defaultCmd.fields[1].width, 22)
+        singleEditBox:SetPoint("LEFT", singleFrame, "LEFT", 0, 0)
+        singleEditBox:SetAutoFocus(false)
+        singleEditBox:SetText(defaultCmd.fields[1].defaultText)
+
+        local singleDropdown = CreateFrame("Frame", nil, singleFrame, "TrinityAdminDropdownTemplate")
+        singleDropdown:SetPoint("LEFT", singleEditBox, "RIGHT", 10, 0)
+        UIDropDownMenu_SetText(singleDropdown, defaultCmd.name)
+
+        UIDropDownMenu_Initialize(singleDropdown, function(self, level, menuList)
+            for i, ccmd in ipairs(singleInputCommands) do
+                local info = UIDropDownMenu_CreateInfo()
+                info.text    = ccmd.name
+                info.value   = i
+                info.checked = (UIDropDownMenu_GetSelectedID(singleDropdown) == i)
+
+                info.func = function(button)
+                    UIDropDownMenu_SetSelectedID(singleDropdown, i)
+                    UIDropDownMenu_SetText(singleDropdown, ccmd.name)
+                    singleFrame.selectedCommand = ccmd
+                    singleEditBox:SetText(ccmd.fields[1].defaultText or "")
+                end
+                UIDropDownMenu_AddButton(info, level)
+            end
+        end)
+
+        local singleSendButton = CreateFrame("Button", nil, singleFrame, "UIPanelButtonTemplate")
+        singleSendButton:SetSize(60, 22)
+        singleSendButton:SetPoint("LEFT", singleDropdown, "RIGHT", 10, 0)
+        singleSendButton:SetText("Send")
+
+        singleSendButton:SetScript("OnClick", function()
+            local ccmd = singleFrame.selectedCommand or singleInputCommands[1]
+            local value = singleEditBox:GetText()
+            if not value or value == "" or value == "Enter Value" then
+                print("Veuillez entrer une valeur valide.")
+                return
+            end
+            local fullCommand = ccmd.command .. " " .. value
+			    -- (1) ICI on place le test
+    if ccmd.command == ".npc showloot" then
+        capturingShowLoot = true
+        wipe(showLootCollected)
+    end
+            SendChatMessage(fullCommand, "SAY")
+            print("[DEBUG] Commande envoyée5: " .. fullCommand)
+        end)
+
+        singleSendButton:SetScript("OnEnter", function(self)
+            local ccmd = singleFrame.selectedCommand or singleInputCommands[1]
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(ccmd.tooltip or "No tooltip", 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        singleSendButton:SetScript("OnLeave", function()
+            GameTooltip:Hide()
+        end)
+    end
+
+    ShowPage(1)
     self.panel = npc
 end

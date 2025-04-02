@@ -36,24 +36,24 @@ Libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
 # Interface\FrameXML\UIPanelTemplates.xml
 
 # TranslationsData
-TrinityAdmin_Translations.lua
-GameObjectsData.lua
-ItemSetData.lua
-ItemsDataPart1.lua
-ItemsDataPart2.lua
-ItemsDataPart3.lua
+Locals\TrinityAdmin_Translations.lua
+Datas\GameObjectsData.lua
+Datas\ItemSetData.lua
+Datas\ItemsDataPart1.lua
+Datas\ItemsDataPart2.lua
+Datas\ItemsDataPart3.lua
 # NpcData
-NpcDataPart1.lua
-NpcDataPart2.lua
-NpcDataPart3.lua
-NpcDataPart4.lua
-NpcDataPart5.lua
-NpcDataPart6.lua
-NpcDataPart7.lua
+Datas\NpcDataPart1.lua
+Datas\NpcDataPart2.lua
+Datas\NpcDataPart3.lua
+Datas\NpcDataPart4.lua
+Datas\NpcDataPart5.lua
+Datas\NpcDataPart6.lua
+Datas\NpcDataPart7.lua
 # TeleportData
-TeleportTable.lua
-SkillsData.lua
-TitlesData.lua
+Datas\TeleportTable.lua
+Datas\SkillsData.lua
+Datas\TitlesData.lua
 Datas\EventsData.lua
 # Interface XML
 TrinityAdmin.xml
