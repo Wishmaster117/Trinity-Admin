@@ -148,16 +148,9 @@ A ajouter GmFunctionsPanel page 3
 	
 	
 	
-	(
-	('list', 'Syntax: .list $subcommand\nType .list to see the list of possible subcommands or .help list $subcommand to see info on subcommands'),
-	('list auras', 'Syntax: .list auras\nList auras (passive and active) of selected creature or player. If no creature or player is selected, list your own auras.'),
-	('list creature', 'Syntax: .list creature #creature_id [#max_count]\r\n\r\nOutput creatures with creature id #creature_id found in world. Output creature guids and coordinates sorted by distance from character. Will be output maximum #max_count creatures. If #max_count not provided use 10 as default value.'),
-	('list item', 'Syntax: .list item #item_id [#max_count]\r\n\r\nOutput items with item id #item_id found in all character inventories, mails, auctions, and guild banks. Output item guids, item owner guid, owner account and owner name (guild name and guid in case guild bank). Will be output maximum #max_count items. If #max_count not provided use 10 as default value.'),
-	('list mail', 'Syntax: .list mail $character\nList of mails the character received.'),
-	('list object', 'Syntax: .list object #gameobject_id [#max_count]\r\n\r\nOutput gameobjects with gameobject id #gameobject_id found in world. Output gameobject guids and coordinates sorted by distance from character. Will be output maximum #max_count gameobject. If #max_count not provided use 10 as default value.'),
-	('list respawns', 'Syntax: .list respawns [distance]\n\nLists all pending respawns within <distance> yards, or within current zone if not specified.'),
-	('list scenes', 'Syntax: .list scenes\nList of all active scenes for targeted character.'),
-	('list spawnpoints', 'Syntax: .list spawnpoints\n\nLists all spawn points (both creatures and GOs) in the current zone.'),
+	 Pour ce panneau, il me faut:
+	
+	
 	
 
 	
