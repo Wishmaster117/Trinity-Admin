@@ -77,3 +77,4 @@ LearnDamage.lua
 AdvancedGob.lua
 AdvancedNpc.lua
 Misc.lua
+cheat.lua

@@ -362,7 +362,25 @@
 				TrinityAdmin_ShowMiscPanel()
 				</OnClick>
 			</Scripts>
-			</Button>									
+			</Button>
+			<!-- Bouton Module Cheat -->
+			<Button name="$parentcheatButton" inherits="UIPanelButtonTemplate" text="Cheat">
+			<Size>
+				<AbsDimension x="100" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentMiscButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowcheatPanel()
+				</OnClick>
+			</Scripts>
+			</Button>											
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>
