@@ -27,6 +27,7 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
     
 	-- Tester le panneau donjons
 
+	-- Pour le module cheat, changer le type de frame ACE3 et virer le bouton accepter
 	
 Pour ce panneau il me faut:
 
