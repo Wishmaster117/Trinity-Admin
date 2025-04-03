@@ -42,22 +42,6 @@ A ajouter GmFunctionsPanel page 3
 	('cast self', 'Syntax: .cast self #spellid [triggered]\r\nCast #spellid by target at target itself. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast target', 'Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
-	
-
-
-
-	
-	
-	('cheat', 'Syntax: .cheat $subcommand\r\nType .cheat to see the list of possible subcommands or .help cheat $subcommand to see info on subcommands'),
-	('cheat casttime', 'Syntax: .cheat casttime [on/off]\r\nEnables or disables your character\'s spell cast times.'),
-	('cheat cooldown', 'Syntax: .cheat cooldown [on/off]\r\nEnables or disables your character\'s spell cooldowns.'),
-	('cheat explore', 'Syntax: .cheat explore #flag\r\nReveal or hide all maps for the selected player. If no player is selected, hide or reveal maps to you.\r\nUse a #flag of value 1 to reveal, use a #flag value of 0 to hide all maps.'),
-	('cheat god', 'Syntax: .cheat god [on/off]\r\nEnables or disables your character\'s ability to take damage.'),
-	('cheat power', 'Syntax: .cheat power [on/off]\r\nEnables or disables your character\'s spell cost (e.g mana).'),
-	('cheat status', 'Syntax: .cheat status \n\nShows the cheats you currently have enabled.'),
-	('cheat taxi', 'Syntax: .cheat taxi on/off\r\nTemporary grant access or remove to all taxi routes for the selected character.\r\n If no character is selected, hide or reveal all routes to you.Visited taxi nodes sill accessible after removing access.'),
-	('cheat waterwalk', 'Syntax: .cheat waterwalk on/off\r\nSet on/off waterwalk state for selected player or self if no player selected.'),
-	
 
 	
 	
