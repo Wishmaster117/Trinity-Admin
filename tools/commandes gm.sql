@@ -208,14 +208,7 @@ A ajouter GmFunctionsPanel page 3
 	('scene debug', 'Syntax: .scene debug\nToggle debug mode for scenes. In debug mode GM will be notified in chat when scenes start/stop/trigger event'),
 	('scene play', 'Syntax: .scene play #sceneId\nPlays scene with id for targeted player'),
 	('scene playpackage', 'Syntax: .scene playpackage #scenePackageId #playbackFlags\nPlays scene with package id and playback flags for targeted player'),
-	
-	('send', 'Syntax: send $subcommand\n Type .send to see a list of possible subcommands\n or .help send $subcommand to see info on the subcommand.'),
-	('send items', 'Syntax: .send items #playername "#subject" "#text" itemid1[:count1] itemid2[:count2] ... itemidN[:countN]\r\n\r\nSend a mail to a player. Subject and mail text must be in "". If for itemid not provided related count values then expected 1, if count > max items in stack then items will be send in required amount stacks. All stacks amount in mail limited to 12.'),
-	('send mail', 'Syntax: .send mail #playername "#subject" "#text"\r\n\r\nSend a mail to a player. Subject and mail text must be in "".'),
-	('send message', 'Syntax: .send message $playername $message\r\n\r\nSend screen message to player from ADMINISTRATOR.'),
-	('send money', 'Syntax: .send money #playername "#subject" "#text" #money\r\n\r\nSend mail with money to a player. Subject and mail text must be in "".'),
 
-	
 	
 
 	
@@ -251,24 +244,6 @@ A ajouter GmFunctionsPanel page 3
 	('ticket suggestion unassign', 'Usage: .ticket suggestion unassign $ticketid.\r\nUnassigns the specified ticket from the current assigned Game Master.'),
 	('ticket suggestion view', 'Usage: .ticket suggestion view $ticketid.\r\nReturns details about specified ticket. Ticket must be open and not deleted.'),
 	('ticket togglesystem', 'Syntax: '),
-	
-	
-
------------ Fonctionalités joueur
-   --- Utilité de la commande .unbindsight
-   -- Cette commande sert à retirer une liaison visuelle précédemment appliquée à un joueur ou GM via une commande comme .bindsight.
-   -- .bindsight permet de voir le jeu à travers les yeux d'une cible sélectionnée, très utile pour surveiller discrètement un joueur (pour s'assurer qu'il respecte les règles ou vérifier des anomalies en jeu).
-   -- Lorsque tu as terminé de surveiller ou que tu veux retourner à ta propre vue, tu dois utiliser la commande inverse : .unbindsight.
-
-	
-	
-En dessous du chanp de saisie de Freeze je voudrais ajouter un champ de saisi avec defaut texte "Player Name" et à coté de ce champ un bouton "UnFreeze" avec le tooltip sur le bouton "Syntax: .unfreeze (#player)\r\n"Unfreezes" #player and enables his chat again. When using this without #name it will unfreeze your target.3
-quand on clique sur le bouton UnFreeze on envoi la commande .unfreeze [valeur de player] il faut aussi integrer la possiblilité de reset les champs de saisie à leurs valeur par défaut et que si le champ Player Name n'est pas renseigné il faut unfreeze la cible du GM
-	
-	
-
-
-
 	
 	
 	
