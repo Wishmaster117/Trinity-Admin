@@ -35,6 +35,15 @@ Pour ce panneau il me faut:
 
 A ajouter GmFunctionsPanel page 3
 ('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
+
+	-- A ajouter ans Waypoints
+	('movegens', 'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
+	
+
+	('playall', 'Syntax: .playall #soundid\r\n\r\nPlayer a sound to whole server.'),
+	
+	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
+
 	
 	
 	-- Cast Commands
@@ -45,44 +54,11 @@ A ajouter GmFunctionsPanel page 3
 	('cast self', 'Syntax: .cast self #spellid [triggered]\r\nCast #spellid by target at target itself. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast target', 'Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
-	
 
-
-	
-	('disable', 'Syntax: disable $subcommand\n Type .disable to see a list of possible subcommands\n or .help disable $subcommand to see info on the subcommand.'),
-	('disable add', 'Syntax: '),
-	('disable add battleground', 'Syntax: .disable add battleground $entry $flag $comment'),
-	('disable add criteria', 'Syntax: .disable add criteria $entry $flag $comment'),
-	('disable add map', 'Syntax: .disable add map $entry $flag $comment'),
-	('disable add mmap', 'Syntax: .disable add mmap $entry $flag $comment'),
-	('disable add outdoorpvp', 'Syntax: .disable add outdoorpvp $entry $flag $comment'),
-	('disable add quest', 'Syntax: .disable add quest $entry $flag $comment'),
-	('disable add spell', 'Syntax: .disable add spell $entry $flag $comment'),
-	('disable add vmap', 'Syntax: .disable add vmap $entry $flag $comment'),
-	('disable remove', 'Syntax: '),
-	('disable remove battleground', 'Syntax: .disable remove battleground $entry'),
-	('disable remove criteria', 'Syntax: .disable remove criteria $entry'),
-	('disable remove map', 'Syntax: .disable remove map $entry'),
-	('disable remove mmap', 'Syntax: .disable remove mmap $entry'),
-	('disable remove outdoorpvp', 'Syntax: .disable remove outdoorpvp $entry'),
-	('disable remove quest', 'Syntax: .disable remove quest $entry'),
-	('disable remove spell', 'Syntax: .disable remove spell $entry'),
-	('disable remove vmap', 'Syntax: .disable remove vmap $entry'),
-	
-
-	
-	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
-	
-
-	
-	
 	
 	 Pour ce panneau, il me faut:
 	
-	
-	
 
-	
 	
 	('mmap', 'Syntax: Syntax: .mmaps $subcommand Type .mmaps to see the list of possible subcommands or .help mmaps $subcommand to see info on subcommands'),
 	('mmap loadedtiles', 'Syntax: .mmap loadedtiles to show which tiles are currently loaded'),
@@ -93,20 +69,7 @@ A ajouter GmFunctionsPanel page 3
 
 
 	
-	-- A ajouter ans Waypoints
-	('movegens', 'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
-	
 
-
-
-	
-
-
-	
-
-	
-
-	('playall', 'Syntax: .playall #soundid\r\n\r\nPlayer a sound to whole server.'),
 	
 
     -- Gestion des GM	
