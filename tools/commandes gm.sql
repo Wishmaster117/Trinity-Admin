@@ -29,6 +29,8 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 
 	-- Pour le module cheat, changer le type de frame ACE3 et virer le bouton accepter
 	
+	-- Pour le panel debug, voir si dans les dbc je peux chopper la liste des musiques tc....
+	
 Pour ce panneau il me faut:
 
 A ajouter GmFunctionsPanel page 3
@@ -43,44 +45,6 @@ A ajouter GmFunctionsPanel page 3
 	('cast self', 'Syntax: .cast self #spellid [triggered]\r\nCast #spellid by target at target itself. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cast target', 'Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If \'triggered\' or part provided then spell casted with triggered flag.'),
 	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
-
-	
-	
-	
-
-
-	('debug areatriggers', 'Syntax: .debug areatriggers\nToggle debug mode for areatriggers. In debug mode GM will be notified if reaching an areatrigger'),
-	('debug arena', 'Syntax: .debug arena\r\n\r\nToggle debug mode for arenas. In debug mode GM can start arena with single player.'),
-	('debug asan memoryleak', 'Syntax: .debug asan memoryleak\nTriggers a memory leak.\nUse only when testing dynamic analysis tools.'),
-	('debug asan outofbounds', 'Syntax: .debug asan outofbounds\nTriggers a stack out of bounds read.\nUse only when testing dynamic analysis tools.'),
-	('debug bg', 'Syntax: .debug bg\r\n\r\nToggle debug mode for battlegrounds. In debug mode GM can start battleground with single player.'), (changer le bouton en BG in debug Mod)
-	('debug combat', 'Syntax: .debug combat\n\nLists the target\'s (or own) combat references.'),
-	('debug phase', 'Syntax: .debug phase\r\n\r\nSends a phase debug report of a player to you.'),
-	('debug threat', 'Syntax: .debug threat\n\nLists the units threatened by target (or self). If target has a threat list, lists that threat list, too.'),
-    ('debug threatinfo', 'Syntax: .debug threatinfo\n\nDisplays various debug information about the target\'s threat state, modifiers, redirects and similar.'),
-	
-	
-	('debug asan', 'Syntax: .debug asan $subcommand\nType .debug asan to see the list of possible subcommands or .help debug asan $subcommand to see info on subcommands.\nUse only when testing dynamic analysis tools.'),
-	('debug boundary', 'Syntax: .debug boundary [fill] [duration]\nFlood fills the targeted unit\'s movement boundary and marks the edge of said boundary with debug creatures.\nSpecify \'fill\' as first parameter to fill the entire area with debug creatures.'),
-	('debug conversation', 'Syntax: .debug conversation $conversationId\r\nPlay given conversation.'),
-	('debug dummy', 'Syntax: .debug dummy <???>\n\nCatch-all debug command. Does nothing by default. If you want it to do things for testing, add the things to its script in cs_debug.cpp.'),
-	('debug guidlimits', 'Syntax: .debug guidlimits <optional map id>\nShows the current Creature and GameObject highest Guid for the specified map id or for all maps if none is specified\n'),
-	('debug instancespawn', 'Syntax: .debug instancespawn [<groupID>/explain]\n\nDisplays information about the spawn groups being managed by the current instance script. If groupID is specified, additionally explains why that spawn group is in the listed state. If "explain" is specified, explains all spawn groups.'),
-	('debug loadcells', 'Syntax: .debug loadcells [mapId]\nLoads all cells for debugging purposes'),
-	('debug moveflags', 'Syntax: .debug moveflags [$newMoveFlags [$newMoveFlags2]]\r\nNo params given will output the current moveflags of the target'),
-	('debug neargraveyard', 'Syntax: .debug neargraveyard [linked]\nFind the nearest graveyard from dbc or db (if linked)'),
-	('debug objectcount', 'Syntax: .debug objectcount <optional map id>\nShows the number of Creatures and GameObjects for the specified map id or for all maps if none is specified\n'),
-	('debug play cinematic', 'Syntax: .debug play cinematic #cinematicid\r\n\r\nPlay cinematic #cinematicid for you. You stay at place while your mind fly.\r\n'),
-	('debug play movie', 'Syntax: .debug play movie #movieid\r\n\r\nPlay movie #movieid for you.'),
-	('debug play music', 'Syntax: .debug play music #musicId\nPlay music with #musicId.\nMusic will be played only for you. Other players will not hear this.'),
-	('debug play objectsound', 'Syntax: .debug play objectsound #soundKitId [#broadcastTextId]\nPlay object sound with #soundKitId [and #broadcastTextId].\nSound will be played only for you. Other players will not hear this.'),
-	('debug play sound', 'Syntax: .debug play sound #soundid\r\n\r\nPlay sound with #soundid.\r\nSound will be play only for you. Other players do not hear this.\r\nWarning: client may have more 5000 sounds...'),
-	('debug questreset', 'Syntax: .debug questreset <daily/weekly/monthly/all>\n\nPerforms quest reset procedure for the specified type (or all types).\nQuest pools will be re-generated, and quest completion status will be reset.'),
-	('debug raidreset', 'Syntax: .debug raidreset mapid [difficulty]\nForces a global reset of the specified map on all difficulties (or only the specific difficulty if specified). Effectively the same as setting the specified map\'s reset timer to now.'),
-	('debug send playerchoice', 'Syntax: .debug send playerchoice $choiceId\r\nSend given choice to player.'),
-	('debug transport', 'Syntax: .debug transport [start/stop]\n\n Allows to stop the current transport at its nearest wait point and start movement of a stopped one. Not all transports can be started or stopped.'),
-	('debug warden force', 'Syntax: .debug warden force id1 [id2 [id3 [...]]]\n\nQueues the specified Warden checks for your client. They will be sent according to your Warden settings.'),
-	('debug worldstate', 'Syntax: debug worldstate $stateId $value\n\nSends a world state update for the specified state to your client.'),
 	
 
 
