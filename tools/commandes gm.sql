@@ -44,33 +44,11 @@ A ajouter GmFunctionsPanel page 3
 	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
 
-	
-	
-	-- Cast Commands
-	('cast', 'Syntax: .cast #spellid [triggered]\r\n  Cast #spellid to selected target. If no target selected cast to self. If \'triggered\' or part provided then spell casted with triggered flag.'),
-	('cast back', 'Syntax: .cast back #spellid [triggered]\r\n  Selected target will cast #spellid to your character. If \'triggered\' or part provided then spell casted with triggered flag.'),
-	('cast dest', 'Syntax: .cast dest #spellid #x #y #z [triggered]\r\n  Selected target will cast #spellid at provided destination. If \'triggered\' or part provided then spell casted with triggered flag.'),
-	('cast dist', 'Syntax: .cast dist #spellid [#dist [triggered]]\r\n  You will cast spell to pint at distance #dist. If \'triggered\' or part provided then spell casted with triggered flag. Not all spells can be casted as area spells.'),
-	('cast self', 'Syntax: .cast self #spellid [triggered]\r\nCast #spellid by target at target itself. If \'triggered\' or part provided then spell casted with triggered flag.'),
-	('cast target', 'Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If \'triggered\' or part provided then spell casted with triggered flag.'),
-	('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
-
-	
-	 Pour ce panneau, il me faut:
+-- A mettre dans panneau character:
+    ('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
 	
 
-	
-	('mmap', 'Syntax: Syntax: .mmaps $subcommand Type .mmaps to see the list of possible subcommands or .help mmaps $subcommand to see info on subcommands'),
-	('mmap loadedtiles', 'Syntax: .mmap loadedtiles to show which tiles are currently loaded'),
-	('mmap loc', 'Syntax: .mmap loc to print on which tile one is'),
-	('mmap path', 'Syntax: .mmap path to calculate and show a path to current select unit'),
-	('mmap stats', 'Syntax: .mmap stats to show information about current state of mmaps'),
-	('mmap testarea', 'Syntax: .mmap testarea to calculate paths for all nearby npcs to player'),
 
-
-	
-
-	
 
     -- Gestion des GM	
 	Que fait cette commande ?
