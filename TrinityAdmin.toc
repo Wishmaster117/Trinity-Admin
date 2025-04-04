@@ -78,3 +78,6 @@ AdvancedGob.lua
 AdvancedNpc.lua
 Misc.lua
 cheat.lua
+Debug.lua
+Others.lua
+Tickets.lua

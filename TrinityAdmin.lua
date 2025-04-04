@@ -45,6 +45,8 @@ local AdvancedGobModule = TrinityAdmin:NewModule("AdvancedGob")
 local AdvancedNpcModule = TrinityAdmin:NewModule("AdvancedNpc")
 local MiscModule = TrinityAdmin:NewModule("Misc")
 local cheatModule = TrinityAdmin:NewModule("cheat")
+local DebugModule = TrinityAdmin:NewModule("Debug")
+local OthersModule = TrinityAdmin:NewModule("Others")
 
 
 
@@ -130,6 +132,13 @@ function TrinityAdmin_ShowcheatPanel()
     cheatModule:ShowcheatPanel()
 end
 
+function TrinityAdmin_ShowDebugPanel()
+    DebugModule:ShowDebugPanel()
+end
+
+function TrinityAdmin_ShowOthersPanel()
+    OthersModule:ShowOthersPanel()
+end
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
@@ -211,6 +220,8 @@ function TrinityAdmin:ShowMainMenu()
 	if AdvancedNpcModule.panel then AdvancedNpcModule.panel:Hide() end
 	if MiscModule.panel then MiscModule.panel:Hide() end
 	if cheatModule.panel then cheatModule.panel:Hide() end
+	if DebugModule.panel then DebugModule.panel:Hide() end
+	if OthersModule.panel then OthersModule.panel:Hide() end	
 	
 	
 
@@ -233,6 +244,8 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameAdvancedNpcButton:Show()
 	TrinityAdminMainFrameMiscButton:Show()
 	TrinityAdminMainFramecheatButton:Show()
+	TrinityAdminMainFrameDebugButton:Show()
+	TrinityAdminMainFrameOthersButton:Show()	
 	
 
 	TrinityAdminMainFrame:Show()
@@ -261,6 +274,8 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFrameAdvancedNpcButton:Hide()
 	TrinityAdminMainFrameMiscButton:Hide()
 	TrinityAdminMainFramecheatButton:Hide()
+	TrinityAdminMainFrameDebugButton:Hide()
+	TrinityAdminMainFrameOthersButton:Hide()	
 	
 	
 	

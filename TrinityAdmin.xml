@@ -380,7 +380,43 @@
 				TrinityAdmin_ShowcheatPanel()
 				</OnClick>
 			</Scripts>
-			</Button>											
+			</Button>	
+			<!-- Bouton Module Debug -->
+			<Button name="$parentDebugButton" inherits="UIPanelButtonTemplate" text="Debug Functions">
+			<Size>
+				<AbsDimension x="150" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentAdvancedGobButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="0" y="-45"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowDebugPanel()
+				</OnClick>
+			</Scripts>
+			</Button>	
+			<!-- Bouton Module Others -->
+			<Button name="$parentOthersButton" inherits="UIPanelButtonTemplate" text="Other Stuffs">
+			<Size>
+				<AbsDimension x="150" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentDebugButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowOthersPanel()
+				</OnClick>
+			</Scripts>
+			</Button>									
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>
