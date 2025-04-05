@@ -61,7 +61,7 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 
 	
 	
-	('ticket', 'Syntax: .ticket $subcommand\nType .ticket to see the list of possible subcommands or .help ticket $subcommand to see info on subcommands'),
+	
 	('ticket bug assign', 'Usage: .ticket bug assign $ticketid $gmname.\r\nAssigns the specified ticket to the specified Game Master.'),
 	('ticket bug close', 'Usage: .ticket bug close $ticketid.\r\nCloses the specified ticket. Does not delete permanently.'),
 	('ticket bug closedlist', 'Usage: Displays a list of closed bug tickets.'),
@@ -91,7 +91,6 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 	('ticket suggestion list', 'Usage: Displays a list of open suggestion tickets.'),
 	('ticket suggestion unassign', 'Usage: .ticket suggestion unassign $ticketid.\r\nUnassigns the specified ticket from the current assigned Game Master.'),
 	('ticket suggestion view', 'Usage: .ticket suggestion view $ticketid.\r\nReturns details about specified ticket. Ticket must be open and not deleted.'),
-	('ticket togglesystem', 'Syntax: '),
 	
 	
 	
