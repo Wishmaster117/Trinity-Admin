@@ -6,9 +6,30 @@
 -- --------------------------------------------------------
 -- Mettre les autres traductions pour les titres, es, pt, it, etc....
 
+-- Fonctionnement des frames
+local AceGUI = LibStub("AceGUI-3.0")
+local function ShowRbacPopup(text)
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("RBAC Permissions")
+	frame:SetStatusText("You can copy/past this")
+    frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
+    --frame:SetLayout("Fill")
+	frame:SetLayout("Flow")
+    frame:SetWidth(400)
+    frame:SetHeight(300)
+	frame:SetPoint("RIGHT", UIParent, "RIGHT", -50, 0)
+    frame:EnableResize(false)
+    
+    local multiLine = AceGUI:Create("MultiLineEditBox")
+	multiLine:DisableButton(true) -- Cacher le bouton accpeter
+    multiLine:SetFullWidth(true)
+    multiLine:SetFullHeight(true)
+    multiLine:SetLabel("")
+    multiLine:SetText(text)
+    frame:AddChild(multiLine)
+end
 
-
-	
+-- A faire, virer les boutons accepter de toutes les frames
 idées:
 
 Pour npc info il faut trier les données a afficher
@@ -31,54 +52,10 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 	
 	-- Pour le panel debug, voir si dans les dbc je peux chopper la liste des musiques tc....
 	
-Pour ce panneau il me faut:
-
-A ajouter GmFunctionsPanel page 3
-('linkgrave', 'Syntax: .linkgrave #graveyard_id [alliance|horde]\r\n\r\nLink current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map).'),
-
-	-- A ajouter ans Waypoints
-	('movegens', 'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
-	
 
 	('playall', 'Syntax: .playall #soundid\r\n\r\nPlayer a sound to whole server.'),
 	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
-
--- A mettre dans panneau character:
-    ('cooldown', 'Syntax: .cooldown [#spell_id]\r\n\r\nRemove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).'),
-	
-
-
-
-    -- Gestion des GM	
-	Que fait cette commande ?
-    Elle refuse (deny) une permission spécifique à un compte donné, même si ce compte l’a normalement via son rang.
-
-    En gros : c’est un "override" négatif.
-    Tu dis : « même si ce compte a la permission via son rang, je lui interdis quand même. »
-
-   📘 Syntaxe détaillée :
-	Paramètre	Description
-	$account	(Optionnel) Le nom de compte auquel tu veux retirer la permission. Si rien n’est précisé, c’est le compte actuellement sélectionné.
-	#id	L’ID de permission RBAC que tu veux refuser.
-	#realmId	(Optionnel) Le realm concerné. -1 = tous les royaumes.
-	('rbac', 'Syntax: bf $subcommand\n Type .rbac to see a list of possible subcommands\n or .help bf $subcommand to see info on the subcommand.'),
-	('rbac account', 'Syntax: rbac account $subcommand\n Type .rbac account to see a list of possible subcommands\n or .help rbac account $subcommand to see info on the subcommand.'),
-	('rbac account deny', 'Syntax: rbac account deny [$account] #id [#realmId]\n\nDeny a permission to selected player or given account.\n\n#reamID may be -1 for all realms.'),
-	('rbac account grant', 'Syntax: rbac account grant [$account] #id [#realmId]\n\nGrant a permission to selected player or given account.\n\n#reamID may be -1 for all realms.'),
-	('rbac account list', 'Syntax: rbac account list [$account]\n\nView permissions of selected player or given account\nNote: Only those that affect current realm'),
-	('rbac account revoke', 'Syntax: rbac account revoke [$account] #id [#realmId]\n\nRemove a permission from an account\n\nNote: Removes the permission from granted or denied permissions'),
-	('rbac list', 'Syntax: rbac list [$id]\n\nView list of all permissions. If $id is given will show only info for that permission.'),
-	
-	
-	
-	
-	
-	('scene', ''),
-	('scene cancel', 'Syntax: .scene cancel #scenePackageId\nCancels scene with package id for targeted player'),
-	('scene debug', 'Syntax: .scene debug\nToggle debug mode for scenes. In debug mode GM will be notified in chat when scenes start/stop/trigger event'),
-	('scene play', 'Syntax: .scene play #sceneId\nPlays scene with id for targeted player'),
-	('scene playpackage', 'Syntax: .scene playpackage #scenePackageId #playbackFlags\nPlays scene with package id and playback flags for targeted player'),
 
 	
 
