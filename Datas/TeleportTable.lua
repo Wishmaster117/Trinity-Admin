@@ -2,7 +2,7 @@ TeleportData = {
   ["Azeroth"] = {
     ["Alterac Mountains"] = {
       ["Chillwind Point"]                  = ".go xyz 322.373138 -1487.853882 43.720089 0",
-      ["Dandred's Fold"]                   = ".go xyz 1239.12 -286.705 42.4764 0",
+      ["Dandred's Fold"]                   = ".go xyz 1236.63 -288.535 41.0545 0",
       ["Horde Entrance"]                   = ".go xyz 417.003540 -1015.843079 111.708763 0",
       ["Lordamere Internment Camp"]        = ".go xyz -74.6376 201.212 53.2755 0",
       ["Dalaran Ruins"]                    = ".go xyz 386.938 212.299 43.6994 0",
@@ -26,7 +26,7 @@ TeleportData = {
       ["Stromgarde Keep"]                  = ".go xyz -1661.42 -1804.2 83.0723 0",
       ["The Drowned Reef"]                 = ".go xyz -2169.797852 -1696.053833 0.380001 0",
       ["Thoradin's Wall"]                  = ".go xyz -839.599 -1590.32 54.1962 0",
-      ["Witherbark Village"]               = ".go xyz -1763.862061 -3396.339355 44.561058 0",
+      ["Witherbark Village"]               = ".go xyz -1763.862061 -3396.339355 44.561058 0", -- Verifié jusqu'ici
     },
     ["Eastern Plaguelands"] = {
       ["Arc"]                              = ".go xyz 2953.424805 -4013.082520 101.429352 0",

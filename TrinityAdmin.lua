@@ -47,6 +47,7 @@ local MiscModule = TrinityAdmin:NewModule("Misc")
 local cheatModule = TrinityAdmin:NewModule("cheat")
 local DebugModule = TrinityAdmin:NewModule("Debug")
 local OthersModule = TrinityAdmin:NewModule("Others")
+local TicketsModule = TrinityAdmin:NewModule("Tickets")
 
 
 
@@ -139,6 +140,9 @@ end
 function TrinityAdmin_ShowOthersPanel()
     OthersModule:ShowOthersPanel()
 end
+function TrinityAdmin_ShowTicketsPanel()
+    TicketsModule:ShowTicketsPanel()
+end
 ------------------------------------------------------------
 -- Fonctions d'initialisation
 ------------------------------------------------------------
@@ -221,7 +225,8 @@ function TrinityAdmin:ShowMainMenu()
 	if MiscModule.panel then MiscModule.panel:Hide() end
 	if cheatModule.panel then cheatModule.panel:Hide() end
 	if DebugModule.panel then DebugModule.panel:Hide() end
-	if OthersModule.panel then OthersModule.panel:Hide() end	
+	if OthersModule.panel then OthersModule.panel:Hide() end
+    if TicketsModule.panel then TicketsModule.panel:Hide() end		
 	
 	
 
@@ -245,7 +250,8 @@ function TrinityAdmin:ShowMainMenu()
 	TrinityAdminMainFrameMiscButton:Show()
 	TrinityAdminMainFramecheatButton:Show()
 	TrinityAdminMainFrameDebugButton:Show()
-	TrinityAdminMainFrameOthersButton:Show()	
+	TrinityAdminMainFrameOthersButton:Show()
+    TrinityAdminMainFrameTicketsButton:Show()	
 	
 
 	TrinityAdminMainFrame:Show()
@@ -276,6 +282,7 @@ function TrinityAdmin:HideMainMenu()
 	TrinityAdminMainFramecheatButton:Hide()
 	TrinityAdminMainFrameDebugButton:Hide()
 	TrinityAdminMainFrameOthersButton:Hide()	
+	TrinityAdminMainFrameTicketsButton:Hide()
 	
 	
 	

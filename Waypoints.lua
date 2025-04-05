@@ -33,14 +33,32 @@ function Waypoints:CreateWaypointsPanel()
     btnWpgps:SetText("Waypoint GSP")
     btnWpgps:SetScript("OnClick", function()
         SendChatMessage(".wpgps", "SAY")
-        print("[DEBUG] .wpgps envoyé.")
+        -- print("[DEBUG] .wpgps envoyé.")
     end)
     btnWpgps:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .wpgps\n\nOutput current position to SQL developer log as partial SQL query to be used in pathing", nil, nil, nil, nil, true)
+        GameTooltip:SetText("Output current position to SQL developer log as partial SQL query to be used in pathing", nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpgps:SetScript("OnLeave", function() GameTooltip:Hide() end)
+	
+	--------------------------------------------------------------------------------
+    -- 1.5 - Bouton Movegen
+    --------------------------------------------------------------------------------
+    local btnmovegens = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    btnmovegens:SetSize(120, 24)
+    btnmovegens:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -40, -40)
+    btnmovegens:SetText("Movegens")
+    btnmovegens:SetScript("OnClick", function()
+        SendChatMessage(".movegens", "SAY")
+        -- print("[DEBUG] .wpgps envoyé.")
+    end)
+    btnmovegens:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Show movement generators stack for selected creature or player.", nil, nil, nil, nil, true)
+        GameTooltip:Show()
+    end)
+    btnmovegens:SetScript("OnLeave", function() GameTooltip:Hide() end)
     
     --------------------------------------------------------------------------------
     -- 2 - Bouton Waypoint Add
@@ -55,11 +73,11 @@ function Waypoints:CreateWaypointsPanel()
             return
         end
         SendChatMessage(".wp add", "SAY")
-        print("[DEBUG] .wp add envoyé.")
+        --print("[DEBUG] .wp add envoyé.")
     end)
     btnWpAdd:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .wp add\n\nAdd a waypoint for the selected creature at your current position.", nil, nil, nil, nil, true)
+        GameTooltip:SetText("Add a waypoint for the selected creature at your current position.", nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpAdd:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -92,7 +110,7 @@ function Waypoints:CreateWaypointsPanel()
     end)
     btnWpLoad:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .wp load $pathid\nLoad pathid number for selected creature. Creature must have no waypoint data.", nil, nil, nil, nil, true)
+        GameTooltip:SetText("Load pathid number for selected creature. Creature must have no waypoint data.", nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpLoad:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -121,11 +139,11 @@ function Waypoints:CreateWaypointsPanel()
             return
         end
         SendChatMessage(".wp reload " .. pathID, "SAY")
-        print("[DEBUG] .wp reload " .. pathID .. " envoyé.")
+        --print("[DEBUG] .wp reload " .. pathID .. " envoyé.")
     end)
     btnWpReload:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .wp reload $pathid\nLoad path changes ingame - IMPORTANT: must be applied first for new paths before .wp load #pathid", nil, nil, nil, nil, true)
+        GameTooltip:SetText("Load path changes ingame - IMPORTANT: must be applied first for new paths before .wp load #pathid", nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpReload:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -135,7 +153,7 @@ function Waypoints:CreateWaypointsPanel()
     --------------------------------------------------------------------------------
     local btnWpUnload = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpUnload:SetSize(120, 24)
-    btnWpUnload:SetPoint("TOPLEFT", wpReloadEdit, "BOTTOMLEFT", 0, -10)
+    btnWpUnload:SetPoint("TOPLEFT", wpReloadEdit, "BOTTOMLEFT", 0, -20)
     btnWpUnload:SetText("Waypoint Unload")
     btnWpUnload:SetScript("OnClick", function()
         if not UnitExists("target") then
@@ -143,11 +161,11 @@ function Waypoints:CreateWaypointsPanel()
             return
         end
         SendChatMessage(".wp unload", "SAY")
-        print("[DEBUG] .wp unload envoyé.")
+        -- print("[DEBUG] .wp unload envoyé.")
     end)
     btnWpUnload:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .wp unload\nUnload path for selected creature.", nil, nil, nil, nil, true)
+        GameTooltip:SetText("Unload path for selected creature.", nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpUnload:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -156,15 +174,15 @@ function Waypoints:CreateWaypointsPanel()
     -- 6 - wp show : Dropdown + EditBox + Bouton Show
     --------------------------------------------------------------------------------
     local wpShowOptions = {
-        { text = ".wp show on", value = "on", tooltip = "Syntax: .wp show on $pathid\nDisplay the full waypoint path for the specified path ID.\nIf no path ID, works on selected creature with loaded path." },
-        { text = ".wp show first", value = "first", tooltip = "Syntax: .wp show first $pathid\nDisplay only the first waypoint of the path." },
-        { text = ".wp show last", value = "last", tooltip = "Syntax: .wp show last $pathid\nDisplay only the last waypoint of the path." },
-        { text = ".wp show off", value = "off", tooltip = "Syntax: .wp show off\nHide all displayed paths." },
-        { text = ".wp show info", value = "info", tooltip = "Syntax: .wp show info $selected_waypoint\nDisplay detailed info of the selected waypoint." },
+        { text = ".wp show on", value = "on", tooltip = "Display the full waypoint path for the specified path ID.\nIf no path ID, works on selected creature with loaded path." },
+        { text = ".wp show first", value = "first", tooltip = "Display only the first waypoint of the path." },
+        { text = ".wp show last", value = "last", tooltip = "Display only the last waypoint of the path." },
+        { text = ".wp show off", value = "off", tooltip = "Hide all displayed paths." },
+        { text = ".wp show info", value = "info", tooltip = "Display detailed info of the selected waypoint." },
     }
     
     local wpShowDropdown = CreateFrame("Frame", "WPShowDropdown", panel, "UIDropDownMenuTemplate")
-    wpShowDropdown:SetPoint("TOPLEFT", btnWpUnload, "BOTTOMLEFT", 0, -10)
+    wpShowDropdown:SetPoint("TOPLEFT", btnWpUnload, "BOTTOMLEFT", -13, -20)
     UIDropDownMenu_SetWidth(wpShowDropdown, 150)
     UIDropDownMenu_Initialize(wpShowDropdown, function(self, level, menuList)
         for i, option in ipairs(wpShowOptions) do
@@ -183,13 +201,13 @@ function Waypoints:CreateWaypointsPanel()
     
     local wpShowEdit = CreateFrame("EditBox", nil, panel, "InputBoxTemplate")
     wpShowEdit:SetSize(80, 20)
-    wpShowEdit:SetPoint("TOPLEFT", wpShowDropdown, "TOPRIGHT", 10, 0)
+    wpShowEdit:SetPoint("TOPLEFT", wpShowDropdown, "TOPRIGHT", 10, -5)
     wpShowEdit:SetAutoFocus(false)
     wpShowEdit:SetText("Path ID")
     
     local btnWpShowExecute = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpShowExecute:SetSize(80, 24)
-    btnWpShowExecute:SetPoint("TOPLEFT", wpShowEdit, "TOPRIGHT", 10, 0)
+    btnWpShowExecute:SetPoint("TOPLEFT", wpShowEdit, "TOPRIGHT", 10, 3)
     btnWpShowExecute:SetText("Show")
     btnWpShowExecute:SetScript("OnClick", function()
         local option = UIDropDownMenu_GetSelectedValue(wpShowDropdown)
@@ -208,7 +226,7 @@ function Waypoints:CreateWaypointsPanel()
             return
         end
         SendChatMessage(command, "SAY")
-        print("[DEBUG] Commande envoyée: " .. command)
+        -- print("[DEBUG] Commande envoyée: " .. command)
     end)
     btnWpShowExecute:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")

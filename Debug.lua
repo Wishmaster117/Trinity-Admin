@@ -617,31 +617,184 @@ function Debug:CreateDebugPanel()
 	
 	debugCommandFrame:Show()
 	end
-	
-	------------------------------------------------------------------------------
-	-- Bouton helper pour créer des boutons simples (comme précédemment)
-	------------------------------------------------------------------------------
-	local function CreateServerButton(name, text, tooltip, cmd)
-		local btn = CreateFrame("Button", name, nil, "UIPanelButtonTemplate")
-		btn:SetSize(150, 22)
-		btn:SetText(text)
-		btn:SetScript("OnEnter", function(self)
-			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-			GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
-			GameTooltip:Show()
-		end)
-		btn:SetScript("OnLeave", function(self)
-			GameTooltip:Hide()
-		end)
-		btn:SetScript("OnClick", function(self)
-			SendChatMessage(cmd, "SAY")
-			print("Commande envoyée: " .. cmd)
-		end)
-		return btn
-	end
+
+---------------------------------------------------------------
+-- SECTION: Scene Debug Options (ajouté à droite de debugCommandFrame)
+---------------------------------------------------------------
+-- On suppose que debugCommandFrame existe déjà dans la page 2 du module debug.
+local sceneDebugEnabled = false
+
+-- Création d'une frame pour la section Scene Debug, positionnée à droite de debugCommandFrame
+local sceneDebugFrame = CreateFrame("Frame", nil, commandsFramePage2)
+sceneDebugFrame:SetPoint("TOPLEFT", page2Title, "TOPRIGHT", 200, 0)
+sceneDebugFrame:SetSize(200, 300)
+
+-- Bouton toggle pour activer/désactiver le debug de scene
+local sceneToggleButton = CreateFrame("Button", nil, sceneDebugFrame, "UIPanelButtonTemplate")
+sceneToggleButton:SetSize(150, 22)
+sceneToggleButton:SetPoint("TOPLEFT", sceneDebugFrame, "TOPLEFT", 0, 0)
+sceneToggleButton:SetText("Scene debug is OFF")
+sceneToggleButton:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Toggle debug mode for scenes. In debug mode GM will be notified in chat when scenes start/stop/trigger event", 1,1,1,1,true)
+    GameTooltip:Show()
+end)
+sceneToggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+sceneToggleButton:SetScript("OnClick", function(self)
+    sceneDebugEnabled = not sceneDebugEnabled
+    if sceneDebugEnabled then
+        self:SetText("Scene debug is ON")
+    else
+        self:SetText("Scene debug is OFF")
+    end
+    SendChatMessage(".scene debug", "SAY")
+end)
+
+-- Dropdown pour choisir l'action de scene
+local sceneActions = {"Choose", "scene play", "scene cancel", "scene playpackage"}
+local sceneDropdown = CreateFrame("Frame", "SceneActionDropdown", sceneDebugFrame, "UIDropDownMenuTemplate")
+sceneDropdown:SetPoint("TOPLEFT", sceneToggleButton, "BOTTOMLEFT", -20, -20)
+UIDropDownMenu_SetWidth(sceneDropdown, 150)
+UIDropDownMenu_SetText(sceneDropdown, "Choose")
+sceneDropdown.selectedOption = "Choose"
+UIDropDownMenu_Initialize(sceneDropdown, function(self, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    for _, option in ipairs(sceneActions) do
+        info.text = option
+        info.value = option
+        info.checked = (option == sceneDropdown.selectedOption)
+        info.func = function(button)
+            sceneDropdown.selectedOption = button.value
+            UIDropDownMenu_SetText(sceneDropdown, button.value)
+            UIDropDownMenu_SetSelectedValue(sceneDropdown, button.value)
+            UpdateSceneUI(button.value)
+        end
+        UIDropDownMenu_AddButton(info)
+    end
+end)
+
+-- Frame conteneur pour les champs de saisie dynamiques
+local sceneInputFrame = CreateFrame("Frame", nil, sceneDebugFrame)
+sceneInputFrame:SetPoint("TOPLEFT", sceneDropdown, "BOTTOMLEFT", 0, -10)
+sceneInputFrame:SetSize(150, 60)
+
+-- Variables pour stocker les références aux champs de saisie créés dynamiquement
+local sceneInput1, sceneInput2
+
+-- Fonction utilitaire pour nettoyer le conteneur des inputs
+local function ClearSceneInputs()
+    for _, child in ipairs({sceneInputFrame:GetChildren()}) do
+        child:Hide()
+        child:SetParent(nil)
+    end
+    sceneInput1 = nil
+    sceneInput2 = nil
+end
+
+-- Bouton d'action pour la dropdown, qui changera de texte et tooltip en fonction de l'option sélectionnée
+local sceneActionButton = CreateFrame("Button", nil, sceneDebugFrame, "UIPanelButtonTemplate")
+sceneActionButton:SetSize(150, 22)
+sceneActionButton:SetPoint("TOPLEFT", sceneInputFrame, "BOTTOMLEFT", 0, -10)
+sceneActionButton:SetText("Choose")
+sceneActionButton.tooltip = "Choose an action"
+sceneActionButton:Hide()
+sceneActionButton:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText(self.tooltip or "Choose an action", 1,1,1,1,true)
+    GameTooltip:Show()
+end)
+sceneActionButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+-- Fonction de mise à jour de l'interface selon l'option sélectionnée dans la dropdown
+function UpdateSceneUI(option)
+    ClearSceneInputs()
+    if option == "scene play" then
+        sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
+        sceneInput1:SetSize(150,22)
+        sceneInput1:SetPoint("TOPLEFT", sceneInputFrame, "TOPLEFT", 0, 0)
+        sceneInput1:SetAutoFocus(false)
+        sceneInput1:SetText("Scene Id")
+        sceneActionButton:SetText("Play")
+        sceneActionButton.tooltip = "Plays scene with id for targeted player."
+        sceneActionButton:Show()
+    elseif option == "scene cancel" then
+        sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
+        sceneInput1:SetSize(150,22)
+        sceneInput1:SetPoint("TOPLEFT", sceneInputFrame, "TOPLEFT", 0, 0)
+        sceneInput1:SetAutoFocus(false)
+        sceneInput1:SetText("Scene Package Id")
+        sceneActionButton:SetText("Cancel")
+        sceneActionButton.tooltip = "Cancels scene with package id for targeted player."
+        sceneActionButton:Show()
+    elseif option == "scene playpackage" then
+        sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
+        sceneInput1:SetSize(150,22)
+        sceneInput1:SetPoint("TOPLEFT", sceneInputFrame, "TOPLEFT", 0, 0)
+        sceneInput1:SetAutoFocus(false)
+        sceneInput1:SetText("Scene Package Id")
+        sceneInput2 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
+        sceneInput2:SetSize(150,22)
+        sceneInput2:SetPoint("TOPLEFT", sceneInput1, "BOTTOMLEFT", 0, -5)
+        sceneInput2:SetAutoFocus(false)
+        sceneInput2:SetText("Playback Flags")
+        sceneActionButton:SetText("Play Package")
+        sceneActionButton.tooltip = "Plays scene with package id and playback flags for targeted player."
+        sceneActionButton:Show()
+    else
+        sceneActionButton:SetText("Choose")
+        sceneActionButton.tooltip = "Choose an action"
+        sceneActionButton:Hide()  -- On cache le bouton si l'option est "Choose"
+    end
+end
+
+-- Script du bouton d'action pour envoyer la commande appropriée
+sceneActionButton:SetScript("OnClick", function()
+    local option = sceneDropdown.selectedOption
+    if option == "scene play" then
+        if sceneInput1 then
+            local sceneId = sceneInput1:GetText()
+            if sceneId == "" or sceneId == "Scene Id" then
+                print("Erreur: veuillez renseigner un Scene Id.")
+                return
+            end
+            local cmd = ".scene play " .. sceneId
+            SendChatMessage(cmd, "SAY")
+            print("[DEBUG] Commande envoyée: " .. cmd)
+        end
+    elseif option == "scene cancel" then
+        if sceneInput1 then
+            local scenePackageId = sceneInput1:GetText()
+            if scenePackageId == "" or scenePackageId == "Scene Package Id" then
+                print("Erreur: veuillez renseigner un Scene Package Id.")
+                return
+            end
+            local cmd = ".scene cancel " .. scenePackageId
+            SendChatMessage(cmd, "SAY")
+            print("[DEBUG] Commande envoyée: " .. cmd)
+        end
+    elseif option == "scene playpackage" then
+        if sceneInput1 and sceneInput2 then
+            local scenePackageId = sceneInput1:GetText()
+            local playbackFlags = sceneInput2:GetText()
+            if scenePackageId == "" or scenePackageId == "Scene Package Id" then
+                print("Erreur: veuillez renseigner un Scene Package Id.")
+                return
+            end
+            if playbackFlags == "" or playbackFlags == "Playback Flags" then
+                print("Erreur: veuillez renseigner les Playback Flags.")
+                return
+            end
+            local cmd = ".scene playpackage " .. scenePackageId .. " " .. playbackFlags
+            SendChatMessage(cmd, "SAY")
+            print("[DEBUG] Commande envoyée: " .. cmd)
+        end
+    else
+        print("Veuillez sélectionner une action dans le dropdown.")
+    end
+end)
 
     ------------------------------------------------------------------------------
-    -- Fin du panneau, bouton Back déjà présent
+    -- Bouton Back
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("BOTTOM", panel, "BOTTOM", 0, 30)

@@ -647,12 +647,53 @@ btnLevelup:SetScript("OnClick", function()
 end)
 
 ----------------------------
+-- Section Remove Cooldownd
+----------------------------
+
+-- Champ de saisie "Spell ID" pour Remove Cooldownd
+local spellIdInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
+spellIdInput:SetSize(150, 22)
+spellIdInput:SetPoint("TOPLEFT", levelupNameInput, "BOTTOMLEFT", 0, -15)
+spellIdInput:SetAutoFocus(false)
+spellIdInput.defaultText = "Spell ID"
+spellIdInput:SetText(spellIdInput.defaultText)
+spellIdInput:SetScript("OnEditFocusGained", function(self)
+    if self:GetText() == self.defaultText then self:SetText("") end
+end)
+spellIdInput:SetScript("OnEditFocusLost", function(self)
+    if self:GetText() == "" then self:SetText(self.defaultText) end
+end)
+table.insert(inputFields, spellIdInput)
+
+-- Bouton "Remove Cooldownd"
+local btnRemoveCooldown = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
+btnRemoveCooldown:SetSize(150, 22)
+btnRemoveCooldown:SetText("Remove Cooldownd")
+btnRemoveCooldown:SetPoint("LEFT", spellIdInput, "RIGHT", 10, 0)
+btnRemoveCooldown:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText("Remove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).", 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnRemoveCooldown:SetScript("OnLeave", function() GameTooltip:Hide() end)
+btnRemoveCooldown:SetScript("OnClick", function()
+    local spellId = spellIdInput:GetText()
+    local cmd
+    if spellId == "" or spellId == spellIdInput.defaultText then
+        cmd = ".cooldown"
+    else
+        cmd = ".cooldown " .. spellId
+    end
+    SendChatMessage(cmd, "SAY")
+    -- print("Commande envoyée : " .. cmd)
+end)
+----------------------------
 -- Bouton Reset Inputs
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText("Reset Inputs")
-btnResetInputs:SetPoint("TOPLEFT", btnLevelup, "BOTTOMLEFT", 0, -15)
+btnResetInputs:SetPoint("TOPRIGHT", page2Title, "TOPRIGHT", 270, 0)
 btnResetInputs:SetScript("OnClick", ResetInputs)
 
 ---------------------------------------------------------------

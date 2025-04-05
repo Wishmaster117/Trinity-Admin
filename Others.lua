@@ -556,6 +556,8 @@ function Others:CreateOthersPanel()
 	mmapsSubtitle:SetPoint("TOPLEFT", castContainer, "TOPRIGHT", -100, 62)
 	mmapsSubtitle:SetText("Mmaps Functions")
 	
+	local mmapsListening = false
+	
 	local mmapsOptions = {
 		"mmap loadedtiles",
 		"mmap loc",
@@ -609,8 +611,12 @@ function Others:CreateOthersPanel()
 	mmapsButton:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 	mmapsButton:SetScript("OnClick", function()
 		local cmd = "." .. selectedMmapsOption
+		mmapsListening = true  -- Activer l'écoute uniquement pour cette commande
+		mmapsPopupText = ""    -- Réinitialiser le contenu de la popup
 		SendChatMessage(cmd, "SAY")
 		print("Commande envoyée: " .. cmd)
+		-- Désactiver l'écoute après 2 secondes
+		C_Timer.After(2, function() mmapsListening = false end)
 	end)
 	
 local AceGUI = LibStub("AceGUI-3.0")
@@ -657,21 +663,257 @@ local mmapsInterceptor = CreateFrame("Frame")
 mmapsInterceptor:RegisterEvent("CHAT_MSG_SYSTEM")
 mmapsInterceptor:SetScript("OnEvent", function(self, event, msg)
     if event == "CHAT_MSG_SYSTEM" then
-        ShowMmapsPopup(msg)
+        if mmapsListening then
+            ShowMmapsPopup(msg)
+        end
     end
 end)
-	--------------------------------
-	-- Pour la page 3 :
-	--------------------------------
-	local commandsFramePage3 = CreateFrame("Frame", nil, pages[3])
-	commandsFramePage3:SetPoint("TOPLEFT", pages[3], "TOPLEFT", 20, -40)
-	commandsFramePage3:SetSize(500, 350)
-	
-	local page3Title = commandsFramePage3:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	page3Title:SetPoint("TOPLEFT", commandsFramePage3, "TOPLEFT", 0, 0)
-	page3Title:SetText("Cast Commands")
-		-- Ici, vous ajoutez les boutons pour la page 2
-		
+
+--------------------------------
+-- Pour la page 3 :
+--------------------------------
+local commandsFramePage3 = CreateFrame("Frame", nil, pages[3])
+commandsFramePage3:SetPoint("TOPLEFT", pages[3], "TOPLEFT", 20, -40)
+commandsFramePage3:SetSize(500, 350)
+
+local page3Title = commandsFramePage3:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+page3Title:SetPoint("TOPLEFT", commandsFramePage3, "TOPLEFT", 0, 0)
+page3Title:SetText("GMs Permission")
+-- Ici, vous ajoutez les boutons pour la page 2
+
+--------------------------------------------------------------------------------
+-- Préparatifs pour la capture des messages système et affichage dans une popup Ace3
+--------------------------------------------------------------------------------
+local rbacMessages = {}
+local rbacListener = CreateFrame("Frame")
+rbacListener:SetScript("OnEvent", function(self, event, msg, ...)
+    table.insert(rbacMessages, msg)
+end)
+
+local AceGUI = LibStub("AceGUI-3.0")
+local function ShowRbacPopup(text)
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle("RBAC Permissions")
+	frame:SetStatusText("You can copy/past this")
+    frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
+    --frame:SetLayout("Fill")
+	frame:SetLayout("Flow")
+    frame:SetWidth(400)
+    frame:SetHeight(300)
+	frame:SetPoint("RIGHT", UIParent, "RIGHT", -50, 0)
+    frame:EnableResize(false)
+    
+    local multiLine = AceGUI:Create("MultiLineEditBox")
+	multiLine:DisableButton(true)
+    multiLine:SetFullWidth(true)
+    multiLine:SetFullHeight(true)
+    multiLine:SetLabel("")
+    multiLine:SetText(text)
+	-- multiLine:SetButtonText("", nil)
+    frame:AddChild(multiLine)
+end
+
+--------------------------------------------------------------------------------
+-- SECTION 1 : Show rbac Id's List
+--------------------------------------------------------------------------------
+-- Création d'une "row" pour cette section
+local row1 = CreateFrame("Frame", nil, commandsFramePage3)
+row1:SetPoint("TOPLEFT", page3Title, "BOTTOMLEFT", 0, -20)
+row1:SetSize(500, 30)
+
+-- Champ de saisie "ID"
+local editRbacID = CreateFrame("EditBox", nil, row1, "InputBoxTemplate")
+editRbacID:SetSize(60, 22)
+editRbacID:SetPoint("LEFT", row1, "LEFT", 0, 0)
+editRbacID:SetAutoFocus(false)
+editRbacID:SetText("ID")
+
+-- Bouton "Show rbac Id's List"
+local btnShowRbacList = CreateFrame("Button", nil, row1, "UIPanelButtonTemplate")
+btnShowRbacList:SetSize(150, 22)
+btnShowRbacList:SetPoint("LEFT", editRbacID, "RIGHT", 10, 0)
+btnShowRbacList:SetText("Show rbac Id's List")
+btnShowRbacList:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText("View list of all permissions. If $id is given will show only info for that permission.", 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnShowRbacList:SetScript("OnLeave", function() GameTooltip:Hide() end)
+btnShowRbacList:SetScript("OnClick", function()
+    local idText = editRbacID:GetText()
+    local cmd
+    if idText ~= "" and idText ~= "ID" then
+        cmd = ".rbac list " .. idText
+    else
+        cmd = ".rbac list"
+    end
+
+    -- Réinitialiser et démarrer la capture des messages système
+    rbacMessages = {}
+    rbacListener:RegisterEvent("CHAT_MSG_SYSTEM")
+    SendChatMessage(cmd, "SAY")
+    -- Après 2 secondes, arrêter la capture et afficher les résultats dans une popup
+    C_Timer.After(2, function()
+        rbacListener:UnregisterEvent("CHAT_MSG_SYSTEM")
+        local output = table.concat(rbacMessages, "\n")
+        ShowRbacPopup(output)
+    end)
+end)
+
+--------------------------------------------------------------------------------
+-- SECTION 2 : rbac account (Account, ID, Realm ID, Dropdown et Bouton Action)
+--------------------------------------------------------------------------------
+local row2 = CreateFrame("Frame", nil, commandsFramePage3)
+row2:SetPoint("TOPLEFT", row1, "BOTTOMLEFT", 0, -20)
+row2:SetSize(500, 30)
+
+-- Champ de saisie "Account"
+local editAccount = CreateFrame("EditBox", nil, row2, "InputBoxTemplate")
+editAccount:SetSize(100, 22)
+editAccount:SetPoint("LEFT", row2, "LEFT", 0, 0)
+editAccount:SetAutoFocus(false)
+editAccount:SetText("Account")
+
+-- Champ de saisie "ID"
+local editAccountID = CreateFrame("EditBox", nil, row2, "InputBoxTemplate")
+editAccountID:SetSize(60, 22)
+editAccountID:SetPoint("LEFT", editAccount, "RIGHT", 10, 0)
+editAccountID:SetAutoFocus(false)
+editAccountID:SetText("ID")
+
+-- Champ de saisie "Realm ID"
+local editRealmID = CreateFrame("EditBox", nil, row2, "InputBoxTemplate")
+editRealmID:SetSize(60, 22)
+editRealmID:SetPoint("LEFT", editAccountID, "RIGHT", 10, 0)
+editRealmID:SetAutoFocus(false)
+editRealmID:SetText("Realm ID")
+
+-- Déclaration anticipée du bouton
+local btnAccountAction
+
+-- Dropdown pour choisir l'action
+local actionDropdown = CreateFrame("Frame", "RbacActionDropdown", row2, "UIDropDownMenuTemplate")
+actionDropdown:SetPoint("LEFT", editRealmID, "RIGHT", 10, -2)
+UIDropDownMenu_SetWidth(actionDropdown, 120)
+UIDropDownMenu_SetText(actionDropdown, "Choose")
+actionDropdown.selectedOption = "Choose"
+
+local actions = {
+    "Choose",
+    "rbac account deny",
+    "rbac account grant",
+    "rbac account list",
+    "rbac account revoke",
+}
+
+UIDropDownMenu_Initialize(actionDropdown, function(self, level, menuList)
+    local info = UIDropDownMenu_CreateInfo()
+    for _, action in ipairs(actions) do
+        info.text = action
+        info.value = action
+        info.checked = (action == actionDropdown.selectedOption)  -- Affiche le marqueur si c'est l'option sélectionnée
+        info.func = function()
+            actionDropdown.selectedOption = action
+            UIDropDownMenu_SetText(actionDropdown, action)
+            UIDropDownMenu_SetSelectedValue(actionDropdown, action)  -- Met à jour la valeur sélectionnée
+            -- Mise à jour du bouton d'action selon l'option choisie
+            if action == "rbac account deny" then
+                btnAccountAction:SetText("Deny")
+                btnAccountAction.tooltip = "Deny a permission to selected player or given account.\n\n#reamID may be -1 for all realms."
+            elseif action == "rbac account grant" then
+                btnAccountAction:SetText("Grant")
+                btnAccountAction.tooltip = "Grant a permission to selected player or given account.\n\n#reamID may be -1 for all realms."
+            elseif action == "rbac account list" then
+                btnAccountAction:SetText("View")
+                btnAccountAction.tooltip = "View permissions of selected player or given account\nNote: Only those that affect current realm"
+            elseif action == "rbac account revoke" then
+                btnAccountAction:SetText("Revoke")
+                btnAccountAction.tooltip = "Remove a permission from an account\n\nNote: Removes the permission from granted or denied permissions"
+            else
+                btnAccountAction:SetText("Choose")
+                btnAccountAction.tooltip = ""
+            end
+        end
+        UIDropDownMenu_AddButton(info)
+    end
+end)
+
+-- Fonction pour capturer les messages système pendant "duration" secondes et afficher la popup
+local function CaptureChatAndPopup(duration)
+    local messages = {}
+    local listener = CreateFrame("Frame")
+    listener:SetScript("OnEvent", function(self, event, msg, ...)
+         table.insert(messages, msg)
+    end)
+    listener:RegisterEvent("CHAT_MSG_SYSTEM")
+    C_Timer.After(duration, function()
+         listener:UnregisterEvent("CHAT_MSG_SYSTEM")
+         local output = table.concat(messages, "\n")
+         if output and output ~= "" then
+             ShowRbacPopup(output)
+         end
+    end)
+end
+
+-- Maintenant on crée le bouton d'action
+btnAccountAction = CreateFrame("Button", nil, row2, "UIPanelButtonTemplate")
+btnAccountAction:SetSize(100, 22)
+btnAccountAction:SetPoint("LEFT", actionDropdown, "RIGHT", 10, 0)
+btnAccountAction:SetText("Choose")
+btnAccountAction.tooltip = ""
+btnAccountAction:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+    GameTooltip:SetText(self.tooltip or "Choose an action", 1, 1, 1, 1, true)
+    GameTooltip:Show()
+end)
+btnAccountAction:SetScript("OnLeave", function() GameTooltip:Hide() end)
+-- Dans le script OnClick du bouton btnAccountAction
+btnAccountAction:SetScript("OnClick", function()
+    local selected = actionDropdown.selectedOption
+    local accountVal = editAccount:GetText()
+    local idVal = editAccountID:GetText()
+    local realmVal = editRealmID:GetText()
+    if accountVal == "Account" then accountVal = "" end
+    if idVal == "ID" then idVal = "" end
+    if realmVal == "Realm ID" then realmVal = "" end
+
+    local cmd = nil
+    if selected == "rbac account deny" then
+        if idVal == "" then
+            print("Erreur: le champ ID est obligatoire pour cette action.")
+            return
+        end
+        cmd = ".rbac account deny " .. accountVal .. " " .. idVal .. " " .. realmVal
+    elseif selected == "rbac account grant" then
+        if idVal == "" then
+            print("Erreur: le champ ID est obligatoire pour cette action.")
+            return
+        end
+        cmd = ".rbac account grant " .. accountVal .. " " .. idVal .. " " .. realmVal
+    elseif selected == "rbac account list" then
+        if accountVal == "" then
+            print("Erreur: le champ Account est obligatoire pour cette action.")
+            return
+        end
+        cmd = ".rbac account list " .. accountVal
+    elseif selected == "rbac account revoke" then
+        if idVal == "" then
+            print("Erreur: le champ ID est obligatoire pour cette action.")
+            return
+        end
+        cmd = ".rbac account revoke " .. accountVal .. " " .. idVal .. " " .. realmVal
+    else
+        print("Veuillez sélectionner une action.")
+        return
+    end
+
+    -- Envoyer la commande dans le chat
+    SendChatMessage(cmd, "SAY")
+    print("[DEBUG] Commande envoyée: " .. cmd)
+    -- Capture les messages système pendant 2 secondes puis affiche la popup
+    CaptureChatAndPopup(2)
+end)
+
 ------------------------------------------------------------------------------
 -- Bouton helper pour créer des boutons simples (comme précédemment)
 ------------------------------------------------------------------------------

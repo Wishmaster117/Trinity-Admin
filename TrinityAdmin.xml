@@ -387,9 +387,9 @@
 				<AbsDimension x="150" y="30"/>
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentAdvancedGobButton" relativePoint="RIGHT">
+				<Anchor point="LEFT" relativeTo="$parentAdvancedGobButton" relativePoint="LEFT">
 				<Offset>
-					<AbsDimension x="0" y="-45"/>
+					<AbsDimension x="0" y="-55"/>
 				</Offset>
 				</Anchor>
 			</Anchors>
@@ -416,7 +416,25 @@
 				TrinityAdmin_ShowOthersPanel()
 				</OnClick>
 			</Scripts>
-			</Button>									
+			</Button>	
+			<!-- Bouton Module Tickets -->
+			<Button name="$parentTicketsButton" inherits="UIPanelButtonTemplate" text="Tickets Management">
+			<Size>
+				<AbsDimension x="150" y="30"/>
+			</Size>
+			<Anchors>
+				<Anchor point="LEFT" relativeTo="$parentOthersButton" relativePoint="RIGHT">
+				<Offset>
+					<AbsDimension x="10" y="0"/>
+				</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+				TrinityAdmin_ShowTicketsPanel()
+				</OnClick>
+			</Scripts>
+			</Button>										
             <!-- Bouton Fermer -->
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>

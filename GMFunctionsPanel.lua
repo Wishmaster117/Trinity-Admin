@@ -1826,6 +1826,77 @@ end
                 SendChatMessage(".neargrave", "SAY")
             end
         end)
+
+	---------------------------------------------------------------
+	-- LINE 7: Link Grave Section
+	---------------------------------------------------------------
+	row = CreateRow(page, 30)
+	
+	-- Champ de saisie "Grave ID"
+	local editGraveID = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
+	editGraveID:SetSize(60, 22)
+	editGraveID:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
+	editGraveID:SetAutoFocus(false)
+	editGraveID:SetText("Grave ID")
+	
+	-- Case à cocher "Horde"
+	local chkGraveHorde = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+	chkGraveHorde:SetPoint("LEFT", editGraveID, "RIGHT", 10, 0)
+	chkGraveHorde.text = chkGraveHorde:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	chkGraveHorde.text:SetPoint("LEFT", chkGraveHorde, "RIGHT", 2, 0)
+	chkGraveHorde.text:SetText("Horde")
+	chkGraveHorde:SetChecked(false)
+	
+	-- Case à cocher "Alliance"
+	local chkGraveAlliance = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+	chkGraveAlliance:SetPoint("LEFT", chkGraveHorde, "RIGHT", 60, 0)
+	chkGraveAlliance.text = chkGraveAlliance:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+	chkGraveAlliance.text:SetPoint("LEFT", chkGraveAlliance, "RIGHT", 2, 0)
+	chkGraveAlliance.text:SetText("Alliance")
+	chkGraveAlliance:SetChecked(false)
+	
+	-- Rendre les cases mutuellement exclusives
+	chkGraveHorde:SetScript("OnClick", function(self)
+		if self:GetChecked() then
+			chkGraveAlliance:SetChecked(false)
+		end
+	end)
+	chkGraveAlliance:SetScript("OnClick", function(self)
+		if self:GetChecked() then
+			chkGraveHorde:SetChecked(false)
+		end
+	end)
+	
+	-- Bouton "Link Grave"
+	local btnLinkGrave = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
+	btnLinkGrave:SetSize(100, 22)
+	btnLinkGrave:SetPoint("LEFT", chkGraveAlliance, "RIGHT", 60, 0)
+	btnLinkGrave:SetText("Link Grave")
+	btnLinkGrave:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Link current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map)", 1, 1, 1, 1, true)
+		GameTooltip:Show()
+	end)
+	btnLinkGrave:SetScript("OnLeave", function() GameTooltip:Hide() end)
+	btnLinkGrave:SetScript("OnClick", function()
+		local graveID = editGraveID:GetText()
+		if graveID == "" or graveID == "Grave ID" then
+			print("Erreur: veuillez saisir un Grave ID pour .linkgrave.")
+			return
+		end
+		if chkGraveHorde:GetChecked() then
+			local cmd = ".linkgrave " .. graveID .. " horde"
+			SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " .. cmd)
+		elseif chkGraveAlliance:GetChecked() then
+			local cmd = ".linkgrave " .. graveID .. " alliance"
+			SendChatMessage(cmd, "SAY")
+			print("[DEBUG] Commande envoyée: " .. cmd)
+		else
+			print("Erreur: veuillez cocher Horde ou Alliance pour .linkgrave.")
+		end
+	end)
+
 end
 
     ----------------------------------------------------------------------------
