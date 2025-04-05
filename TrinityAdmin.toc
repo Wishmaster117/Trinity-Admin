@@ -5,13 +5,28 @@
 ## Version: 1.0
 
 # Librairies Ace3
-Libs/LibStub.lua
-Libs/CallbackHandler-1.0.lua
-Libs/LibDataBroker-1.1.lua
-Libs/LibDBIcon-1.0.lua
-Libs/AceAddon-3.0.lua
-Libs/AceConsole-3.0.lua
-Libs/AceEvent-3.0.lua
+
+# Libs/LibStub.lua
+Libs\LibStub\LibStub.lua
+
+# Libs/CallbackHandler-1.0.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+
+#  Libs/LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDataBroker-1.1\LibDataBroker-1.1.lua
+
+# Libs/LibDBIcon-1.0.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0\LibDBIcon-1.0.lua
+
+# Libs/AceAddon-3.0.lua
+Libs\AceAddon-3.0\AceAddon-3.0.lua
+
+# Libs/AceConsole-3.0.lua
+Libs\AceConsole-3.0\AceConsole-3.0.lua
+
+# Libs/AceEvent-3.0.lua
+Libs\AceEvent-3.0\AceEvent-3.0.lua
+
 Libs\AceGUI-3.0\AceGUI-3.0.lua
 Libs\AceGUI-3.0\widgets\AceGUIContainer-BlizOptionsGroup.lua
 Libs\AceGUI-3.0\widgets\AceGUIContainer-DropDownGroup.lua

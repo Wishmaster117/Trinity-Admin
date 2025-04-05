@@ -8,7 +8,7 @@ local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
         if button == "LeftButton" then
             TrinityAdmin:ToggleUI()  -- Ouvre/ferme votre interface
         elseif button == "RightButton" then
-            -- Ajoutez ici d'autres actions si besoin
+		-- Reste à faire
         end
     end,
     OnTooltipShow = function(tooltip)

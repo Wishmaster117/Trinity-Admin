@@ -5,7 +5,7 @@
     <!-- Fenêtre principale -->
     <Frame name="TrinityAdminMainFrame" parent="UIParent" toplevel="true" enableMouse="true" hidden="true">
         <Size>
-            <AbsDimension x="700" y="400"/>
+            <AbsDimension x="750" y="400"/>
         </Size>
         <Anchors>
             <Anchor point="CENTER"/>
@@ -52,6 +52,10 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Teleport"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>
                     <OnClick>
                         TrinityAdmin_ShowTeleportPanel()
                     </OnClick>
@@ -70,6 +74,10 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Modify Funcs"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
                     <OnClick>
                         TrinityAdmin_ShowGMPanel()
                     </OnClick>
@@ -88,6 +96,10 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Npc"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>							
                     <OnClick>
                         TrinityAdmin_ShowNPCPanel()
                     </OnClick>
@@ -106,6 +118,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["GM Funcs"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowGMFunctionsPanel()
 					</OnClick>
@@ -124,6 +140,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Accounts"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowAccountPanel()
 					</OnClick>
@@ -142,6 +162,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Database/Saves"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowDatabasePanel()
 					</OnClick>
@@ -160,6 +184,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Server Admin"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowServerAdminPanel()
 					</OnClick>
@@ -178,6 +206,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["GameObjects"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowGameObjectsPanel()
 					</OnClick>
@@ -196,6 +228,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Add Item"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowAddItemPanel()
 					</OnClick>
@@ -214,6 +250,10 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Advanced Items"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>				
 					<OnClick>
 						TrinityAdmin_ShowAdvancedItemsPanel()
 					</OnClick>
@@ -232,6 +272,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+				    <OnLoad>
+						self:SetText(TrinityAdmin_Translations["Characters Module"]);
+						self:SetWidth(self:GetTextWidth() + 20);
+					</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowModuleCharacterPanel()
 				</OnClick>
@@ -250,6 +294,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Waypoints Module"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowWaypointsPanel()
 				</OnClick>
@@ -268,6 +316,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["AH Bot Module"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowAhBotPanel()
 				</OnClick>
@@ -286,6 +338,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Guild's Module"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowGuildPanel()
 				</OnClick>
@@ -304,6 +360,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Learn And Damages"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowLearnDamagePanel()
 				</OnClick>
@@ -322,6 +382,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Advanced GameObjects"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowAdvancedGobPanel()
 				</OnClick>
@@ -340,6 +404,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Advanced NPC Add"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowAdvancedNpcPanel()
 				</OnClick>
@@ -358,6 +426,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Misc"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowMiscPanel()
 				</OnClick>
@@ -376,6 +448,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Cheat"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowcheatPanel()
 				</OnClick>
@@ -394,6 +470,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Debug Functions"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowDebugPanel()
 				</OnClick>
@@ -412,6 +492,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Other Stuffs"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowOthersPanel()
 				</OnClick>
@@ -430,6 +514,10 @@
 				</Anchor>
 			</Anchors>
 			<Scripts>
+			    <OnLoad>
+					self:SetText(TrinityAdmin_Translations["Tickets Management"]);
+					self:SetWidth(self:GetTextWidth() + 20);
+				</OnLoad>			
 				<OnClick>
 				TrinityAdmin_ShowTicketsPanel()
 				</OnClick>

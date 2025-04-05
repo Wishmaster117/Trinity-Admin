@@ -3,6 +3,32 @@ local L = {}
 local locale = GetLocale()
 
 if locale == "frFR" then
+    -----------------------------------------------------------
+	---- Main Frame buttons
+	-----------------------------------------------------------
+	L["Teleport"]     = "Téléportations"
+	L["Modify Funcs"] = "Fonctions Modify"
+	L["Npc"] = "Fonctions NPC"
+	L["GM Funcs"] = "Fonctions GM"
+	L["Accounts"] = "Comptes"
+	L["Database/Saves"] = "Bases/Sauvegardes"
+	L["Server Admin"] = "Admin. Serveur"
+	L["GameObjects"] = "Objets en Jeu"
+	L["Add Item"] = "Ajout Items"
+	L["Advanced Items"] = "AddItem Avancé"
+	L["Characters Module"] = "Gestion Personnages"
+	L["Waypoints Module"] = "Gestion Waypoints"
+	L["AH Bot Module"] = "Gestion Bot HV"
+	L["Guild's Module"] = "Gestion Guildes"
+	L["Learn And Damages"] = "Apprendre/Dégats"
+	L["Advanced GameObjects"] = "Objets en Jeu Avancé"
+	L["Advanced NPC Add"] = "Ajout PNJ Avancé"
+	L["Misc"] = "Divers"
+	L["Cheat"] = "Tricheries"
+	L["Debug Functions"] = "Fonctions Debug"
+	L["Other Stuffs"] = "Autres Fonctions"
+	L["Tickets Management"] = "Gestion des Tickets"
+	---- End main frame buttons
 	L["GM Functions Panel"]     = "Panneau des Fonctions GM"
     L["TrinityAdmin Main Menu"] = "TrinityCore Boîte à Outils MJ par TheWarlock"
     L["Teleport Panel"]         = "Panneau des Téléportations"
@@ -2094,6 +2120,32 @@ L["Underpin Strongarm's Muscle"] =	"Muscle de gros-bras du Père Foreur"
 	-- Fin Skill
 	
 elseif locale == "enUS" then
+    -----------------------------------------------------------
+	---- Main Frame buttons
+	-----------------------------------------------------------
+	L["Teleport"]     = "Teleport"
+	L["Modify Funcs"] = "Modify Funcs"
+	L["Npc"] = "NPC Funcs"
+	L["GM Funcs"] = "Fonctions GM"
+	L["Accounts"] = "Accounts"
+	L["Database/Saves"] = "Database/Saves"
+	L["Server Admin"] = "Server Admin"
+	L["GameObjects"] = "Game Objects"
+	L["Add Item"] = "AddItem Funcs"
+	L["Advanced Items"] = "Advanced AddItem"
+	L["Characters Module"] = "Characters Module"
+	L["Waypoints Module"] = "Waypoints Management"
+	L["AH Bot Module"] = "AH Bot Management"
+	L["Guild's Module"] = "Guild Management"
+	L["Learn And Damages"] = "Learn/Damage"
+	L["Advanced GameObjects"] = "GameObjects Advanced"
+	L["Advanced NPC Add"] = "Advanced NPC Add"
+	L["Misc"] = "Misc"
+	L["Cheat"] = "Cheats"
+	L["Debug Functions"] = "Debug Functions"
+	L["Other Stuffs"] = "Other Stuffs"
+	L["Tickets Management"] = "Tickets Management"
+	---- End main frame buttons
     L["GM Functions Panel"]     = "GM Functions Panel"
 	L["TrinityAdmin Main Menu"] = "TrinityCore GM Tools By TheWarlock"
     L["Teleport Panel"]         = "Teleport Panel"
