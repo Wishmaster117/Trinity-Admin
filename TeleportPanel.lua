@@ -1,4 +1,5 @@
 local TeleportModule = TrinityAdmin:GetModule("TeleportPanel")
+local L = _G.L
 
 function TeleportModule:ShowTeleportPanel()
     TrinityAdmin:HideMainMenu()
@@ -20,12 +21,12 @@ function TeleportModule:CreateTeleportPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText(TrinityAdmin_Translations["Teleport Panel"])
+    panel.title:SetText(L["Teleport Panel"])
     
 	-- Bouton Retour commun
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetText(L["Back"])
     btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
@@ -117,7 +118,7 @@ function TeleportModule:CreateTeleportPanel()
             local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
             local continents = TeleportData
             if not continents then
-                print(TrinityAdmin_Translations["No_Teleport_Data_Found"])
+                print(L["No_Teleport_Data_Found"])
                 return
             end
             for continentName, _ in pairs(continents) do
@@ -135,25 +136,25 @@ function TeleportModule:CreateTeleportPanel()
                     self.selectedCommand = nil
                     self:PopulateZoneDropdown(button.value, panel) -- Remplir le zoneDropdown
                     panel.zoneDropdown:Show()
-                    UIDropDownMenu_SetText(panel.zoneDropdown, TrinityAdmin_Translations["Select_Zone"])
+                    UIDropDownMenu_SetText(panel.zoneDropdown, L["Select_Zone"])
                     panel.locationDropdown:Hide()
                     panel.goButton:Hide()
                 end
                 UIDropDownMenu_AddButton(info, level)
             end
         end)
-        UIDropDownMenu_SetText(continentDropdown, TrinityAdmin_Translations["Select_Continent"])
+        UIDropDownMenu_SetText(continentDropdown, L["Select_Continent"])
 
         local zoneDropdown = CreateFrame("Frame", "TrinityAdminZoneDropdown", page1, "UIDropDownMenuTemplate")
         zoneDropdown:SetPoint("LEFT", continentDropdown, "RIGHT", 5, 0)
         UIDropDownMenu_SetWidth(zoneDropdown, 150)
-        UIDropDownMenu_SetText(zoneDropdown, TrinityAdmin_Translations["Select_Zone"])
+        UIDropDownMenu_SetText(zoneDropdown, L["Select_Zone"])
         zoneDropdown:Hide()
 
         local locationDropdown = CreateFrame("Frame", "TrinityAdminLocationDropdown", page1, "UIDropDownMenuTemplate")
         locationDropdown:SetPoint("LEFT", zoneDropdown, "RIGHT", 5, 0)
         UIDropDownMenu_SetWidth(locationDropdown, 150)
-        UIDropDownMenu_SetText(locationDropdown, TrinityAdmin_Translations["Select_Location"])
+        UIDropDownMenu_SetText(locationDropdown, L["Select_Location"])
         locationDropdown:Hide()
 
         local goButton = CreateFrame("Button", "TrinityAdminGoButton", page1, "UIPanelButtonTemplate")
@@ -166,7 +167,7 @@ function TeleportModule:CreateTeleportPanel()
             if self.selectedCommand then
                 self:TeleportTo(self.selectedCommand)
             else
-                print(TrinityAdmin_Translations["Select_Location"])
+                print(L["Select_Location"])
             end
         end)
 
@@ -181,13 +182,13 @@ function TeleportModule:CreateTeleportPanel()
         specialTitle:SetText("Special teleportations")
 
         local specialOptions = {
-            { text = "tele add", command = ".tele add", tooltip = TrinityAdmin_Translations["Tele_Add"] },
-            { text = "tele del", command = ".tele del", tooltip = TrinityAdmin_Translations["Tele_Del"] },
-            { text = "tele group", command = ".tele group", tooltip = TrinityAdmin_Translations["Tele_Group"] },
-            { text = "tele name", command = ".tele name", tooltip = TrinityAdmin_Translations["Tele_Name"] },
-            { text = "tele name npc guid", command = ".tele name npc guid", tooltip = TrinityAdmin_Translations["Tele_Name_Id"] },
-            { text = "tele name npc id", command = ".tele name npc id", tooltip = TrinityAdmin_Translations["Tele_Name_NPC_Id"] },
-            { text = "tele name npc name", command = ".tele name npc name", tooltip = TrinityAdmin_Translations["Tele_Name_NPC_Name"] },
+            { text = "tele add", command = ".tele add", tooltip = L["Tele_Add"] },
+            { text = "tele del", command = ".tele del", tooltip = L["Tele_Del"] },
+            { text = "tele group", command = ".tele group", tooltip = L["Tele_Group"] },
+            { text = "tele name", command = ".tele name", tooltip = L["Tele_Name"] },
+            { text = "tele name npc guid", command = ".tele name npc guid", tooltip = L["Tele_Name_Id"] },
+            { text = "tele name npc id", command = ".tele name npc id", tooltip = L["Tele_Name_NPC_Id"] },
+            { text = "tele name npc name", command = ".tele name npc name", tooltip = L["Tele_Name_NPC_Name"] },
         }
 
         local specialDropdown = CreateFrame("Frame", "TrinityAdminSpecialDropdown", page1, "UIDropDownMenuTemplate")
@@ -640,7 +641,7 @@ function TeleportModule:PopulateZoneDropdown(continentName, panel)
         local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
         local zonesTable = TeleportData[continentName]
         if not zonesTable then
-            print(TrinityAdmin_Translations["No_Teleport_Data_Found"])
+            print(L["No_Teleport_Data_Found"])
             return
         end
         for zoneName, _ in pairs(zonesTable) do
@@ -656,13 +657,13 @@ function TeleportModule:PopulateZoneDropdown(continentName, panel)
                 self.selectedZone = button.value
                 self:PopulateLocationDropdown(continentName, button.value, panel)
                 panel.locationDropdown:Show()
-                UIDropDownMenu_SetText(panel.locationDropdown, TrinityAdmin_Translations["Select_Location"])
+                UIDropDownMenu_SetText(panel.locationDropdown, L["Select_Location"])
                 panel.goButton:Hide()
             end
             UIDropDownMenu_AddButton(info, level)
         end
     end)
-    UIDropDownMenu_SetText(zoneDropdown, TrinityAdmin_Translations["Select_Zone"])
+    UIDropDownMenu_SetText(zoneDropdown, L["Select_Zone"])
 end
 
 function TeleportModule:PopulateLocationDropdown(continentName, zoneName, panel)
@@ -691,7 +692,7 @@ function TeleportModule:PopulateLocationDropdown(continentName, zoneName, panel)
             UIDropDownMenu_AddButton(info, level)
         end
     end)
-    UIDropDownMenu_SetText(locationDropdown, TrinityAdmin_Translations["Select_Location"])
+    UIDropDownMenu_SetText(locationDropdown, L["Select_Location"])
 end
 
 function TeleportModule:TeleportTo(command)

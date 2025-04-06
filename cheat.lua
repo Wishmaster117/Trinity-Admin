@@ -1,4 +1,6 @@
 local cheat = TrinityAdmin:GetModule("cheat")
+local L = _G.L
+
 -- Fonction pour afficher le panneau ServerAdmin
 function cheat:ShowcheatPanel()
     TrinityAdmin:HideMainMenu()
@@ -18,7 +20,7 @@ function cheat:CreatecheatPanel()
     bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)  -- Fond sombre, modifiez selon vos besoins
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Cheat Panel")  -- Vous pouvez utiliser TrinityAdmin_Translations si nécessaire
+    panel.title:SetText("Cheat Panel")  -- Vous pouvez utiliser L si nécessaire
 
 local bg = panel:CreateTexture(nil, "BACKGROUND")
 bg:SetAllPoints(true)
@@ -30,7 +32,7 @@ panel.title:SetText("Cheat Panel")
 
 -- local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 -- btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
--- btnBack:SetText(TrinityAdmin_Translations and TrinityAdmin_Translations["Back"] or "Back")
+-- btnBack:SetText(L and L["Back"] or "Back")
 -- btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
 -- btnBack:SetScript("OnClick", function()
 --     panel:Hide()
@@ -222,7 +224,7 @@ end)
 
     local btnBack = CreateFrame("Button", "TrinityAdminTeleportBackButton", panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetText(L["Back"])
     btnBack:SetHeight(22)
     btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()

@@ -1,4 +1,5 @@
 local Waypoints = TrinityAdmin:GetModule("Waypoints")
+local L = _G.L
 
 -- Fonction pour afficher le panneau Waypoints
 function Waypoints:ShowWaypointsPanel()
@@ -240,7 +241,7 @@ function Waypoints:CreateWaypointsPanel()
     --------------------------------------------------------------------------------
     local btnBack = CreateFrame("Button", "TrinityAdminWaypointsBackButton", panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetText(L["Back"])
     btnBack:SetHeight(22)
     btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()

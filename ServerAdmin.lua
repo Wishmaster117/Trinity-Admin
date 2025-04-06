@@ -3,6 +3,7 @@
 --------------------------------------------------------------
 
 local ServerAdmin = TrinityAdmin:GetModule("ServerAdmin")
+local L = _G.L
 
 -- Variables de capture pour .server info
 local capturingServerInfo = false
@@ -709,7 +710,7 @@ function ServerAdmin:CreateServerAdminPanel()
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("TOPRIGHT", navPageLabel, "TOPRIGHT", 0, 30)
-    btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
+    btnBackFinal:SetText(L["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
     btnBackFinal:SetScript("OnClick", function()

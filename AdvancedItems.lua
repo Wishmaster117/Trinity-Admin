@@ -1,4 +1,5 @@
 local AdvancedItems = TrinityAdmin:GetModule("AdvancedItems")
+local L = _G.L
 
 ItemsData = {} -- Table globale qui contiendra toutes les entrées
 

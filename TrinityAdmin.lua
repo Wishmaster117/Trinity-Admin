@@ -1,4 +1,5 @@
 TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0", "AceEvent-3.0")
+L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     type = "launcher",
@@ -17,13 +18,34 @@ local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     end,
 })
 
--- Table de sauvegarde pour l'icône minimap
-TrinityAdminDB = TrinityAdminDB or {}
-TrinityAdminDB.minimap = TrinityAdminDB.minimap or { hide = false }
+-- -- Table de sauvegarde pour l'icône minimap
+-- TrinityAdminDB = TrinityAdminDB or {}
+-- TrinityAdminDB.minimap = TrinityAdminDB.minimap or { hide = false }
+-- 
+-- -- Enregistrement de l'icône sur la minimap
+-- local icon = LibStub("LibDBIcon-1.0")
+-- icon:Register("TrinityAdmin", LDB, TrinityAdminDB.minimap)
+-- Définition des valeurs par défaut avec AceDB
+local defaults = {
+    profile = {
+        settings = {
+            option1 = true,
+            option2 = 42,
+        },
+        minimap = {
+            hide = false,
+        },
+        modules = {},
+    }
+}
 
--- Enregistrement de l'icône sur la minimap
+-- Initialisation de la base de données (SavedVariable TrinityAdminDB)
+TrinityAdmin.db = LibStub("AceDB-3.0"):New("TrinityAdminDB", defaults, true)
+
+-- Enregistrement de l'icône minimap en utilisant la sous-table "minimap" du profil
 local icon = LibStub("LibDBIcon-1.0")
-icon:Register("TrinityAdmin", LDB, TrinityAdminDB.minimap)
+icon:Register("TrinityAdmin", LDB, TrinityAdmin.db.profile.minimap)
+
 
 -- Création des modules dans TrinityAdmin.lua (uniquement ici)
 local TeleportModule = TrinityAdmin:NewModule("TeleportPanel")
@@ -153,7 +175,7 @@ function TrinityAdmin:OnInitialize()
 end
 
 function TrinityAdmin:OnEnable()
-    TrinityAdminMainFrameTitle:SetText(TrinityAdmin_Translations["TrinityAdmin Main Menu"])
+    TrinityAdminMainFrameTitle:SetText(L["TrinityAdmin Main Menu"])
 	-- Rendre la frame principale déplaçable
     TrinityAdminMainFrame:SetMovable(true)
     TrinityAdminMainFrame:EnableMouse(true)

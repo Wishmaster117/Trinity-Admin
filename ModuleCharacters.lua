@@ -1,4 +1,5 @@
 local ModuleCharacter = TrinityAdmin:GetModule("ModuleCharacter")
+local L = _G.L
 
 -- Fonction pour afficher le panneau CharactersAdmin
 function ModuleCharacter:ShowModuleCharacterPanel()
@@ -2749,7 +2750,7 @@ end)
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("CENTER", navPageLabel, "CENTER", 0, 20)
-    btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
+    btnBackFinal:SetText(L["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
     -- On augmente le niveau pour qu'il apparaisse au-dessus des pages

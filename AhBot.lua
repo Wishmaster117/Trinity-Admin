@@ -1,4 +1,5 @@
 local AhBot = TrinityAdmin:GetModule("AhBot")
+local L = _G.L
 
 -- Fonction pour afficher le panneau AhBot
 function AhBot:ShowAhBotPanel()
@@ -27,7 +28,7 @@ function AhBot:CreateAhBotPanel()
     -- Bouton Retour commun
     -- local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     -- btnBack:SetPoint("BOTTOM", navPageLabel, "BOTTOM", 0, 30)
-    -- btnBack:SetText(TrinityAdmin_Translations["Back"])
+    -- btnBack:SetText(L["Back"])
     -- btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
     -- btnBack:SetScript("OnClick", function()
     --     panel:Hide()
@@ -395,7 +396,7 @@ function AhBot:CreateAhBotPanel()
     ------------------------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", navPageLabel, "CENTER", 0, 15)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetText(L["Back"])
     btnBack:SetHeight(22)
     btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     -- On augmente le niveau pour qu'il apparaisse au-dessus des pages

@@ -1,32 +1,22 @@
-## Interface: 100105
+## Interface: 111000
 ## Title: TrinityAdmin
-## Notes: TrinityAdmin with a custom dropdown template
-## Author: 33619
-## Version: 1.0
+## Notes: Note this is the first release
+## Author: TheWarlock
+## Version: v1.0
+## SavedVariables: TrinityAdminDB
+## IconTexture: Interface\AddOns\TrinityAdmin\Medias\icon
 
 # Librairies Ace3
 
-# Libs/LibStub.lua
 Libs\LibStub\LibStub.lua
-
-# Libs/CallbackHandler-1.0.lua
+Libs\AceDB-3.0\AceDB-3.0.lua
+Libs\AceLocale-3.0\AceLocale-3.0.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
-
-#  Libs/LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDataBroker-1.1\LibDataBroker-1.1.lua
-
-# Libs/LibDBIcon-1.0.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0\LibDBIcon-1.0.lua
-
-# Libs/AceAddon-3.0.lua
 Libs\AceAddon-3.0\AceAddon-3.0.lua
-
-# Libs/AceConsole-3.0.lua
 Libs\AceConsole-3.0\AceConsole-3.0.lua
-
-# Libs/AceEvent-3.0.lua
 Libs\AceEvent-3.0\AceEvent-3.0.lua
-
 Libs\AceGUI-3.0\AceGUI-3.0.lua
 Libs\AceGUI-3.0\widgets\AceGUIContainer-BlizOptionsGroup.lua
 Libs\AceGUI-3.0\widgets\AceGUIContainer-DropDownGroup.lua
@@ -48,10 +38,21 @@ Libs\AceGUI-3.0\widgets\AceGUIWidget-Keybinding.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-Label.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-MultiLineEditBox.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
-# Interface\FrameXML\UIPanelTemplates.xml
 
-# TranslationsData
-Locals\TrinityAdmin_Translations.lua
+# Translations
+Locales\frFR.lua
+Locales\deDE.lua
+Locales\enUS.lua
+Locales\esES.lua
+Locales\esMX.lua
+Locales\itIT.lua
+Locales\koKR.lua
+Locales\ptBR.lua
+Locales\ruRU.lua
+Locales\zhCN.lua
+Locales\zhTW.lua
+
+
 Datas\GameObjectsData.lua
 Datas\ItemSetData.lua
 Datas\ItemsDataPart1.lua
@@ -70,10 +71,11 @@ Datas\TeleportTable.lua
 Datas\SkillsData.lua
 Datas\TitlesData.lua
 Datas\EventsData.lua
-# Interface XML
-TrinityAdmin.xml
-# Code principal
+
+
 TrinityAdmin.lua
+TrinityAdmin.xml
+
 TeleportPanel.lua
 GMPanel.lua
 NPCPanel.lua

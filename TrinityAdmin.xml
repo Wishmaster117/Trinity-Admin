@@ -53,7 +53,7 @@
                 </Anchors>
                 <Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Teleport"]);
+						self:SetText(L["Teleport"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>
                     <OnClick>
@@ -75,7 +75,7 @@
                 </Anchors>
                 <Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Modify Funcs"]);
+						self:SetText(L["Modify Funcs"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
                     <OnClick>
@@ -97,7 +97,7 @@
                 </Anchors>
                 <Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Npc"]);
+						self:SetText(L["Npc"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>							
                     <OnClick>
@@ -119,7 +119,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["GM Funcs"]);
+						self:SetText(L["GM Funcs"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -141,7 +141,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Accounts"]);
+						self:SetText(L["Accounts"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -163,7 +163,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Database/Saves"]);
+						self:SetText(L["Database/Saves"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -185,7 +185,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Server Admin"]);
+						self:SetText(L["Server Admin"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -207,7 +207,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["GameObjects"]);
+						self:SetText(L["GameObjects"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -229,7 +229,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Add Item"]);
+						self:SetText(L["Add Item"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -251,7 +251,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Advanced Items"]);
+						self:SetText(L["Advanced Items"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -273,7 +273,7 @@
 			</Anchors>
 			<Scripts>
 				    <OnLoad>
-						self:SetText(TrinityAdmin_Translations["Characters Module"]);
+						self:SetText(L["Characters Module"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>			
 				<OnClick>
@@ -295,7 +295,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Waypoints Module"]);
+					self:SetText(L["Waypoints Module"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -317,7 +317,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["AH Bot Module"]);
+					self:SetText(L["AH Bot Module"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -339,7 +339,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Guild's Module"]);
+					self:SetText(L["Guild's Module"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -361,7 +361,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Learn And Damages"]);
+					self:SetText(L["Learn And Damages"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -383,7 +383,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Advanced GameObjects"]);
+					self:SetText(L["Advanced GameObjects"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -405,7 +405,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Advanced NPC Add"]);
+					self:SetText(L["Advanced NPC Add"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -427,7 +427,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Misc"]);
+					self:SetText(L["Misc"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -449,7 +449,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Cheat"]);
+					self:SetText(L["Cheat"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -471,7 +471,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Debug Functions"]);
+					self:SetText(L["Debug Functions"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -493,7 +493,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Other Stuffs"]);
+					self:SetText(L["Other Stuffs"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
@@ -515,7 +515,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(TrinityAdmin_Translations["Tickets Management"]);
+					self:SetText(L["Tickets Management"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>

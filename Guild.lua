@@ -3,7 +3,7 @@
 --------------------------------------------------------------
 
 local Guild = TrinityAdmin:GetModule("Guild")
-
+local L = _G.L
 -------------------------------------------------------------
 -- 1) Variables pour la capture du .guild info
 -------------------------------------------------------------
@@ -263,7 +263,7 @@ function Guild:CreateGuildPanel()
     ------------------------------------------------------
     local btnBack = CreateFrame("Button", "TrinityAdminTeleportBackButton", panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"] or "Back")
+    btnBack:SetText(L["Back"] or "Back")
     btnBack:SetHeight(22)
     btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()

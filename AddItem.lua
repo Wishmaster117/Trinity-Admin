@@ -1,4 +1,5 @@
 local AddItem = TrinityAdmin:GetModule("AddItem")
+local L = _G.L
 
 -- Fonction pour afficher le panneau AddItem
 function AddItem:ShowAddItemPanel()
@@ -22,29 +23,29 @@ function AddItem:CreateAddItemPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText(TrinityAdmin_Translations["Add Item Module"])
+    panel.title:SetText(L["Add Item Module"])
 
     -- Section: Game Objects Tools
     local toolsTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     toolsTitle:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -20)
-    toolsTitle:SetText(TrinityAdmin_Translations["Advanced Add Functions"])
+    toolsTitle:SetText(L["Advanced Add Functions"])
     --------------------------------------------------------------------------------
     -- Création des trois champs de saisie
     --------------------------------------------------------------------------------
     local input1 = CreateFrame("EditBox", "TrinityAdminAddLearnInput1", panel, "InputBoxTemplate")
     input1:SetSize(150, 22)
     input1:SetPoint("TOPLEFT", toolsTitle, "BOTTOMLEFT", 10, -20)
-    input1:SetText(TrinityAdmin_Translations["Choose a action"])  -- Valeur par défaut générale
+    input1:SetText(L["Choose a action"])  -- Valeur par défaut générale
 
     local input2 = CreateFrame("EditBox", "TrinityAdminAddLearnInput2", panel, "InputBoxTemplate")
     input2:SetSize(150, 22)
     input2:SetPoint("TOPLEFT", input1, "BOTTOMLEFT", 0, -10)
-    input2:SetText(TrinityAdmin_Translations["Choose a action"])
+    input2:SetText(L["Choose a action"])
 
     local input3 = CreateFrame("EditBox", "TrinityAdminAddLearnInput3", panel, "InputBoxTemplate")
     input3:SetSize(150, 22)
     input3:SetPoint("TOPLEFT", input2, "BOTTOMLEFT", 0, -10)
-    input3:SetText(TrinityAdmin_Translations["Choose a action"])
+    input3:SetText(L["Choose a action"])
 
     --------------------------------------------------------------------------------
     -- Création du menu déroulant
@@ -59,32 +60,32 @@ function AddItem:CreateAddItemPanel()
         {
             text = "additem",
             command = ".additem",
-            tooltip = TrinityAdmin_Translations["AdditemSyntax"],
-            defaults = { TrinityAdmin_Translations["ID or Name"], TrinityAdmin_Translations["How many?"], TrinityAdmin_Translations["BonusList id's separated by ;"] }
+            tooltip = L["AdditemSyntax"],
+            defaults = { L["ID or Name"], L["How many?"], L["BonusList id's separated by ;"] }
         },
         {
             text = "additem set",
             command = ".additem set",
             tooltip = "Syntax: .additemset #itemsetid #bonusListIDs\n\nAdds items from an item set. (#bonusListIDs is optional)",
-            defaults = { TrinityAdmin_Translations["ItemSet ID"], TrinityAdmin_Translations["Don't use"], TrinityAdmin_Translations["BonusList id's separated by ;"] }
+            defaults = { L["ItemSet ID"], L["Don't use"], L["BonusList id's separated by ;"] }
         },
         {
             text = "lookup item",
             command = ".lookup item",
             tooltip = "Syntax: .lookup item $itemname\n\nLooks up an item by name (utilisez votre langue locale).",
-            defaults = { TrinityAdmin_Translations["Item Name"], TrinityAdmin_Translations["Don't use"], TrinityAdmin_Translations["Don't use"] }
+            defaults = { L["Item Name"], L["Don't use"], L["Don't use"] }
         },
         {
             text = "lookup item id",
             command = ".lookup item",
             tooltip = "Syntax: .lookup item $itemid\n\nLooks up an item by its ID.",
-            defaults = { TrinityAdmin_Translations["Item ID"], TrinityAdmin_Translations["Don't use"], TrinityAdmin_Translations["Don't use"] }
+            defaults = { L["Item ID"], L["Don't use"], L["Don't use"] }
         },
         {
             text = "lookup item set",
             command = ".lookup item set",
             tooltip = "Syntax: .lookup itemset $itemsetname\n\nLooks up an item set by name (utilisez votre langue locale).",
-            defaults = { TrinityAdmin_Translations["Item Name"], "", "" }
+            defaults = { L["Item Name"], "", "" }
         },
     }
     local selectedOption = ddOptions[1]  -- Option par défaut
@@ -171,7 +172,7 @@ function AddItem:CreateAddItemPanel()
 			UIDropDownMenu_AddButton(info, level)
 		end
 	end)
-	UIDropDownMenu_SetText(dropdown, TrinityAdmin_Translations["Choose"])
+	UIDropDownMenu_SetText(dropdown, L["Choose"])
 	-- UIDropDownMenu_SetSelectedID(dropdown, 1)
 	-- UIDropDownMenu_SetText(dropdown, ddOptions[1].text)
 
@@ -199,13 +200,13 @@ function AddItem:CreateAddItemPanel()
         -- Pour lookup, seule la première zone est utilisée
         if selectedOption.text == "lookup item" or selectedOption.text == "lookup item id" or selectedOption.text == "lookup item set" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print(TrinityAdmin_Translations["Please fill in the required field."])
+                print(L["Please fill in the required field."])
                 return
             end
             args = { v1 }
         elseif selectedOption.text == "additem" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print(TrinityAdmin_Translations["The 'ID or Name' field is required."])
+                print(L["The 'ID or Name' field is required."])
                 return
             end
             table.insert(args, v1)
@@ -217,7 +218,7 @@ function AddItem:CreateAddItemPanel()
             end
         elseif selectedOption.text == "additem set" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print(TrinityAdmin_Translations["The 'ItemSet ID' field is required."])
+                print(L["The 'ItemSet ID' field is required."])
                 return
             end
             table.insert(args, v1)
@@ -282,7 +283,7 @@ function AddItem:CreateAddItemPanel()
     ------------------------------------------------------------
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
-    advancedLabel:SetText(TrinityAdmin_Translations["Item Set Easy Add"])
+    advancedLabel:SetText(L["Item Set Easy Add"])
 
     ------------------------------------------------------------
     -- Champ de saisie pour filtrer la liste
@@ -290,7 +291,7 @@ function AddItem:CreateAddItemPanel()
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
     filterEditBox:SetSize(150, 22)
     filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
-    filterEditBox:SetText(TrinityAdmin_Translations["Search..."])
+    filterEditBox:SetText(L["Search..."])
 
     ------------------------------------------------------------
     -- ScrollFrame + scrollChild
@@ -310,12 +311,12 @@ function AddItem:CreateAddItemPanel()
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText(TrinityAdmin_Translations["Preview"])
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText(TrinityAdmin_Translations["Next"])
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -368,7 +369,7 @@ function AddItem:CreateAddItemPanel()
 		
 			-- Tronquer le texte s'il est trop long
 			-- local fullText = option.name or ("Item "..i)
-			local fullText = TrinityAdmin_Translations[option.name] or option.name or ("Item "..i) -- Modification pour traduction
+			local fullText = L[option.name] or option.name or ("Item "..i) -- Modification pour traduction
 			local truncatedText = fullText
 			if #fullText > maxTextLength then
 				truncatedText = fullText:sub(1, maxTextLength) .. "..."
@@ -452,7 +453,7 @@ function AddItem:CreateAddItemPanel()
 	
 		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
 		if #searchText < 3 then
-			print(TrinityAdmin_Translations["Please enter at least 3 characters for the search."])
+			print(L["Please enter at least 3 characters for the search."])
 			return
 		end
 	
@@ -478,7 +479,7 @@ function AddItem:CreateAddItemPanel()
 			if not scrollChild.noResultText then
 				scrollChild.noResultText = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 				scrollChild.noResultText:SetPoint("TOP", scrollChild, "TOP", 0, -10)
-				scrollChild.noResultText:SetText("|cffff0000" .. TrinityAdmin_Translations["Nothing found"] .. "|r") -- Texte en rouge
+				scrollChild.noResultText:SetText("|cffff0000" .. L["Nothing found"] .. "|r") -- Texte en rouge
 			end
 			scrollChild.noResultText:Show()
 	
@@ -502,7 +503,7 @@ function AddItem:CreateAddItemPanel()
 	------------------------------------------------------------
 	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 	btnReset:SetSize(80, 22)
-	btnReset:SetText(TrinityAdmin_Translations["Reset"])
+	btnReset:SetText(L["Reset"])
 	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnClick", function()
 		filterEditBox:SetText("")  -- Efface le champ de recherche

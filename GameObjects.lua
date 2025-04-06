@@ -1,4 +1,5 @@
 local GameObjects = TrinityAdmin:GetModule("GameObjects")
+local L = _G.L
 
 -- Fonction pour afficher le panneau GameObjects
 function GameObjects:ShowGameObjectsPanel()
@@ -22,7 +23,7 @@ function GameObjects:CreateGameObjectsPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("GameObjects Panel")  -- Vous pouvez utiliser TrinityAdmin_Translations si nécessaire
+    panel.title:SetText("GameObjects Panel")  -- Vous pouvez utiliser L si nécessaire
 
     -- Section: Game Objects Tools
 local toolsTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")

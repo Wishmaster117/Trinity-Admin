@@ -1,4 +1,5 @@
 local module = TrinityAdmin:GetModule("GMFunctionsPanel")
+local L = _G.L
 
 local gpsFrame
 local mapEdit, zoneEdit, areaEdit, xEdit, yEdit, zEdit, oEdit, GridEdit, CellEdit, InstanceIDEdit
@@ -575,7 +576,7 @@ function module:CreateGMFunctionsPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText(TrinityAdmin_Translations["GM Functions Panel"] or "GM Functions Panel")
+    panel.title:SetText(L["GM Functions Panel"] or "GM Functions Panel")
 
     ----------------------------------------------------------------------------
     -- Création du conteneur de contenu pour la pagination
@@ -711,7 +712,7 @@ end
             appearEdit:SetText("Character Name")
             appearEdit:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(TrinityAdmin_Translations["Tele_to_Player"], 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["Tele_to_Player"], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             appearEdit:SetScript("OnLeave", function()
@@ -873,7 +874,7 @@ end
 			reasonEdit:SetText("")
 			reasonEdit:SetScript("OnEnter", function(self)
 				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-				GameTooltip:SetText(TrinityAdmin_Translations["Mute reason (required)"], 1, 1, 1, 1, true)
+				GameTooltip:SetText(L["Mute reason (required)"], 1, 1, 1, 1, true)
 				GameTooltip:Show()
 			end)
 			reasonEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -912,15 +913,15 @@ end
 				if option.text == "mute" then
 					-- .mute PlayerName Time Reason
 					if (not inputPlayerName or inputPlayerName == "") then
-						print(TrinityAdmin_Translations["Please enter a Player NAme or Select a Player"])
+						print(L["Please enter a Player NAme or Select a Player"])
 						return
 					end
 					if (not inputTime or inputTime == "") then
-						print(TrinityAdmin_Translations["Please, enter time in minuts."])
+						print(L["Please, enter time in minuts."])
 						return
 					end
 					if (not inputReason or inputReason == "") then
-						print(TrinityAdmin_Translations["Please enter a reason for the mute."])
+						print(L["Please enter a reason for the mute."])
 						return
 					end
 		
@@ -930,7 +931,7 @@ end
 				elseif option.text == "unmute" then
 					-- .unmute PlayerName
 					if (not inputPlayerName or inputPlayerName == "") then
-						print(TrinityAdmin_Translations["Please enter a Player NAme or Select a Player"])
+						print(L["Please enter a Player NAme or Select a Player"])
 						return
 					end
 					finalCommand = cmd .. " " .. inputPlayerName
@@ -938,7 +939,7 @@ end
 				elseif option.text == "mutehistory" then
 					-- .mutehistory PlayerName
 					if (not inputPlayerName or inputPlayerName == "") then
-						print(TrinityAdmin_Translations["Please enter a Player NAme or Select a Player"])
+						print(L["Please enter a Player NAme or Select a Player"])
 						return
 					end
 					finalCommand = cmd .. " " .. inputPlayerName
@@ -1022,7 +1023,7 @@ end
             btnAnnounce:SetScript("OnClick", function()
                 local text = announceEdit:GetText()
                 if not text or text == "" or text == "Message" then
-                    print(TrinityAdmin_Translations["Error : Please enter a message."])
+                    print(L["Error : Please enter a message."])
                 else
                     SendChatMessage('.announce "' .. text .. '"', "SAY")
                 end
@@ -1048,7 +1049,7 @@ end
             btnGmMessage:SetScript("OnClick", function()
                 local text = gmMessageEdit:GetText()
                 if not text or text == "" or text == "GM Message" then
-                    print(TrinityAdmin_Translations["Error : Please enter a message."])
+                    print(L["Error : Please enter a message."])
                 else
                     SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
                 end
@@ -1074,14 +1075,14 @@ end
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
                 if not text or text == "" or text == "GM Notification" then
-                    print(TrinityAdmin_Translations["Error : Please enter a message."])
+                    print(L["Error : Please enter a message."])
                 else
                     SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
                 end
             end)
             btnGmNotify:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(TrinityAdmin_Translations["Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."], 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["Syntax: .gmnotify $notification\r\nDisplays a notification on the screen of all online GM's."], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1100,14 +1101,14 @@ end
             btnGmAnnounce:SetScript("OnClick", function()
                 local text = gmAnnounceEdit:GetText()
                 if not text or text == "" or text == "GM Announcement" then
-                    print(TrinityAdmin_Translations["Error : Please enter a message for nameannounce."])
+                    print(L["Error : Please enter a message for nameannounce."])
                 else
                     SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
                 end
             end)
             btnGmAnnounce:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(TrinityAdmin_Translations["Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."], 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["Syntax: .nameannounce $announcement.\nSend an announcement to all online players, displaying the name of the sender."], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnGmAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1127,7 +1128,7 @@ end
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
                 if not text or text == "" or text == "GM Notify" then
-                    print(TrinityAdmin_Translations["Error : Please enter a message to Notify."])
+                    print(L["Error : Please enter a message to Notify."])
                 else
                     SendChatMessage('.notify "' .. text .. '"', "SAY")
                 end
@@ -1182,7 +1183,7 @@ end
 			btn:SetScript("OnClick", function(self)
 				displayButton.selectedSkill = SkillsData[self.index]
 				--displayButton:SetText(SkillsData[self.index].name)
-				displayButton:SetText(TrinityAdmin_Translations[SkillsData[self.index].name] or SkillsData[self.index].name)
+				displayButton:SetText(L[SkillsData[self.index].name] or SkillsData[self.index].name)
 				customDropdown:Hide()
 			end)
 			buttons[i] = btn
@@ -1196,7 +1197,7 @@ end
 				if index <= #SkillsData then
 					local skill = SkillsData[index]
 					-- buttons[i]:SetText(skill.name)
-					buttons[i]:SetText(TrinityAdmin_Translations[skill.name] or skill.name)
+					buttons[i]:SetText(L[skill.name] or skill.name)
 					buttons[i].index = index
 					buttons[i]:Show()
 				else
@@ -1246,12 +1247,12 @@ end
 		btnSetSkill:SetScript("OnClick", function()
 			local selectedSkill = displayButton.selectedSkill
 			if not selectedSkill then
-				print(TrinityAdmin_Translations["Error : Please select a skill."])
+				print(L["Error : Please select a skill."])
 				return
 			end
 			local level = levelEdit:GetText()
 			if not level or level == "" or level == "Level" then
-				print(TrinityAdmin_Translations["Error : Please enter a value for Level."])
+				print(L["Error : Please enter a value for Level."])
 				return
 			end
 			local command = ".setskill " .. selectedSkill.entry .. " " .. level
@@ -1263,7 +1264,7 @@ end
 		end)
 		btnSetSkill:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-			GameTooltip:SetText(TrinityAdmin_Translations["Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."], 1, 1, 1, 1, true)
+			GameTooltip:SetText(L["Syntax: .setskill #skill #level [#max]\r\n\r\nSet a skill of id #skill with a current skill value of #level and a maximum value of #max (or equal current maximum if not provided) for the selected character. If no character is selected, you learn the skill."], 1, 1, 1, 1, true)
 			GameTooltip:Show()
 		end)
 		btnSetSkill:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1904,7 +1905,7 @@ end
     ----------------------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"] or "Back")
+    btnBack:SetText(L["Back"] or "Back")
     btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
     btnBack:SetScript("OnClick", function()
         panel:Hide()

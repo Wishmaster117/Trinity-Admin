@@ -1,4 +1,5 @@
 local GMModule = TrinityAdmin:GetModule("GMPanel")
+local L = _G.L
 
 function GMModule:ShowGMPanel()
     TrinityAdmin:HideMainMenu()
@@ -20,7 +21,7 @@ function GMModule:CreateGMPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText(TrinityAdmin_Translations["GM Functions Panel"])
+    panel.title:SetText(L["GM Functions Panel"])
 
     -- Champ de saisie
     local modifyInput = CreateFrame("EditBox", "TrinityAdminModifyInput", panel, "InputBoxTemplate")
@@ -87,52 +88,52 @@ function GMModule:CreateGMPanel()
     }
 
     local displayNames = {
-        Choose = TrinityAdmin_Translations["Choose"] or "Choose",
-        Speed = TrinityAdmin_Translations["Speed"],
-        Money = TrinityAdmin_Translations["Money"],
-        Hp = TrinityAdmin_Translations["Hp"],
-        Xp = TrinityAdmin_Translations["Xp"],
-        Scale = TrinityAdmin_Translations["Scale"],
-        Currency = TrinityAdmin_Translations["Currency"],
-        Faction = TrinityAdmin_Translations["Faction"],
-        Gender = TrinityAdmin_Translations["Gender"],
-        honor = TrinityAdmin_Translations["honor"],
-        energy = TrinityAdmin_Translations["energy"],
-        drunk = TrinityAdmin_Translations["drunk"],
-        mana = TrinityAdmin_Translations["mana"],
-        mount = TrinityAdmin_Translations["mount"],
-        phase = TrinityAdmin_Translations["phase"],
-        power = TrinityAdmin_Translations["power"],
-        rage = TrinityAdmin_Translations["rage"],
-        reputation = TrinityAdmin_Translations["reputation"],
-        runicpower = TrinityAdmin_Translations["runicpower"],
-        spell = TrinityAdmin_Translations["spell"],
-        standstate = TrinityAdmin_Translations["standstate"],
-        talentpoints = TrinityAdmin_Translations["talentpoints"]
+        Choose = L["Choose"] or "Choose",
+        Speed = L["Speed"],
+        Money = L["Money"],
+        Hp = L["Hp"],
+        Xp = L["Xp"],
+        Scale = L["Scale"],
+        Currency = L["Currency"],
+        Faction = L["Faction"],
+        Gender = L["Gender"],
+        honor = L["honor"],
+        energy = L["energy"],
+        drunk = L["drunk"],
+        mana = L["mana"],
+        mount = L["mount"],
+        phase = L["phase"],
+        power = L["power"],
+        rage = L["rage"],
+        reputation = L["reputation"],
+        runicpower = L["runicpower"],
+        spell = L["spell"],
+        standstate = L["standstate"],
+        talentpoints = L["talentpoints"]
     }
 
     local tooltipTexts = {
-        Speed = TrinityAdmin_Translations["Modify_Speed"],
-        Money = TrinityAdmin_Translations["Modify_Money"],
-        Hp = TrinityAdmin_Translations["Modify_HP"],
-        Xp = TrinityAdmin_Translations["Modify_XP"],
-        Scale = TrinityAdmin_Translations["Modify_Scale"],
-        Currency = TrinityAdmin_Translations["Add_Money"],
-        Faction = TrinityAdmin_Translations["Modify_Faction"],
-        Gender = TrinityAdmin_Translations["Modify_Gender"],
-        honor = TrinityAdmin_Translations["Modify_honor"],
-        energy = TrinityAdmin_Translations["Modify_energy"],
-        drunk = TrinityAdmin_Translations["Modify_drunk"],
-        mana = TrinityAdmin_Translations["Modify_mana"],
-        mount = TrinityAdmin_Translations["Modify_mount"],
-        phase = TrinityAdmin_Translations["Modify_phase"],
-        power = TrinityAdmin_Translations["Modify_power"],
-        rage = TrinityAdmin_Translations["Modify_rage"],
-        reputation = TrinityAdmin_Translations["Modify_reputation"],
-        runicpower = TrinityAdmin_Translations["Modify_runicpower"],
-        spell = TrinityAdmin_Translations["Modify_spell"],
-        standstate = TrinityAdmin_Translations["Modify_standstate"],
-        talentpoints = TrinityAdmin_Translations["Modify_talentpoints"]
+        Speed = L["Modify_Speed"],
+        Money = L["Modify_Money"],
+        Hp = L["Modify_HP"],
+        Xp = L["Modify_XP"],
+        Scale = L["Modify_Scale"],
+        Currency = L["Add_Money"],
+        Faction = L["Modify_Faction"],
+        Gender = L["Modify_Gender"],
+        honor = L["Modify_honor"],
+        energy = L["Modify_energy"],
+        drunk = L["Modify_drunk"],
+        mana = L["Modify_mana"],
+        mount = L["Modify_mount"],
+        phase = L["Modify_phase"],
+        power = L["Modify_power"],
+        rage = L["Modify_rage"],
+        reputation = L["Modify_reputation"],
+        runicpower = L["Modify_runicpower"],
+        spell = L["Modify_spell"],
+        standstate = L["Modify_standstate"],
+        talentpoints = L["Modify_talentpoints"]
     }
 
     -- Déclaration anticipée du bouton "Set"
@@ -192,7 +193,7 @@ function GMModule:CreateGMPanel()
     btnSet:SetScript("OnClick", function()
         local value = modifyInput:GetText()
         if value == "" or value == "Enter Value" or value == "Choose" then
-            print(TrinityAdmin_Translations["Enter_Valid_Value"])
+            print(L["Enter_Valid_Value"])
             return
         end
 
@@ -202,7 +203,7 @@ function GMModule:CreateGMPanel()
         if func == "Currency" then
             local id, amount = string.match(value, "(%S+)%s+(%S+)")
             if not id or not amount then
-                print(TrinityAdmin_Translations["Enter_Valid_Currency"])
+                print(L["Enter_Valid_Currency"])
                 return
             end
             command = ".modify currency " .. id .. " " .. amount
@@ -224,7 +225,7 @@ function GMModule:CreateGMPanel()
     -- Bouton Back
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetText(L["Back"])
     btnBack:SetHeight(22)
     btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()

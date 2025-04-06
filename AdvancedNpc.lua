@@ -1,4 +1,5 @@
 local AdvancedNpc = TrinityAdmin:GetModule("AdvancedNpc")
+local L = _G.L
 
 NPCData = {} -- Table globale qui contiendra toutes les entrées
 

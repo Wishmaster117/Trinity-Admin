@@ -1,4 +1,5 @@
 local AccountModule = TrinityAdmin:GetModule("AccountPanel")
+local L = _G.L
 
 function AccountModule:ShowAccountPanel()
     TrinityAdmin:HideMainMenu()
@@ -21,7 +22,7 @@ function AccountModule:CreateAccountPanel()
 
     account.title = account:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     account.title:SetPoint("TOPLEFT", 10, -10)
-    account.title:SetText(TrinityAdmin_Translations["Account_Panel"])
+    account.title:SetText(L["Account_Panel"])
 
     ------------------------------------------------------------------------------
     -- Système de pages
@@ -52,7 +53,7 @@ function AccountModule:CreateAccountPanel()
 
     local btnPrev = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText(TrinityAdmin_Translations["Preview"])
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", account, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -63,7 +64,7 @@ function AccountModule:CreateAccountPanel()
 
     local btnNext = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText(TrinityAdmin_Translations["Next"])
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", account, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -90,28 +91,28 @@ function AccountModule:CreateAccountPanel()
 	
     local page1Title = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     page1Title:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, NextPosition1(10))
-    page1Title:SetText(TrinityAdmin_Translations["Account Creation"])
+    page1Title:SetText(L["Account Creation"])
 
     -- Création de l'étiquette "Création de comptes"
     -- local creationLabel = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     -- creationLabel:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, NextPosition1(20))
-    -- creationLabel:SetText(TrinityAdmin_Translations["Account Creation"])
+    -- creationLabel:SetText(L["Account Creation"])
 
     -- EditBox pour l'Account
     local accountEditBox = CreateFrame("EditBox", "TrinityAdminAccountEditBox", commandsFramePage1, "InputBoxTemplate")
     accountEditBox:SetSize(200, 22)
     accountEditBox:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, NextPosition1(20))
     accountEditBox:SetAutoFocus(false)
-    accountEditBox:SetText(TrinityAdmin_Translations["Username"])
+    accountEditBox:SetText(L["Username"])
     accountEditBox:SetScript("OnEditFocusGained", function(self)
-        if self:GetText() == TrinityAdmin_Translations["Username"] then self:SetText("") end
+        if self:GetText() == L["Username"] then self:SetText("") end
     end)
     accountEditBox:SetScript("OnEditFocusLost", function(self)
-        if self:GetText() == "" then self:SetText(TrinityAdmin_Translations["Username"]) end
+        if self:GetText() == "" then self:SetText(L["Username"]) end
     end)
     accountEditBox:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(TrinityAdmin_Translations["Account_Format_Tooltip"], 1, 1, 1)
+        GameTooltip:SetText(L["Account_Format_Tooltip"], 1, 1, 1)
         GameTooltip:Show()
     end)
     accountEditBox:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
@@ -121,17 +122,17 @@ function AccountModule:CreateAccountPanel()
     passwordEditBox:SetSize(200, 22)
     passwordEditBox:SetPoint("TOPLEFT", accountEditBox, "BOTTOMLEFT", 0, -5)
     passwordEditBox:SetAutoFocus(false)
-    passwordEditBox:SetText(TrinityAdmin_Translations["Password"])
+    passwordEditBox:SetText(L["Password"])
     passwordEditBox:SetPassword(true)
     passwordEditBox:SetScript("OnEditFocusGained", function(self)
-        if self:GetText() == TrinityAdmin_Translations["Password"] then self:SetText("") end
+        if self:GetText() == L["Password"] then self:SetText("") end
     end)
     passwordEditBox:SetScript("OnEditFocusLost", function(self)
-        if self:GetText() == "" then self:SetText(TrinityAdmin_Translations["Password"]) end
+        if self:GetText() == "" then self:SetText(L["Password"]) end
     end)
     passwordEditBox:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(TrinityAdmin_Translations["Account_Password_Tooltip"], 1, 1, 1)
+        GameTooltip:SetText(L["Account_Password_Tooltip"], 1, 1, 1)
         GameTooltip:Show()
     end)
     passwordEditBox:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
@@ -139,15 +140,15 @@ function AccountModule:CreateAccountPanel()
     -- Bouton "Create"
     local btnCreate = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
     btnCreate:SetPoint("TOPLEFT", passwordEditBox, "BOTTOMLEFT", 0, -5)
-    btnCreate:SetText(TrinityAdmin_Translations["Create"])
+    btnCreate:SetText(L["Create"])
     btnCreate:SetHeight(22)
     btnCreate:SetWidth(btnCreate:GetTextWidth() + 20)
     btnCreate:SetScript("OnClick", function()
         local accountValue = accountEditBox:GetText()
         local passwordValue = passwordEditBox:GetText()
-        if accountValue == "" or accountValue == TrinityAdmin_Translations["Username"] or
-           passwordValue == "" or passwordValue == TrinityAdmin_Translations["Password"] then
-            print(TrinityAdmin_Translations["Please enter both account and password."])
+        if accountValue == "" or accountValue == L["Username"] or
+           passwordValue == "" or passwordValue == L["Password"] then
+            print(L["Please enter both account and password."])
             return
         end
         local command = ".bnetaccount create \"" .. accountValue .. "\" \"" .. passwordValue .. "\""
@@ -157,7 +158,7 @@ function AccountModule:CreateAccountPanel()
     -- Section "Infos Ban"
     local banInfoLabel = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     banInfoLabel:SetPoint("TOPLEFT", page1Title, "TOPRIGHT", 140, 0)
-    banInfoLabel:SetText(TrinityAdmin_Translations["Infos_Ban"])
+    banInfoLabel:SetText(L["Infos_Ban"])
 
     local banInfoInput = CreateFrame("EditBox", "TrinityAdminBanInfoInput", commandsFramePage1, "InputBoxTemplate")
     banInfoInput:SetSize(150, 22)
@@ -166,12 +167,12 @@ function AccountModule:CreateAccountPanel()
     banInfoInput:SetText("")
 
 	local banInfoOptions = {
-		{ value = ".baninfo account", text = "baninfo account", tooltip = TrinityAdmin_Translations["Baninfo_Account"], needsInput = true },
-		{ value = ".baninfo character", text = "baninfo character", tooltip = TrinityAdmin_Translations["Baninfo_Character"], needsInput = true },
-		{ value = ".baninfo ip", text = "baninfo ip", tooltip = TrinityAdmin_Translations["Baninfo_IP"], needsInput = true },
-		{ value = ".banlist account", text = "banlist account", tooltip = TrinityAdmin_Translations["Banlist_Account"], needsInput = false },
-		{ value = ".banlist character", text = "banlist character", tooltip = TrinityAdmin_Translations["Banlist_Character"], needsInput = true },
-		{ value = ".banlist ip", text = "banlist ip", tooltip = TrinityAdmin_Translations["Banlist_IP"], needsInput = true },
+		{ value = ".baninfo account", text = "baninfo account", tooltip = L["Baninfo_Account"], needsInput = true },
+		{ value = ".baninfo character", text = "baninfo character", tooltip = L["Baninfo_Character"], needsInput = true },
+		{ value = ".baninfo ip", text = "baninfo ip", tooltip = L["Baninfo_IP"], needsInput = true },
+		{ value = ".banlist account", text = "banlist account", tooltip = L["Banlist_Account"], needsInput = false },
+		{ value = ".banlist character", text = "banlist character", tooltip = L["Banlist_Character"], needsInput = true },
+		{ value = ".banlist ip", text = "banlist ip", tooltip = L["Banlist_IP"], needsInput = true },
 	}
 	
 	local banInfoDropdown = CreateFrame("Frame", "TrinityAdminBanInfoDropdown", commandsFramePage1, "UIDropDownMenuTemplate")
@@ -214,7 +215,7 @@ function AccountModule:CreateAccountPanel()
 
     local btnGetBanInfo = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
     btnGetBanInfo:SetPoint("LEFT", banInfoDropdown, "RIGHT", 115, 2)
-    btnGetBanInfo:SetText(TrinityAdmin_Translations["Get"])
+    btnGetBanInfo:SetText(L["Get"])
     btnGetBanInfo:SetHeight(22)
     btnGetBanInfo:SetWidth(btnGetBanInfo:GetTextWidth() + 20)
     btnGetBanInfo:SetScript("OnClick", function()
@@ -244,22 +245,22 @@ function AccountModule:CreateAccountPanel()
 
     local banLabel = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     banLabel:SetPoint("TOPLEFT", btnCreate, "BOTTOMLEFT", 0, -20)
-    banLabel:SetText(TrinityAdmin_Translations["Ban Account"])
+    banLabel:SetText(L["Ban Account"])
 
     local banNameEditBox = CreateFrame("EditBox", "TrinityAdminBanNameEditBox", commandsFramePage1, "InputBoxTemplate")
     banNameEditBox:SetSize(150, 22)
     banNameEditBox:SetPoint("TOPLEFT", banLabel, "BOTTOMLEFT", 0, -10)
     banNameEditBox:SetAutoFocus(false)
-    banNameEditBox:SetText(TrinityAdmin_Translations["Name"])
+    banNameEditBox:SetText(L["Name"])
     banNameEditBox:SetScript("OnEditFocusGained", function(self)
-        if self:GetText() == TrinityAdmin_Translations["Name"] then self:SetText("") end
+        if self:GetText() == L["Name"] then self:SetText("") end
     end)
     banNameEditBox:SetScript("OnEditFocusLost", function(self)
-        if self:GetText() == "" then self:SetText(TrinityAdmin_Translations["Name"]) end
+        if self:GetText() == "" then self:SetText(L["Name"]) end
     end)
     banNameEditBox:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(TrinityAdmin_Translations["Name Tooltip"], 1, 1, 1)
+        GameTooltip:SetText(L["Name Tooltip"], 1, 1, 1)
         GameTooltip:Show()
     end)
     banNameEditBox:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
@@ -268,16 +269,16 @@ function AccountModule:CreateAccountPanel()
     banTimeEditBox:SetSize(150, 22)
     banTimeEditBox:SetPoint("TOPLEFT", banNameEditBox, "BOTTOMLEFT", 0, -5)
     banTimeEditBox:SetAutoFocus(false)
-    banTimeEditBox:SetText(TrinityAdmin_Translations["Bantime"])
+    banTimeEditBox:SetText(L["Bantime"])
     banTimeEditBox:SetScript("OnEditFocusGained", function(self)
-        if self:GetText() == TrinityAdmin_Translations["Bantime"] then self:SetText("") end
+        if self:GetText() == L["Bantime"] then self:SetText("") end
     end)
     banTimeEditBox:SetScript("OnEditFocusLost", function(self)
-        if self:GetText() == "" then self:SetText(TrinityAdmin_Translations["Bantime"]) end
+        if self:GetText() == "" then self:SetText(L["Bantime"]) end
     end)
     banTimeEditBox:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(TrinityAdmin_Translations["Bantime Tooltip"], 1, 1, 1)
+        GameTooltip:SetText(L["Bantime Tooltip"], 1, 1, 1)
         GameTooltip:Show()
     end)
     banTimeEditBox:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
@@ -286,12 +287,12 @@ function AccountModule:CreateAccountPanel()
     banReasonEditBox:SetSize(150, 22)
     banReasonEditBox:SetPoint("TOPLEFT", banTimeEditBox, "BOTTOMLEFT", 0, -5)
     banReasonEditBox:SetAutoFocus(false)
-    banReasonEditBox:SetText(TrinityAdmin_Translations["Reason"])
+    banReasonEditBox:SetText(L["Reason"])
     banReasonEditBox:SetScript("OnEditFocusGained", function(self)
-        if self:GetText() == TrinityAdmin_Translations["Reason"] then self:SetText("") end
+        if self:GetText() == L["Reason"] then self:SetText("") end
     end)
     banReasonEditBox:SetScript("OnEditFocusLost", function(self)
-        if self:GetText() == "" then self:SetText(TrinityAdmin_Translations["Reason"]) end
+        if self:GetText() == "" then self:SetText(L["Reason"]) end
     end)
 
     local banType = "account"
@@ -306,74 +307,74 @@ function AccountModule:CreateAccountPanel()
 
     radioBanAccount = CreateFrame("CheckButton", "TrinityAdminBanAccountRadio", commandsFramePage1, "UICheckButtonTemplate")
     radioBanAccount:SetPoint("LEFT", banNameEditBox, "RIGHT", 10, 0)
-    _G[radioBanAccount:GetName().."Text"]:SetText(TrinityAdmin_Translations["Ban Account"] or "Ban Account")
+    _G[radioBanAccount:GetName().."Text"]:SetText(L["Ban Account"] or "Ban Account")
     radioBanAccount:SetChecked(true)
     radioBanAccount:SetScript("OnClick", function(self)
         UncheckAllRadios()
         self:SetChecked(true)
         banType = "account"
-        banNameEditBox:SetText(TrinityAdmin_Translations["Name_Account"] or "Compte / Nom / IP")
+        banNameEditBox:SetText(L["Name_Account"] or "Compte / Nom / IP")
     end)
 
     radioBanCharacter = CreateFrame("CheckButton", "TrinityAdminBanCharacterRadio", commandsFramePage1, "UICheckButtonTemplate")
     radioBanCharacter:SetPoint("TOPLEFT", radioBanAccount, "BOTTOMLEFT", 0, -5)
-    _G[radioBanCharacter:GetName().."Text"]:SetText(TrinityAdmin_Translations["Ban Character"] or "Ban Character")
+    _G[radioBanCharacter:GetName().."Text"]:SetText(L["Ban Character"] or "Ban Character")
     radioBanCharacter:SetScript("OnClick", function(self)
         UncheckAllRadios()
         self:SetChecked(true)
         banType = "character"
-        banNameEditBox:SetText(TrinityAdmin_Translations["Character"] or "Character")
+        banNameEditBox:SetText(L["Character"] or "Character")
     end)
 
     radioBanIP = CreateFrame("CheckButton", "TrinityAdminBanIPRadio", commandsFramePage1, "UICheckButtonTemplate")
     radioBanIP:SetPoint("TOPLEFT", radioBanCharacter, "BOTTOMLEFT", 0, -5)
-    _G[radioBanIP:GetName().."Text"]:SetText(TrinityAdmin_Translations["Ban IP"] or "Ban IP")
+    _G[radioBanIP:GetName().."Text"]:SetText(L["Ban IP"] or "Ban IP")
     radioBanIP:SetScript("OnClick", function(self)
         UncheckAllRadios()
         self:SetChecked(true)
         banType = "ip"
-        banNameEditBox:SetText(TrinityAdmin_Translations["IP"] or "IP")
+        banNameEditBox:SetText(L["IP"] or "IP")
     end)
 
     radioBanPlayerAccount = CreateFrame("CheckButton", "TrinityAdminBanPlayerAccountRadio", commandsFramePage1, "UICheckButtonTemplate")
     radioBanPlayerAccount:SetPoint("TOPLEFT", radioBanIP, "BOTTOMLEFT", 0, -5)
-    _G[radioBanPlayerAccount:GetName().."Text"]:SetText(TrinityAdmin_Translations["Ban PlayerAccount"] or "Ban PlayerAccount")
+    _G[radioBanPlayerAccount:GetName().."Text"]:SetText(L["Ban PlayerAccount"] or "Ban PlayerAccount")
     radioBanPlayerAccount:SetScript("OnClick", function(self)
         UncheckAllRadios()
         self:SetChecked(true)
         banType = "playeraccount"
-        banNameEditBox:SetText(TrinityAdmin_Translations["PlayerAccount"] or "PlayerAccount")
+        banNameEditBox:SetText(L["PlayerAccount"] or "PlayerAccount")
     end)
 
     local btnBan = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
     btnBan:SetPoint("TOPLEFT", banReasonEditBox, "BOTTOMLEFT", 0, -10)
-    btnBan:SetText(TrinityAdmin_Translations["Ban"])
+    btnBan:SetText(L["Ban"])
     btnBan:SetHeight(22)
     btnBan:SetWidth(btnBan:GetTextWidth() + 20)
     btnBan:SetScript("OnClick", function()
         local nameValue = banNameEditBox:GetText()
         local timeValue = banTimeEditBox:GetText()
         local reasonValue = banReasonEditBox:GetText()
-        if nameValue == "" or nameValue == TrinityAdmin_Translations["Name"]
-           or timeValue == "" or timeValue == TrinityAdmin_Translations["Bantime"]
-           or reasonValue == "" or reasonValue == TrinityAdmin_Translations["Reason"] then
-            print(TrinityAdmin_Translations["Please enter name, bantime and reason."])
+        if nameValue == "" or nameValue == L["Name"]
+           or timeValue == "" or timeValue == L["Bantime"]
+           or reasonValue == "" or reasonValue == L["Reason"] then
+            print(L["Please enter name, bantime and reason."])
             print("Selected ban type: " .. banType)
             return
         end
         local command
         if banType == "account" then
             command = ".ban account " .. nameValue .. " " .. timeValue .. " " .. reasonValue
-            print(string.format(TrinityAdmin_Translations["Ban_Account_done"], nameValue, timeValue, reasonValue))
+            print(string.format(L["Ban_Account_done"], nameValue, timeValue, reasonValue))
         elseif banType == "character" then
             command = ".ban character " .. nameValue .. " " .. timeValue .. " " .. reasonValue
-            print(string.format(TrinityAdmin_Translations["Ban_Character_done"], nameValue, timeValue, reasonValue))
+            print(string.format(L["Ban_Character_done"], nameValue, timeValue, reasonValue))
         elseif banType == "ip" then
             command = ".ban ip " .. nameValue .. " " .. timeValue .. " " .. reasonValue
-            print(string.format(TrinityAdmin_Translations["Ban_IP_done"], nameValue, timeValue, reasonValue))
+            print(string.format(L["Ban_IP_done"], nameValue, timeValue, reasonValue))
         elseif banType == "playeraccount" then
             command = ".ban playeraccount " .. nameValue .. " " .. timeValue .. " " .. reasonValue
-            print(string.format(TrinityAdmin_Translations["Ban_PlayerAccount_done"], nameValue, timeValue, reasonValue))
+            print(string.format(L["Ban_PlayerAccount_done"], nameValue, timeValue, reasonValue))
         end
         print("Debug: Commande envoyée en SAY: " .. command)
         SendChatMessage(command, "SAY")
@@ -382,22 +383,22 @@ function AccountModule:CreateAccountPanel()
     -- Section "Bnet Account Manage"
     local bnetLabel = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     bnetLabel:SetPoint("TOPLEFT", banInfoInput, "BOTTOMLEFT", 0, -20)
-    bnetLabel:SetText(TrinityAdmin_Translations["Bnet Account Management"])
+    bnetLabel:SetText(L["Bnet Account Management"])
 
     local bnetDropdown = CreateFrame("Frame", "TrinityAdminBnetDropdown", commandsFramePage1, "UIDropDownMenuTemplate")
     bnetDropdown:SetPoint("LEFT", bnetLabel, "RIGHT", -20, -23)
     UIDropDownMenu_SetWidth(bnetDropdown, 180)
     UIDropDownMenu_SetButtonWidth(bnetDropdown, 240)
     local bnetOptions = {
-        { text = "bnetaccount gameaccountcreate", command = ".bnetaccount gameaccountcreate", tooltip = TrinityAdmin_Translations["bnetaccount gameaccountcreate"] },
-        { text = "bnetaccount link", command = ".bnetaccount link", tooltip = TrinityAdmin_Translations["bnetaccount link"] },
-        { text = "bnetaccount listgameaccounts", command = ".bnetaccount listgameaccounts", tooltip = TrinityAdmin_Translations["bnetaccount listgameaccounts"] },
-        { text = "bnetaccount lock country", command = ".bnetaccount lock country", tooltip = TrinityAdmin_Translations["bnetaccount lock country"] },
-        { text = "bnetaccount lock ip", command = ".bnetaccount lock ip", tooltip = TrinityAdmin_Translations["bnetaccount lock ip"] },
-        { text = "bnetaccount password", command = ".bnetaccount password", tooltip = TrinityAdmin_Translations["bnetaccount password"] },
-        { text = "bnetaccount set", command = ".bnetaccount set", tooltip = TrinityAdmin_Translations["bnetaccount set"] },
-        { text = "bnetaccount set password", command = ".bnetaccount set password", tooltip = TrinityAdmin_Translations["bnetaccount set password"] },
-        { text = "bnetaccount unlink", command = ".bnetaccount unlink", tooltip = TrinityAdmin_Translations["bnetaccount unlink"] },
+        { text = "bnetaccount gameaccountcreate", command = ".bnetaccount gameaccountcreate", tooltip = L["bnetaccount gameaccountcreate"] },
+        { text = "bnetaccount link", command = ".bnetaccount link", tooltip = L["bnetaccount link"] },
+        { text = "bnetaccount listgameaccounts", command = ".bnetaccount listgameaccounts", tooltip = L["bnetaccount listgameaccounts"] },
+        { text = "bnetaccount lock country", command = ".bnetaccount lock country", tooltip = L["bnetaccount lock country"] },
+        { text = "bnetaccount lock ip", command = ".bnetaccount lock ip", tooltip = L["bnetaccount lock ip"] },
+        { text = "bnetaccount password", command = ".bnetaccount password", tooltip = L["bnetaccount password"] },
+        { text = "bnetaccount set", command = ".bnetaccount set", tooltip = L["bnetaccount set"] },
+        { text = "bnetaccount set password", command = ".bnetaccount set password", tooltip = L["bnetaccount set password"] },
+        { text = "bnetaccount unlink", command = ".bnetaccount unlink", tooltip = L["bnetaccount unlink"] },
     }
     if not bnetDropdown.selectedID then bnetDropdown.selectedID = 1 end
     UIDropDownMenu_Initialize(bnetDropdown, function(dropdown, level, menuList)
@@ -424,7 +425,7 @@ function AccountModule:CreateAccountPanel()
     bnetEdit:SetSize(150, 22)
     bnetEdit:SetPoint("TOPLEFT", bnetLabel, "BOTTOMLEFT", 0, -5)
     bnetEdit:SetAutoFocus(false)
-    bnetEdit:SetText(TrinityAdmin_Translations["Enter Value"])
+    bnetEdit:SetText(L["Enter Value"])
     bnetEdit:SetScript("OnEnter", function(self)
         local opt = bnetDropdown.selectedOption or bnetOptions[1]
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -436,10 +437,10 @@ function AccountModule:CreateAccountPanel()
 
     local btnBnetGo = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
     btnBnetGo:SetSize(70, 22)
-    btnBnetGo:SetText(TrinityAdmin_Translations["Execute"])
+    btnBnetGo:SetText(L["Execute"])
     btnBnetGo:SetPoint("LEFT", bnetDropdown, "LEFT", -20, -30)
     btnBnetGo:SetScript("OnClick", function()
-	    local defauttextevalue = TrinityAdmin_Translations["Enter Value"]
+	    local defauttextevalue = L["Enter Value"]
         local inputValue = bnetEdit:GetText()
         local option = bnetDropdown.selectedOption
         local command = option.command
@@ -449,7 +450,7 @@ function AccountModule:CreateAccountPanel()
             if targetName then
                 finalCommand = command .. " " .. targetName
             else
-                print(TrinityAdmin_Translations["Please enter a value or select a player."])
+                print(L["Please enter a value or select a player."])
                 return
             end
         end
@@ -477,7 +478,7 @@ function AccountModule:CreateAccountPanel()
 
     local page2Title = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     page2Title:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, 0)
-    page2Title:SetText(TrinityAdmin_Translations["Unban Functions"])
+    page2Title:SetText(L["Unban Functions"])
 
     local function CreateUnbanInput(yOffset, defaultText, buttonText, tooltipText, commandPrefix)
     local editBox = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
@@ -503,25 +504,25 @@ function AccountModule:CreateAccountPanel()
         GameTooltip:Show()
     end)
     btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
-    local unbanchardefauttext = TrinityAdmin_Translations["Enter Character"]
-	local unbanipdefauttexte = TrinityAdmin_Translations["Enter IP"]
+    local unbanchardefauttext = L["Enter Character"]
+	local unbanipdefauttexte = L["Enter IP"]
     btn:SetScript("OnClick", function()
     local inputValue = editBox:GetText()
 
     if (inputValue == "" or inputValue == defaultText) and commandPrefix == ".unban account" then
-        print(TrinityAdmin_Translations["Please enter account name to deban.."])
+        print(L["Please enter account name to deban.."])
         return
 
     elseif (inputValue == "" or inputValue == unbanchardefauttext) and commandPrefix == ".unban character" then
-        print(TrinityAdmin_Translations["Please enter player name to Deban.."])
+        print(L["Please enter player name to Deban.."])
         return
 
     elseif (inputValue == "" or inputValue == unbanipdefauttexte) and commandPrefix == ".unban ip" then
-        print(TrinityAdmin_Translations["Please enter IP to Deban."])
+        print(L["Please enter IP to Deban."])
         return
 
     else 
-        print(TrinityAdmin_Translations["I give up!"])
+        print(L["I give up!"])
     end
 
     local cmd = commandPrefix .. " \"" .. inputValue .. "\""
@@ -530,20 +531,20 @@ end)
 	end
 
 	-- Unban Account
-	CreateUnbanInput(-30, TrinityAdmin_Translations["Enter Account"], TrinityAdmin_Translations["Unban Account"], TrinityAdmin_Translations["Syntax: .unban account $Name\nUnban accounts for account name pattern."], ".unban account")
+	CreateUnbanInput(-30, L["Enter Account"], L["Unban Account"], L["Syntax: .unban account $Name\nUnban accounts for account name pattern."], ".unban account")
 	
 	-- Unban Character
-	CreateUnbanInput(-60, TrinityAdmin_Translations["Enter Character"], TrinityAdmin_Translations["Unban Char"], TrinityAdmin_Translations["Syntax: .unban character $Name\nUnban accounts for character name pattern."], ".unban character")
+	CreateUnbanInput(-60, L["Enter Character"], L["Unban Char"], L["Syntax: .unban character $Name\nUnban accounts for character name pattern."], ".unban character")
 	
 	-- Unban IP
-	CreateUnbanInput(-90, TrinityAdmin_Translations["Enter IP"], TrinityAdmin_Translations["Unban IP"], TrinityAdmin_Translations["Syntax: .unban ip $Ip\nUnban accounts for IP pattern."], ".unban ip")
+	CreateUnbanInput(-90, L["Enter IP"], L["Unban IP"], L["Syntax: .unban ip $Ip\nUnban accounts for IP pattern."], ".unban ip")
 
     ------------------------------------------------------------------------------
     -- Bouton Back final (commun aux pages)
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("TOP", pageLabel, "CENTER", 0, 30)
-    btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
+    btnBackFinal:SetText(L["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
     btnBackFinal:SetScript("OnClick", function()

@@ -6,6 +6,7 @@ if not UnitIsNPC then
 end
 
 local NPCModule = TrinityAdmin:GetModule("NPCPanel")
+local L = _G.L
 
 -- -------------------------------------------------------------------------
 -- 1) ShowNPCPanel : Ouvre le panneau
@@ -236,12 +237,12 @@ function NPCModule:CreateNPCPanel()
 
     npc.title = npc:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     npc.title:SetPoint("TOPLEFT", 10, -10)
-    npc.title:SetText(TrinityAdmin_Translations["NPC_Panel"])
+    npc.title:SetText(L["NPC_Panel"])
 
     -- Bouton Retour (en bas)
     local btnBack = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", npc, "BOTTOM", 0, 10)
-    btnBack:SetText(TrinityAdmin_Translations["Back"])
+    btnBack:SetText(L["Back"])
     btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
     btnBack:SetScript("OnClick", function()
         npc:Hide()
@@ -305,24 +306,24 @@ function NPCModule:CreateNPCPanel()
     -- Données de base
     -------------------------------------------------------------------------
     local commands = {
-        { text = "npc add",            command = ".npc add",            tooltip = TrinityAdmin_Translations["NPC_Add_Tooltip"],        defaultText = "Enter Creature ID" },
-        { text = "npc delete",         command = ".npc delete",         tooltip = TrinityAdmin_Translations["NPC_Delete_Tooltip"],     defaultText = "Enter GUID" },
-        { text = "npc move",           command = ".npc move",           tooltip = TrinityAdmin_Translations["NPC_Move_Tooltip"],       defaultText = "Enter GUID" },
-        { text = "npc info",           command = ".npc info",           tooltip = TrinityAdmin_Translations["NPC_Info_Tooltip"],       defaultText = "Select a NPC" },
-        { text = "npc set model",      command = ".npc set model",      tooltip = TrinityAdmin_Translations["NPC_SetModel_Tooltip"],   defaultText = "Enter DisplayID" },
-        { text = "npc set flag",       command = ".npc set flag",       tooltip = TrinityAdmin_Translations["NPC_SetFlag_Tooltip"],    defaultText = "Enter Flag" },
-        { text = "npc set phase",      command = ".npc set phase",      tooltip = TrinityAdmin_Translations["NPC_SetPhase_Tooltip"],   defaultText = "Enter PhaseMask" },
-        { text = "npc set factionid",  command = ".npc set factionid",  tooltip = TrinityAdmin_Translations["NPC_SetFaction_Tooltip"], defaultText = "Enter Faction ID" },
-        { text = "npc set level",      command = ".npc set level",      tooltip = TrinityAdmin_Translations["NPC_SetLevel_Tooltip"],   defaultText = "Enter Level Number" },
-        { text = "npc delete item",    command = ".npc delete item",    tooltip = TrinityAdmin_Translations["NPC_DeleteItem_Tooltip"], defaultText = "Enter Item ID" },
-        { text = "npc add formation",  command = ".npc add formation",  tooltip = TrinityAdmin_Translations["NPC_AddFormation_Tooltip"], defaultText = "Enter Leader" },
-        { text = "npc set entry",      command = ".npc set entry",      tooltip = TrinityAdmin_Translations["NPC_SetEntry_Tooltip"],   defaultText = "Enter New Entry" },
-        { text = "npc set link",       command = ".npc set link",       tooltip = TrinityAdmin_Translations["NPC_SetLink_Tooltip"],    defaultText = "Enter Creature GUID" },
-        { text = "npc say",            command = ".npc say",            tooltip = TrinityAdmin_Translations["NPC_Say_Tooltip"],        defaultText = "Enter Message" },
-        { text = "npc playemote",      command = ".npc playemote",      tooltip = TrinityAdmin_Translations["NPC_PlayEmote_Tooltip"],  defaultText = "Enter Emote ID" },
-        { text = "npc follow",         command = ".npc follow",         tooltip = TrinityAdmin_Translations["NPC_Follow_Tooltip"],     defaultText = "Select Someone" },
-        { text = "npc follow stop",    command = ".npc follow stop",    tooltip = TrinityAdmin_Translations["NPC_FollowStop_Tooltip"], defaultText = "Select a NPC" },
-        { text = "npc set allowmove",  command = ".npc set allowmove",  tooltip = TrinityAdmin_Translations["NPC_SetAllowMove_Tooltip"], defaultText = "Select a NPC" },
+        { text = "npc add",            command = ".npc add",            tooltip = L["NPC_Add_Tooltip"],        defaultText = "Enter Creature ID" },
+        { text = "npc delete",         command = ".npc delete",         tooltip = L["NPC_Delete_Tooltip"],     defaultText = "Enter GUID" },
+        { text = "npc move",           command = ".npc move",           tooltip = L["NPC_Move_Tooltip"],       defaultText = "Enter GUID" },
+        { text = "npc info",           command = ".npc info",           tooltip = L["NPC_Info_Tooltip"],       defaultText = "Select a NPC" },
+        { text = "npc set model",      command = ".npc set model",      tooltip = L["NPC_SetModel_Tooltip"],   defaultText = "Enter DisplayID" },
+        { text = "npc set flag",       command = ".npc set flag",       tooltip = L["NPC_SetFlag_Tooltip"],    defaultText = "Enter Flag" },
+        { text = "npc set phase",      command = ".npc set phase",      tooltip = L["NPC_SetPhase_Tooltip"],   defaultText = "Enter PhaseMask" },
+        { text = "npc set factionid",  command = ".npc set factionid",  tooltip = L["NPC_SetFaction_Tooltip"], defaultText = "Enter Faction ID" },
+        { text = "npc set level",      command = ".npc set level",      tooltip = L["NPC_SetLevel_Tooltip"],   defaultText = "Enter Level Number" },
+        { text = "npc delete item",    command = ".npc delete item",    tooltip = L["NPC_DeleteItem_Tooltip"], defaultText = "Enter Item ID" },
+        { text = "npc add formation",  command = ".npc add formation",  tooltip = L["NPC_AddFormation_Tooltip"], defaultText = "Enter Leader" },
+        { text = "npc set entry",      command = ".npc set entry",      tooltip = L["NPC_SetEntry_Tooltip"],   defaultText = "Enter New Entry" },
+        { text = "npc set link",       command = ".npc set link",       tooltip = L["NPC_SetLink_Tooltip"],    defaultText = "Enter Creature GUID" },
+        { text = "npc say",            command = ".npc say",            tooltip = L["NPC_Say_Tooltip"],        defaultText = "Enter Message" },
+        { text = "npc playemote",      command = ".npc playemote",      tooltip = L["NPC_PlayEmote_Tooltip"],  defaultText = "Enter Emote ID" },
+        { text = "npc follow",         command = ".npc follow",         tooltip = L["NPC_Follow_Tooltip"],     defaultText = "Select Someone" },
+        { text = "npc follow stop",    command = ".npc follow stop",    tooltip = L["NPC_FollowStop_Tooltip"], defaultText = "Select a NPC" },
+        { text = "npc set allowmove",  command = ".npc set allowmove",  tooltip = L["NPC_SetAllowMove_Tooltip"], defaultText = "Select a NPC" },
     }
 
     local fullCommands = {

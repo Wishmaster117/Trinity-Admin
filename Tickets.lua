@@ -1,4 +1,5 @@
 local Tickets = TrinityAdmin:GetModule("Tickets")
+local L = _G.L
 
 -------------------------------------------------
 -- Fonction pour afficher le panneau Tickets
@@ -317,7 +318,7 @@ function Tickets:CreateTicketsPanel()
     ---------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("BOTTOM", panel, "BOTTOM", 0, 30)
-    btnBackFinal:SetText(TrinityAdmin_Translations["Back"])
+    btnBackFinal:SetText(L["Back"])
     btnBackFinal:SetHeight(22)
     btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
     btnBackFinal:SetScript("OnClick", function()
