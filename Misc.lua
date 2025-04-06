@@ -57,8 +57,8 @@ local AceGUI = LibStub("AceGUI-3.0")
 function ShowLookupAceGUI(lines)
     -- Crée la fenêtre
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("Lookup Info")
-    frame:SetStatusText("Information from .lookup")
+    frame:SetTitle(L["Lookup Info"])
+    frame:SetStatusText(L["Information from .lookup"])
     frame:SetLayout("Flow")
     frame:SetWidth(600)
     frame:SetHeight(500)
@@ -84,7 +84,8 @@ function ShowLookupAceGUI(lines)
     -- end
 	for i, line in ipairs(lines) do
         local edit = AceGUI:Create("EditBox")
-        edit:SetLabel("Line " .. i)
+        -- edit:SetLabel("Line " .. i)
+		edit:SetLabel(L["Line"] .. " " .. i)
         edit:SetText(line)
         edit:SetFullWidth(true)
         scroll:AddChild(edit)
@@ -92,7 +93,7 @@ function ShowLookupAceGUI(lines)
 
     -- Bouton de fermeture
     local btnClose = AceGUI:Create("Button")
-    btnClose:SetText("Fermer")
+    btnClose:SetText(L["Close"])
     btnClose:SetWidth(100)
     btnClose:SetCallback("OnClick", function() frame:Hide() end)
     frame:AddChild(btnClose)
@@ -118,77 +119,77 @@ end
 function Misc:AddManagementButtons(panel)
     local btnTitles = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnTitles:SetPoint("TOPLEFT", panel, "TOPLEFT", 100, -80)
-    btnTitles:SetText("Titles Management")
+    btnTitles:SetText(L["Titles Management"])
 	btnTitles:SetWidth(btnTitles:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	btnTitles:SetHeight(22)	
     btnTitles:SetScript("OnClick", function() self:OpenTitlesManagement() end)
     
     local btnResets = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnResets:SetPoint("LEFT", btnTitles, "RIGHT", 10, 0)
-    btnResets:SetText("Resets Management")
+    btnResets:SetText(L["Resets Management"])
 	btnResets:SetWidth(btnResets:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	btnResets:SetHeight(22)	
     btnResets:SetScript("OnClick", function() self:OpenResetsManagement() end)
     
     local btnArena = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnArena:SetPoint("LEFT", btnResets, "RIGHT", 10, 0)
-    btnArena:SetText("Arena Management")
+    btnArena:SetText(L["Arena Management"])
 	btnArena:SetWidth(btnArena:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	btnArena:SetHeight(22)	
     btnArena:SetScript("OnClick", function() self:OpenArenaManagement() end)
     
     local btnLookup = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnLookup:SetPoint("TOPLEFT", btnTitles, "BOTTOMLEFT", 0, -10)
-    btnLookup:SetText("Lookup Functions")
+    btnLookup:SetText(L["Lookup Functions"])
 	btnLookup:SetWidth(btnLookup:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	btnLookup:SetHeight(22)	
     btnLookup:SetScript("OnClick", function() self:OpenLookupFunctions() end)
     
     local btnGroups = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnGroups:SetPoint("LEFT", btnLookup, "RIGHT", 10, 0)
-    btnGroups:SetText("Groups Management")
+    btnGroups:SetText(L["Groups Management"])
 	btnGroups:SetWidth(btnGroups:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	btnGroups:SetHeight(22)	
     btnGroups:SetScript("OnClick", function() self:OpenGroupsManagement() end)
     
     local btnQuests = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnQuests:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
-    btnQuests:SetText("Quests Management")
+    btnQuests:SetText(L["Quests Management"])
 	btnQuests:SetWidth(btnQuests:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	btnQuests:SetHeight(22)	
     btnQuests:SetScript("OnClick", function() self:OpenQuestsManagement() end)
 	
 	local BattlefieldAndPvp = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     BattlefieldAndPvp:SetPoint("TOPLEFT", btnLookup, "BOTTOMLEFT", 0, -10)
-    BattlefieldAndPvp:SetText("Battlefield And Pvp")
+    BattlefieldAndPvp:SetText(L["Battlefield And Pvp"])
 	BattlefieldAndPvp:SetWidth(BattlefieldAndPvp:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	BattlefieldAndPvp:SetHeight(22)	
     BattlefieldAndPvp:SetScript("OnClick", function() self:OpenBattlefieldAndPvpManagement() end)
 	
 	local DunjonsFunc = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     DunjonsFunc:SetPoint("LEFT", BattlefieldAndPvp, "RIGHT", 10, 0)
-    DunjonsFunc:SetText("Dungeons Funcs")
+    DunjonsFunc:SetText(L["Dungeons Funcs"])
 	DunjonsFunc:SetWidth(DunjonsFunc:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	DunjonsFunc:SetHeight(22)		
     DunjonsFunc:SetScript("OnClick", function() self:OpenDunjonsFuncManagement() end)
 	
 	local LfgManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     LfgManage:SetPoint("LEFT", DunjonsFunc, "RIGHT", 10, 0)
-    LfgManage:SetText("LFG Management")
+    LfgManage:SetText(L["LFG Management"])
 	LfgManage:SetWidth(LfgManage:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	LfgManage:SetHeight(22)	
     LfgManage:SetScript("OnClick", function() self:OpenLfgManageManagement() end)
 	
 	local EventsManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     EventsManage:SetPoint("TOPLEFT", BattlefieldAndPvp, "BOTTOMLEFT", 0, -10)
-    EventsManage:SetText("Events Manager")
+    EventsManage:SetText(L["Events Manager"])
 	EventsManage:SetWidth(EventsManage:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	EventsManage:SetHeight(22)	
     EventsManage:SetScript("OnClick", function() self:OpenEventsManageManagement() end)
 	
 	local AurasList = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     AurasList:SetPoint("LEFT", EventsManage, "RIGHT", 10, 0)
-    AurasList:SetText("Auras and Lists Management")
+    AurasList:SetText(L["Auras and Lists Management"])
 	AurasList:SetWidth(AurasList:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
 	AurasList:SetHeight(22)
     AurasList:SetScript("OnClick", function() self:OpenAurasListManagement() end)
@@ -209,7 +210,7 @@ function Misc:CreateMiscPanel()
     
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Misc Functions")
+    panel.title:SetText(L["Misc Functions"])
     
     -- Ajoute les boutons de gestion
     self:AddManagementButtons(panel)
@@ -261,7 +262,7 @@ function Misc:OpenTitlesManagement()
 
         self.titlesPanel.title = self.titlesPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.titlesPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.titlesPanel.title:SetText("Titles Management")
+        self.titlesPanel.title:SetText(L["Titles Management"])
 
         ------------------------------------------------------------
         -- VARIABLES LOCALES POUR LA PAGINATION, CHECKBOXES, ETC.
@@ -280,7 +281,7 @@ function Misc:OpenTitlesManagement()
         filterEditBox = CreateFrame("EditBox", nil, self.titlesPanel, "InputBoxTemplate")
         filterEditBox:SetSize(150, 22)
         filterEditBox:SetPoint("TOPLEFT", self.titlesPanel, "TOPLEFT", 10, -40)
-        filterEditBox:SetText("Search...")
+        filterEditBox:SetText(L["Search..."])
         filterEditBox:SetAutoFocus(false)
         filterEditBox:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 
@@ -303,12 +304,12 @@ function Misc:OpenTitlesManagement()
 
         btnPrev = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnPrev:SetSize(80, 22)
-        btnPrev:SetText("Preview")
+        btnPrev:SetText(L["Preview"])
         btnPrev:SetPoint("RIGHT", btnPage, "LEFT", -5, 0)
 
         btnNext = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnNext:SetSize(80, 22)
-        btnNext:SetText("Next")
+        btnNext:SetText(L["Next"])
         btnNext:SetPoint("LEFT", btnPage, "RIGHT", 5, 0)
 
         ------------------------------------------------------------
@@ -324,30 +325,30 @@ function Misc:OpenTitlesManagement()
         chkAdd:SetPoint("TOPLEFT", optionsFrame, "TOPLEFT", 0, -10)
         chkAdd.text = chkAdd:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         chkAdd.text:SetPoint("LEFT", chkAdd, "RIGHT", 5, 0)
-        chkAdd.text:SetText("Add a Title")
+        chkAdd.text:SetText(L["Add a Title"])
 
         chkRemove = CreateFrame("CheckButton", nil, optionsFrame, "UICheckButtonTemplate")
         chkRemove:SetPoint("TOPLEFT", chkAdd, "BOTTOMLEFT", 0, -10)
         chkRemove.text = chkRemove:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         chkRemove.text:SetPoint("LEFT", chkRemove, "RIGHT", 5, 0)
-        chkRemove.text:SetText("Remove a Title")
+        chkRemove.text:SetText(L["Remove a Title"])
 
         chkCurrent = CreateFrame("CheckButton", nil, optionsFrame, "UICheckButtonTemplate")
         chkCurrent:SetPoint("TOPLEFT", chkRemove, "BOTTOMLEFT", 0, -10)
         chkCurrent.text = chkCurrent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         chkCurrent.text:SetPoint("LEFT", chkCurrent, "RIGHT", 5, 0)
-        chkCurrent.text:SetText("Set Title as Current")
+        chkCurrent.text:SetText(L["Set Title as Current"])
 
         -- EDItBOX & BOUTON "SET" : titles set mask
         editMask = CreateFrame("EditBox", nil, optionsFrame, "InputBoxTemplate")
         editMask:SetSize(100, 22)
         editMask:SetPoint("TOPLEFT", chkCurrent, "BOTTOMLEFT", 0, -10)
-        editMask:SetText("Set titles mask")
+        editMask:SetText(L["Set titles mask"])
 
         btnSetMask = CreateFrame("Button", nil, optionsFrame, "UIPanelButtonTemplate")
         btnSetMask:SetSize(80, 22)
         btnSetMask:SetPoint("LEFT", editMask, "RIGHT", 5, 0)
-        btnSetMask:SetText("Set")
+        btnSetMask:SetText(L["Set"])
 
         ------------------------------------------------------------
         -- FORCER LA SELECTION EXCLUSIVE DES CHECKBOXES
@@ -374,17 +375,17 @@ function Misc:OpenTitlesManagement()
         btnSetMask:SetScript("OnClick", function()
             local targetName = UnitName("target")
             if not targetName then
-                print("Veuillez sélectionner un joueur.")
+                print(L["Please Select a Character!"])
                 return
             end
             local maskValue = editMask:GetText()
             if maskValue == "" or maskValue == "Set titles mask" then
-                print("Veuillez saisir une valeur pour le mask.")
+                print(L["Please enter a value for mask."])
                 return
             end
             -- Envoie la commande
             SendChatMessage(".titles set mask " .. maskValue, "SAY")
-            editMask:SetText("Set titles mask")
+            editMask:SetText(L["Set titles mask"])
         end)
 
         ------------------------------------------------------------
@@ -455,7 +456,7 @@ function Misc:OpenTitlesManagement()
                 btn:SetScript("OnClick", function()
                     local targ = UnitName("target")
                     if not targ then
-                        print("Veuillez sélectionner un joueur.")
+                        print(L["Please Select a Character!"])
                         return
                     end
                     if chkAdd:GetChecked() then
@@ -465,7 +466,7 @@ function Misc:OpenTitlesManagement()
                     elseif chkCurrent:GetChecked() then
                         SendChatMessage(".titles current " .. option.entry, "SAY")
                     else
-                        print("Veuillez sélectionner add/remove/current, ou utiliser Set pour le mask.")
+                        print(L["Please secte add/remove/current, or use Set for mask."])
                     end
                 end)
 
@@ -530,7 +531,7 @@ function Misc:OpenTitlesManagement()
             self:ClearFocus()
             local searchText = self:GetText():lower()
             if #searchText < 3 then
-                print("Veuillez entrer au moins 3 caractères pour la recherche.")
+                print(L["Please enter at least 3 characters for the search."])
                 return
             end
 
@@ -553,7 +554,7 @@ function Misc:OpenTitlesManagement()
                 if not scrollChild.noResultText then
                     scrollChild.noResultText = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
                     scrollChild.noResultText:SetPoint("TOP", scrollChild, "TOP", 0, -10)
-                    scrollChild.noResultText:SetText("|cffff0000Nothing found|r")
+                    scrollChild.noResultText:SetText("|cffff0000" .. L["nothing_found"] .. "|r")
                 end
                 scrollChild.noResultText:Show()
                 scrollChild:SetHeight(50)
@@ -568,8 +569,9 @@ function Misc:OpenTitlesManagement()
 
         -- Bouton Reset
         local btnReset = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
-        btnReset:SetSize(80, 22)
-        btnReset:SetText("Reset")
+        btnReset:SetText(L["Reset"])
+		btnReset:SetWidth(btnReset:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
+		btnReset:SetHeight(22)	
         btnReset:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
         btnReset:SetScript("OnClick", function()
             filterEditBox:SetText("")
@@ -616,7 +618,7 @@ function Misc:OpenResetsManagement()
         
         self.resetsPanel.title = self.resetsPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.resetsPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.resetsPanel.title:SetText("Resets Management")
+        self.resetsPanel.title:SetText(L["Resets Management"])
         
         ------------------------------------------------------------
         -- Petite fonction utilitaire pour récupérer un nom cible
@@ -645,18 +647,17 @@ function Misc:OpenResetsManagement()
             local editBox = CreateFrame("EditBox", nil, self.resetsPanel, "InputBoxTemplate")
             editBox:SetSize(120, 22)
             editBox:SetPoint("TOPLEFT", self.resetsPanel, "TOPLEFT", 10, yOffset)
-            editBox:SetText("Player Name")
+            editBox:SetText(L["Player Name"])
             editBox:SetAutoFocus(false)
             
             local btn = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
             btn:SetSize(140, 22)
             btn:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
-            btn:SetText("Reset Achievements")
+            btn:SetText(L["Reset Achievements"])
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(
-                    "Syntax: .reset achievements [$playername]\r\n\r\n" ..
                     "Reset achievements data for selected or named (online or offline) character.\n" ..
                     "Achievements for persistance progress data like completed quests/etc re-filled at reset.\n" ..
                     "Achievements for events like kills/casts/etc will be lost.",
@@ -681,13 +682,13 @@ function Misc:OpenResetsManagement()
             chkSpells:SetPoint("TOPLEFT", self.resetsPanel, "TOPLEFT", 10, yOffset + 5)
             chkSpells.text = chkSpells:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             chkSpells.text:SetPoint("LEFT", chkSpells, "RIGHT", 5, 0)
-            chkSpells.text:SetText("Reset All Spells")
+            chkSpells.text:SetText(L["Reset All Spells"])
             
             local chkTalents = CreateFrame("CheckButton", nil, self.resetsPanel, "UICheckButtonTemplate")
             chkTalents:SetPoint("TOPLEFT", chkSpells, "BOTTOMLEFT", 0, -10)
             chkTalents.text = chkTalents:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             chkTalents.text:SetPoint("LEFT", chkTalents, "RIGHT", 5, 0)
-            chkTalents.text:SetText("Reset All Talents")
+            chkTalents.text:SetText(L["Reset All Talents"])
             
             -- On coche "Spells" par défaut
             chkSpells:SetChecked(true)
@@ -716,13 +717,11 @@ function Misc:OpenResetsManagement()
             local btn = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
             btn:SetSize(80, 22)
             btn:SetPoint("LEFT", chkTalents, "RIGHT", 120, 20)
-            btn:SetText("Reset")
+            btn:SetText(L["Reset"])
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(
-                    "Syntax: .reset all spells\r\n\r\n" ..
-                    "Syntax: .reset all talents\r\n\r\n" ..
                     "Request reset spells or talents (including talents for all character's pets if any)\n" ..
                     "at next login each existed character.",
                     1,1,1,1,true
@@ -736,7 +735,7 @@ function Misc:OpenResetsManagement()
                 elseif chkTalents:GetChecked() then
                     SendChatMessage(".reset all talents", "SAY")
                 else
-                    print("Veuillez cocher 'Reset All Spells' ou 'Reset All Talents' avant d'appuyer sur Reset.")
+                    print(L["Please check 'Reset All Spells' or 'Reset All Talents' before clicking Reset."])
                 end
             end)
             
@@ -750,7 +749,7 @@ function Misc:OpenResetsManagement()
             local editBox = CreateFrame("EditBox", nil, self.resetsPanel, "InputBoxTemplate")
             editBox:SetSize(120, 22)
             editBox:SetPoint("TOPLEFT", self.resetsPanel, "TOPLEFT", 10, yOffset)
-            editBox:SetText("Player Name")
+            editBox:SetText(L["Player Name"])
             editBox:SetAutoFocus(false)
             
             local btn = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
@@ -776,7 +775,7 @@ function Misc:OpenResetsManagement()
                 elseif targetName then
                     finalName = targetName
                 end
-                print("[DEBUG] Commande envoyée: " .. command .. " " .. finalName)
+                -- print("[DEBUG] Commande envoyée: " .. command .. " " .. finalName)
                 SendChatMessage(command .. " " .. finalName, "SAY")
             end)
             
@@ -787,8 +786,8 @@ function Misc:OpenResetsManagement()
         -- 3) Reset Honor
         ------------------------------------------------------------
         CreateResetRow(
-            "Reset Honor",
-            "Syntax: .reset honor [Playername]\nReset all honor data for targeted character.",
+            L["Reset Honor"],
+			L["reset_honor_desc"],
             ".reset honor"
         )
         
@@ -796,9 +795,8 @@ function Misc:OpenResetsManagement()
         -- 4) Reset Level
         ------------------------------------------------------------
         CreateResetRow(
-            "Reset Level",
-            "Syntax: .reset level [Playername]\nReset level to 1 including reset stats and talents.\n" ..
-            "Equipped items with greater level requirement can be lost.",
+            L["Reset Level"],
+			L["reset_level_desc"],
             ".reset level"
         )
         
@@ -806,9 +804,8 @@ function Misc:OpenResetsManagement()
         -- 5) Reset Spells
         ------------------------------------------------------------
         CreateResetRow(
-            "Reset Spells",
-            "Syntax: .reset spells [Playername]\nRemoves all non-original spells from spellbook.\n" ..
-            "Playername can be name of offline character.",
+            L["Reset Spells"],
+			L["reset_spells_desc"],
             ".reset spells"
         )
         
@@ -816,9 +813,8 @@ function Misc:OpenResetsManagement()
         -- 6) Reset Stats
         ------------------------------------------------------------
         CreateResetRow(
-            "Reset Stats",
-            "Syntax: .reset stats [Playername]\nResets(recalculate) all stats of the targeted player " ..
-            "to their original VALUES at current level.",
+            L["Reset Stats"],
+			L["reset_stats_desc"],
             ".reset stats"
         )
         
@@ -826,10 +822,8 @@ function Misc:OpenResetsManagement()
         -- 7) Reset Talents
         ------------------------------------------------------------
         CreateResetRow(
-            "Reset Talents",
-            "Syntax: .reset talents [Playername]\nRemoves all talents of the targeted player or pet " ..
-            "or named player.\nPlayername can be name of offline character.\n" ..
-            "With player talents also will be reset talents for all character's pets if any.",
+            L["Reset Talents"],
+            L["reset_talents_desc"],
             ".reset talents"
         )
         
@@ -867,7 +861,7 @@ function Misc:OpenArenaManagement()
         
         self.arenaPanel.title = self.arenaPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.arenaPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.arenaPanel.title:SetText("Arena Management")
+        self.arenaPanel.title:SetText(L["Arena Management"])
 
         ------------------------------------------------------------
         -- Fonction utilitaire : reinitialiser un champ de saisie
@@ -895,23 +889,23 @@ function Misc:OpenArenaManagement()
             local editLeader = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
             editLeader:SetSize(100, 22)
             editLeader:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editLeader:SetText("Leader Name")
+            editLeader:SetText(L["Leader Name"])
             editLeader:SetAutoFocus(false)
             
             local editTeam  = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
             editTeam:SetSize(100, 22)
             editTeam:SetPoint("LEFT", editLeader, "RIGHT", 10, 0)
-            editTeam:SetText("Team Name")
+            editTeam:SetText(L["Team Name"])
             editTeam:SetAutoFocus(false)
             
             local editType  = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
             editType:SetSize(40, 22)
             editType:SetPoint("LEFT", editTeam, "RIGHT", 10, 0)
-            editType:SetText("Type")
+            editType:SetText(L["Type"])
             editType:SetAutoFocus(false)
             
             local btnCreate = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnCreate:SetText("Create Arena Team")
+            btnCreate:SetText(L["Create Arena Team"])
             -- Ajuste automatiquement la largeur du bouton en fonction du texte
             btnCreate:SetSize(btnCreate:GetTextWidth() + 20, 22)
             btnCreate:SetPoint("LEFT", editType, "RIGHT", 10, 0)
@@ -919,12 +913,7 @@ function Misc:OpenArenaManagement()
             -- Tooltip
             btnCreate:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .arena create $name \"arena name\" #type\n\n" ..
-                    "A command to create a new Arena-team in game.\n" ..
-                    "#type = [2/3/5]",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["A command to create a new Arena-team in game.#type = [2/3/5]"], 1,1,1,1,true)
             end)
             btnCreate:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -937,21 +926,21 @@ function Misc:OpenArenaManagement()
                 local typeVal   = editType:GetText()
 
                 if not leaderVal or leaderVal == "" or leaderVal == "Leader Name" then
-                    print("Veuillez renseigner un Leader Name valide.")
+                    print(L["Please enter a valid Leader Name!"])
                     return
                 end
                 if not teamVal or teamVal == "" or teamVal == "Team Name" then
-                    print("Veuillez renseigner un Team Name valide.")
+                    print(L["Please enter a valid Team Name!"])
                     return
                 end
                 if not typeVal or typeVal == "" or typeVal == "Type" then
-                    print("Veuillez saisir un Type (2, 3 ou 5).")
+                    print(L["Please select Type (2, 3 or 5)!"])
                     return
                 end
 
                 local typeNum = tonumber(typeVal)
                 if not typeNum or (typeNum ~= 2 and typeNum ~= 3 and typeNum ~= 5) then
-                    print("Le Type doit être 2, 3 ou 5.")
+                    print(L["Type must be 2, 3 or 5."])
                     return
                 end
 

@@ -25,7 +25,74 @@ if not L then return end
 	L["Debug Functions"] = "Fonctions Debug"
 	L["Other Stuffs"] = "Autres Fonctions"
 	L["Tickets Management"] = "Gestion des Tickets"
-	---- End main frame buttons
+
+---- Variables globales
+L["Preview"] = "Précédent"
+L["Next"] = "Suivant"
+L["Search..."] = "Recherche..."
+L["Set"] = "Définir"
+L["Reset"] = "Réinitialiser"
+L["Player Name"] = "Nom du joueur"
+L["Line"] = "Ligne"
+L["Close"] = "Fermer"
+L["Type"] = "Type"
+
+---- Erreurs globales
+L["Please Select a Character!"] = "Veuillez sélectionner un personnage !"
+L["Please enter at least 3 characters for the search."] = "Veuillez entrer au moins 3 caractères pour la recherche."
+L["nothing_found"] = "Aucun résultat"
+
+-----------------------------------------------------------
+---- Module Divers (Misc)
+-----------------------------------------------------------
+L["Information from .lookup"] = "Informations de la commande .lookup"
+L["Lookup Info"] = "Infos Lookup"
+L["Titles Management"] = "Gestion des titres"
+L["Resets Management"] = "Gestion des réinitialisations"
+L["Arena Management"] = "Gestion des arènes"
+L["Lookup Functions"] = "Fonctions de recherche"
+L["Groups Management"] = "Gestion des groupes"
+L["Quests Management"] = "Gestion des quêtes"
+L["Battlefield And Pvp"] = "Champs de bataille et JcJ"
+L["Dungeons Funcs"] = "Fonctions des donjons"
+L["LFG Management"] = "Gestion LFG"
+L["Events Manager"] = "Gestion des événements"
+L["Auras and Lists Management"] = "Gestion des auras et des listes"
+L["Misc Functions"] = "Fonctions diverses"
+L["Add a Title"] = "Ajouter un titre"
+L["Remove a Title"] = "Supprimer un titre"
+L["Set Title as Current"] = "Définir comme titre actif"
+L["Set titles mask"] = "Définir le masque de titres"
+L["Please enter a value for mask."] = "Veuillez entrer une valeur pour le masque."
+L["Please secte add/remove/current, or use Set for mask."] = "Veuillez choisir add/remove/current, ou utiliser Set pour le masque."
+L["Reset Achievements"] = "Réinitialiser les hauts faits"
+L["Reset All Spells"] = "Réinitialiser tous les sorts"
+L["Reset All Talents"] = "Réinitialiser tous les talents"
+L["Please check 'Reset All Spells' or 'Reset All Talents' before clicking Reset."] = "Veuillez cocher 'Réinitialiser tous les sorts' ou 'Réinitialiser tous les talents' avant d'appuyer sur Réinitialiser."
+L["reset_talents_desc"] = "Supprime tous les talents du joueur ou familier ciblé ou du joueur nommé.\nLe nom du joueur peut être celui d’un personnage hors ligne.\nLes talents des familiers seront aussi réinitialisés si le joueur en possède."
+L["reset_stats_desc"] = "Réinitialise (recalcule) toutes les statistiques du joueur ciblé à leur VALEUR d’origine selon son niveau actuel."
+L["reset_spells_desc"] = "Supprime tous les sorts non d’origine du grimoire.\nLe nom du joueur peut être celui d’un personnage hors ligne."
+L["reset_level_desc"] = "Réinitialise le niveau à 1, ainsi que les statistiques et les talents.\nLes objets équipés nécessitant un niveau supérieur peuvent être perdus."
+L["reset_honor_desc"] = "Réinitialise toutes les données d'honneur pour le personnage ciblé."
+L["Reset Honor"] = "Réinitialiser l'honneur"
+L["Reset Level"] = "Réinitialiser le niveau"
+L["Reset Spells"] = "Réinitialiser les sorts"
+L["Reset Stats"] = "Réinitialiser les statistiques"
+L["Reset Talents"] = "Réinitialiser les talents"
+L["Leader Name"] = "Nom du chef"
+L["Team Name"] = "Nom de l’équipe"
+L["Create Arena Team"] = "Créer une équipe d’arène"
+L["A command to create a new Arena-team in game.#type = [2/3/5]"] = "Commande pour créer une nouvelle équipe d’arène en jeu. #type = [2/3/5]"
+L["Please enter a valid Leader Name!"] = "Veuillez entrer un nom de chef valide !"
+L["Please enter a valid Team Name!"] = "Veuillez entrer un nom d’équipe valide !"
+L["Please select Type (2, 3 or 5)!"] = "Veuillez sélectionner un type (2, 3 ou 5) !"
+L["Type must be 2, 3 or 5."] = "Le type doit être 2, 3 ou 5."
+
+	
+	
+	
+	
+	
 	L["GM Functions Panel"]     = "Panneau des Fonctions GM"
     L["TrinityAdmin Main Menu"] = "TrinityCore Boîte à Outils MJ par TheWarlock"
     L["Teleport Panel"]         = "Panneau des Téléportations"
