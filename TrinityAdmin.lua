@@ -1,6 +1,9 @@
 TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0", "AceEvent-3.0")
 L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
+-- Affiche un message de debug indiquant la langue détectée
+TrinityAdmin:Print("Langue détectée : " .. GetLocale())
+
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     type = "launcher",
     text = "TrinityAdmin",

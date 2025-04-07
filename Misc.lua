@@ -657,12 +657,7 @@ function Misc:OpenResetsManagement()
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Reset achievements data for selected or named (online or offline) character.\n" ..
-                    "Achievements for persistance progress data like completed quests/etc re-filled at reset.\n" ..
-                    "Achievements for events like kills/casts/etc will be lost.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["reset_achevements_desc"], 1,1,1,1,true)
             end)
             btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
             
@@ -721,11 +716,7 @@ function Misc:OpenResetsManagement()
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Request reset spells or talents (including talents for all character's pets if any)\n" ..
-                    "at next login each existed character.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["reset_spells_desc"], 1,1,1,1,true)
             end)
             btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
             
@@ -973,18 +964,14 @@ function Misc:OpenArenaManagement()
             editNew:SetAutoFocus(false)
 
             local btnRename = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnRename:SetText("Change Arena Team Name")
+            btnRename:SetText(L["Change Arena Team Name"])
             btnRename:SetSize(btnRename:GetTextWidth() + 20, 22)
             btnRename:SetPoint("LEFT", editNew, "RIGHT", 10, 0)
 
             -- Tooltip
             btnRename:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .arena rename \"oldname\" \"newname\"\n\n" ..
-                    "A command to rename Arena-team name.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Change_Arena_Team_Name_desc"], 1,1,1,1,true)
             end)
             btnRename:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -996,11 +983,11 @@ function Misc:OpenArenaManagement()
                 local newVal = editNew:GetText()
 
                 if not oldVal or oldVal == "" or oldVal == "Old Name" then
-                    print("Veuillez renseigner un Old Name valide.")
+                    print(L["Please enter a validOld Name."])
                     return
                 end
                 if not newVal or newVal == "" or newVal == "New Name" then
-                    print("Veuillez renseigner un New Name valide.")
+                    print(L["Please enter a valid New Name."])
                     return
                 end
 
@@ -1032,18 +1019,14 @@ function Misc:OpenArenaManagement()
             editLeaderName:SetAutoFocus(false)
 
             local btnCaptain = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnCaptain:SetText("Assign Leadership")
+            btnCaptain:SetText(L["Assign Leadership"])
             btnCaptain:SetSize(btnCaptain:GetTextWidth() + 20, 22)
             btnCaptain:SetPoint("LEFT", editLeaderName, "RIGHT", 10, 0)
 
             -- Tooltip
             btnCaptain:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .arena captain #TeamID $name\n\n" ..
-                    "A command to set new captain to the team. $name must be in the team.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Arena_captain_desc"], 1,1,1,1,true)
             end)
             btnCaptain:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -1055,17 +1038,17 @@ function Misc:OpenArenaManagement()
 				local leaderNm = editLeaderName:GetText()
 			
 				if not teamID or teamID == "" or teamID == "Team ID" then
-					print("Veuillez renseigner un Team ID valide.")
+					print(L["Please enter a valid Team ID."])
 					return
 				end
 				if not leaderNm or leaderNm == "" or leaderNm == "New Leader Name" then
-					print("Veuillez renseigner un New Leader Name valide.")
+					print(L["Please enter a valid New Leader Name."])
 					return
 				end
 			
 				-- Vérifie que le nom ne comporte pas d'espaces
 				if leaderNm:find("%s") then
-					print("Le nom du leader ne doit pas comporter d'espaces.")
+					print(L["Leader name doesn't support spaces."])
 					return
 				end
 			
@@ -1092,18 +1075,14 @@ function Misc:OpenArenaManagement()
             editTeamID:SetAutoFocus(false)
             
             local btnInfo = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnInfo:SetText("Get Team Info")
+            btnInfo:SetText(L["Get Team Info"])
             btnInfo:SetSize(btnInfo:GetTextWidth() + 20, 22)
             btnInfo:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
 
             -- Tooltip
             btnInfo:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .arena info #TeamID\n\n" ..
-                    "A command that show info about arena team.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Team_info_desc"], 1,1,1,1,true)
             end)
             btnInfo:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -1113,7 +1092,7 @@ function Misc:OpenArenaManagement()
             btnInfo:SetScript("OnClick", function()
                 local teamID = editTeamID:GetText()
                 if not teamID or teamID == "" or teamID == "Team ID" then
-                    print("Veuillez renseigner un Team ID valide.")
+                    print(L["Please enter a valid Team ID."])
                     return
                 end
 
@@ -1137,18 +1116,14 @@ function Misc:OpenArenaManagement()
             editTeamName:SetAutoFocus(false)
             
             local btnLookup = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnLookup:SetText("Lookup Teams")
+            btnLookup:SetText(L["Lookup Teams"])
             btnLookup:SetSize(btnLookup:GetTextWidth() + 20, 22)
             btnLookup:SetPoint("LEFT", editTeamName, "RIGHT", 10, 0)
 
             -- Tooltip
             btnLookup:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .arena lookup $name\n\n" ..
-                    "A command that gives a list of arenateams matching the given $name.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Lookup_teal_desc"], 1,1,1,1,true)
             end)
             btnLookup:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -1158,7 +1133,7 @@ function Misc:OpenArenaManagement()
             btnLookup:SetScript("OnClick", function()
                 local tName = editTeamName:GetText()
                 if not tName or tName == "" or tName == "Team Name" then
-                    print("Veuillez renseigner un Team Name valide.")
+                    print(L["Please enter a valid Team Name."])
                     return
                 end
 
@@ -1182,18 +1157,14 @@ function Misc:OpenArenaManagement()
             editTeamID:SetAutoFocus(false)
             
             local btnDisband = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnDisband:SetText("Disband Teams")
+            btnDisband:SetText(L["Disband Teams"])
             btnDisband:SetSize(btnDisband:GetTextWidth() + 20, 22)
             btnDisband:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
 
             -- Tooltip
             btnDisband:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .arena disband #TeamID\n\n" ..
-                    "A command to disband an Arena-team in game.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Disband_desc"], 1,1,1,1,true)
             end)
             btnDisband:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -1203,7 +1174,7 @@ function Misc:OpenArenaManagement()
             btnDisband:SetScript("OnClick", function()
                 local teamID = editTeamID:GetText()
                 if not teamID or teamID == "" or teamID == "Team ID" then
-                    print("Veuillez renseigner un Team ID valide.")
+                    print(L["Please enter a valid Team ID."])
                     return
                 end
 
@@ -1250,7 +1221,7 @@ function Misc:OpenLookupFunctions()
         
         self.lookupPanel.title = self.lookupPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.lookupPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.lookupPanel.title:SetText("Lookup Functions")
+        self.lookupPanel.title:SetText(L["Lookup Functions"])
 
         -------------------------------------------------------------------------
         -- Fonctions utilitaires
@@ -1262,27 +1233,16 @@ function Misc:OpenLookupFunctions()
         end
         
         -- Fonction pour ajouter les résultats dans la fenêtre ACE3
-        -- (Supposons qu'une fonction TrinityAdmin:AppendAce3Line(msg) existe déjà,
-        --  qui ajoute la ligne 'msg' dans un conteneur ACE3, comme vous l'avez
-        --  fait dans d'autres modules.)
         local function AppendLookupResult(line)
-            -- Exemples :
-            -- TrinityAdmin:AppendAce3Line(line)
-            -- ou tout autre code d'intégration à la fenêtre ACE3
             TrinityAdmin:AppendAce3Line(line)
         end
         
-        -- Filtre chat (exemple) : si on veut capturer les réponses du serveur
-        -- dans SAY et les envoyer dans la fenêtre ACE3
         local function OnChatMsgSayFilter(selfFrame, event, msg, player, ...)
-            -- On peut y faire un test plus fin si on veut seulement
-            -- des retours de commandes .lookup :
-            -- if msg:match("^Lookup result:") then ...
             AppendLookupResult(msg)
-            return false  -- laisser le message s'afficher en chat normal
+            return false
         end
         
-        -- Installation d'un filtre sur le canal SAY (facultatif)
+        -- Installation d'un filtre sur le canal SAY
         ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", OnChatMsgSayFilter)
 
         -------------------------------------------------------------------------
@@ -1290,109 +1250,94 @@ function Misc:OpenLookupFunctions()
         -------------------------------------------------------------------------
         local singleOptions = {
             {
-                text       = "lookup area",
+                text       = L["lookup area"],
                 defaultEB  = "Enter Area Name part",
                 command    = ".lookup area",
-                tooltip    = "Syntax: .lookup area $namepart\r\n\r\n" ..
-                             "Looks up an area by $namepart, and returns all matches with their area ID's."
+                tooltip    = L["Lookup_area_desc"]
             },
             {
-                text       = "lookup creature",
+                text       = L["lookup creature"],
                 defaultEB  = "Enter Creature Name part",
                 command    = ".lookup creature",
-                tooltip    = "Syntax: .lookup creature $namepart\r\n\r\n" ..
-                             "Looks up a creature by $namepart, and returns all matches with their creature ID's."
+                tooltip    = L["lookup_creature_desc"]
             },
             {
-                text       = "lookup event",
+                text       = L["lookup event"],
                 defaultEB  = "Enter Event Neme",  -- y a-t-il un correctif => "Enter Event Name" ?
                 command    = ".lookup event",
-                tooltip    = "Syntax: .lookup event $name\r\n" ..
-                             "Attempts to find the ID of the event with the provided $name."
+                tooltip    = L["lookup_event_desc"]
             },
             {
-                text       = "lookup faction",
+                text       = L["lookup faction"],
                 defaultEB  = "Enter Faction Name",
                 command    = ".lookup faction",
-                tooltip    = "Syntax: .lookup faction $name\r\n" ..
-                             "Attempts to find the ID of the faction with the provided $name."
+                tooltip    = L["lookup_faction_desc"]
             },
             {
-                text       = "lookup item",
+                text       = L["lookup item"],
                 defaultEB  = "Enter Item Name",
                 command    = ".lookup item",
-                tooltip    = "Syntax: .lookup item $itemname\r\n\r\n" ..
-                             "Looks up an item by $itemname, and returns all matches with their Item ID's."
+                tooltip    = L["lookup_item_desc"]
             },
             {
-                text       = "lookup item set",
+                text       = L["lookup item set"],
                 defaultEB  = "Enter ItemSet Name",
                 command    = ".lookup item set",
-                tooltip    = "Syntax: .lookup itemset $itemname\r\n\r\n" ..
-                             "Looks up an item set by $itemname, and returns all matches with their Item set ID's."
+                tooltip    = L["lookup_item_set_desc"]
             },
             {
-                text       = "lookup map",
+                text       = L["lookup map"],
                 defaultEB  = "Enter Map Name Part",
                 command    = ".lookup map",
-                tooltip    = "Syntax: .lookup map $namepart\r\n\r\n" ..
-                             "Looks up a map by $namepart, and returns all matches with their map ID's."
+                tooltip    = L["lookup_map_desc"]
             },
             {
-                text       = "lookup object",
+                text       = L["lookup object"],
                 defaultEB  = "Enter Object Name",
                 command    = ".lookup object",
-                tooltip    = "Syntax: .lookup object $objname\r\n\r\n" ..
-                             "Looks up a gameobject by $objname, and returns all matches with their Gameobject ID's."
+                tooltip    = L["lookup_object_dec"]
             },
             {
-                text       = "lookup quest",
+                text       = L["lookup quest"],
                 defaultEB  = "Enter Quest Name Part",
                 command    = ".lookup quest",
-                tooltip    = "Syntax: .lookup quest $namepart\r\n\r\n" ..
-                             "Looks up a quest by $namepart, and returns all matches with their quest ID's."
+                tooltip    = L["lookup_quest_desc"]
             },
             {
-                text       = "lookup skill",
+                text       = L["lookup skill"],
                 defaultEB  = "Enter Skill Name Part",
                 command    = ".lookup skill",
-                tooltip    = "Syntax: .lookup skill $namepart\r\n\r\n" ..
-                             "Looks up a skill by $namepart, and returns all matches with their skill ID's."
+                tooltip    = L["lookup_skill_desc"]
             },
             {
-                text       = "lookup spell",
+                text       = L["lookup spell"],
                 defaultEB  = "Enter Spell Name Part",
                 command    = ".lookup spell",
-                tooltip    = "Syntax: .lookup spell $namepart\r\n\r\n" ..
-                             "Looks up a spell by $namepart, and returns all matches with their spell ID's."
+                tooltip    = L["lookup_spell_desc"]
             },
             {
-                text       = "lookup spell id",
+                text       = L["lookup spell id"],
                 defaultEB  = "Enter Spell ID",
                 command    = ".lookup spell id",
-                tooltip    = "Syntax: .lookup spell id #spellid\n\n" ..
-                             "Looks up a spell by #spellid, and returns the match with its spell name."
+                tooltip    = L["lookup_spell_id_desc"]
             },
             {
-                text       = "lookup taxinode",
+                text       = L["lookup taxinode"],
                 defaultEB  = "Enter Taxinode Substring",
                 command    = ".lookup taxinode",
-                tooltip    = "Syntax: .lookup taxinode $substring\r\n\r\n" ..
-                             "Search and output all taxinodes with provide $substring in name."
+                tooltip    = L["lookup_taxinode_desc"]
             },
             {
-                text       = "lookup tele",
+                text       = L["lookup tele"],
                 defaultEB  = "Enter Teleport Substring",
                 command    = ".lookup tele",
-                tooltip    = "Syntax: .lookup tele $substring\r\n\r\n" ..
-                             "Search and output all .tele command locations with provide $substring in name."
+                tooltip    = L["lookup_tele_desc"]
             },
             {
-                text       = "lookup title",
+                text       = L["lookup title"],
                 defaultEB  = "Enter Title Name Part",
                 command    = ".lookup title",
-                tooltip    = "Syntax: .lookup title $namepart\r\n\r\n" ..
-                             "Looks up a title by $namepart, and returns all matches with their title ID's and index's."
+                tooltip    = L["lookup_title_desc"]
             },
         }
 
@@ -1401,28 +1346,25 @@ function Misc:OpenLookupFunctions()
         -------------------------------------------------------------------------
         local doubleOptions = {
             {
-                text            = "lookup player ip",
+                text            = L["lookup player ip"],
                 defaultEB1      = "Enter IP",
                 defaultEB2      = "Limit",
                 command         = ".lookup player ip",
-                tooltip         = "Syntax: .lookup player ip $ip ($limit)\r\n\r\n" ..
-                                  "Searchs players, whose account last_ip is $ip with optional param $limit of results."
+                tooltip         = L["lookup_player_ip_desc"]
             },
             {
-                text            = "lookup player email",
+                text            = L["lookup player email"],
                 defaultEB1      = "Enter Email",
                 defaultEB2      = "Limit",
                 command         = ".lookup player email",
-                tooltip         = "Syntax: .lookup player email $email ($limit)\r\n\r\n" ..
-                                  "Searchs players, whose account email is $email with optional param $limit of results."
+                tooltip         = L["lookup_player_email_desc"]
             },
             {
-                text            = "lookup player account",
+                text            = L["lookup player account"],
                 defaultEB1      = "Enter a Username",
                 defaultEB2      = "Limit",
                 command         = ".lookup player account",
-                tooltip         = "Syntax: .lookup player account $account ($limit)\r\n\r\n" ..
-                                  "Searchs players, whose account username is $account with optional param $limit of results."
+                tooltip         = L["lookup_player_account_desc"]
             },
         }
 
@@ -1459,7 +1401,7 @@ function Misc:OpenLookupFunctions()
 
         -- Bouton "Lookup"
         local btnSingleLookup = CreateFrame("Button", nil, block1, "UIPanelButtonTemplate")
-        btnSingleLookup:SetText("Lookup")
+        btnSingleLookup:SetText(L["Lookup"])
         btnSingleLookup:SetSize(btnSingleLookup:GetTextWidth() + 20, 22)
         btnSingleLookup:SetPoint("LEFT", singleDropdown, "RIGHT", 10, 0)
 
@@ -1501,7 +1443,7 @@ function Misc:OpenLookupFunctions()
 		
 			local textValue = editSingle:GetText()
 			if not textValue or textValue == "" or textValue == opt.defaultEB then
-				print("Veuillez renseigner une valeur pour : " .. opt.text)
+				print(L["Please provide a value for:"] .. " " .. opt.text)
 				return
 			end
 		
@@ -1548,7 +1490,7 @@ function Misc:OpenLookupFunctions()
 
         -- Bouton "Lookup"
         local btnDoubleLookup = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
-        btnDoubleLookup:SetText("Lookup")
+        btnDoubleLookup:SetText(L["Lookup"])
         btnDoubleLookup:SetSize(btnDoubleLookup:GetTextWidth() + 20, 22)
         btnDoubleLookup:SetPoint("LEFT", doubleDropdown, "RIGHT", 10, 0)
 
@@ -1592,11 +1534,11 @@ function Misc:OpenLookupFunctions()
 			local val1 = editFirst:GetText()
 			local val2 = editSecond:GetText()
 			if not val1 or val1 == "" or val1 == opt.defaultEB1 then
-				print("Veuillez renseigner une valeur pour : " .. opt.defaultEB1)
+				print(L["Please provide a value for:"] .. " " .. opt.defaultEB1)
 				return
 			end
 			if not val2 or val2 == "" or val2 == opt.defaultEB2 then
-				print("Veuillez renseigner une valeur pour : " .. opt.defaultEB2)
+				print(L["Please provide a value for:"] .. " " .. opt.defaultEB2)
 				return
 			end
 		
@@ -1647,7 +1589,7 @@ function Misc:OpenGroupsManagement()
         
         self.groupsPanel.title = self.groupsPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.groupsPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.groupsPanel.title:SetText("Groups Management")
+        self.groupsPanel.title:SetText(L["Groups Management"])
 
         -------------------------------------------------------------------------
         -- Fonction utilitaire : obtenir le nom du champ ou la cible
@@ -1694,18 +1636,14 @@ function Misc:OpenGroupsManagement()
 
             -- 3) "Join" button
             local btnJoin = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnJoin:SetText("Join")
+            btnJoin:SetText(L["Join"])
             btnJoin:SetSize(btnJoin:GetTextWidth() + 20, 22)
             btnJoin:SetPoint("LEFT", editTo, "RIGHT", 10, 0)
 
             -- Tooltip
             btnJoin:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .group join $AnyCharacterNameFromGroup [$CharacterName]\r\n" ..
-                    "Adds to group of player $AnyCharacterNameFromGroup player $CharacterName (or selected).",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Join_group_desc"], 1,1,1,1,true)
             end)
             btnJoin:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -1718,7 +1656,7 @@ function Misc:OpenGroupsManagement()
 
                 -- 'fromValue' doit être non vide
                 if (not fromValue or fromValue == "" or fromValue == "Player Name From Group") then
-                    print("Veuillez renseigner un nom valide pour 'Player Name From Group'.")
+                    print(L["Please provide a valid valuer for 'Player Name From Group'."])
                     return
                 end
 
@@ -1742,93 +1680,76 @@ function Misc:OpenGroupsManagement()
         -------------------------------------------------------------------------
         local groupOptions = {
             {
-                text        = "group leader",
+                text        = L["group leader"],
                 command     = ".group leader",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group leader [$characterName]\n\n" ..
-                              "Sets the given character as his group’s leader."
+                tooltip     = L["group_leader_desc"]
             },
             {
-                text        = "group level",
+                text        = L["group level"],
                 command     = ".group level",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group level [$charactername]\n" ..
-                              "Set the level of the given character and his group to #numberoflevels (only 1+). " ..
-                              "Modify only online group chars, but the original selected group member can be offline. " ..
-                              "At level decrease, items or talents can be lost. If no name or target given => modifies your level."
+                tooltip     = L["group_level_desc"]
             },
             {
-                text        = "group list",
+                text        = L["group list"],
                 command     = ".group list",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group list [$CharacterName]\r\n" ..
-                              "Lists all the members of the group/party the player is in."
+                tooltip     = L["group_list_desc"]
             },
             {
-                text        = "group repair",
+                text        = L["group repair"],
                 command     = ".group repair",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group repair [$charactername]\n" ..
-                              "Repair the given character and his group (only online). Original selected can be offline. " ..
-                              "If no name or target => repairs yourself."
+                tooltip     = L["group_repair_desc"]
             },
             {
-                text        = "group revive",
+                text        = L["group revive"],
                 command     = ".group revive",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group revive [$charactername]\n" ..
-                              "Revive the given character and his group (only online). Original selected can be offline. " ..
-                              "If no name or target => revives yourself."
+                tooltip     = L["group_revive_desc"]
             },
             {
-                text        = "group set assistant",
+                text        = L["group set assistant"],
                 command     = ".group set assistant",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group set assistant [$characterName]\n\n" ..
-                              "Toggles the given character’s assistant state in his raid group."
+                tooltip     = L["group_set_assistant_desc"]
             },
             {
-                text        = "group set leader",
+                text        = L["group set leader"],
                 command     = ".group set leader",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group set leader [$characterName]\n\n" ..
-                              "Sets the given character (or selected) as his group’s leader.\nAlias for '.group leader'."
+                tooltip     = L["group_set_leader_desc"]
             },
             {
-                text        = "group set mainassist",
+                text        = L["group set mainassist"],
                 command     = ".group set mainassist",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group set mainassist [$characterName]\n\n" ..
-                              "Toggles the given character’s main assist flag in his raid group."
+                tooltip     = L["group_set_mainassist_desc"]
             },
             {
-                text        = "group set maintank",
+                text        = L["group set maintank"],
                 command     = ".group set maintank",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group set maintank [$characterName]\n\n" ..
-                              "Toggles the given character’s main tank flag in his raid group."
+                tooltip     = L["group_set_maintank_desc"]
             },
             {
-                text        = "group summon",
+                text        = L["group summon"],
                 command     = ".group summon",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group summon [$charactername]\r\n\r\n" ..
-                              "Teleport the given character and his group to you (only online). " ..
-                              "Original selected can be offline. If no name => yourself."
+                tooltip     = L["group_summon_desc"]
             },
             {
-                text        = "group remove",
+                text        = L["group remove"],
                 command     = ".group remove",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group remove [$characterName]\n\n" ..
-                              "Removes the given character from his group."
+                tooltip     = L["group_remove_desc"]
             },
             {
-                text        = "group disband",
+                text        = L["group disband"],
                 command     = ".group disband",
                 defaultEB   = "Enter Player Name",
-                tooltip     = "Syntax: .group disband [$characterName]\n\n" ..
-                              "Disbands the given character’s group."
+                tooltip     = L["group_disband_desc"]
             },
         }
 
@@ -1854,7 +1775,7 @@ function Misc:OpenGroupsManagement()
             editName:SetText(dropdown.selectedOption.defaultEB)
 
             local btnExecute = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
-            btnExecute:SetText("Execute")
+            btnExecute:SetText(L["Execute"])
             btnExecute:SetSize(btnExecute:GetTextWidth() + 20, 22)
             btnExecute:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
 
@@ -1948,7 +1869,7 @@ function Misc:OpenQuestsManagement()
         
         self.questsPanel.title = self.questsPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.questsPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.questsPanel.title:SetText("Quests Management")
+        self.questsPanel.title:SetText(L["Quests Management"])
 
         ------------------------------------------------------------
         -- Fonction utilitaire pour réinitialiser une EditBox
@@ -1980,19 +1901,13 @@ function Misc:OpenQuestsManagement()
             editQuestID:SetAutoFocus(false)
 
             local btnAdd = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnAdd:SetText("Add Quest")
+            btnAdd:SetText(L["Add Quest"])
             btnAdd:SetSize(btnAdd:GetTextWidth() + 20, 22)
             btnAdd:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnAdd:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .quest add #quest_id\r\n\r\n" ..
-                    "Add to character quest log quest #quest_id. " ..
-                    "Quest started from item can’t be added by this command " ..
-                    "but correct .additem call provided in command output.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Add_quest_desc"], 1,1,1,1,true)
             end)
             btnAdd:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -2001,7 +1916,7 @@ function Misc:OpenQuestsManagement()
             btnAdd:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
                 if not questID or questID == "" or questID == "Quest ID" then
-                    print("Veuillez renseigner un Quest ID valide.")
+                    print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -2026,18 +1941,13 @@ function Misc:OpenQuestsManagement()
             editQuestID:SetAutoFocus(false)
 
             local btnComplete = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnComplete:SetText("Complete Quest")
+            btnComplete:SetText(L["Complete Quest"])
             btnComplete:SetSize(btnComplete:GetTextWidth() + 20, 22)
             btnComplete:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnComplete:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .quest complete #questid\r\n" ..
-                    "Mark all quest objectives as completed for target character active quest. " ..
-                    "After this target character can go and get quest reward.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Complete_Quest_desc"], 1,1,1,1,true)
             end)
             btnComplete:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -2046,7 +1956,7 @@ function Misc:OpenQuestsManagement()
             btnComplete:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
                 if not questID or questID == "" or questID == "Quest ID" then
-                    print("Veuillez renseigner un Quest ID valide.")
+                    print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -2071,17 +1981,13 @@ function Misc:OpenQuestsManagement()
             editObjID:SetAutoFocus(false)
 
             local btnObjective = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnObjective:SetText("Complete Quest Objective")
+            btnObjective:SetText(L["Complete Quest Objective"])
             btnObjective:SetSize(btnObjective:GetTextWidth() + 20, 22)
             btnObjective:SetPoint("LEFT", editObjID, "RIGHT", 10, 0)
 
             btnObjective:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .quest objective complete #questObjectiveId\n" ..
-                    "Mark specific quest objective as completed for target character.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Complete_Quest_Objective_desc"], 1,1,1,1,true)
             end)
             btnObjective:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -2090,7 +1996,7 @@ function Misc:OpenQuestsManagement()
             btnObjective:SetScript("OnClick", function()
                 local objID = editObjID:GetText()
                 if not objID or objID == "" or objID == "Quest Objective ID" then
-                    print("Veuillez renseigner un Quest Objective ID valide.")
+                    print(L["Please provide a valid Quest Objective ID."])
                     return
                 end
 
@@ -2115,18 +2021,13 @@ function Misc:OpenQuestsManagement()
             editQuestID:SetAutoFocus(false)
 
             local btnRemove = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnRemove:SetText("Remove Quest")
+            btnRemove:SetText(L["Remove Quest"])
             btnRemove:SetSize(btnRemove:GetTextWidth() + 20, 22)
             btnRemove:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnRemove:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .quest remove #quest_id\r\n\r\n" ..
-                    "Set quest #quest_id state to not completed and not active " ..
-                    "(and remove from active quest list) for selected player.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Remove_Quest_desc"], 1,1,1,1,true)
             end)
             btnRemove:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -2135,7 +2036,7 @@ function Misc:OpenQuestsManagement()
             btnRemove:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
                 if not questID or questID == "" or questID == "Quest ID" then
-                    print("Veuillez renseigner un Quest ID valide.")
+                    print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -2160,18 +2061,13 @@ function Misc:OpenQuestsManagement()
             editQuestID:SetAutoFocus(false)
 
             local btnReward = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
-            btnReward:SetText("Reward Quest")
+            btnReward:SetText(L["Reward Quest"])
             btnReward:SetSize(btnReward:GetTextWidth() + 20, 22)
             btnReward:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnReward:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .quest reward #questId\n\n" ..
-                    "Grants quest reward to selected player and removes quest from his log " ..
-                    "(quest must be in completed state).",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Reward_Quest_desc"], 1,1,1,1,true)
             end)
             btnReward:SetScript("OnLeave", function()
                 GameTooltip:Hide()
@@ -2180,7 +2076,7 @@ function Misc:OpenQuestsManagement()
             btnReward:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
                 if not questID or questID == "" or questID == "Quest ID" then
-                    print("Veuillez renseigner un Quest ID valide.")
+                    print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -2228,7 +2124,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
         
         self.BattlefieldAndPvpPanel.title = self.BattlefieldAndPvpPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.BattlefieldAndPvpPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.BattlefieldAndPvpPanel.title:SetText("Battlefield / PvP Management")
+        self.BattlefieldAndPvpPanel.title:SetText(L["Battlefield / PvP Management"])
 
         ----------------------------------------------------------------------------
         -- Fonction utilitaire : obtenir le nom du champ ou la cible GM
@@ -2275,7 +2171,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
         do
             local title = leftContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
             title:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
-            title:SetText("|cff00ff00Bg Deserter Management|r")
+            title:SetText(L["Bg Deserter Management"])
 
             yLeft = yLeft - 20
         end
@@ -2285,17 +2181,17 @@ function Misc:OpenBattlefieldAndPvpManagement()
         ----------------------------------------------------------------------------
         local deserterBgOptions = {
             {
-                text      = "deserter bg add",
+                text      = L["deserter bg add"],
                 cmd       = ".deserter bg add",
                 defaultEB = "Time",
-                tooltip   = "Syntax: .deserter bg add $time \n\nAdds the bg deserter debuff to your target with $time duration.",
+                tooltip   = L["deserter_bg_add_desc"],
                 needValue = true,  -- champ obligatoire
             },
             {
-                text      = "deserter bg remove",
+                text      = L["deserter bg remove"],
                 cmd       = ".deserter bg remove",
                 defaultEB = "N/A",
-                tooltip   = "Syntax: .deserter bg remove \n\nRemoves the bg deserter debuff from your target.",
+                tooltip   = L["deserter_bg_remove_desc"],
                 needValue = false, -- champ non utilisé
             },
         }
@@ -2321,7 +2217,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             -- Bouton "Set"
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnSet:SetText("Set")
+            btnSet:SetText(L["Set"])
             btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
             btnSet:SetPoint("LEFT", dropdown, "RIGHT", 5, 0)
 
@@ -2360,23 +2256,23 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
                 local target = UnitName("target")
                 if not target then
-                    print("Erreur: Veuillez cibler un joueur.")
+                    print(L["Error: Please target a character."])
                     return
                 end
 
                 if opt.needValue then
                     local val = editBox:GetText()
                     if not val or val == "" or val == opt.defaultEB then
-                        print("Erreur: Le champ est obligatoire pour '" .. opt.text .. "'.")
+						print(L["Please provide a value for:"] .. " " .. opt.text)
                         return
                     end
                     local cmd = opt.cmd .. " " .. val
                     SendChatMessage(cmd, "SAY")
-					print("[DEBUG] Commande envoyée : " .. cmd)
+					-- print("[DEBUG] Commande envoyée : " .. cmd)
                 else
                     local cmd = opt.cmd
                     SendChatMessage(cmd, "SAY")
-					print("[DEBUG] Commande envoyée : " .. cmd)
+					-- print("[DEBUG] Commande envoyée : " .. cmd)
                 end
             end)
 
@@ -2389,7 +2285,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
         do
             local title = leftContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
             title:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
-            title:SetText("|cff00ff00Instance Deserter Management|r")
+            title:SetText(L["Instance Deserter Management"])
 
             yLeft = yLeft - 20
         end
@@ -2399,17 +2295,17 @@ function Misc:OpenBattlefieldAndPvpManagement()
         ----------------------------------------------------------------------------
         local deserterInstanceOptions = {
             {
-                text      = "deserter instance add",
+                text      = L["deserter instance add"],
                 cmd       = ".deserter instance add",
                 defaultEB = "Time",
-                tooltip   = "Syntax: .deserter instance add $time \n\nAdds the instance deserter debuff to your target with $time duration.",
+                tooltip   = L["deserter_instance_add_desc"],
                 needValue = true,
             },
             {
-                text      = "deserter instance remove",
+                text      = L["deserter instance remove"],
                 cmd       = ".deserter instance remove",
                 defaultEB = "N/A",
-                tooltip   = "Syntax: .deserter instance remove \n\nRemoves the instance deserter debuff from your target.",
+                tooltip   = L["deserter_instance_remove_desc"],
                 needValue = false,
             },
         }
@@ -2433,7 +2329,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
             editBox:SetText(dropdown.selectedOption.defaultEB)
 
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnSet:SetText("Set")
+            btnSet:SetText(L["Set"])
             btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
             btnSet:SetPoint("LEFT", dropdown, "RIGHT", 5, 0)
 
@@ -2469,14 +2365,14 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
                 local target = UnitName("target")
                 if not target then
-                    print("Erreur: Veuillez cibler un joueur.")
+                    print(L["Error: Please target a character."])
                     return
                 end
 
                 if opt.needValue then
                     local val = editBox:GetText()
                     if not val or val == "" or val == opt.defaultEB then
-                        print("Erreur: Le champ est obligatoire pour '" .. opt.text .. "'.")
+                        print(L["Please provide a value for:"] .. " " .. opt.text)
                         return
                     end
                     local cmd = opt.cmd .. " " .. val
