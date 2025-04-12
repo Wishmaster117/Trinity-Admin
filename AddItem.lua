@@ -1,6 +1,29 @@
 local AddItem = TrinityAdmin:GetModule("AddItem")
 local L = _G.L
 
+---------------------------------------------------
+-- Ajout pour trouver ytraductions manquantes
+---------------------------------------------------
+-- Table pour stocker toutes les clés de traduction qui manquent
+local MissingKeys = {}
+
+-- Wrapper : si la clé n'existe pas dans L, on la garde en mémoire (MissingKeys) et on renvoie le texte brut
+local function SafeL(key)
+    if not key then
+        return ""
+    end
+    -- Vérifie si la clé est traduite dans L
+    local val = L[key]
+    if not val then
+        -- On enregistre la clé manquante (pour la signaler plus tard)
+        MissingKeys[key] = true
+        -- On renvoie tout de même la clé brute
+        return key
+    end
+    return val
+end
+-- Fin ajout
+
 -- Fonction pour afficher le panneau AddItem
 function AddItem:ShowAddItemPanel()
     TrinityAdmin:HideMainMenu()
@@ -327,95 +350,321 @@ function AddItem:CreateAddItemPanel()
     ------------------------------------------------------------
     -- Fonction PopulateGOScroll(options)
     ------------------------------------------------------------
-    local function PopulateGOScroll(options)
-        -- On mémorise la liste courante
-        currentOptions = options
+    -- local function PopulateGOScroll(options)
+    --     -- On mémorise la liste courante
+    --     currentOptions = options
+	-- 
+    --     -- Calcule nombre total d'entrées et de pages
+    --     local totalEntries = #options
+    --     local totalPages = math.ceil(totalEntries / entriesPerPage)
+    --     if totalPages < 1 then totalPages = 1 end
+	-- 
+    --     -- Ajuste currentPage si hors bornes
+    --     if currentPage > totalPages then currentPage = totalPages end
+    --     if currentPage < 1 then currentPage = 1 end
+	-- 
+    --     -- Efface d'éventuels anciens boutons
+    --     if scrollChild.buttons then
+    --         for _, btn in ipairs(scrollChild.buttons) do
+    --             btn:Hide()
+    --         end
+    --     else
+    --         scrollChild.buttons = {}
+    --     end
+	-- 
+    --     -- Indices de début/fin pour la page courante
+    --     local startIdx = (currentPage - 1) * entriesPerPage + 1
+    --     local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
+	-- 
+    --     -- Création des boutons
+	-- 	local maxTextLength = 20 -- ?? Changez ce nombre pour ajuster la taille max
+	-- 	local lastButton = nil
+	-- 	for i = startIdx, endIdx do
+	-- 		local option = options[i]
+	-- 		local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+	-- 		btn:SetSize(200, 20)
+	-- 	
+	-- 		if not lastButton then
+	-- 			btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
+	-- 		else
+	-- 			btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
+	-- 		end
+	-- 	
+	-- 		-- Tronquer le texte s'il est trop long
+	-- 		-- local fullText = option.name or ("Item "..i)
+	-- 		local fullText = L[option.name] or option.name or ("Item "..i) -- Modification pour traduction
+	-- 		local truncatedText = fullText
+	-- 		if #fullText > maxTextLength then
+	-- 			truncatedText = fullText:sub(1, maxTextLength) .. "..."
+	-- 		end
+	-- 	
+	-- 		btn:SetText(truncatedText)
+	-- 	
+	-- 		-- Ajouter un tooltip pour afficher le texte complet au survol
+	-- 		btn:SetScript("OnEnter", function(self)
+	-- 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	-- 			GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
+	-- 			GameTooltip:Show()
+	-- 		end)
+	-- 		btn:SetScript("OnLeave", function(self)
+	-- 			GameTooltip:Hide()
+	-- 		end)
+	-- 				
+	-- 		btn:SetScript("OnLeave", function(self)
+	-- 			GameTooltip:Hide()
+	-- 			if self.wowheadTooltip then
+	-- 				self.wowheadTooltip:Hide()
+	-- 			end
+	-- 		end)
+	-- 
+	-- 		btn:SetScript("OnClick", function()
+	-- 			print("Option cliquée :", fullText, "Entry:", option.entry) -- Pour debug
+	-- 			SendChatMessage(".additem set " .. option.entry, "SAY")
+	-- 		end)
+	-- 	
+	-- 		lastButton = btn
+	-- 		table.insert(scrollChild.buttons, btn)
+	-- 	end
+	-- 
+    --     -- Ajuster la hauteur du scrollChild
+    --     local visibleCount = endIdx - startIdx + 1
+    --     local contentHeight = (visibleCount * 25) + 10
+    --     scrollChild:SetHeight(contentHeight)
+	-- 
+    --     -- Mettre à jour le label de page
+    --     btnPage:SetText(currentPage.." / "..totalPages)
+	-- 
+    --     -- Activer/désactiver Précédent/Suivant
+    --     btnPrev:SetEnabled(currentPage > 1)
+    --     btnNext:SetEnabled(currentPage < totalPages)
+    -- end
+------------------------------------------------------------
+-- Fonction pour chopper les cles manquantes de traduction
+------------------------------------------------------------
+-- Table pour lister les clés manquantes
+local MissingKeys = {}
 
-        -- Calcule nombre total d'entrées et de pages
-        local totalEntries = #options
-        local totalPages = math.ceil(totalEntries / entriesPerPage)
-        if totalPages < 1 then totalPages = 1 end
-
-        -- Ajuste currentPage si hors bornes
-        if currentPage > totalPages then currentPage = totalPages end
-        if currentPage < 1 then currentPage = 1 end
-
-        -- Efface d'éventuels anciens boutons
-        if scrollChild.buttons then
-            for _, btn in ipairs(scrollChild.buttons) do
-                btn:Hide()
-            end
-        else
-            scrollChild.buttons = {}
-        end
-
-        -- Indices de début/fin pour la page courante
-        local startIdx = (currentPage - 1) * entriesPerPage + 1
-        local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
-
-        -- Création des boutons
-		local maxTextLength = 20 -- ?? Changez ce nombre pour ajuster la taille max
-		local lastButton = nil
-		for i = startIdx, endIdx do
-			local option = options[i]
-			local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
-			btn:SetSize(200, 20)
-		
-			if not lastButton then
-				btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
-			else
-				btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
-			end
-		
-			-- Tronquer le texte s'il est trop long
-			-- local fullText = option.name or ("Item "..i)
-			local fullText = L[option.name] or option.name or ("Item "..i) -- Modification pour traduction
-			local truncatedText = fullText
-			if #fullText > maxTextLength then
-				truncatedText = fullText:sub(1, maxTextLength) .. "..."
-			end
-		
-			btn:SetText(truncatedText)
-		
-			-- Ajouter un tooltip pour afficher le texte complet au survol
-			btn:SetScript("OnEnter", function(self)
-				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-				GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
-				GameTooltip:Show()
-			end)
-			btn:SetScript("OnLeave", function(self)
-				GameTooltip:Hide()
-			end)
-					
-			btn:SetScript("OnLeave", function(self)
-				GameTooltip:Hide()
-				if self.wowheadTooltip then
-					self.wowheadTooltip:Hide()
-				end
-			end)
-
-			btn:SetScript("OnClick", function()
-				print("Option cliquée :", fullText, "Entry:", option.entry) -- Pour debug
-				SendChatMessage(".additem set " .. option.entry, "SAY")
-			end)
-		
-			lastButton = btn
-			table.insert(scrollChild.buttons, btn)
-		end
-
-        -- Ajuster la hauteur du scrollChild
-        local visibleCount = endIdx - startIdx + 1
-        local contentHeight = (visibleCount * 25) + 10
-        scrollChild:SetHeight(contentHeight)
-
-        -- Mettre à jour le label de page
-        btnPage:SetText(currentPage.." / "..totalPages)
-
-        -- Activer/désactiver Précédent/Suivant
-        btnPrev:SetEnabled(currentPage > 1)
-        btnNext:SetEnabled(currentPage < totalPages)
+-- Wrapper pour récupérer une traduction L[key]
+-- Si la clé est absente, on la stocke dans MissingKeys
+-- et on renvoie la valeur brute.
+local function SafeL(key)
+    if not key then
+        return ""
     end
 
+    local val = L[key]
+    if not val then
+        -- On note la clé manquante dans MissingKeys
+        MissingKeys[key] = true
+        -- On retourne quand même la clé brute
+        return key
+    end
+    return val
+end
+
+------------------------------------------------------------
+-- Fonction PopulateGOScroll(options) - version corrigée
+------------------------------------------------------------
+-- local function PopulateGOScroll(options)
+--     -- On mémorise la liste courante
+--     currentOptions = options
+-- 
+--     -- Calcule nombre total d'entrées et de pages
+--     local totalEntries = #options
+--     local totalPages = math.ceil(totalEntries / entriesPerPage)
+--     if totalPages < 1 then totalPages = 1 end
+-- 
+--     -- Ajuste currentPage si hors bornes
+--     if currentPage > totalPages then currentPage = totalPages end
+--     if currentPage < 1 then currentPage = 1 end
+-- 
+--     -- Efface d'éventuels anciens boutons
+--     if scrollChild.buttons then
+--         for _, btn in ipairs(scrollChild.buttons) do
+--             btn:Hide()
+--         end
+--     else
+--         scrollChild.buttons = {}
+--     end
+-- 
+--     -- Indices de début/fin pour la page courante
+--     local startIdx = (currentPage - 1) * entriesPerPage + 1
+--     local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
+-- 
+--     -- Création des boutons
+--     local maxTextLength = 20 -- Ajustez cette valeur selon vos besoins
+--     local lastButton = nil
+--     
+--     for i = startIdx, endIdx do
+--         local option = options[i]
+--         local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+--         btn:SetSize(200, 20)
+--     
+--         if not lastButton then
+--             btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
+--         else
+--             btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
+--         end
+-- 
+--         ----------------------------------------------------------------
+--         -- Au lieu de faire  local fullText = L[option.name] or ...
+--         -- on fait une vérification pour éviter l'erreur AceLocale
+--         ----------------------------------------------------------------
+--         local rawText = option.name
+--         local textToShow
+-- 
+--         -- Si option.name est présent et existe dans L, on l'utilise
+--         if rawText and L[rawText] then
+--             textToShow = L[rawText]
+--         else
+--             -- Sinon, on affiche soit le nom brut, soit "Item .. i" si rien
+--             textToShow = rawText or ("Item "..i)
+--         end
+--         
+--         -- Tronquer le texte s'il est trop long
+--         local truncatedText = textToShow
+--         if #textToShow > maxTextLength then
+--             truncatedText = textToShow:sub(1, maxTextLength) .. "..."
+--         end
+-- 
+--         btn:SetText(truncatedText)
+-- 
+--         -- Ajouter un tooltip pour afficher le texte complet au survol
+--         btn:SetScript("OnEnter", function(self)
+--             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+--             GameTooltip:SetText(textToShow, 1, 1, 1, 1, true)
+--             GameTooltip:Show()
+--         end)
+--         btn:SetScript("OnLeave", function(self)
+--             GameTooltip:Hide()
+--             if self.wowheadTooltip then
+--                 self.wowheadTooltip:Hide()
+--             end
+--         end)
+-- 
+--         btn:SetScript("OnClick", function()
+--             print("Option cliquée :", textToShow, "Entry:", option.entry) -- Pour debug
+--             SendChatMessage(".additem set " .. option.entry, "SAY")
+--         end)
+-- 
+--         lastButton = btn
+--         table.insert(scrollChild.buttons, btn)
+--     end
+-- 
+--     -- Ajuster la hauteur du scrollChild
+--     local visibleCount = endIdx - startIdx + 1
+--     local contentHeight = (visibleCount * 25) + 10
+--     scrollChild:SetHeight(contentHeight)
+-- 
+--     -- Mettre à jour le label de page
+--     btnPage:SetText(currentPage .. " / " .. totalPages)
+-- 
+--     -- Activer/désactiver Précédent/Suivant
+--     btnPrev:SetEnabled(currentPage > 1)
+--     btnNext:SetEnabled(currentPage < totalPages)
+-- end
+------------------------------------------------------------
+-- Fonction PopulateGOScroll(options) - modifiée pour chopper les cles manquantes de traduction
+------------------------------------------------------------
+local function PopulateGOScroll(options)
+    -- On mémorise la liste courante
+    currentOptions = options
+
+    -- Calcule nombre total d'entrées et de pages
+    local totalEntries = #options
+    local totalPages   = math.ceil(totalEntries / entriesPerPage)
+    if totalPages < 1 then
+        totalPages = 1
+    end
+
+    -- Ajuste currentPage si hors bornes
+    if currentPage > totalPages then
+        currentPage = totalPages
+    end
+    if currentPage < 1 then
+        currentPage = 1
+    end
+
+    -- Efface d'éventuels anciens boutons
+    if scrollChild.buttons then
+        for _, btn in ipairs(scrollChild.buttons) do
+            btn:Hide()
+        end
+    else
+        scrollChild.buttons = {}
+    end
+
+    -- Indices de début/fin pour la page courante
+    local startIdx = (currentPage - 1) * entriesPerPage + 1
+    local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
+
+    -- Création des boutons
+    local maxTextLength = 20
+    local lastButton = nil
+
+    for i = startIdx, endIdx do
+        local option = options[i]
+        local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
+        btn:SetSize(200, 20)
+
+        if not lastButton then
+            btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
+        else
+            btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
+        end
+
+        -- On récupère le texte via SafeL (pour marquer les clés manquantes)
+        local rawText = option.name
+        local textToShow = SafeL(rawText)  -- renvoie L[rawText] ou la clé brute si manquante
+
+        -- Si SafeL renvoie la chaîne vide (rawText = nil), on prend "Item .. i"
+        if textToShow == "" then
+            textToShow = "Item " .. i
+        end
+
+        -- Tronquer le texte s'il est trop long
+        local truncatedText = textToShow
+        if #textToShow > maxTextLength then
+            truncatedText = textToShow:sub(1, maxTextLength) .. "..."
+        end
+
+        btn:SetText(truncatedText)
+
+        -- Tooltip : on affiche le texte complet
+        btn:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(textToShow, 1, 1, 1, 1, true)
+            GameTooltip:Show()
+        end)
+        btn:SetScript("OnLeave", function(self)
+            GameTooltip:Hide()
+            if self.wowheadTooltip then
+                self.wowheadTooltip:Hide()
+            end
+        end)
+
+        -- Lorsqu'on clique sur le bouton
+        btn:SetScript("OnClick", function()
+            print("Option cliquée :", textToShow, "Entry:", option.entry)
+            SendChatMessage(".additem set " .. option.entry, "SAY")
+        end)
+
+        lastButton = btn
+        table.insert(scrollChild.buttons, btn)
+    end
+
+    -- Ajuster la hauteur du scrollChild
+    local visibleCount = endIdx - startIdx + 1
+    local contentHeight = (visibleCount * 25) + 10
+    scrollChild:SetHeight(contentHeight)
+
+    -- Mettre à jour le label de page
+    btnPage:SetText(currentPage .. " / " .. totalPages)
+
+    -- Activer/désactiver Précédent/Suivant
+    btnPrev:SetEnabled(currentPage > 1)
+    btnNext:SetEnabled(currentPage < totalPages)
+end
     ------------------------------------------------------------
     -- Scripts de btnPrev / btnNext
     ------------------------------------------------------------
@@ -515,6 +764,20 @@ function AddItem:CreateAddItemPanel()
 			scrollChild.noResultText:Hide()
 		end
 	end)
+
+-- 3) Commande ajoutée pour voir si il manque des clés de traduction :
+SLASH_TRINITYADMIN_MISSINGKEYS1 = "/tamissingkeys"
+SlashCmdList["TRINITYADMIN_MISSINGKEYS"] = function(msg)
+    if not next(MissingKeys) then
+        print("Aucune clé manquante n'a été détectée pour le moment.")
+        return
+    end
+
+    print("=== Clés de traduction manquantes ===")
+    for missingKey, _ in pairs(MissingKeys) do
+        print("- " .. missingKey)
+    end
+end
 
     ------------------------------------------------------------
     -- Enfin, on mémorise ce panel dans self.panel
