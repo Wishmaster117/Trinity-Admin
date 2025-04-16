@@ -56,6 +56,8 @@ voir les commandes .gobject et voir si on peut mettre une frame de preview
 	('playall', 'Syntax: .playall #soundid\r\n\r\nPlayer a sound to whole server.'),
 	
 	('itemmove', 'Syntax: .itemmove #sourceslotid #destinationslotid\r\n\r\nMove an item from slots #sourceslotid to #destinationslotid in your inventory\r\n\r\nNot yet implemented'),
+	
+	voir pour créer une fontion unaura et aura ou équivalent.
 
 	
 
