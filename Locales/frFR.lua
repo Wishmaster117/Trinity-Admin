@@ -42,14 +42,14 @@ L["Get"] = "Charger"
 L["Search..."] = "Rechercher..."
 L["Nothing found"] = "Auncune correspondance trouvée"
 L["Reset"] = "Reset"
-	
+
 ---- Erreurs globales
 L["Please Select a Character!"] = "Veuillez sélectionner un personnage !"
 L["Please enter at least 3 characters for the search."] = "Veuillez entrer au moins 3 caractères pour la recherche."
 L["nothing_found"] = "Aucun résultat"
 
 -----------------------------------------------------------
----- Module Divers (Misc)
+---- Misc Module
 -----------------------------------------------------------
 L["Information from .lookup"] = "Informations de la commande .lookup"
 L["Lookup Info"] = "Infos Lookup"
@@ -206,8 +206,11 @@ L["deserter instance remove"] = "deserter instance remove"
 L["deserter_instance_add_desc"] = "Ajoute le débuff de désertion en instance à votre cible pour une durée de $time."
 L["deserter_instance_remove_desc"] = "Retire le débuff de désertion en instance de votre cible."
 --- A continuer misc	
+
+
+
 	
-	
+
 
 	---- End Misc Module	
 	L["GM Functions Panel"]     = "Panneau des Fonctions GM"
@@ -234,6 +237,15 @@ L["deserter_instance_remove_desc"] = "Retire le débuff de désertion en instanc
 	L["Enter_Valid_Currency"] 	= "Veuillez entrer un id et un montant séparés par un espace pour la currency."
 	L["Free_Panel"]    			= "Panneau à Définir"
 
+	L["Bnet Account Management"] = "Gestion des Comptes Battlenet"
+	L["Enter Value"] = "Enter Value"
+	L["Account_Panel"]			= "Panneau des Comptes"
+	L["Account_Format_Tooltip"] = "Format: name@domaine"
+	L["Create"]					= "Créer"	
+    L["Please enter both account and password."] = "Veuillez entrer un compte et un mot de passe."
+	L["Username"]				= "Nom d'utilisateur"    
+	L["Password"]				= "Password"
+	L["Account_Password_Tooltip"] = "Choisissez un mot de passe" 
 	L["Unban Functions"] = "Fonctions de Déban"
 	L["Please enter account name to deban.."] = "Veuillez entrer le nom du Compte à Dé-Banir.."
 	L["Please enter account name to deban.."] = "Veuillez entrer Le nom du Joueur à Dé-Banir.."
@@ -248,21 +260,28 @@ L["deserter_instance_remove_desc"] = "Retire le débuff de désertion en instanc
 	L["Enter IP"] = "Saisir IP"
 	L["Unban IP"] = "Dé-Banir IP"
 	L["Syntax: .unban ip $Ip\nUnban accounts for IP pattern."] = "Dé-Ban les comptes de l'IP saisie"
-	L["Bnet Account Management"] = "Gestion des Comptes Battlenet"
-	L["Enter Value"] = "Enter Value"
-	L["Account_Panel"]			= "Panneau des Comptes"
-    L["Account_Format_Tooltip"] = "Format: name@domaine"
-    L["Create"]					= "Créer"
-    L["Please enter both account and password."] = "Veuillez entrer un compte et un mot de passe."
-	L["Username"]				= "Nom d'utilisateur"    
-	L["Password"]				= "Password"
-	L["Account_Password_Tooltip"] = "Choisissez un mot de passe"   
+
+
+	L["Add Item Module"]  = "Module d'ajout d'Items"
+	L["Advanced Add Functions"] = "Fonctions d'ajout Avancées"
+	L["Choose a action"] = "Choisir Action"
+	L["ID or Name"] = " ID ou Nom"
+	L["How many?"] = "Quantité ?"
+	L["BonusList id's separated by ;"] = "Bonus séparée par ;"
+	L["Item Set Easy Add"] = "Ajouts de Sets Simplifié"
+	L["Please enter at least 3 characters for the search."] = "Veuillez entrer au moins 3 caractères pour la recherche."
+	L["The 'ItemSet ID' field is required."] = "Le champ 'ItemSet ID' est obligatoire."
+	L["The 'ID or Name' field is required."] = "Le champ 'ID or Name' est obligatoire."
+	L["Please fill in the required field."] = "Veuillez remplir le champ requis."
+	L["ItemSet ID"] = "ID du Set"
+	L["Don't use"] = "N/A"
+	L["Item Name"] = "Nom de l'Item"
+	L["Item ID"] = "ID de l'Item"
+	L["Choose"] = "Choisir"
+  
 	L["Please enter account name to deban.."] = "Please enter account name to deban.."
 	L["Please enter player name to Deban.."] = "Please enter player name to Deban.."
 	L["Please enter IP to Deban."] = "Please enter IP to Deban."
-	L["I give up!"] = "I give up!"
-	L["Enter Account"] = "Enter Account"
-	L["Unban Account"] = "Unban Account"
 	L["Syntax: .unban account $Name\nUnban accounts for account name pattern."] = "Syntax: .unban account $Name\nUnban accounts for account name pattern."
 	L["Enter Character"] = "Enter Character"
 	L["Unban Char"] = "Unban Char"
@@ -271,19 +290,23 @@ L["deserter_instance_remove_desc"] = "Retire le débuff de désertion en instanc
 	L["Unban IP"] = "Unban IP"
 	L["Please enter a value or select a player."] = "Please enter a value or select a player."
 	L["Syntax: .unban ip $Ip\nUnban accounts for IP pattern."] = "Syntax: .unban ip $Ip\nUnban accounts for IP pattern."
-	L["Faction"]                = "Faction"
-	L["Gender"]                 = "Genre"
-	L["Modify_Faction"]         = "Syntax: .modify faction #factionid #flagid #npcflagid #dynamicflagid\r\n\r\nModifie la faction et les flags de la créature selectionnée. Sans arguments, affichera la faction et les flags de la créature selectionnée."
-	L["Modify_Gender"]          = "Modifie le genre du Joueur, valeurs possibles (male/female)."
-	L["Acoount_Panel"]          = "Panneau de Gestion des comptes"
-	L["Account Creation"]		= "Création de comptes"
-	L["Ban Account"]			= "Bannir un compte"
-	L["Name"]					= "Nom"
-	L["Bantime"]				= "Durée"
-	L["Reason"]					= "Raison"
-	L["Ban"]					= "Bannir"
-	L["Execute"] = "Executer"
 	L["Enter Value"] = "Entrer une Valeur"
+	
+	L["Faction"]                = "Faction"
+	L["Gender"]                 = "Gender"
+	L["Modify_Faction"]         = "Syntax: .modify faction #factionid #flagid #npcflagid #dynamicflagid\r\n\r\nModify the faction and flags of the selected creature. Without arguments, display the faction and flags of the selected creature."
+	L["Modify_Gender"]          = "Modify the player's gender, possible values (male/female)."
+	L["Acoount_Panel"]          = "Account Management Panel"
+	L["Account Creation"]		= "Account Creation"
+	L["Ban Account"]			= "Ban Account"
+	L["Name"]					= "Name"
+	L["Bantime"]				= "Bantime"
+	L["Reason"]					= "Reason"
+	L["Ban"]					= "Ban"
+	L["Execute"] = "Execute"
+
+
+
 	L["Name Tooltip"]			= "Ban le compte ou joueur ou IP et le Kick, une valeur négative signifie permaban."
 	L["Bantime Tooltip"] = "Syntaxe : 4d20h3s"
 	L["Please enter name, bantime and reason."] = "Veuillez entrer le Compte ou Nom du joueur ou IP, la durée du ban et la raison."
@@ -479,23 +502,6 @@ L["deserter_instance_remove_desc"] = "Retire le débuff de désertion en instanc
 	L["Please enter a reason for the mute."] = "Veuillez saisir une raison pour le mute"
 	L["Please, enter time in minuts."] = "Veuillez entrer le temps du mute en minutes."
 	L["Mute reason (required)"] = "Raison du mute (obligatoire)"
-	L["Add Item Module"]  = "Module d'ajout d'Items"
-	L["Advanced Add Functions"] = "Fonctions d'ajout Avancées"
-	L["Choose a action"] = "Choisir Action"
-	L["ID or Name"] = " ID ou Nom"
-	L["How many?"] = "Quantité ?"
-	L["BonusList id's separated by ;"] = "Bonus séparée par ;"
-
-	L["Item Set Easy Add"] = "Ajouts de Sets Simplifié"
-	L["Please enter at least 3 characters for the search."] = "Veuillez entrer au moins 3 caractères pour la recherche."
-	L["The 'ItemSet ID' field is required."] = "Le champ 'ItemSet ID' est obligatoire."
-	L["The 'ID or Name' field is required."] = "Le champ 'ID or Name' est obligatoire."
-	L["Please fill in the required field."] = "Veuillez remplir le champ requis."
-	L["ItemSet ID"] = "ID du Set"
-	L["Don't use"] = "N/A"
-	L["Item Name"] = "Nom de l'Item"
-	L["Item ID"] = "ID de l'Item"
-	L["Choose"] = "Choisir"
 
 -- Titres
 L["Private %s"] = "Soldat %s"
@@ -1101,8 +1107,7 @@ L["Junkmaestro %s"] = "As de la casse %s"
 L["Part-Timer %s"] = "%s l’intérimaire"
 L["%s, Employee of the Month"] = "%s, «Employé» du mois"
 L["%s, the Reel Deal"] = "%s, le fruit du hasard"
-	
-	-- Traductions des sets
+--Items Sets	
 L["The Gladiator"] =	"Le Gladiateur"
 L["Dal'Rend's Arms"] =	"Armes de Dal'Rend"
 L["Spider's Kiss"] =	"Baiser de l'araignée"
