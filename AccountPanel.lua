@@ -221,7 +221,7 @@ function AccountModule:CreateAccountPanel()
     btnGetBanInfo:SetScript("OnClick", function()
         local option = banInfoDropdown.selectedOption
         if not option then
-            print("Veuillez sélectionner une option pour Infos Ban.")
+            print(L["Please_select_option_infoban"])
             return
         end
         local inputValue = banInfoInput:GetText()
@@ -234,12 +234,12 @@ function AccountModule:CreateAccountPanel()
             end
         else
             if option.needsInput and (not inputValue or inputValue == "") then
-                print("Veuillez entrer une valeur pour " .. option.value)
+                print( L["Please_enter_value_for"] .. option.value )
                 return
             end
             command = option.value .. " " .. inputValue
         end
-        print("Debug: Commande envoyée en SAY: " .. command)
+        -- print("Debug: Commande envoyée en SAY: " .. command)
         SendChatMessage(command, "SAY")
     end)
 
@@ -359,7 +359,7 @@ function AccountModule:CreateAccountPanel()
            or timeValue == "" or timeValue == L["Bantime"]
            or reasonValue == "" or reasonValue == L["Reason"] then
             print(L["Please enter name, bantime and reason."])
-            print("Selected ban type: " .. banType)
+            print(L["Select_ban_type"] .. banType)
             return
         end
         local command
@@ -376,7 +376,7 @@ function AccountModule:CreateAccountPanel()
             command = ".ban playeraccount " .. nameValue .. " " .. timeValue .. " " .. reasonValue
             print(string.format(L["Ban_PlayerAccount_done"], nameValue, timeValue, reasonValue))
         end
-        print("Debug: Commande envoyée en SAY: " .. command)
+        -- print("Debug: Commande envoyée en SAY: " .. command)
         SendChatMessage(command, "SAY")
     end)
 
@@ -412,7 +412,7 @@ function AccountModule:CreateAccountPanel()
                 UIDropDownMenu_SetSelectedID(bnetDropdown, i)
                 UIDropDownMenu_SetText(bnetDropdown, option.text)
                 bnetDropdown.selectedOption = option
-                print("DEBUG: Option sélectionnée: " .. option.text)
+                -- print("DEBUG: Option sélectionnée: " .. option.text)
             end
             UIDropDownMenu_AddButton(info, level)
         end
@@ -454,7 +454,7 @@ function AccountModule:CreateAccountPanel()
                 return
             end
         end
-        print("Debug: Commande envoyée en SAY: " .. finalCommand)
+        -- print("Debug: Commande envoyée en SAY: " .. finalCommand)
         SendChatMessage(finalCommand, "SAY")
     end)
     btnBnetGo:SetScript("OnEnter", function(self)

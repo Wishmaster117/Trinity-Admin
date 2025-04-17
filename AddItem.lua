@@ -161,12 +161,12 @@ function AddItem:CreateAddItemPanel()
 				input1:SetText(option.defaults[1])
 				input2:SetText(option.defaults[2])
 				input3:SetText(option.defaults[3])
-				if option.defaults[2] == "Don't use" or option.defaults[2] == "" then
+				if option.defaults[2] == L["Don't use"] or option.defaults[2] == "" then
 					input2:Hide()
 				else
 					input2:Show()
 				end
-				if option.defaults[3] == "Don't use" or option.defaults[3] == "" then
+				if option.defaults[3] == L["Don't use"] or option.defaults[3] == "" then
 					input3:Hide()
 				else
 					input3:Show()
@@ -214,7 +214,7 @@ function AddItem:CreateAddItemPanel()
     local btnGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnGo:SetSize(60, 22)
     btnGo:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 35, -10)
-    btnGo:SetText("Go")
+    btnGo:SetText(L["Go"])
     btnGo:SetScript("OnClick", function()
         local v1 = input1:GetText()
         local v2 = input2:IsShown() and input2:GetText() or ""
@@ -250,7 +250,7 @@ function AddItem:CreateAddItemPanel()
             end
         end
         local finalCommand = selectedOption.command .. " " .. table.concat(args, " ")
-        print("Commande envoyée: " .. finalCommand)-- Pour debug
+        -- print("Commande envoyée: " .. finalCommand)-- Pour debug
         SendChatMessage(finalCommand, "SAY")
     end)
 
@@ -260,19 +260,19 @@ function AddItem:CreateAddItemPanel()
     local btnClean = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnClean:SetSize(60, 22)
     btnClean:SetPoint("TOPLEFT", btnGo, "TOPRIGHT", 10, 0)
-    btnClean:SetText("Clean")
+    btnClean:SetText(L["Clean"])
     btnClean:SetScript("OnClick", function()
         -- Réinitialiser les champs aux valeurs par défaut de l'option sélectionnée
         input1:SetText(selectedOption.defaults[1])
         input2:SetText(selectedOption.defaults[2])
         input3:SetText(selectedOption.defaults[3])
         -- Masquer ou afficher les champs selon leur valeur par défaut
-        if selectedOption.defaults[2] == "Don't use" or selectedOption.defaults[2] == "" then
+        if selectedOption.defaults[2] == L["Don't use"] or selectedOption.defaults[2] == "" then
             input2:Hide()
         else
             input2:Show()
         end
-        if selectedOption.defaults[3] == "Don't use" or selectedOption.defaults[3] == "" then
+        if selectedOption.defaults[3] == L["Don't use"] or selectedOption.defaults[3] == "" then
             input3:Hide()
         else
             input3:Show()
@@ -294,7 +294,7 @@ function AddItem:CreateAddItemPanel()
     ------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)
-    btnBack:SetText("Retour")
+    btnBack:SetText(L["Back"])
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
@@ -645,7 +645,7 @@ local function PopulateGOScroll(options)
 
         -- Lorsqu'on clique sur le bouton
         btn:SetScript("OnClick", function()
-            print("Option cliquée :", textToShow, "Entry:", option.entry)
+            -- print("Option cliquée :", textToShow, "Entry:", option.entry)
             SendChatMessage(".additem set " .. option.entry, "SAY")
         end)
 
@@ -691,7 +691,7 @@ end
     for i = 1, #ItemSetData do
         table.insert(defaultOptions, ItemSetData[i])
     end
-    print("[DEBUG]Nombre d'items dans ItemSetData: " .. #ItemSetData)
+    -- print("[DEBUG]Nombre d'items dans ItemSetData: " .. #ItemSetData)
     currentPage = 1
     PopulateGOScroll(defaultOptions)
 	

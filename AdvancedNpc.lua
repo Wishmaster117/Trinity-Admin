@@ -36,7 +36,7 @@ local function InitializeNPCData()
 	loadDataFromPart(NpcDataPart5)
 	loadDataFromPart(NpcDataPart6)
 	loadDataFromPart(NpcDataPart7)
-    print("Fin du chargement NpcData. Nombre total chargé :", #NPCData)
+    -- print("Fin du chargement NpcData. Nombre total chargé :", #NPCData)
 end
 
 -- Appel unique au démarrage :
@@ -82,7 +82,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Advanced Npc Add")
+    panel.title:SetText(L["Advanced Npc Add"])
 
     ------------------------------------------------------------
     -- Variables
@@ -98,13 +98,13 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     -- advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
 	advancedLabel:SetPoint("TOP", panel, "TOP", 0, -20)
-    advancedLabel:SetText("Advanced Npc Add")
+    advancedLabel:SetText(L["Advanced Npc Add"])
 
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
     filterEditBox:SetSize(150, 22)
     -- filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
 	filterEditBox:SetPoint("TOP", advancedLabel, "BOTTOM", 0, -5)
-    filterEditBox:SetText("Search...")
+    filterEditBox:SetText(L["Search..."])
 	
     ------------------------------------------------------------
     -- ScrollFrame et scrollChild
@@ -123,12 +123,12 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Preview")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", -120, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Next")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOM", panel, "BOTTOM", 60, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -355,8 +355,8 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
         self:ClearFocus()
         local searchText = self:GetText():lower()
 
-        if searchText == "search..." or #searchText < 3 then
-            print("Please Enter at least 3 characters to search...")
+        if searchText == L["search..."] or #searchText < 3 then
+            print(L["Please enter at least 3 characters for the search."])
             return
         end
 
@@ -370,12 +370,12 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     ------------------------------------------------------------
     local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnReset:SetHeight(22)
-    btnReset:SetText("Reset")
+    btnReset:SetText(L["Reset"])
 	btnReset:SetWidth(btnReset:GetTextWidth() + 10)
     btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Reset Search Field", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Reset Search Field"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
     end)
     btnReset:SetScript("OnLeave", function(self)
@@ -397,12 +397,12 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     ------------------------------------------------------------
     local btnDelete = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnDelete:SetHeight(22)
-    btnDelete:SetText("Delete Npc")
+    btnDelete:SetText(L["Delete Npc"])
 	btnDelete:SetWidth(btnDelete:GetTextWidth() + 10)
     btnDelete:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
 	btnDelete:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Delete Selected NPC", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Delete Selected NPC"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
     end)
     btnDelete:SetScript("OnLeave", function(self)
@@ -410,7 +410,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     end)	
     btnDelete:SetScript("OnClick", function()
 		if not UnitExists("target") then 
-		print("Please Select a Creature!") 
+		print(L["Please Select a Creature!"]) 
 		return 
 		end
 	local command = ".npc delete" 
@@ -422,12 +422,12 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     ------------------------------------------------------------
     local btnMove = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnMove:SetHeight(22)
-    btnMove:SetText("Move Npc")
+    btnMove:SetText(L["Move Npc"])
 	btnMove:SetWidth(btnMove:GetTextWidth() + 10)
     btnMove:SetPoint("LEFT", btnDelete, "RIGHT", 10, 0)
 	btnMove:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Move the NPC to your coordinates.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Move the NPC to your coordinates."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
     end)
     btnMove:SetScript("OnLeave", function(self)
@@ -435,7 +435,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     end)	
     btnMove:SetScript("OnClick", function()
 		if not UnitExists("target") then 
-		print("Please Select a Creature!") 
+		print(L["Please Select a Creature!"]) 
 		return 
 		end
 		local command = ""
@@ -449,7 +449,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
 
 	local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)
-    btnBack:SetText("Retour")
+    btnBack:SetText(L["Back"])
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()

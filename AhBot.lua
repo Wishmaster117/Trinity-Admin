@@ -23,7 +23,7 @@ function AhBot:CreateAhBotPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("AH Bot Control Panel")
+    panel.title:SetText(L["AH Bot Control Panel"])
 
     -- Bouton Retour commun
     -- local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -83,7 +83,7 @@ function AhBot:CreateAhBotPanel()
 
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -94,7 +94,7 @@ function AhBot:CreateAhBotPanel()
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -114,7 +114,7 @@ function AhBot:CreateAhBotPanel()
             local row = CreateRow(page, 40)
             local label = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             label:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
-            label:SetText("ahbot items Ammont")
+            label:SetText(L["ahbot items Ammont"])
             local defaults = {"GrayItems", "WhiteItems", "GreenItems", "BlueItems", "PurpleItems", "OrangeItems", "YellowItems"}
             local edits = {}
             local fieldX = 0
@@ -131,8 +131,8 @@ function AhBot:CreateAhBotPanel()
             local btnSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnSet:SetSize(100, 22)
             btnSet:SetPoint("TOPLEFT", row, "TOPLEFT", fieldX, -20)
-            btnSet:SetText("Set Amount")
-            local tooltipText = "Syntax: .ahbot items $GrayItems $WhiteItems $GreenItems $BlueItems $PurpleItems $OrangeItems $YellowItems\r\n\r\nSet amount of each items color be selled on auction."
+            btnSet:SetText(L["Set Amount"])
+            local tooltipText = L["Set amount of each items color be selled on auction."]
             btnSet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(tooltipText, 1, 1, 1, 1, true)
@@ -144,14 +144,14 @@ function AhBot:CreateAhBotPanel()
                 for i = 1, 7 do
                     local val = edits[i]:GetText()
                     if not val or val == "" or val == defaults[i] then
-                        print("All fields are mandatory! Please fill them correctly.")
+                        print(L["All fields are required! Please fill them correctly."])
                         return
                     end
                     table.insert(values, val)
                 end
                 local fullCommand = ".ahbot items " .. table.concat(values, " ")
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
 
@@ -164,12 +164,12 @@ function AhBot:CreateAhBotPanel()
                 editBox:SetSize(80, 22)
                 editBox:SetPoint("TOPLEFT", row, "TOPLEFT", xOffset, -20)
                 editBox:SetAutoFocus(false)
-                editBox:SetText("Amount")
+                editBox:SetText(L["Amountahbot"])
                 
                 local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
                 btn:SetSize(100, 22)
                 btn:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
-                btn:SetText("Add " .. color.name)
+                btn:SetText(L["Add color"] .. color.name)
                 
                 local tooltipText = "Syntax: .ahbot items " .. color.cmd .. " $" .. color.name .. "Items\r\n\r\nSet amount of " .. color.name .. " color items be selled on auction."
                 btn:SetScript("OnEnter", function(self)
@@ -180,13 +180,13 @@ function AhBot:CreateAhBotPanel()
                 btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
                 btn:SetScript("OnClick", function()
                     local val = editBox:GetText()
-                    if not val or val == "" or val == "Amount" then
-                        print("Please enter a valid amount for " .. color.name .. ".")
+                    if not val or val == "" or val == L["Amountahbot"] then
+                        print(L["Please enter a valid amount for "] .. color.name .. ".")
                         return
                     end
                     local fullCommand = ".ahbot items " .. color.cmd .. " " .. val
                     SendChatMessage(fullCommand, "SAY")
-                    print("[DEBUG] Commande envoyée: " .. fullCommand)
+                    -- print("[DEBUG] Commande envoyée: " .. fullCommand)
                 end)
                 xOffset = xOffset + 80 + 10 + 100 + 20
             end
@@ -220,7 +220,7 @@ function AhBot:CreateAhBotPanel()
             local row = CreateRow(page, 40)
             local label = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             label:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
-            label:SetText("ahbot ratio (3 values)")
+            label:SetText(L["ahbot ratio (3 values)"])
             local defaults = {"allianceratio", "horderatio", "neutralratio"}
             local edits = {}
             local fieldX = 0
@@ -236,8 +236,8 @@ function AhBot:CreateAhBotPanel()
             local btnRatio = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnRatio:SetSize(100, 22)
             btnRatio:SetPoint("TOPLEFT", row, "TOPLEFT", fieldX, -20)
-            btnRatio:SetText("Add Ratio")
-            local tooltipText = "Syntax: .ahbot ratio $allianceratio $horderatio $neutralratio\r\n\r\nSet ratio of items in 3 auctions house."
+            btnRatio:SetText(L["Add Ratio"])
+            local tooltipText = L["Set ratio of items in 3 auctions house."]
             btnRatio:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(tooltipText, 1, 1, 1, 1, true)
@@ -249,14 +249,14 @@ function AhBot:CreateAhBotPanel()
                 for i = 1, 3 do
                     local val = edits[i]:GetText()
                     if not val or val == "" or val == defaults[i] then
-                        print("All 3 ratio fields are mandatory!")
+                        print(L["All 3 ratio fields are required!"])
                         return
                     end
                     table.insert(values, val)
                 end
                 local fullCommand = ".ahbot ratio " .. table.concat(values, " ")
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
 
@@ -282,12 +282,12 @@ function AhBot:CreateAhBotPanel()
             btn:SetScript("OnClick", function()
                 local val = editBox:GetText()
                 if not val or val == "" or val == "Ratio" then
-                    print("Please enter a valid ratio for " .. factionName .. ".")
+                    print(L["Please enter a valid ratio for "] .. factionName .. ".")
                     return
                 end
                 local fullCommand = ".ahbot ratio " .. factionName .. " " .. val
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
 
@@ -314,9 +314,9 @@ function AhBot:CreateAhBotPanel()
             local btnRebuild = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnRebuild:SetSize(80, 22)
             btnRebuild:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
-            btnRebuild:SetText("Rebuild")
+            btnRebuild:SetText(L["Rebuild"])
 
-            local tooltipRebuild = "Syntax: .ahbot rebuild [all]\r\n\r\nExpire all actual auction of ahbot except bided by player. Binded auctions included to expire if \"all\" option used. Ahbot re-fill auctions base at current settings then."
+            local tooltipRebuild = L["Aution House Expire Tooltip"]
             btnRebuild:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(tooltipRebuild, 1, 1, 1, 1, true)
@@ -330,7 +330,7 @@ function AhBot:CreateAhBotPanel()
                     fullCommand = fullCommand .. " " .. val
                 end
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
 
@@ -346,9 +346,9 @@ function AhBot:CreateAhBotPanel()
             local btnStatus = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnStatus:SetSize(80, 22)
             btnStatus:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
-            btnStatus:SetText("AH Status")
+            btnStatus:SetText(L["AH Status"])
 
-            local tooltipStatus = "Syntax: .ahbot status [all]\r\n\r\nShow current ahbot state data in short form, and with \"all\" with details."
+            local tooltipStatus = L["Ah_Curent_Stat"]
             btnStatus:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(tooltipStatus, 1, 1, 1, 1, true)
@@ -362,7 +362,7 @@ function AhBot:CreateAhBotPanel()
                     fullCommand = fullCommand .. " " .. val
                 end
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
 
@@ -372,9 +372,9 @@ function AhBot:CreateAhBotPanel()
             local btnReload = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnReload:SetSize(100, 22)
             btnReload:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -20)
-            btnReload:SetText("Reload AH")
+            btnReload:SetText(L["Reload AH"])
 
-            local tooltipReload = "Syntax: .ahbot reload\r\n\r\nReload AHBot settings from configuration file."
+            local tooltipReload = L["Reload AHBot settings from configuration file."]
             btnReload:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(tooltipReload, 1, 1, 1, 1, true)
@@ -384,7 +384,7 @@ function AhBot:CreateAhBotPanel()
             btnReload:SetScript("OnClick", function()
                 local fullCommand = ".ahbot reload"
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
     end

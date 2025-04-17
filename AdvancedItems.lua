@@ -32,7 +32,7 @@ local function InitializeItemsData()
     loadDataFromPart(ItemsDataPart1)
     loadDataFromPart(ItemsDataPart2)
     loadDataFromPart(ItemsDataPart3)
-    print("Fin du chargement ItemsData. Nombre total d'items chargé :", #ItemsData)
+    -- print("Fin du chargement ItemsData. Nombre total d'items chargé :", #ItemsData)
 end
 
 -- Appel unique au démarrage :
@@ -78,7 +78,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Advance Items Panel")
+    panel.title:SetText(L["Advance Items Panel"])
 
     ------------------------------------------------------------
     -- Variables
@@ -94,27 +94,27 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     -- advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
 	advancedLabel:SetPoint("TOP", panel, "TOP", 0, -20)
-    advancedLabel:SetText("Items Advanced Add")
+    advancedLabel:SetText(L["Add Items Advanced"])
 
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
     filterEditBox:SetSize(150, 22)
     -- filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
 	filterEditBox:SetPoint("TOP", advancedLabel, "BOTTOM", 0, -5)
-    filterEditBox:SetText("Search...")
+    filterEditBox:SetText(L["Search..."])
 	
 	-- Nouvelle EditBox pour le nom du joueur, placée à droite de filterEditBox
 	local playerNameEditBox = CreateFrame("EditBox", "TrinityAdminPlayerNameEditBox", panel, "InputBoxTemplate")
 	playerNameEditBox:SetSize(120, 22)
 	-- Placez-la à droite de la box de recherche. Vous pouvez ajuster les offsets si nécessaire :
 	playerNameEditBox:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
-	playerNameEditBox:SetText("Nom du Joueur")
+	playerNameEditBox:SetText(L["Player Name"])
 
 
 	-- Nouvelle EditBox pour le montant ("HowMuch?"), placée à droite de la zone "Nom du Joueur"
 	local howMuchEditBox = CreateFrame("EditBox", "TrinityAdminHowMuchEditBox", panel, "InputBoxTemplate")
 	howMuchEditBox:SetSize(100, 22)
 	howMuchEditBox:SetPoint("LEFT", playerNameEditBox, "RIGHT", 10, 0)
-	howMuchEditBox:SetText("HowMuch?")
+	howMuchEditBox:SetText(L["HowMuch"])
     ------------------------------------------------------------
     -- ScrollFrame et scrollChild
     ------------------------------------------------------------
@@ -132,12 +132,12 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Preview")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", -120, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Next")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOM", panel, "BOTTOM", 60, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -261,7 +261,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
 			local howMuch = howMuchEditBox:GetText()
 			local command = ""
 			
-			if playerName == "Nom du Joueur" or playerName == "" then
+			if playerName == L["Player Name"] or playerName == "" then
 				-- Pas de nom de joueur
 				if howMuch == "" or howMuch == "HowMuch?" then
 					command = ".additem " .. option.entry
@@ -277,8 +277,8 @@ function AdvancedItems:CreateAdvancedItemsPanel()
 				end
 			end
 			
-			print("Option cliquée :", fullText, "Entry:", option.entry)
-			print("Commande envoyée :", command)
+			-- print("Option cliquée :", fullText, "Entry:", option.entry)
+			-- print("Commande envoyée :", command)
 			SendChatMessage(command, "SAY")
 			end)
 
@@ -341,7 +341,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
                 table.insert(results, entry)
             end
         end
-        print("Nombre de résultats trouvés :", #results)
+        -- print("Nombre de résultats trouvés :", #results)
         return results
     end
 
@@ -349,8 +349,8 @@ function AdvancedItems:CreateAdvancedItemsPanel()
         self:ClearFocus()
         local searchText = self:GetText():lower()
 
-        if searchText == "search..." or #searchText < 3 then
-            print("Veuillez entrer au moins 3 caractères pour la recherche.")
+        if searchText == L["Search..."] or #searchText < 3 then
+            print(L["Please enter at least 3 characters for the search."])
             return
         end
 
@@ -364,7 +364,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     ------------------------------------------------------------
     local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnReset:SetSize(80, 22)
-    btnReset:SetText("Reset")
+    btnReset:SetText(L["Reset"])
     btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
     btnReset:SetScript("OnClick", function()
         filterEditBox:SetText("")
@@ -383,7 +383,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
 
 	local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)
-    btnBack:SetText("Retour")
+    btnBack:SetText(L["Back"])
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()

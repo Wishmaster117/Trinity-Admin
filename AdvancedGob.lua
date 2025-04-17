@@ -48,7 +48,7 @@ GobInfoPopup:Hide()  -- Caché par défaut
 -- Titre de la fenêtre
 local title = GobInfoPopup:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 title:SetPoint("TOP", 0, -15)
-title:SetText("Gob Info")
+title:SetText(L["Gob Info"])
 
 -- Bouton Close
 local closeButton = CreateFrame("Button", nil, GobInfoPopup, "UIPanelCloseButton")
@@ -150,7 +150,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
     
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Advanced GameObjects")
+    panel.title:SetText(L["Advanced GameObjects"])
 
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
@@ -202,7 +202,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 
     btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -212,7 +212,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 
     btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -231,12 +231,12 @@ function AdvancedGob:CreateAdvancedGobPanel()
     
     local page1Title = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     page1Title:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, 0)
-    page1Title:SetText("Advanced GameObjects 1")
+    page1Title:SetText(L["Advanced GameObjects 1"])
 
     -- Sous-titre "Game Objects Near"
     local gameObjectsNearTitle = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     gameObjectsNearTitle:SetPoint("TOPLEFT", page1Title, "BOTTOMLEFT", 0, -20)
-    gameObjectsNearTitle:SetText("Game Objects Near")
+    gameObjectsNearTitle:SetText(L["Game Objects Near"])
 
     -- Champ de saisie pour la distance
     local distanceEditBox = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
@@ -252,7 +252,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
     btnShow:SetText("Show")
     btnShow:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .gobject near  [#distance]\nOutput gameobjects at distance #distance from player.\nOutput gameobject guids and coordinates sorted by distance from character.\nIf #distance not provided use 10 as default value.", 1, 1, 1, 1, true)
+        GameTooltip:SetText(L["Game Objects Near Tooltip"], 1, 1, 1, 1, true)
         GameTooltip:Show()
     end)
     btnShow:SetScript("OnLeave", function(self)
@@ -292,10 +292,10 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	local btnMemory = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 	btnMemory:SetSize(80, 22)
 	btnMemory:SetPoint("LEFT", gameObjectGuidEB, "RIGHT", 5, 0)
-	btnMemory:SetText("Memorize")
+	btnMemory:SetText(L["Memorize"])
 	btnMemory:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Click to save positions before making changes.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Click to save positions before making changes."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnMemory:SetScript("OnLeave", function(self)
@@ -305,7 +305,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnMemory:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print("Veuillez entrer un GameObject Guid valide.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		capturingMemory = true
@@ -385,11 +385,11 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	local btnDelete = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 	btnDelete:SetPoint("LEFT", deleteGuidEB, "RIGHT", 5, 0)
 	btnDelete:SetHeight(22)
-	btnDelete:SetText("Delete")
+	btnDelete:SetText(L["Delete"])
 	btnDelete:SetWidth(btnDelete:GetTextWidth() + 10)
 	btnDelete:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Delete The GameObject.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Delete The GameObject."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnDelete:SetScript("OnLeave", function(self)
@@ -398,12 +398,12 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnDelete:SetScript("OnClick", function(self)
 		local guid = deleteGuidEB:GetText()
 		if guid == "" or guid == "Enter GUID to delete" then
-			print("Please enter a valid GUID.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		local command = ".gobject delete " .. guid
 		SendChatMessage(command, "SAY")
-		print("Commande envoyée: " .. command)
+		-- print("Commande envoyée: " .. command)
 	end)
 	
 	-- Conteneur pour les boutons fléchés (placé à droite des champs de position)
@@ -416,17 +416,17 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	instructionsText:SetPoint("TOPRIGHT", arrowContainer, "TOPLEFT", 250, 70)
 	instructionsText:SetWidth(300)
 	instructionsText:SetJustifyH("LEFT")
-	instructionsText:SetText("Instructions: Get the object's GUID using the 'Show' button, enter this GUID in the 'Enter GameObject GUID' field and press Memorize to save the positions. Then, use the buttons to move the GameObject.")
+	instructionsText:SetText(L["Move_instructions"])
 	
 	-- Bouton flèche haut (correspond à z+)
 	local btnUp = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
 	btnUp:SetHeight(22)
 	btnUp:SetPoint("TOP", arrowContainer, "TOP", 0, -5)
-	btnUp:SetText("Move Up")
+	btnUp:SetText(L["Move Up"])
 	btnUp:SetWidth(btnUp:GetTextWidth() + 10)
 	btnUp:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Move GameObject Up (+Z Position).", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Move GameObject Up (+Z Position)."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnUp:SetScript("OnLeave", function(self)
@@ -436,7 +436,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnUp:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print("Veuillez entrer un GameObject Guid valide.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -446,18 +446,18 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		posZEB:SetText(tostring(z))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
 		SendChatMessage(command, "SAY")
-		print("Commande envoyée: " .. command)
+		-- print("Commande envoyée: " .. command)
 	end)
 	
 	-- Bouton flèche gauche (correspond à +X)
 	local btnLeft = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
 	btnLeft:SetHeight(22)
 	btnLeft:SetPoint("LEFT", btnUp, "BOTTOMLEFT", 70, -20)
-	btnLeft:SetText("Move Right")
+	btnLeft:SetText(L["Move Right"])
 	btnLeft:SetWidth(btnLeft:GetTextWidth() + 10)
 	btnLeft:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Move GameObject to Right (+X Position).", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Move GameObject to Right (+X Position)."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnLeft:SetScript("OnLeave", function(self)
@@ -467,7 +467,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnLeft:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print("Veuillez entrer un GameObject Guid valide.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -477,18 +477,18 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		posXEB:SetText(tostring(x))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
 		SendChatMessage(command, "SAY")
-		print("Commande envoyée: " .. command)
+		-- print("Commande envoyée: " .. command)
 	end)
 	
 	-- Bouton flèche droite (correspond à -X)
 	local btnRight = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
 	btnRight:SetHeight(22)
 	btnRight:SetPoint("RIGHT", btnUp, "BOTTOMRIGHT", -70, -20)
-	btnRight:SetText("Move Left")
+	btnRight:SetText(L["Move Left"])
 	btnRight:SetWidth(btnRight:GetTextWidth() + 10)
 	btnRight:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Move GameObject to Left (-X Position).", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Move GameObject to Left (-X Position)."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnRight:SetScript("OnLeave", function(self)
@@ -498,7 +498,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnRight:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print("Veuillez entrer un GameObject Guid valide.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -508,18 +508,18 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		posXEB:SetText(tostring(x))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
 		SendChatMessage(command, "SAY")
-		print("Commande envoyée: " .. command)
+		-- print("Commande envoyée: " .. command)
 	end)
 	
 	-- Bouton flèche bas (correspond à z-)
 	local btnDown = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
 	btnDown:SetHeight(22)
 	btnDown:SetPoint("BOTTOM", arrowContainer, "BOTTOM", 0, 5)
-	btnDown:SetText("Move Down")
+	btnDown:SetText(L["Move Down"])
 	btnDown:SetWidth(btnDown:GetTextWidth() + 10)
 	btnDown:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Move GameObject Down (-Z Position).", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Move GameObject Down (-Z Position)."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnDown:SetScript("OnLeave", function(self)
@@ -529,7 +529,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnDown:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print("Veuillez entrer un GameObject Guid valide.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -539,17 +539,17 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		posZEB:SetText(tostring(z))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
 		SendChatMessage(command, "SAY")
-		print("Commande envoyée: " .. command)
+		-- print("Commande envoyée: " .. command)
 	end)
 	
 	local btnReset = CreateFrame("Button", nil, arrowContainer, "UIPanelButtonTemplate")
 	btnReset:SetHeight(22)
-	btnReset:SetText("Reset")
+	btnReset:SetText(L["Reset"])
 	btnReset:SetWidth(btnReset:GetTextWidth() + 10)
 	btnReset:SetPoint("CENTER", btnDown, "BOTTOM", 0, -30)
 	btnReset:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Reset GameObject to its initial coordinates.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Reset GameObject to its initial coordinates."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnReset:SetScript("OnLeave", function(self)
@@ -558,7 +558,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	
 	btnReset:SetScript("OnClick", function(self)
 		if not initialX or not initialY or not initialZ then
-			print("Aucune position initiale mémorisée.")
+			print(L["No position memory"])
 			return
 		end
 		posXEB:SetText(tostring(initialX))
@@ -566,7 +566,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		posZEB:SetText(tostring(initialZ))
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print("Veuillez entrer un GameObject Guid valide.")
+			print(L["Enter valid GUID"])
 			return
 		end
 		local command = ".gobject move " .. guid .. " " .. initialX .. " " .. initialY .. " " .. initialZ
@@ -584,7 +584,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
     
     local page2Title = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     page2Title:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, 0)
-    page2Title:SetText("Advanced GameObjects 2")
+    page2Title:SetText(L["Advanced GameObjects 2"])
     -- Ici, vous ajoutez les boutons pour la page 2
 
     -------------------------------------------------------------------------------
@@ -604,7 +604,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
         end)
         btn:SetScript("OnClick", function(self)
             SendChatMessage(cmd, "SAY")
-            print("Commande envoyée: " .. cmd)
+            -- print("Commande envoyée: " .. cmd)
         end)
         return btn
     end

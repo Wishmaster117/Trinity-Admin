@@ -23,29 +23,29 @@ function AddLearn:CreateAddLearnPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Add Learn Panel")
+    panel.title:SetText(L["Add Learn Panel"])
 
     -- Section: Game Objects Tools
     local toolsTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     toolsTitle:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -20)
-    toolsTitle:SetText("Advanced Add Functions")
+    toolsTitle:SetText(L["Advanced Add Functions"])
     --------------------------------------------------------------------------------
     -- Création des trois champs de saisie
     --------------------------------------------------------------------------------
     local input1 = CreateFrame("EditBox", "TrinityAdminAddLearnInput1", panel, "InputBoxTemplate")
     input1:SetSize(150, 22)
     input1:SetPoint("TOPLEFT", toolsTitle, "BOTTOMLEFT", 10, -20)
-    input1:SetText("Choose a action")  -- Valeur par défaut générale
+    input1:SetText(L["Choose a action"])  -- Valeur par défaut générale
 
     local input2 = CreateFrame("EditBox", "TrinityAdminAddLearnInput2", panel, "InputBoxTemplate")
     input2:SetSize(150, 22)
     input2:SetPoint("TOPLEFT", input1, "BOTTOMLEFT", 0, -10)
-    input2:SetText("Choose a action")
+    input2:SetText(L["Choose a action"])
 
     local input3 = CreateFrame("EditBox", "TrinityAdminAddLearnInput3", panel, "InputBoxTemplate")
     input3:SetSize(150, 22)
     input3:SetPoint("TOPLEFT", input2, "BOTTOMLEFT", 0, -10)
-    input3:SetText("Choose a action")
+    input3:SetText(L["Choose a action"])
 
     --------------------------------------------------------------------------------
     -- Création du menu déroulant
@@ -60,31 +60,31 @@ function AddLearn:CreateAddLearnPanel()
         {
             text = "additem",
             command = ".additem",
-            tooltip = "Syntax: .additem #itemid/[#itemname] #itemcount #bonusListIDs\n\nAdds the specified number of items to inventory. (#itemcount and #bonusListIDs are optional)",
+            tooltip = L["ADDITEM_TOOLTIP"],
             defaults = { "ID or Name", "How many?", "BonusList id's separated by ;" }
         },
         {
             text = "additem set",
             command = ".additem set",
-            tooltip = "Syntax: .additemset #itemsetid #bonusListIDs\n\nAdds items from an item set. (#bonusListIDs is optional)",
+            tooltip = L["ADDITEM_SET_TOOLTIP"],
             defaults = { "ItemSet ID", "Don't use", "BonusList id's separated by ;" }
         },
         {
             text = "lookup item",
             command = ".lookup item",
-            tooltip = "Syntax: .lookup item $itemname\n\nLooks up an item by name (utilisez votre langue locale).",
+            tooltip = L["LOOKUP_ITEM_NAME_TOOLTIP"],
             defaults = { "Item Name", "Don't use", "Don't use" }
         },
         {
             text = "lookup item id",
             command = ".lookup item",
-            tooltip = "Syntax: .lookup item $itemid\n\nLooks up an item by its ID.",
+            tooltip = L["LOOKUP_BY_ID_TOOLTIP"],
             defaults = { "Item ID", "Don't use", "Don't use" }
         },
         {
             text = "lookup item set",
             command = ".lookup item set",
-            tooltip = "Syntax: .lookup itemset $itemsetname\n\nLooks up an item set by name (utilisez votre langue locale).",
+            tooltip = L["LOOKUP_ITEM_SET_TOOLTIP"],
             defaults = { "Item Name", "", "" }
         },
     }
@@ -138,12 +138,12 @@ function AddLearn:CreateAddLearnPanel()
 				input1:SetText(option.defaults[1])
 				input2:SetText(option.defaults[2])
 				input3:SetText(option.defaults[3])
-				if option.defaults[2] == "Don't use" or option.defaults[2] == "" then
+				if option.defaults[2] == L["Don't use"] or option.defaults[2] == "" then
 					input2:Hide()
 				else
 					input2:Show()
 				end
-				if option.defaults[3] == "Don't use" or option.defaults[3] == "" then
+				if option.defaults[3] == L["Don't use"] or option.defaults[3] == "" then
 					input3:Hide()
 				else
 					input3:Show()
@@ -191,7 +191,7 @@ function AddLearn:CreateAddLearnPanel()
     local btnGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnGo:SetSize(60, 22)
     btnGo:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 35, -10)
-    btnGo:SetText("Go")
+    btnGo:SetText(L["Go"])
     btnGo:SetScript("OnClick", function()
         local v1 = input1:GetText()
         local v2 = input2:IsShown() and input2:GetText() or ""
@@ -200,13 +200,13 @@ function AddLearn:CreateAddLearnPanel()
         -- Pour lookup, seule la première zone est utilisée
         if selectedOption.text == "lookup item" or selectedOption.text == "lookup item id" or selectedOption.text == "lookup item set" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print("Veuillez remplir le champ requis.")
+                print(L["Fill_required_field"])
                 return
             end
             args = { v1 }
         elseif selectedOption.text == "additem" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print("Le champ 'ID or Name' est obligatoire.")
+                print(L["Fill_id_field"])
                 return
             end
             table.insert(args, v1)
@@ -218,7 +218,7 @@ function AddLearn:CreateAddLearnPanel()
             end
         elseif selectedOption.text == "additem set" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print("Le champ 'ItemSet ID' est obligatoire.")
+                print(L["Fill_itemsetid_field"])
                 return
             end
             table.insert(args, v1)
@@ -227,7 +227,7 @@ function AddLearn:CreateAddLearnPanel()
             end
         end
         local finalCommand = selectedOption.command .. " " .. table.concat(args, " ")
-        print("Commande envoyée: " .. finalCommand)
+        -- print("Commande envoyée: " .. finalCommand)
         SendChatMessage(finalCommand, "SAY")
     end)
 
@@ -237,19 +237,19 @@ function AddLearn:CreateAddLearnPanel()
     local btnClean = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnClean:SetSize(60, 22)
     btnClean:SetPoint("TOPLEFT", btnGo, "TOPRIGHT", 10, 0)
-    btnClean:SetText("Clean")
+    btnClean:SetText(L["Clean"])
     btnClean:SetScript("OnClick", function()
         -- Réinitialiser les champs aux valeurs par défaut de l'option sélectionnée
         input1:SetText(selectedOption.defaults[1])
         input2:SetText(selectedOption.defaults[2])
         input3:SetText(selectedOption.defaults[3])
         -- Masquer ou afficher les champs selon leur valeur par défaut
-        if selectedOption.defaults[2] == "Don't use" or selectedOption.defaults[2] == "" then
+        if selectedOption.defaults[2] == L["Don't use"] or selectedOption.defaults[2] == "" then
             input2:Hide()
         else
             input2:Show()
         end
-        if selectedOption.defaults[3] == "Don't use" or selectedOption.defaults[3] == "" then
+        if selectedOption.defaults[3] == L["Don't use"] or selectedOption.defaults[3] == "" then
             input3:Hide()
         else
             input3:Show()
@@ -271,7 +271,7 @@ function AddLearn:CreateAddLearnPanel()
     ------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)
-    btnBack:SetText("Retour")
+    btnBack:SetText(L["Back"])
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
@@ -283,7 +283,7 @@ function AddLearn:CreateAddLearnPanel()
     ------------------------------------------------------------
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
-    advancedLabel:SetText("Item Set Advanced Add")
+    advancedLabel:SetText(L["Item Set Advanced Add"])
 
     ------------------------------------------------------------
     -- Champ de saisie pour filtrer la liste
@@ -291,7 +291,7 @@ function AddLearn:CreateAddLearnPanel()
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
     filterEditBox:SetSize(150, 22)
     filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
-    filterEditBox:SetText("Search...")
+    filterEditBox:SetText(L["Search..."])
 
     ------------------------------------------------------------
     -- ScrollFrame + scrollChild
@@ -311,12 +311,12 @@ function AddLearn:CreateAddLearnPanel()
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Preview")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Next")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -395,7 +395,7 @@ function AddLearn:CreateAddLearnPanel()
 			end)
 
 			btn:SetScript("OnClick", function()
-				print("Option cliquée :", fullText, "Entry:", option.entry)
+				-- print("Option cliquée :", fullText, "Entry:", option.entry)
 				SendChatMessage(".additem set " .. option.entry, "SAY")
 			end)
 		
@@ -453,7 +453,7 @@ function AddLearn:CreateAddLearnPanel()
 	
 		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
 		if #searchText < 3 then
-			print("Veuillez entrer au moins 3 caractères pour la recherche.")
+			print(L["Please enter at least 3 characters for the search."])
 			return
 		end
 	
@@ -503,7 +503,7 @@ function AddLearn:CreateAddLearnPanel()
 	------------------------------------------------------------
 	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 	btnReset:SetSize(80, 22)
-	btnReset:SetText("Reset")
+	btnReset:SetText(L["Reset"])
 	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnClick", function()
 		filterEditBox:SetText("")  -- Efface le champ de recherche

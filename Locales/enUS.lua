@@ -27,7 +27,7 @@ if not L then return end
 	L["Tickets Management"] = "Tickets Management"
 	---- End main frame buttons
 
-	---- Varianles globales
+	---- Varialles globales
 	L["Preview"] = "Preview"
 	L["Next"] = "Next"
 	L["Search..."] = "Search..."
@@ -207,9 +207,7 @@ if not L then return end
 	
 	
 	
-	
-	
-	---- End Misc Module
+		---- End Misc Module
     L["GM Functions Panel"]     = "GM Functions Panel"
 	L["TrinityAdmin Main Menu"] = "TrinityCore GM Tools By TheWarlock"
     L["Teleport Panel"]         = "Teleport Panel"
@@ -2066,7 +2064,7 @@ L["Inscription"] = "Inscription"
 L["Tailoring"] = "Tailoring"
 L["Jewelcrafting"] = "Jewelcrafting"
 L["Leatherworking"] = "Leatherworking"
-L["Alchemy"] = "Alchemy")
+L["Alchemy"] = "Alchemy"
 L["Archaeology"] = "Archaeology"
 L["Herbalism"] = "Herbalism"
 L["Fishing"] = "Fishing"
