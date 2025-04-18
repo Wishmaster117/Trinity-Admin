@@ -151,22 +151,22 @@ local function CreateRadioCommandRow(parent, y, rowLabel, tooltipText, commandPr
 end
 
 -- 2. Bouton radio "Cheat Casttime"
-yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Casttime", "Syntax: .cheat casttime [on/off]\nEnables or disables your character's spell cast times.", ".cheat casttime")
+yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Casttime", L["Enables or disables your character's spell cast times."], ".cheat casttime")
 
 -- 3. Bouton radio "Cheat Cooldown"
-yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Cooldown", "Syntax: .cheat cooldown [on/off]\nEnables or disables your character's spell cooldowns.", ".cheat cooldown")
+yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Cooldown", L["Enables or disables your character's spell cooldowns."], ".cheat cooldown")
 
 -- 4. Bouton radio "Cheat God"
-yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat God", "Syntax: .cheat god [on/off]\nEnables or disables your character's ability to take damage.", ".cheat god")
+yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat God", L["Enables or disables your character's ability to take damage."], ".cheat god")
 
 -- 5. Bouton radio "Cheat Power"
-yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Power", "Syntax: .cheat power [on/off]\nEnables or disables your character's spell cost (e.g. mana).", ".cheat power")
+yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Power", L["Enables or disables your character's spell cost (e.g. mana)."], ".cheat power")
 
 -- 6. Bouton radio "Cheat Taxi"
-yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Taxi", "Syntax: .cheat taxi [on/off]\nTemporary grant access or remove to all taxi routes for the selected character.\nIf no character is selected, hide or reveal all routes (visited taxi nodes remain accessible after removal).", ".cheat taxi")
+yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Taxi", L["Temporary grant access or remove to all taxi routes for the selected character.\nIf no character is selected, hide or reveal all routes (visited taxi nodes remain accessible after removal)."], ".cheat taxi")
 
 -- 7. Bouton radio "Cheat Waterwalk"
-yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Waterwalk", "Syntax: .cheat waterwalk [on/off]\nSet on/off waterwalk state for selected player or self if no player selected.", ".cheat waterwalk")
+yOffset = CreateRadioCommandRow(panel, yOffset, "Cheat Waterwalk", L["Set on/off waterwalk state for selected player or self if no player selected."], ".cheat waterwalk")
 
 -- 8. Cases à cocher pour "Cheat Explore"
 local labelExplore = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -200,11 +200,11 @@ end)
 
 local btnExecute = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 btnExecute:SetPoint("TOPLEFT", checkboxReveal, "TOPRIGHT", 60, -4)
-btnExecute:SetText("Execute")
+btnExecute:SetText(L["Execute"])
 btnExecute:SetSize(btnExecute:GetTextWidth() + 20, 22)
 btnExecute:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .cheat explore #flag\nReveal or hide all maps for the selected player. If no player is selected, hide or reveal maps to you.\nUse a #flag of value 1 to reveal, or 0 to hide all maps.", 1,1,1,1,true)
+    GameTooltip:SetText(L["Reveal or hide all maps for the selected player. If no player is selected, hide or reveal maps to you.\nUse a #flag of value 1 to reveal, or 0 to hide all maps."], 1,1,1,1,true)
     GameTooltip:Show()
 end)
 btnExecute:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -215,7 +215,7 @@ btnExecute:SetScript("OnClick", function()
     elseif checkboxHide:GetChecked() then
         flag = 0
     else
-        print("Veuillez sélectionner Hide ou Reveal pour cheat explore.")
+        print(L["Select Hide or Reveal for cheat explore."])
         return
     end
     local fullCommand = ".cheat explore " .. flag
