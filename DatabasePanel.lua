@@ -173,7 +173,7 @@ UIDropDownMenu_SetText(dropdown, options[1].text)
     local btnReload = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
     btnReload:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
     btnReload:SetSize(80, 22)
-    btnReload:SetText("Reload")
+    btnReload:SetText(L["Reload"])
     btnReload:SetScript("OnClick", function()
    if dropdown.selectedOption then
       SendChatMessage(dropdown.selectedOption.command, "SAY")
@@ -209,7 +209,7 @@ function DatabaseModule:CreateDatabasePanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Database Panel")
+    panel.title:SetText(L["Database Management"])
 
     -- Création des 3 groupes de commandes
     -- Par exemple, on commence à y = -40 pour le premier groupe, puis on décale de -80 pour le second, -120 pour le troisième
