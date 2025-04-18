@@ -20,7 +20,7 @@ function cheat:CreatecheatPanel()
     bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)  -- Fond sombre, modifiez selon vos besoins
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Cheat Panel")  -- Vous pouvez utiliser L si nécessaire
+    panel.title:SetText(L["Cheats Panel"])  -- Vous pouvez utiliser L si nécessaire
 
 local bg = panel:CreateTexture(nil, "BACKGROUND")
 bg:SetAllPoints(true)
@@ -28,7 +28,7 @@ bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)
 
 panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 panel.title:SetPoint("TOPLEFT", 10, -10)
-panel.title:SetText("Cheat Panel")
+panel.title:SetText(L["Cheats Panel"])
 
 -- local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 -- btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
@@ -53,7 +53,7 @@ end
 -- Fonction pour créer et afficher la fenêtre popup Ace3 avec le contenu du chat
 local function ShowChatPopup()
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("Chat Output")
+    frame:SetTitle(L["Chat Output"])
     frame:SetLayout("Flow")
     frame:SetWidth(400)
     frame:SetHeight(300)
@@ -76,11 +76,11 @@ local spacing = 30
 -- 1. Bouton "Show Enables Cheats"
 local btnShowCheats = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 btnShowCheats:SetPoint("TOPLEFT", 10, yOffset)
-btnShowCheats:SetText("Show Enables Cheats")
+btnShowCheats:SetText(L["Show Enables Cheats"])
 btnShowCheats:SetSize(btnShowCheats:GetTextWidth() + 20, 22)
 btnShowCheats:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .cheat status\n\nShows the cheats you currently have enabled.", 1,1,1,1,true)
+    GameTooltip:SetText(L["Shows the cheats you currently have enabled."], 1,1,1,1,true)
     GameTooltip:Show()
 end)
 btnShowCheats:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -137,7 +137,7 @@ local function CreateRadioCommandRow(parent, y, rowLabel, tooltipText, commandPr
         elseif radioOff:GetChecked() then
             value = "off"
         else
-            print("Veuillez sélectionner une option (On ou Off) pour " .. rowLabel)
+            print(L["Select (On or Off) for "] .. rowLabel)
             return
         end
         local fullCommand = commandPrefix .. " " .. value
