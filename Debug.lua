@@ -322,17 +322,17 @@ function Debug:CreateDebugPanel()
 	AutoWidthButton(debugThreatinfoButton)
 	
 	local debugAsanMemoryleakButton = CreateFrame("Button", "DebugAsanMemoryleakButton", commandsFramePage1, "UIPanelButtonTemplate")
-	debugAsanMemoryleakButton:SetText("Debug asan memoryleak")
+	debugAsanMemoryleakButton:SetText(L["Debug asan memoryleak"])
 	debugAsanMemoryleakButton:SetHeight(24)
 	debugAsanMemoryleakButton:SetPoint("LEFT", debugThreatinfoButton, "RIGHT", 10, 0)
 	debugAsanMemoryleakButton:SetScript("OnClick", function(self)
 		SendChatMessage(".debug asan memoryleak", "SAY")
-		print("Commande envoyée: .debug asan memoryleak")
+		-- print("Commande envoyée: .debug asan memoryleak")
 		OpenDebugOutputWindow("Debug asan memoryleak Output", ".debug asan memoryleak")
 	end)
 	debugAsanMemoryleakButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Triggers a memory leak.\nUse only when testing dynamic analysis tools.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Triggers a memory leak.\nUse only when testing dynamic analysis tools."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	debugAsanMemoryleakButton:SetScript("OnLeave", function(self)
@@ -341,17 +341,17 @@ function Debug:CreateDebugPanel()
 	AutoWidthButton(debugAsanMemoryleakButton)
 	
 	local debugAsanOutofboundsButton = CreateFrame("Button", "DebugAsanOutofboundsButton", commandsFramePage1, "UIPanelButtonTemplate")
-	debugAsanOutofboundsButton:SetText("Debug asan outofbounds")
+	debugAsanOutofboundsButton:SetText(L["Debug asan outofbounds"])
 	debugAsanOutofboundsButton:SetHeight(24)
 	debugAsanOutofboundsButton:SetPoint("LEFT", debugAsanMemoryleakButton, "RIGHT", 10, 0)
 	debugAsanOutofboundsButton:SetScript("OnClick", function(self)
 		SendChatMessage(".debug asan outofbounds", "SAY")
-		print("Commande envoyée: .debug asan outofbounds")
+		-- print("Commande envoyée: .debug asan outofbounds")
 		OpenDebugOutputWindow("Debug asan outofbounds Output", ".debug asan outofbounds")
 	end)
 	debugAsanOutofboundsButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Triggers a stack out of bounds read.\nUse only when testing dynamic analysis tools.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Triggers a stack out of bounds read.\nUse only when testing dynamic analysis tools."], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	debugAsanOutofboundsButton:SetScript("OnLeave", function(self)
@@ -369,90 +369,90 @@ function Debug:CreateDebugPanel()
 	
 	local page2Title = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	page2Title:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, 0)
-	page2Title:SetText("Debug Functions Page 2")
+	page2Title:SetText(L["Debug Functions Page 2"])
 	
 	-- Table qui définit les commandes debug et leur interface
 	local debugCommands = {
 	["debug boundary"] = {
 		fields = { {default="Fill"}, {default="Duration"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug boundary [fill] [duration]\nFlood fills the targeted unit's movement boundary and marks the edge of said boundary with debug creatures.\nSpecify 'fill' as first parameter to fill the entire area with debug creatures.",
+		buttonText = L["Start"],
+		tooltip = "Flood fills the targeted unit's movement boundary and marks the edge of said boundary with debug creatures.\nSpecify 'fill' as first parameter to fill the entire area with debug creatures.",
 		commandPrefix = ".debug boundary",
 		mandatory = {1}  -- Le champ Fill est obligatoire si Duration est renseigné
 	},
 	["debug conversation"] = {
 		fields = { {default="Conversation ID"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug conversation $conversationId\r\nPlay given conversation.",
+		buttonText = L["Start"],
+		tooltip = "Play given conversation.",
 		commandPrefix = ".debug conversation",
 		mandatory = {1}
 	},
 	["debug guidlimits"] = {
 		fields = { {default="Map ID"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug guidlimits <optional map id>\nShows the current Creature and GameObject highest Guid for the specified map id or for all maps if none is specified\n",
+		buttonText = L["Start"],
+		tooltip = "Shows the current Creature and GameObject highest Guid for the specified map id or for all maps if none is specified\n",
 		commandPrefix = ".debug guidlimits"
 	},
 	["debug instancespawn"] = {
 		fields = { {default="Group ID or explain"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug instancespawn [<groupID>/explain]\n\nDisplays information about the spawn groups being managed by the current instance script. If groupID is specified, additionally explains why that spawn group is in the listed state. If 'explain' is specified, explains all spawn groups.",
+		buttonText = L["Start"],
+		tooltip = "Displays information about the spawn groups being managed by the current instance script. If groupID is specified, additionally explains why that spawn group is in the listed state. If 'explain' is specified, explains all spawn groups.",
 		commandPrefix = ".debug instancespawn"
 	},
 	["debug loadcells"] = {
 		fields = { {default="Map ID"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug loadcells [mapId]\nLoads all cells for debugging purposes",
+		buttonText = L["Start"],
+		tooltip = "Loads all cells for debugging purposes",
 		commandPrefix = ".debug loadcells"
 	},
 	["debug moveflags"] = {
 		fields = { {default="NewMoveFlags"}, {default="NewMoveFlags2"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug moveflags [$newMoveFlags [$newMoveFlags2]]\r\nNo params given will output the current moveflags of the target",
+		buttonText = L["Start"],
+		tooltip = "No params given will output the current moveflags of the target",
 		commandPrefix = ".debug moveflags"
 	},
 	["debug neargraveyard"] = {
 		fields = { {default="Nothing or linked"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug neargraveyard [linked]\nFind the nearest graveyard from dbc or db (if linked)",
+		buttonText = L["Start"],
+		tooltip = "Find the nearest graveyard from dbc or db (if linked)",
 		commandPrefix = ".debug neargraveyard"
 	},
 	["debug objectcount"] = {
 		fields = { {default="Map ID"} },
-		buttonText = "Start",
-		tooltip = "Syntax: .debug objectcount <optional map id>\nShows the number of Creatures and GameObjects for the specified map id or for all maps if none is specified\n",
+		buttonText = L["Start"],
+		tooltip = "Shows the number of Creatures and GameObjects for the specified map id or for all maps if none is specified\n",
 		commandPrefix = ".debug objectcount"
 	},
 	["debug play cinematic"] = {
 		fields = { {default="Cinematic ID"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug play cinematic #cinematicid\r\n\r\nPlay cinematic #cinematicid for you. You stay at place while your mind fly.\r\n",
 		commandPrefix = ".debug play cinematic",
 		mandatory = {1}
 	},
 	["debug play movie"] = {
 		fields = { {default="Movie ID"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug play movie #movieid\r\n\r\nPlay movie #movieid for you.",
 		commandPrefix = ".debug play movie",
 		mandatory = {1}
 	},
 	["debug play music"] = {
 		fields = { {default="Music ID"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug play music #musicId\nPlay music with #musicId.\nMusic will be played only for you. Other players will not hear this.",
 		commandPrefix = ".debug play music",
 		mandatory = {1}
 	},
 	["debug objectsound"] = {
 		fields = { {default="SoundKit Id"}, {default="BroadcastText Id"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug play objectsound #soundKitId [#broadcastTextId]\nPlay object sound with #soundKitId [and #broadcastTextId].\nSound will be played only for you. Other players will not hear this.",
 		commandPrefix = ".debug play objectsound"
 	},
 	["debug play sound"] = {
 		fields = { {default="Sound ID"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug play sound #soundid\r\n\r\nPlay sound with #soundid.\r\nSound will be play only for you. Other players do not hear this.\r\nWarning: client may have more 5000 sounds...",
 		commandPrefix = ".debug play sound",
 		mandatory = {1}
@@ -472,31 +472,31 @@ function Debug:CreateDebugPanel()
 	},
 	["debug send playerchoice"] = {
 		fields = { {default="Choice Id"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug send playerchoice $choiceId\r\nSend given choice to player.",
 		commandPrefix = ".debug send playerchoice",
 		mandatory = {1}
 	},
 	["debug transport"] = {
 		dropdown = { options = {"Start", "stop"}, default = "start" },
-		buttonText = "Set",
+		buttonText = L["Set"],
 		tooltip = "Syntax: .debug transport [start/stop]\n\nAllows to stop the current transport at its nearest wait point and start movement of a stopped one. Not all transports can be started or stopped.",
 		commandPrefix = ".debug transport"
 	},
 	["debug warden force"] = {
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug warden force\nForces the warden to perform its action.",
 		commandPrefix = ".debug warden force"
 	},
 	["debug worldstate"] = {
 		fields = { {default="State Id"}, {default="Value"} },
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: debug worldstate $stateId $value\n\nSends a world state update for the specified state to your client.",
 		commandPrefix = ".debug worldstate",
 		mandatory = {1,2}
 	},
 	["debug dummy"] = {
-		buttonText = "Start",
+		buttonText = L["Start"],
 		tooltip = "Syntax: .debug dummy\nA dummy debug command.",
 		commandPrefix = ".debug dummy"
 	}
