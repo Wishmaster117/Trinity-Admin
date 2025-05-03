@@ -929,9 +929,41 @@ if not L then return end
 	L["List Respawns"] = "List Respawns"
 	L["List Respawns tooltip"] = "Lists all pending respawns within <distance> yards, or within current zone if not specified."
 	
-	
-	
-	
+	-- Fichier Learndamage.lua
+	L["Learn and Damage Funcs"] = "Learn and Damage Funcs"
+	L["Learn Panel"] = "Learn Panel"
+	L["LearnLP"] = "Learn"
+	L["LearnLP tooltip"] = "Selected character learn a spell of id #spell. If 'all' provided then all ranks learned."
+	L["no_player_selected_error"] = "Error: no player selected."
+	L["Learn Him"] = "Learn Him"
+	L["Learn Him Tooltip"] = "Learn for selected/$playername player all default spells for his race/class and spells rewarded by completed quests."
+	L["no_player_or_name_error"] = "Error: no player selected and no name entered."
+	L["Profession"] = "Profession"
+	L["Learn Recipes"] = "Learn Recipes"
+	L["Learn Recipes tooltips"] = "Learn recipes to player"
+	L["Learn Crafts"] = "Learn Crafts"
+	L["Learn Crafts Tooltip"] = "Learn Crafts to player"
+	L["Learn Debug"] = "Learn Debug"
+	L["Learn Debug Tooltip"] = "Try and tell me!"
+	L["Learn Languages"] = "Learn Languages"
+	L["Learn Languages tooltip"] = "Learn all languages to player"
+	L["Learn Pettalents"] = "Learn Pettalents"
+	L["Learn Pettalents tooltip"] = "Learn all pet talents"
+	L["Learn Talents"] = "Learn Talents"
+	L["Learn Talents tooltip"] = "Learn all talents"
+	L["Learn Blizzard"] = "Learn Blizzard"
+	L["Learn Blizzard tooltip"] = "Learn all blizzard stuffs"
+	L["Learn my Quests"] = "Learn my Quests"
+	L["Learn my Quests tooltip"] = "Learn yous class quests"
+	L["Learn my trainer"] = "Learn my trainer"
+	L["Learn my trainer tooltip"] = "Learn alle your trainers"
+	L["Damages Panel"] = "Damages Panel"
+	L["Deal Damage"] = "Deal Damage"
+	L["Deal Damage tooltip"] = "Apply $damage to target. If not $school and $spellid provided then this flat clean melee damage without any modifiers. If $school provided then damage modified by armor reduction (if school physical), and target absorbing modifiers and result applied as melee damage to target. If spell provided then damage modified and applied as spell damage. $spellid can be shift-link."
+	L["Deal_damage_error"] = "Erreur: Damage Amount requires."
+	L["Damage GameObject"] = "Damage GameObject"
+	L["Damage GameObject tooltip"] = "Apply $damage to destructible gameobject."
+	L["deal_damage_gob_erreor"] = "Erreur: Guid an Damage Amount required for Damage GameObject."
 	
 
 	
