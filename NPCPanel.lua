@@ -37,8 +37,8 @@ local showLootTimer = nil
 local function ShowShowLootAceGUI(lines)
     local AceGUI = LibStub("AceGUI-3.0")
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("NPC Loot Info")
-    frame:SetStatusText("Information from .npc showloot")
+    frame:SetTitle(L["NPC Loot Info"])
+    frame:SetStatusText(L["Information from .npc showloot"])
     frame:SetLayout("Flow")
     frame:SetWidth(600)
     frame:SetHeight(500)
@@ -190,8 +190,8 @@ function ShowNPCInfoAceGUI(fullText)
     local lines = ProcessCapturedText(fullText)
 
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("NPC Info")
-    frame:SetStatusText("Information from npc info")
+    frame:SetTitle(L["NPC Info Frame"])
+    frame:SetStatusText(L["Information from npc info"])
     frame:SetLayout("Flow")
     frame:SetWidth(600)
     frame:SetHeight(500)
@@ -214,7 +214,7 @@ function ShowNPCInfoAceGUI(fullText)
     end
 
     local btnClose = AceGUI:Create("Button")
-    btnClose:SetText("Fermer")
+    btnClose:SetText(L["close_frame"])
     btnClose:SetWidth(100)
     btnClose:SetCallback("OnClick", function()
         AceGUI:Release(frame)
@@ -282,7 +282,7 @@ function NPCModule:CreateNPCPanel()
 
     local btnPrev = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", npc, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -293,7 +293,7 @@ function NPCModule:CreateNPCPanel()
 
     local btnNext = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", npc, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -306,31 +306,31 @@ function NPCModule:CreateNPCPanel()
     -- Données de base
     -------------------------------------------------------------------------
     local commands = {
-        { text = "npc add",            command = ".npc add",            tooltip = L["NPC_Add_Tooltip"],        defaultText = "Enter Creature ID" },
-        { text = "npc delete",         command = ".npc delete",         tooltip = L["NPC_Delete_Tooltip"],     defaultText = "Enter GUID" },
-        { text = "npc move",           command = ".npc move",           tooltip = L["NPC_Move_Tooltip"],       defaultText = "Enter GUID" },
-        { text = "npc info",           command = ".npc info",           tooltip = L["NPC_Info_Tooltip"],       defaultText = "Select a NPC" },
-        { text = "npc set model",      command = ".npc set model",      tooltip = L["NPC_SetModel_Tooltip"],   defaultText = "Enter DisplayID" },
-        { text = "npc set flag",       command = ".npc set flag",       tooltip = L["NPC_SetFlag_Tooltip"],    defaultText = "Enter Flag" },
-        { text = "npc set phase",      command = ".npc set phase",      tooltip = L["NPC_SetPhase_Tooltip"],   defaultText = "Enter PhaseMask" },
-        { text = "npc set factionid",  command = ".npc set factionid",  tooltip = L["NPC_SetFaction_Tooltip"], defaultText = "Enter Faction ID" },
-        { text = "npc set level",      command = ".npc set level",      tooltip = L["NPC_SetLevel_Tooltip"],   defaultText = "Enter Level Number" },
-        { text = "npc delete item",    command = ".npc delete item",    tooltip = L["NPC_DeleteItem_Tooltip"], defaultText = "Enter Item ID" },
-        { text = "npc add formation",  command = ".npc add formation",  tooltip = L["NPC_AddFormation_Tooltip"], defaultText = "Enter Leader" },
-        { text = "npc set entry",      command = ".npc set entry",      tooltip = L["NPC_SetEntry_Tooltip"],   defaultText = "Enter New Entry" },
-        { text = "npc set link",       command = ".npc set link",       tooltip = L["NPC_SetLink_Tooltip"],    defaultText = "Enter Creature GUID" },
-        { text = "npc say",            command = ".npc say",            tooltip = L["NPC_Say_Tooltip"],        defaultText = "Enter Message" },
-        { text = "npc playemote",      command = ".npc playemote",      tooltip = L["NPC_PlayEmote_Tooltip"],  defaultText = "Enter Emote ID" },
-        { text = "npc follow",         command = ".npc follow",         tooltip = L["NPC_Follow_Tooltip"],     defaultText = "Select Someone" },
-        { text = "npc follow stop",    command = ".npc follow stop",    tooltip = L["NPC_FollowStop_Tooltip"], defaultText = "Select a NPC" },
-        { text = "npc set allowmove",  command = ".npc set allowmove",  tooltip = L["NPC_SetAllowMove_Tooltip"], defaultText = "Select a NPC" },
+        { text = "npc add",            command = ".npc add",            tooltip = L["NPC_Add_Tooltip"],        defaultText = L["Enter Creature ID"] },
+        { text = "npc delete",         command = ".npc delete",         tooltip = L["NPC_Delete_Tooltip"],     defaultText = L["Enter GUID"] },
+        { text = "npc move",           command = ".npc move",           tooltip = L["NPC_Move_Tooltip"],       defaultText = L["Enter GUID"] },
+        { text = "npc info",           command = ".npc info",           tooltip = L["NPC_Info_Tooltip"],       defaultText = L["Select a NPC"] },
+        { text = "npc set model",      command = ".npc set model",      tooltip = L["NPC_SetModel_Tooltip"],   defaultText = L["Enter DisplayID"] },
+        { text = "npc set flag",       command = ".npc set flag",       tooltip = L["NPC_SetFlag_Tooltip"],    defaultText = L["Enter Flag"] },
+        { text = "npc set phase",      command = ".npc set phase",      tooltip = L["NPC_SetPhase_Tooltip"],   defaultText = L["Enter PhaseMask"] },
+        { text = "npc set factionid",  command = ".npc set factionid",  tooltip = L["NPC_SetFaction_Tooltip"], defaultText = L["Enter Faction ID"] },
+        { text = "npc set level",      command = ".npc set level",      tooltip = L["NPC_SetLevel_Tooltip"],   defaultText = L["Enter Level Number"] },
+        { text = "npc delete item",    command = ".npc delete item",    tooltip = L["NPC_DeleteItem_Tooltip"], defaultText = L["Enter Item ID"] },
+        { text = "npc add formation",  command = ".npc add formation",  tooltip = L["NPC_AddFormation_Tooltip"], defaultText = L["Enter Leader"] },
+        { text = "npc set entry",      command = ".npc set entry",      tooltip = L["NPC_SetEntry_Tooltip"],   defaultText = L["Enter New Entry"] },
+        { text = "npc set link",       command = ".npc set link",       tooltip = L["NPC_SetLink_Tooltip"],    defaultText = L["Enter Creature GUID"] },
+        { text = "npc say",            command = ".npc say",            tooltip = L["NPC_Say_Tooltip"],        defaultText = L["Enter Message"] },
+        { text = "npc playemote",      command = ".npc playemote",      tooltip = L["NPC_PlayEmote_Tooltip"],  defaultText = L["Enter Emote ID"] },
+        { text = "npc follow",         command = ".npc follow",         tooltip = L["NPC_Follow_Tooltip"],     defaultText = L["Select Someone"] },
+        { text = "npc follow stop",    command = ".npc follow stop",    tooltip = L["NPC_FollowStop_Tooltip"], defaultText = L["Select a NPC"] },
+        { text = "npc set allowmove",  command = ".npc set allowmove",  tooltip = L["NPC_SetAllowMove_Tooltip"], defaultText = L["Select a NPC"] },
     }
 
     local fullCommands = {
         {
             name = "npc add item",
             command = ".npc add item",
-            tooltip = "Syntax: .npc add item #itemId <#maxcount> <#incrtime> <#extendedcost> <#bonusListIDs>\nAdd an item to selected vendor.",
+            tooltip = L["npc add item tooltip"],
             fields = {
                 { defaultText = "Item ID",         width = 80 },
                 { defaultText = "Max Count",       width = 80 },
@@ -342,7 +342,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc spawngroup",
             command = ".npc spawngroup",
-            tooltip = "Syntax: .npc spawngroup $groupId [ignorerespawn] [force]",
+            tooltip = L["npc spawngroup tooltip"],
             fields = {
                 { defaultText = "GroupId",        width = 100 },
                 { defaultText = "Ignorerespawn",  width = 120 },
@@ -355,7 +355,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc add move",
             command = ".npc add move",
-            tooltip = "Syntax: .npc add move #creature_guid [#waittime]",
+            tooltip = L["npc add move tooltip"],
             fields = {
                 { defaultText = "Creature Guid", width = 120 },
                 { defaultText = "Waittime",      width = 100 },
@@ -364,7 +364,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc add temp",
             command = ".npc add temp",
-            tooltip = "Syntax: .npc add temp [loot/noloot] #entry\nAdds temporary NPC, not saved to DB.",
+            tooltip = L["npc add temp tooltip"],
             fields = {
                 { defaultText = "[loot / noloot]", width = 120 },
                 { defaultText = "Entry",           width = 100 },
@@ -373,7 +373,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc despawngroup",
             command = ".npc despawngroup",
-            tooltip = "Syntax: .npc despawngroup $groupId [removerespawntime]",
+            tooltip = L["npc add despawngroup tooltip"],
             fields = {
                 { defaultText = "GroupId",            width = 100 },
                 { defaultText = "Remove Respawntime", width = 120 },
@@ -382,7 +382,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc evade",
             command = ".npc evade",
-            tooltip = "Syntax: .npc evade [reason] [force]\nForces targeted NPC to evade mode.",
+            tooltip = L["npc evade tooltip"],
             fields = {
                 { defaultText = "Reason", width = 100 },
                 { defaultText = "Force",  width = 100 },
@@ -391,7 +391,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc set data",
             command = ".npc set data",
-            tooltip = "Syntax: .npc set data $field $data\nSet data for the selected NPC.",
+            tooltip = L["npc set data tooltip"],
             fields = {
                 { defaultText = "Field", width = 120 },
                 { defaultText = "Data",  width = 120 },
@@ -400,7 +400,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc set movetype",
             command = ".npc set movetype",
-            tooltip = "Syntax: .npc set movetype [#creature_guid] stay/random/way [NODEL]",
+            tooltip = L["npc set movetype tooltip"],
             fields = {
                 { defaultText = "Creature Guid",        width = 100 },
                 { defaultText = "Movement type (opt.)", width = 120 },
@@ -409,7 +409,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc set spawntime",
             command = ".npc set spawntime",
-            tooltip = "Syntax: .npc set spawntime #time\nAdjust spawntime.",
+            tooltip = L["npc set spawntime tooltip"],
             fields = {
                 { defaultText = "Time", width = 120 },
             },
@@ -417,7 +417,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc set wanderdistance",
             command = ".npc set wanderdistance",
-            tooltip = "Syntax: .npc set wanderdistance #dist\nAdjust wander distance.",
+            tooltip = L["npc set wanderdistance tooltip"],
             fields = {
                 { defaultText = "Distance", width = 120 },
             },
@@ -425,7 +425,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc textemote",
             command = ".npc textemote",
-            tooltip = "Syntax: .npc textemote #emoteid",
+            tooltip = L["npc textemote tooltip"],
             fields = {
                 { defaultText = "Emote ID", width = 120 },
             },
@@ -433,7 +433,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc whisper",
             command = ".npc whisper",
-            tooltip = "Syntax: .npc whisper #playerguid #text",
+            tooltip = L["npc whisper tooltip"],
             fields = {
                 { defaultText = "Player Guid", width = 120 },
                 { defaultText = "Text",        width = 140 },
@@ -442,7 +442,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc yell",
             command = ".npc yell",
-            tooltip = "Syntax: .npc yell $message\nMake NPC yell a message.",
+            tooltip = L["npc yell tooltip"],
             fields = {
                 { defaultText = "Message", width = 200 },
             },
@@ -450,7 +450,7 @@ function NPCModule:CreateNPCPanel()
         {
             name = "npc showloot",
             command = ".npc showloot",
-            tooltip = "Syntax: .npc showloot [all]\nShow loot in targeted dead creature.",
+            tooltip = L["npc showloot tooltip"],
             fields = {
                 { defaultText = "all", width = 200 },
             },
@@ -536,11 +536,11 @@ function NPCModule:CreateNPCPanel()
     local actionButton = CreateFrame("Button", nil, page1, "UIPanelButtonTemplate")
     actionButton:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
     actionButton:SetSize(80, 22)
-    actionButton:SetText("Action")
+    actionButton:SetText(L["Action"])
     actionButton:SetScript("OnClick", function()
         if selectedCommand == ".npc info" then
             if not (UnitExists("target") and UnitIsNPC("target")) then
-                print("Veuillez sélectionner un PNJ.")
+                print(L["Select a NPC"])
                 return
             end
             npcInfoCollected = {}
@@ -560,13 +560,13 @@ function NPCModule:CreateNPCPanel()
         local value = inputBox:GetText()
         if value and value ~= "" and value ~= selectedDefaultText then
             SendChatMessage(selectedCommand .. " " .. value, "SAY")
-            print("[DEBUG] Commande envoyée 1: " .. selectedCommand .. " " .. value)
+            -- print("[DEBUG] Commande envoyée 1: " .. selectedCommand .. " " .. value)
         else
             if UnitExists("target") and UnitIsNPC("target") then
                 -- pas de param => juste .npc ...
                 SendChatMessage(selectedCommand, "SAY")
             else
-                print("Veuillez entrer une valeur ou sélectionner un PNJ.")
+                print(L["Please_enter_npc_vanue"])
             end
         end
     end)
@@ -600,7 +600,7 @@ function NPCModule:CreateNPCPanel()
         local sendButton = CreateFrame("Button", nil, blockFrame, "UIPanelButtonTemplate")
         sendButton:SetSize(60, 22)
         sendButton:SetPoint("TOPLEFT", blockFrame, "TOPLEFT", fieldXOffset, -20)
-        sendButton:SetText("Send")
+        sendButton:SetText(L["Send"])
         sendButton:SetScript("OnClick", function()
             local args = {}
             for _, eb in ipairs(fieldInputs) do
@@ -608,7 +608,7 @@ function NPCModule:CreateNPCPanel()
             end
             local fullCommand = cmd.command .. " " .. table.concat(args, " ")
             SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée 2: " .. fullCommand)
+            -- print("[DEBUG] Commande envoyée 2: " .. fullCommand)
         end)
         sendButton:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -659,7 +659,7 @@ function NPCModule:CreateNPCPanel()
             local sendButton1 = CreateFrame("Button", nil, rowFrame, "UIPanelButtonTemplate")
             sendButton1:SetSize(60, 22)
             sendButton1:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", fieldXOffset1, -20)
-            sendButton1:SetText("Send")
+            sendButton1:SetText(L["Send"])
             sendButton1:SetScript("OnClick", function()
                 local args = {}
                 for _, eb in ipairs(fieldInputs1) do
@@ -667,7 +667,7 @@ function NPCModule:CreateNPCPanel()
                 end
                 local fullCommand = cmd1.command .. " " .. table.concat(args, " ")
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée 3: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée 3: " .. fullCommand)
             end)
             sendButton1:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -719,7 +719,7 @@ function NPCModule:CreateNPCPanel()
             local sendButton = CreateFrame("Button", nil, rowFrame, "UIPanelButtonTemplate")
             sendButton:SetSize(60, 22)
             sendButton:SetPoint("TOPLEFT", rowFrame, "TOPLEFT", fieldXOffset, -20)
-            sendButton:SetText("Send")
+            sendButton:SetText(L["Send"])
             sendButton:SetScript("OnClick", function()
                 local args = {}
                 for _, eb in ipairs(fieldInputs) do
@@ -727,7 +727,7 @@ function NPCModule:CreateNPCPanel()
                 end
                 local fullCommand = cmdData.command .. " " .. table.concat(args, " ")
                 SendChatMessage(fullCommand, "SAY")
-                print("[DEBUG] Commande envoyée 4: " .. fullCommand)
+                -- print("[DEBUG] Commande envoyée 4: " .. fullCommand)
             end)
 
             sendButton:SetScript("OnEnter", function(self)
@@ -783,13 +783,13 @@ function NPCModule:CreateNPCPanel()
         local singleSendButton = CreateFrame("Button", nil, singleFrame, "UIPanelButtonTemplate")
         singleSendButton:SetSize(60, 22)
         singleSendButton:SetPoint("LEFT", singleDropdown, "RIGHT", 10, 0)
-        singleSendButton:SetText("Send")
+        singleSendButton:SetText(L["Send"])
 
         singleSendButton:SetScript("OnClick", function()
             local ccmd = singleFrame.selectedCommand or singleInputCommands[1]
             local value = singleEditBox:GetText()
             if not value or value == "" or value == "Enter Value" then
-                print("Veuillez entrer une valeur valide.")
+                print(L["pleaseentervalidvalue"] = "Veuillez entrer une valeur valide.")
                 return
             end
             local fullCommand = ccmd.command .. " " .. value
@@ -799,7 +799,7 @@ function NPCModule:CreateNPCPanel()
         wipe(showLootCollected)
     end
             SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée5: " .. fullCommand)
+            -- print("[DEBUG] Commande envoyée5: " .. fullCommand)
         end)
 
         singleSendButton:SetScript("OnEnter", function(self)

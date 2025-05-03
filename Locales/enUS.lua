@@ -688,6 +688,69 @@ if not L then return end
 	L["demyerror3"] ="Error: the ID field is required for this action."
 	L["demyerror4"] = "Please select an action."
 	
+	-- Fichier npcpanel.lua
+	L["NPC Loot Info"] = "NPC Loot Info"
+	L["Information from .npc showloot"] = "Information from .npc showloot"
+	L["NPC Info Frame"] = "NPC Info"
+	L["Information from npc info"] = "Information from npc info"
+	L["close_frame"] = "Close"
+	L["Enter Creature ID"] = "Enter Creature ID"
+	L["Enter GUID"] = "Enter GUID"
+	L["Enter DisplayID"] = "Enter DisplayID"
+	L["Enter Flag"] = "Enter Flag"
+	L["Enter PhaseMask"] = "Enter PhaseMask"
+	L["Enter Faction ID"] = "Enter Faction ID"
+	L["Enter Level Number"] = "Enter Level Number"
+	L["Enter Item ID"] = "Enter Item ID"
+	L["Enter Leader"] = "Enter Leader"
+	L["Enter New Entry"] = "Enter New Entry"
+	L["Enter Creature GUID"] = "Enter Creature GUID"
+	L["Enter Message"] = "Enter Message"
+	L["Enter Emote ID"] = "Enter Emote ID"
+	L["Select Someone"] = "Select Someone"
+	L["Select a NPC"] = "Select a NPC"
+	L["npc add item tooltip"] = "Add an item to selected vendor."
+	L["npc spawngroup tooltip"] = "Syntax: .npc spawngroup $groupId [ignorerespawn] [force]"
+	L["npc add move tooltip"] = "Syntax: .npc add move #creature_guid [#waittime]"
+	L["npc add temp tooltip"] = "Adds temporary NPC, not saved to DB."
+	L["npc add despawngroup tooltip"] = "Syntax: .npc despawngroup $groupId [removerespawntime]"
+	L["npc evade tooltip"] = "Forces targeted NPC to evade mode."
+	L["npc set data tooltip"] = "Set data for the selected NPC."
+	L["npc set movetype tooltip"] = "Set movetype [#creature_guid] stay/random/way [NODEL]"
+	L["npc set spawntime tooltip"] = "Adjust spawntime."
+	L["npc set wanderdistance tooltip"] = "Adjust wander distance."
+	L["npc textemote tooltip"] = "Syntax: .npc textemote #emoteid"
+	L["npc whisper tooltip"] = "Make NPC whisper a message to a player."
+	L["npc yell tooltip"] = "Make NPC yell a message."
+	L["npc showloot tooltip"] = "Show loot in targeted dead creature."
+	L["Action"] = "Action"
+	L["Please_enter_npc_vanue"] = "Please enter a NPC value or Select one."
+	L["pleaseentervalidvalue"] = "Please enter a valid value."
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 -- Titres
 L["Private %s"] = "Private %s"
