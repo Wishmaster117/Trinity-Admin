@@ -28,7 +28,7 @@ function GMModule:CreateGMPanel()
     modifyInput:SetSize(80, 22)
     modifyInput:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -50)
     modifyInput:SetAutoFocus(false)
-    modifyInput:SetText("Enter Value")
+    modifyInput:SetText(L["Adm Enter Value"])
     modifyInput:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 
     -- Dropdown principal
@@ -155,7 +155,7 @@ function GMModule:CreateGMPanel()
                 UIDropDownMenu_SetSelectedValue(dropdown, button.value)
                 UIDropDownMenu_SetText(dropdown, displayNames[button.value] or button.value)
                 TrinityAdmin.modifyFunction = button.value
-                print("DEBUG: Fonction sélectionnée = " .. tostring(TrinityAdmin.modifyFunction))
+                -- print("DEBUG: Fonction sélectionnée = " .. tostring(TrinityAdmin.modifyFunction))
                 if button.value == "Speed" then
                     speedDropdown:Show()
                     btnSet:ClearAllPoints()
@@ -192,7 +192,7 @@ function GMModule:CreateGMPanel()
 	btnSet:SetWidth(btnSet:GetTextWidth() + 20)
     btnSet:SetScript("OnClick", function()
         local value = modifyInput:GetText()
-        if value == "" or value == "Enter Value" or value == "Choose" then
+        if value == "" or value == L["Adm Enter Value"] or value == "Choose" then
             print(L["Enter_Valid_Value"])
             return
         end
@@ -219,7 +219,7 @@ function GMModule:CreateGMPanel()
         end
         print("Commande de sortie: " .. command)
         SendChatMessage(command, "SAY")
-		modifyInput:SetText("Enter Value")  -- Remise à zéro du texte de saisie
+		modifyInput:SetText(L["Adm Enter Value"])  -- Remise à zéro du texte de saisie
     end)
 
     -- Bouton Back

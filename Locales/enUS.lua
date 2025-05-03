@@ -998,6 +998,9 @@ if not L then return end
 	L["UninviteG_tooltip"] = "Remove player <PlayerName> from a guild."
 	L["no_valid_player_or_target_error"] = "No valid player name or target selected!"
 	
+	-- Fichiers GMPanel
+	L["Adm Enter Value"] = "Enter Value"
+	
 	
 	
 	
