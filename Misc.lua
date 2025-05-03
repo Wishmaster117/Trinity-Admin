@@ -2392,7 +2392,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
         do
             local title = rightContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
             title:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
-            title:SetText("|cff00ff00PvP Management|r")
+            title:SetText("|cff00ff00" .. L["PvP Management"] .. "|r")
             yRight = yRight - 20
         end
 
@@ -2409,16 +2409,13 @@ function Misc:OpenBattlefieldAndPvpManagement()
             editName:SetText("Enter Player Name")
 
             local btnStopCombat = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnStopCombat:SetText("Stop Combat")
+            btnStopCombat:SetText(L["Stop Combat"])
             btnStopCombat:SetSize(btnStopCombat:GetTextWidth() + 20, 22)
             btnStopCombat:SetPoint("LEFT", editName, "RIGHT", 10, 0)
 
             btnStopCombat:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .combatstop [$playername]\r\n" ..
-                    "Stop combat for selected character. If selected non-player then command applied to self. " ..
-                    "If $playername provided then attempt applied to online player $playername.",
+                GameTooltip:SetText(L["Stop Combat Tooltip"],
                     1,1,1,1,true
                 )
             end)
@@ -2431,7 +2428,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
                 else
                     local target = UnitName("target")
                     if not target then
-                        print("Erreur: vous devez saisir un nom ou cibler un joueur.")
+                        print(L["target_or_name_error"])
                         return
                     end
                     SendChatMessage(".combatstop " .. target, "SAY")
@@ -2455,15 +2452,13 @@ function Misc:OpenBattlefieldAndPvpManagement()
             editAmount:SetText("Amount")
 
             local btnAddHonor = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnAddHonor:SetText("Add Honor")
+            btnAddHonor:SetText(L["Add Honor"])
             btnAddHonor:SetSize(btnAddHonor:GetTextWidth() + 20, 22)
             btnAddHonor:SetPoint("LEFT", editAmount, "RIGHT", 10, 0)
 
             btnAddHonor:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .honor add $amount\r\n\r\n" ..
-                    "Add a certain amount of honor (gained today) to the selected player.",
+                GameTooltip:SetText(L["Add Honor tooltip"]",
                     1,1,1,1,true
                 )
             end)
@@ -2472,13 +2467,13 @@ function Misc:OpenBattlefieldAndPvpManagement()
             btnAddHonor:SetScript("OnClick", function()
                 local amountVal = editAmount:GetText()
                 if not amountVal or amountVal == "" or amountVal == "Amount" then
-                    print("Erreur: veuillez saisir un montant d'honneur.")
+                    print(L["honor_amount_error"])
                     return
                 end
                 -- Vérifier la cible
                 local target = UnitName("target")
                 if not target then
-                    print("Erreur: veuillez cibler un joueur pour lui ajouter de l'honneur.")
+                    print(L["honor_target_error"])
                     return
                 end
 
@@ -2487,15 +2482,13 @@ function Misc:OpenBattlefieldAndPvpManagement()
             end)
 
             local btnAddHonorKill = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnAddHonorKill:SetText("Add Honor Kill")
+            btnAddHonorKill:SetText(L["Add Honor Kill"])
             btnAddHonorKill:SetSize(btnAddHonorKill:GetTextWidth() + 20, 22)
             btnAddHonorKill:SetPoint("LEFT", btnAddHonor, "RIGHT", 20, 0)
 
             btnAddHonorKill:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .honor add kill\r\n\r\n" ..
-                    "Add the targeted unit as one of your pvp kills today (only if player or racial leader).",
+                GameTooltip:SetText(L["Add Honor Kill tooltip"],
                     1,1,1,1,true
                 )
             end)
@@ -2516,13 +2509,13 @@ function Misc:OpenBattlefieldAndPvpManagement()
             block:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
 
             local btnPvPStats = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnPvPStats:SetText("PvP Stats")
+            btnPvPStats:SetText(L["PvP Stats"])
             btnPvPStats:SetSize(btnPvPStats:GetTextWidth() + 20, 22)
             btnPvPStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
 
             btnPvPStats:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Shows number of battleground victories in the last 7 days", 1,1,1,1,true)
+                GameTooltip:SetText(L["PvP Stats tooltip"], 1,1,1,1,true)
             end)
             btnPvPStats:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -2539,7 +2532,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
         do
             local titleBF = leftContainer:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
             titleBF:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
-            titleBF:SetText("|cff00ff00Battlefield Management|r")
+            titleBF:SetText("|cff00ff00" .. L["Battlefield Management"] .. "|r")
 
             yLeft = yLeft - 20
         end
@@ -2580,7 +2573,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
             UIDropDownMenu_SetText(dropdown2, bfOptions2[1].text)
 
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnSet:SetText("Set")
+            btnSet:SetText(L["Set"])
             btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
             btnSet:SetPoint("LEFT", dropdown2, "RIGHT", 10, 0)
 
@@ -2663,7 +2656,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
             editTimer:SetText("Timer")
 
             local btnTimer = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnTimer:SetText("Set")
+            btnTimer:SetText(L["Set"])
             btnTimer:SetSize(btnTimer:GetTextWidth() + 20, 22)
             btnTimer:SetPoint("LEFT", editTimer, "RIGHT", 10, 0)
 
@@ -2738,7 +2731,7 @@ function Misc:OpenDunjonsFuncManagement()
 
         self.DunjonsFuncPanel.title = self.DunjonsFuncPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.DunjonsFuncPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.DunjonsFuncPanel.title:SetText("Dungeons Funcs")
+        self.DunjonsFuncPanel.title:SetText(L["Dungeons Funcs"])
 
         -- Petit container pour tout disposer
         local container = CreateFrame("Frame", nil, self.DunjonsFuncPanel)
@@ -2771,16 +2764,13 @@ function Misc:OpenDunjonsFuncManagement()
             editDifficulty:SetText("Difficulty")
 
             local btnUnbind = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnUnbind:SetText("Unbind")
+            btnUnbind:SetText(L["Unbind"])
             btnUnbind:SetSize(btnUnbind:GetTextWidth() + 20, 22)
             btnUnbind:SetPoint("LEFT", editDifficulty, "RIGHT", 10, 0)
 
             btnUnbind:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .instance unbind <mapid|all> [difficulty]\n  Clear all/some of player's binds",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Unbind tooltip"], 1,1,1,1,true)
             end)
             btnUnbind:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -2788,7 +2778,7 @@ function Misc:OpenDunjonsFuncManagement()
                 -- On vérifie si on a une cible GM (obligatoire)
                 local target = UnitName("target")
                 if not target then
-                    print("Erreur: veuillez cibler un joueur.")
+                    print(L["target_player_error"])
                     return
                 end
 
@@ -2799,7 +2789,7 @@ function Misc:OpenDunjonsFuncManagement()
                 end
                 -- On peut vérifier que si ce n'est pas 'all', alors c'est un nombre ?
                 if (valMapID ~= "all") and (not tonumber(valMapID)) then
-                    print("MapID incorrect: doit être 'all' ou un nombre.")
+                    print(L["invalid_mapid_error"])
                     return
                 end
 
@@ -2825,23 +2815,20 @@ function Misc:OpenDunjonsFuncManagement()
             block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
 
             local btnList = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnList:SetText("List Binds")
+            btnList:SetText(L["List Binds"])
             btnList:SetSize(btnList:GetTextWidth() + 20, 22)
             btnList:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
 
             btnList:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .instance listbinds\nLists the binds of the selected player.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["List Binds Tooltip"], 1,1,1,1,true)
             end)
             btnList:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 			btnList:SetScript("OnClick", function()
 				local target = UnitName("target")
 				if not target then
-					print("Erreur: veuillez cibler un joueur.")
+					print(L["target_player_error"])
 					return
 				end
 				-- On n'inclut pas son nom dans la commande, mais la commande s’applique à la cible
@@ -2872,23 +2859,20 @@ function Misc:OpenDunjonsFuncManagement()
             editPlayer:SetText("Player Name")
 
             local btnGet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnGet:SetText("Get")
+            btnGet:SetText(L["Get"])
             btnGet:SetSize(btnGet:GetTextWidth() + 20, 22)
             btnGet:SetPoint("LEFT", editPlayer, "RIGHT", 10, 0)
 
             btnGet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .instance getbossstate $bossId [$Name]\nGets the current EncounterState for the bossId.\nIf no name is provided, the current map is used.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Get boss tooltip"], 1,1,1,1,true)
             end)
             btnGet:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
             btnGet:SetScript("OnClick", function()
                 local bossIdVal = editBossID:GetText()
                 if not bossIdVal or bossIdVal == "" or bossIdVal == "Boss ID" then
-                    print("Veuillez saisir un Boss ID.")
+                    print(L["enter_boss_id_error"])
                     return
                 end
 
@@ -2923,7 +2907,7 @@ function Misc:OpenDunjonsFuncManagement()
             editEncounter:SetSize(120, 22)
             editEncounter:SetPoint("LEFT", editBossID, "RIGHT", 10, 0)
             editEncounter:SetAutoFocus(false)
-            editEncounter:SetText("Encounter State")
+            editEncounter:SetText(L["Encounter State"])
 
             local editPlayer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
             editPlayer:SetSize(120, 22)
@@ -2938,25 +2922,20 @@ function Misc:OpenDunjonsFuncManagement()
 
             btnSet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(
-                    "Syntax: .instance setbossstate $bossId $encounterState [$Name]\n" ..
-                    "Sets the EncounterState for the boss. Range 0..5.\n" ..
-                    "If no name, uses current map as target.",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Encounter State tooltip"], 1,1,1,1,true)
             end)
             btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
             btnSet:SetScript("OnClick", function()
                 local bossIdVal = editBossID:GetText()
                 if not bossIdVal or bossIdVal == "" or bossIdVal == "Boss ID" then
-                    print("Veuillez saisir un Boss ID.")
+                    print(L["enter_boss_id_error"])
                     return
                 end
 
                 local encVal = editEncounter:GetText()
                 if not encVal or encVal == "" or encVal == "Encounter State" then
-                    print("Veuillez saisir une Encounter State (0..5).")
+                    print(L["enter_encounter_state_error"])
                     return
                 end
 
@@ -2981,13 +2960,13 @@ function Misc:OpenDunjonsFuncManagement()
             block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
 
             local btnStats = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnStats:SetText("Show Instances Stats")
+            btnStats:SetText(L["Show Instances Stats"])
             btnStats:SetSize(btnStats:GetTextWidth() + 20, 22)
             btnStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
 
             btnStats:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .instance stats\n  Shows statistics about instances.", 1,1,1,1,true)
+                GameTooltip:SetText(L["Show Instances Stats Tooltip"], 1,1,1,1,true)
             end)
             btnStats:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -3079,8 +3058,8 @@ end)
 local AceGUI = LibStub("AceGUI-3.0")
 function ShowLfgAceGUI(lines)
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("LFG Info")
-    frame:SetStatusText("Information from lfg command")
+    frame:SetTitle(L["LFG Info"])
+    frame:SetStatusText(L["Information from lfg command"])
     frame:SetLayout("Flow")
     frame:SetWidth(600)
     frame:SetHeight(500)
@@ -3100,7 +3079,7 @@ function ShowLfgAceGUI(lines)
     end
 
     local btnClose = AceGUI:Create("Button")
-    btnClose:SetText("Fermer")
+    btnClose:SetText(L["Close"])
     btnClose:SetWidth(100)
     btnClose:SetCallback("OnClick", function() frame:Hide() end)
     frame:AddChild(btnClose)
@@ -3138,7 +3117,7 @@ function Misc:OpenLfgManageManagement()
         
         self.LfgManagePanel.title = self.LfgManagePanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.LfgManagePanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.LfgManagePanel.title:SetText("LFG Management")
+        self.LfgManagePanel.title:SetText(L["LFG Management"])
         
         ---------------------------------------------------------------------
         -- Conteneur pour disposer les éléments
@@ -3160,13 +3139,13 @@ function Misc:OpenLfgManageManagement()
 
         -- 2) Lfg Group
         local btnGroup = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
-        btnGroup:SetText("Lfg Group")
+        btnGroup:SetText(L["Lfg Group"])
         btnGroup:SetSize(btnGroup:GetTextWidth() + 20, 22)
         btnGroup:SetPoint("TOPLEFT", blockButtons, "TOPLEFT", 10, 0)
 
         btnGroup:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .lfg group\nShows info about all players in the group (state, roles...)", 1,1,1,1,true)
+            GameTooltip:SetText(L["Lfg Group tooltip"], 1,1,1,1,true)
         end)
         btnGroup:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -3177,13 +3156,13 @@ function Misc:OpenLfgManageManagement()
 
         -- 3) Lfg Player
         local btnPlayer = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
-        btnPlayer:SetText("Lfg Player")
+        btnPlayer:SetText(L["Lfg Player"])
         btnPlayer:SetSize(btnPlayer:GetTextWidth() + 20, 22)
         btnPlayer:SetPoint("LEFT", btnGroup, "RIGHT", 10, 0)
 
         btnPlayer:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .lfg player\nShows info about your LFG player state, roles, etc.", 1,1,1,1,true)
+            GameTooltip:SetText(L["Lfg Player Tooltip"], 1,1,1,1,true)
         end)
         btnPlayer:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -3194,13 +3173,13 @@ function Misc:OpenLfgManageManagement()
 
         -- 4) Lfg Queue
         local btnQueue = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
-        btnQueue:SetText("Lfg Queue")
+        btnQueue:SetText(L["Lfg Queue"])
         btnQueue:SetSize(btnQueue:GetTextWidth() + 20, 22)
         btnQueue:SetPoint("LEFT", btnPlayer, "RIGHT", 10, 0)
 
         btnQueue:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .lfg queue\nShows info about current LFG queues.", 1,1,1,1,true)
+            GameTooltip:SetText(L["Lfg Queue tooltip"], 1,1,1,1,true)
         end)
         btnQueue:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -3225,13 +3204,13 @@ function Misc:OpenLfgManageManagement()
         editOptions:SetText("New Value")
 
         local btnSet = CreateFrame("Button", nil, blockOptions, "UIPanelButtonTemplate")
-        btnSet:SetText("Show/Set Option")
+        btnSet:SetText(L["Show/Set Option"])
         btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
         btnSet:SetPoint("LEFT", editOptions, "RIGHT", 10, 0)
 
         btnSet:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .lfg options [new value]\nShows or sets current lfg options if param is present.", 1,1,1,1,true)
+            GameTooltip:SetText(L["SowSet_Tooltip"], 1,1,1,1,true)
         end)
         btnSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -3327,8 +3306,8 @@ end
 local AceGUI = LibStub("AceGUI-3.0")
 function ShowEventsAceGUI(lines)
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("Events Info")
-    frame:SetStatusText("Information from .event commands")
+    frame:SetTitle(L["Frame Events Info"])
+    frame:SetStatusText(L["Infos_from_event"])
     frame:SetLayout("Flow")
     frame:SetWidth(600)
     frame:SetHeight(500)
@@ -3341,14 +3320,14 @@ function ShowEventsAceGUI(lines)
 
     for i, line in ipairs(lines) do
         local edit = AceGUI:Create("EditBox")
-        edit:SetLabel("Line " .. i)
+        edit:SetLabel(L["Line "] .. i)
         edit:SetText(line)
         edit:SetFullWidth(true)
         scroll:AddChild(edit)
     end
 
     local btnClose = AceGUI:Create("Button")
-    btnClose:SetText("Fermer")
+    btnClose:SetText(L["Close"])
     btnClose:SetWidth(100)
     btnClose:SetCallback("OnClick", function() frame:Hide() end)
     frame:AddChild(btnClose)
@@ -3361,7 +3340,7 @@ local function CreateScrollableEventsDropdown(parent)
     -- Bouton principal (comme un dropdown)
     local mainButton = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
     mainButton:SetSize(180, 22)
-    mainButton:SetText("Select Event")  -- texte par défaut
+    mainButton:SetText(L["Drop Select Event"])  -- texte par défaut
 
     mainButton.selectedEventID = nil  -- contiendra l'ID sélectionné
 
@@ -3394,7 +3373,7 @@ local function CreateScrollableEventsDropdown(parent)
         -- Si aucun event
         local noItem = scrollChild:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         noItem:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, 0)
-        noItem:SetText("No EventsData found.")
+        noItem:SetText(L["No EventsData found."])
         currentY = ITEM_HEIGHT
     else
         for i, data in ipairs(EventsData) do
@@ -3449,7 +3428,7 @@ function Misc:OpenEventsManageManagement()
         
         self.EventsManagePanel.title = self.EventsManagePanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.EventsManagePanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.EventsManagePanel.title:SetText("Events Manager")
+        self.EventsManagePanel.title:SetText(L["Events Manager"])
 
         ---------------------------------------------------------------
         -- 6.2) Bouton "Event Active List"
@@ -3461,13 +3440,13 @@ function Misc:OpenEventsManageManagement()
 			blockActiveList:SetPoint("TOPLEFT", self.EventsManagePanel, "TOPLEFT", 10, -60)
 		
 			local btnActiveList = CreateFrame("Button", nil, blockActiveList, "UIPanelButtonTemplate")
-			btnActiveList:SetText("Event Active List")
+			btnActiveList:SetText(L["Event Active List"])
 			btnActiveList:SetSize(btnActiveList:GetTextWidth() + 20, 22)
 			btnActiveList:SetPoint("TOPLEFT", blockActiveList, "TOPLEFT", 0, 0)
 		
 			btnActiveList:SetScript("OnEnter", function(self)
 				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-				GameTooltip:SetText(".event activelist\nShow list of currently active events.", 1,1,1,1,true)
+				GameTooltip:SetText(L["Event Active List tooltip"], 1,1,1,1,true)
 			end)
 			btnActiveList:SetScript("OnLeave", function() GameTooltip:Hide() end)
 		
@@ -3505,7 +3484,7 @@ function Misc:OpenEventsManageManagement()
 			-- Juste après avoir créé local block ...
 			local label = block:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 			label:SetPoint("BOTTOMLEFT", block, "TOPLEFT", 0, -20)
-			label:SetText("Select an event")
+			label:SetText(L["Drop Select Event"])
 
 
             -- 2) Le dropdown scrollable
@@ -3514,24 +3493,24 @@ function Misc:OpenEventsManageManagement()
 
             scrollableDropdown:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Select an Event in Dopdown list.", 1,1,1,1,true)
+                GameTooltip:SetText(L["Drop Select Event drop tooltip"], 1,1,1,1,true)
             end)
             scrollableDropdown:SetScript("OnLeave", function() GameTooltip:Hide() end)
 			
             -- 3) Bouton "Info"
             local btnGet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnGet:SetText("Info")
+            btnGet:SetText(L["Info_Event"])
             btnGet:SetSize(btnGet:GetTextWidth() + 20, 22)
             btnGet:SetPoint("LEFT", scrollableDropdown, "RIGHT", 10, 0)
             btnGet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(".event info #event_id\nShow details about event #event_id.", 1,1,1,1,true)
+                GameTooltip:SetText(L["Info_Event_tooltip"], 1,1,1,1,true)
             end)
             btnGet:SetScript("OnLeave", function() GameTooltip:Hide() end)
             btnGet:SetScript("OnClick", function()
                 local selectedID = scrollableDropdown.selectedEventID
                 if not selectedID then
-                    print("Veuillez sélectionner un événement.")
+                    print(L["select_event_error"])
                     return
                 end
                 StartEventsCapture()
@@ -3543,18 +3522,18 @@ function Misc:OpenEventsManageManagement()
 
             -- 4) Bouton "Start"
             local btnStart = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnStart:SetText("Start Event")
+            btnStart:SetText(L["Start Event"])
             btnStart:SetSize(btnStart:GetTextWidth() + 20, 22)
             btnStart:SetPoint("LEFT", btnGet, "RIGHT", 10, 0)
             btnStart:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(".event start #event_id\nStart event #event_id.", 1,1,1,1,true)
+                GameTooltip:SetText(L["Start Event tooltip"], 1,1,1,1,true)
             end)
             btnStart:SetScript("OnLeave", function() GameTooltip:Hide() end)
             btnStart:SetScript("OnClick", function()
                 local selectedID = scrollableDropdown.selectedEventID
                 if not selectedID then
-                    print("Veuillez sélectionner un événement.")
+                    print(L["select_event_error"])
                     return
                 end
                 StartEventsCapture()
@@ -3566,18 +3545,18 @@ function Misc:OpenEventsManageManagement()
 
             -- 5) Bouton "Stop"
             local btnStop = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnStop:SetText("Stop Event")
+            btnStop:SetText(L["Stop Event"])
             btnStop:SetSize(btnStop:GetTextWidth() + 20, 22)
             btnStop:SetPoint("LEFT", btnStart, "RIGHT", 10, 0)
             btnStop:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(".event stop #event_id\nStop event #event_id.", 1,1,1,1,true)
+                GameTooltip:SetText(L["Stop Event tooltip"], 1,1,1,1,true)
             end)
             btnStop:SetScript("OnLeave", function() GameTooltip:Hide() end)
             btnStop:SetScript("OnClick", function()
                 local selectedID = scrollableDropdown.selectedEventID
                 if not selectedID then
-                    print("Veuillez sélectionner un événement.")
+                    print(L["select_event_error"])
                     return
                 end
                 StartEventsCapture()
@@ -3672,8 +3651,8 @@ end
 function ShowEventsAceGUI(lines)
     local AceGUI = LibStub("AceGUI-3.0")
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("Captured Events")
-	frame:SetStatusText("Information from other commands")
+    frame:SetTitle(L["Captured Events"])
+	frame:SetStatusText(L["Information from other commands"])
     frame:SetLayout("Fill")
     frame:SetWidth(400)
     frame:SetHeight(300)
@@ -3684,14 +3663,14 @@ function ShowEventsAceGUI(lines)
     
     for i, line in ipairs(lines) do
         local edit = AceGUI:Create("EditBox")
-        edit:SetLabel("Line " .. i)
+        edit:SetLabel(L["Line "] .. i)
         edit:SetText(line)
         edit:SetFullWidth(true)
         scroll:AddChild(edit)
     end
 
     local closeBtn = AceGUI:Create("Button")
-    closeBtn:SetText("Close")
+    closeBtn:SetText(L["Close"])
     closeBtn:SetWidth(100)
     closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
     frame:AddChild(closeBtn)
@@ -3728,8 +3707,8 @@ end
 function ShowListSpawnsPopup(lines)
     local AceGUI = LibStub("AceGUI-3.0")
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("List Spawnpoints")
-    frame:SetStatusText("Information from .List Spawnpoints commands")
+    frame:SetTitle(L["List Spawnpoints"])
+    frame:SetStatusText(L["Information from .List Spawnpoints commands"])
     frame:SetLayout("List")
     frame:SetWidth(500)
     frame:SetHeight(400)
@@ -3750,7 +3729,7 @@ function ShowListSpawnsPopup(lines)
 
     -- Zone de texte avec hauteur fixe pour laisser de la place aux boutons
     local multiline = AceGUI:Create("MultiLineEditBox")
-    multiline:SetLabel("Spawnpoints")
+    multiline:SetLabel(L["Spawnpoints"])
     multiline:SetFullWidth(true)
     multiline:SetHeight(250)
     multiline:SetText(GetPageText(currentPage))
@@ -3768,7 +3747,7 @@ function ShowListSpawnsPopup(lines)
     paginationGroup:SetHeight(30)
     
 local btnPrev = AceGUI:Create("Button")
-btnPrev:SetText("Previous")
+btnPrev:SetText(L["Preview"])
 btnPrev:SetWidth(100)
 btnPrev:SetCallback("OnClick", function()
     if currentPage > 1 then
@@ -3791,7 +3770,7 @@ pageLabel:SetWidth(150)
 paginationGroup:AddChild(pageLabel)
 
 local btnNext = AceGUI:Create("Button")
-btnNext:SetText("Next")
+btnNext:SetText(L["Next"])
 btnNext:SetWidth(100)
 btnNext:SetCallback("OnClick", function()
     if currentPage < totalPages then
@@ -3829,14 +3808,14 @@ function Misc:OpenAurasListManagement()
         
         self.AurasListPanel.title = self.AurasListPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
         self.AurasListPanel.title:SetPoint("TOPLEFT", 10, -10)
-        self.AurasListPanel.title:SetText("Auras and Lists Funcs")
+        self.AurasListPanel.title:SetText(L["Auras and Lists Funcs"])
         
         ----------------------------------------------------------------------------
         -- 1) Boutons "List Auras", "List Scenes" et "List Spawnpoints"
         ----------------------------------------------------------------------------
         local btnListAuras = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListAuras:SetPoint("TOPLEFT", self.AurasListPanel, "TOPLEFT", 10, -40)
-        btnListAuras:SetText("List Auras")
+        btnListAuras:SetText(L["List Auras"])
         btnListAuras:SetWidth(btnListAuras:GetTextWidth() + 20)
         btnListAuras:SetHeight(22)
         btnListAuras:SetScript("OnClick", function()
@@ -3846,14 +3825,14 @@ function Misc:OpenAurasListManagement()
         end)
         btnListAuras:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list auras\nList auras (passive and active) of selected creature or player. If no creature or player is selected, list your own auras.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["List Auras tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnListAuras:SetScript("OnLeave", function() GameTooltip:Hide() end)
         
         local btnListScenes = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListScenes:SetPoint("LEFT", btnListAuras, "RIGHT", 10, 0)
-        btnListScenes:SetText("List Scenes")
+        btnListScenes:SetText(L["List Scenes"])
         btnListScenes:SetWidth(btnListScenes:GetTextWidth() + 20)
         btnListScenes:SetHeight(22)
         btnListScenes:SetScript("OnClick", function()
@@ -3863,14 +3842,14 @@ function Misc:OpenAurasListManagement()
         end)
         btnListScenes:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list scenes\nList of all active scenes for targeted character.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["List Scenes tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnListScenes:SetScript("OnLeave", function() GameTooltip:Hide() end)
         
         local btnListSpawnpoints = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListSpawnpoints:SetPoint("LEFT", btnListScenes, "RIGHT", 10, 0)
-        btnListSpawnpoints:SetText("List Spawnpoints")
+        btnListSpawnpoints:SetText(L["List Spawnpoints"])
         btnListSpawnpoints:SetWidth(btnListSpawnpoints:GetTextWidth() + 20)
         btnListSpawnpoints:SetHeight(22)
         btnListSpawnpoints:SetScript("OnClick", function()
@@ -3881,7 +3860,7 @@ function Misc:OpenAurasListManagement()
 end)
         btnListSpawnpoints:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list spawnpoints\n\nLists all spawn points (both creatures and GOs) in the current zone.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["List Spawnpoints tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnListSpawnpoints:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -3903,14 +3882,14 @@ end)
         
         local btnShowCreatures = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnShowCreatures:SetPoint("LEFT", editCreatureMax, "RIGHT", 10, 0)
-        btnShowCreatures:SetText("Show Creatures List")
+        btnShowCreatures:SetText(L["Show Creatures List"])
         btnShowCreatures:SetWidth(btnShowCreatures:GetTextWidth() + 20)
         btnShowCreatures:SetHeight(22)
         btnShowCreatures:SetScript("OnClick", function()
             local creatureID = editCreatureID:GetText()
             local maxCount = editCreatureMax:GetText()
             if creatureID == "" or creatureID == "Creature ID" then
-                print("Please enter a valid Creature ID.")
+                print(L["enter_valid_creature_id_error"])
                 return
             end
             StartEventsCapture()
@@ -3924,7 +3903,7 @@ end)
         end)
         btnShowCreatures:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list creature #creature_id [#max_count]\r\n\r\nOutput creatures with creature id #creature_id found in world. Output creature guids and coordinates sorted by distance from character. Will be output maximum #max_count creatures. If #max_count not provided use 10 as default value.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["Show Creatures List Tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnShowCreatures:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -3946,14 +3925,14 @@ end)
         
         local btnShowItems = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnShowItems:SetPoint("LEFT", editItemMax, "RIGHT", 10, 0)
-        btnShowItems:SetText("Show Items List")
+        btnShowItems:SetText(L["Show Items List"])
         btnShowItems:SetWidth(btnShowItems:GetTextWidth() + 20)
         btnShowItems:SetHeight(22)
         btnShowItems:SetScript("OnClick", function()
             local itemID = editItemID:GetText()
             local maxCount = editItemMax:GetText()
             if itemID == "" or itemID == "Item ID" then
-                print("Please enter a valid Item ID.")
+               print(L["enter_valid_item_id_error"])
                 return
             end
             StartEventsCapture()
@@ -3967,7 +3946,7 @@ end)
         end)
         btnShowItems:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list item #item_id [#max_count]\r\n\r\nOutput items with item id #item_id found in all character inventories, mails, auctions, and guild banks. Output item guids, item owner guid, owner account and owner name (guild name and guid in case guild bank). Will be output maximum #max_count items. If #max_count not provided use 10 as default value.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["Show Items List tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnShowItems:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -3983,13 +3962,13 @@ end)
         
         local btnListMails = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListMails:SetPoint("LEFT", editCharacterName, "RIGHT", 10, 0)
-        btnListMails:SetText("List Mails")
+        btnListMails:SetText(L["List Mails"])
         btnListMails:SetWidth(btnListMails:GetTextWidth() + 20)
         btnListMails:SetHeight(22)
         btnListMails:SetScript("OnClick", function()
             local characterName = editCharacterName:GetText()
             if characterName == "" or characterName == "Character Name" then
-                print("Please enter a valid Character Name.")
+                print(L["enter_valid_character_name_error"])
                 return
             end
             StartEventsCapture()
@@ -3999,7 +3978,7 @@ end)
         end)
         btnListMails:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list mail $character\nList of mails the character received.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["List Mails tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnListMails:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -4021,14 +4000,14 @@ end)
         
         local btnShowGobjects = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnShowGobjects:SetPoint("LEFT", editGobjectMax, "RIGHT", 10, 0)
-        btnShowGobjects:SetText("Show Gamobjects List")
+        btnShowGobjects:SetText(L["Show Gamobjects List"])
         btnShowGobjects:SetWidth(btnShowGobjects:GetTextWidth() + 20)
         btnShowGobjects:SetHeight(22)
         btnShowGobjects:SetScript("OnClick", function()
             local gobjectID = editGobjectID:GetText()
             local maxCount = editGobjectMax:GetText()
             if gobjectID == "" or gobjectID == "Gameobject ID" then
-                print("Please enter a valid Gameobject ID.")
+                print(L["enter_valid_gameobject_id_error"])
                 return
             end
             StartEventsCapture()
@@ -4042,7 +4021,7 @@ end)
         end)
         btnShowGobjects:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list object #gameobject_id [#max_count]\r\n\r\nOutput gameobjects with gameobject id #gameobject_id found in world. Output gameobject guids and coordinates sorted by distance from character. Will be output maximum #max_count gameobject. If #max_count not provided use 10 as default value.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["Show Gamobjects List tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnShowGobjects:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -4058,7 +4037,7 @@ end)
         
         local btnListRespawns = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListRespawns:SetPoint("LEFT", editDistance, "RIGHT", 10, 0)
-        btnListRespawns:SetText("List Respawns")
+        btnListRespawns:SetText(L["List Respawns"])
         btnListRespawns:SetWidth(btnListRespawns:GetTextWidth() + 20)
         btnListRespawns:SetHeight(22)
         btnListRespawns:SetScript("OnClick", function()
@@ -4073,7 +4052,7 @@ end)
         end)
         btnListRespawns:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText("Syntax: .list respawns [distance]\n\nLists all pending respawns within <distance> yards, or within current zone if not specified.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["List Respawns tooltip"], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end)
         btnListRespawns:SetScript("OnLeave", function() GameTooltip:Hide() end)
