@@ -23,7 +23,7 @@ function ModuleCharacter:CreateModuleCharacterPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Player/Characters/Pets Functions")
+    panel.title:SetText(L["Player/Characters/Pets Functions"])
 
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
@@ -95,7 +95,7 @@ end
 -- Création des boutons AVANT le premier appel à ShowPage(1)
 btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 btnPrev:SetSize(80, 22)
-btnPrev:SetText("Précédent")
+btnPrev:SetText(L["Preview"])
 btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
 btnPrev:SetScript("OnClick", function()
     if currentPage > 1 then
@@ -105,7 +105,7 @@ end)
 
 btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 btnNext:SetSize(80, 22)
-btnNext:SetText("Suivant")
+btnNext:SetText(L["Next"])
 btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 btnNext:SetScript("OnClick", function()
     if currentPage < totalPages then
@@ -127,7 +127,7 @@ commandsFramePage1:SetSize(500, 350)
 
 local page1Title = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page1Title:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, 0)
-page1Title:SetText("Player Functions 1")
+page1Title:SetText(L["Player Functions Part 1"])
 
 -- Scripte pour actions des boutons simples:
 local function CreateServerButtonPage1(name, text, tooltip, cmd)
@@ -152,7 +152,7 @@ local spellIdInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTe
 spellIdInput:SetSize(150, 22)
 spellIdInput:SetPoint("TOPLEFT", page1Title, "BOTTOMLEFT", 0, -15)
 spellIdInput:SetAutoFocus(false)
-spellIdInput.defaultText = "Enter SpellId"
+spellIdInput.defaultText = L["Enter SpellId"]
 spellIdInput:SetText(spellIdInput.defaultText)
 spellIdInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -167,18 +167,18 @@ table.insert(inputFields, spellIdInput)
 
 local btnAddAura = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 btnAddAura:SetSize(100, 22)
-btnAddAura:SetText("Add Aura")
+btnAddAura:SetText(L["Add Aura"])
 btnAddAura:SetPoint("LEFT", spellIdInput, "RIGHT", 10, 0)
 btnAddAura:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .aura #spellid\n\nAdd the aura from spell #spellid to the selected Unit.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Add Aura Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnAddAura:SetScript("OnLeave", function() GameTooltip:Hide() end)
 btnAddAura:SetScript("OnClick", function()
     local spellId = spellIdInput:GetText()
-    if spellId == "" or spellId == "Enter SpellId" then
-        print("Veuillez entrer un SpellId valide.")
+    if spellId == "" or spellId == L["Enter SpellId"] then
+        print(L["addauraerror"])
         return
     end
     local cmd = ".aura " .. spellId
@@ -191,7 +191,7 @@ local spellIdInputRemove = CreateFrame("EditBox", nil, commandsFramePage1, "Inpu
 spellIdInputRemove:SetSize(150, 22)
 spellIdInputRemove:SetPoint("TOPLEFT", spellIdInput, "BOTTOMLEFT", 0, -15)
 spellIdInputRemove:SetAutoFocus(false)
-spellIdInputRemove.defaultText = "Enter SpellId" -- Ajout nécessaire
+spellIdInputRemove.defaultText = L["Enter SpellId"] -- Ajout nécessaire
 spellIdInputRemove:SetText(spellIdInputRemove.defaultText)
 spellIdInputRemove:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -205,18 +205,18 @@ table.insert(inputFields, spellIdInputRemove)
 
 local btnAddAuraRemove = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 btnAddAuraRemove:SetSize(100, 22)
-btnAddAuraRemove:SetText("Remove Aura")
+btnAddAuraRemove:SetText(L["Remove Aura"])
 btnAddAuraRemove:SetPoint("LEFT", spellIdInputRemove, "RIGHT", 10, 0)
 btnAddAuraRemove:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .unaura #spellid\r\n\r\nRemove aura due to spell #spellid from the selected Unit.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Remove Aura Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnAddAuraRemove:SetScript("OnLeave", function() GameTooltip:Hide() end)
 btnAddAuraRemove:SetScript("OnClick", function()
     local spellId = spellIdInputRemove:GetText()
-    if spellId == "" or spellId == "Enter SpellId" then
-        print("Veuillez entrer un SpellId valide.")
+    if spellId == "" or spellId == spellIdInputRemove.defaultText then
+        print(L["addauraerror"])
         return
     end
     local cmd = ".unaura " .. spellId
@@ -229,7 +229,7 @@ local playerNameInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBo
 playerNameInput:SetSize(150, 22)
 playerNameInput:SetPoint("TOPLEFT", spellIdInputRemove, "BOTTOMLEFT", 0, -15)
 playerNameInput:SetAutoFocus(false)
-playerNameInput.defaultText = "Player Name"
+playerNameInput.defaultText = L["Player Name"]
 playerNameInput:SetText(playerNameInput.defaultText)
 playerNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -246,7 +246,7 @@ local durationInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxT
 durationInput:SetSize(150, 22)
 durationInput:SetPoint("LEFT", playerNameInput, "RIGHT", 10, 0)
 durationInput:SetAutoFocus(false)
-durationInput.defaultText = "Duration (s)"
+durationInput.defaultText = L["Duration (s)"]
 durationInput:SetText(durationInput.defaultText)
 durationInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -261,11 +261,11 @@ table.insert(inputFields, durationInput)
 -- Bouton "Freeze"
 local btnFreeze = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 btnFreeze:SetSize(100, 22)
-btnFreeze:SetText("Freeze")
+btnFreeze:SetText(L["Freeze"])
 btnFreeze:SetPoint("LEFT", durationInput, "RIGHT", 10, 0)
 btnFreeze:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .freeze [#player] [#duration]\nFreezes #player for #duration (seconds)\nFreezes the selected player if no arguments are given.\nDefault duration: GM.FreezeAuraDuration (worldserver.conf)", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Freeze_tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnFreeze:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -279,7 +279,7 @@ btnFreeze:SetScript("OnClick", function()
         if playerName then
             -- print("La Cible est : " .. playerName) -- Pour debug
         else
-            print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -299,7 +299,7 @@ local playerNameUnfreezeInput = CreateFrame("EditBox", nil, commandsFramePage1, 
 playerNameUnfreezeInput:SetSize(150, 22)
 playerNameUnfreezeInput:SetPoint("TOPLEFT", playerNameInput, "BOTTOMLEFT", 0, -15)
 playerNameUnfreezeInput:SetAutoFocus(false)
-playerNameUnfreezeInput.defaultText = "Player Name"
+playerNameUnfreezeInput.defaultText = L["Player Name unfreez"]
 playerNameUnfreezeInput:SetText(playerNameUnfreezeInput.defaultText)
 playerNameUnfreezeInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -314,11 +314,11 @@ table.insert(inputFields, playerNameUnfreezeInput)
 -- Bouton "UnFreeze"
 local btnUnfreeze = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 btnUnfreeze:SetSize(100, 22)
-btnUnfreeze:SetText("UnFreeze")
+btnUnfreeze:SetText(L["UnFreeze"])
 btnUnfreeze:SetPoint("LEFT", playerNameUnfreezeInput, "RIGHT", 10, 0)
 btnUnfreeze:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .unfreeze (#player)\n\n\"Unfreezes\" #player and enables his chat again. When using this without #name it will unfreeze your target.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["UnFreeze tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnUnfreeze:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -331,7 +331,7 @@ btnUnfreeze:SetScript("OnClick", function()
         if playerName then
             -- print("La Cible est : " .. playerName) -- Pour debug
         else
-            print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -343,7 +343,7 @@ end)
 
 
 -- Bouton liste des joueurs Freeze
-local btnFreezeList = CreateServerButtonPage1("FreezeListButton", "Freeze List", "Syntax: .listfreeze\r\n\r\nSearch and output all frozen players.", ".listfreeze")
+local btnFreezeList = CreateServerButtonPage1("FreezeListButton", L["Freeze List"], L["Freeze List tooltip"], ".listfreeze")
 btnFreezeList:SetPoint("TOPLEFT", btnUnfreeze, "TOPRIGHT", 10, 0)
 
 	
@@ -360,7 +360,7 @@ end
 -- Bouton Reset Inputs
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetText(L["Reset"])
 btnResetInputs:SetPoint("TOPLEFT", playerNameUnfreezeInput, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)
 
@@ -373,7 +373,7 @@ commandsFramePage2:SetSize(500, 350)
 
 local page2Title = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page2Title:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, 0)
-page2Title:SetText("Player Functions 2")
+page2Title:SetText(L["Player Functions Part 2"])
 
 -- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
 local function CreateServerButtonPage2(name, text, tooltip, cmd)
@@ -412,11 +412,11 @@ local function ResetInputs()
 end
 
 -- Bouton Repaire
-local btnRepairItems = CreateServerButtonPage2("RepairItemsButton", "Repair Items", "Syntax: .repairitems\n\nRepair all selected player's items.", ".repairitems")
+local btnRepairItems = CreateServerButtonPage2("RepairItemsButton", L["Repair Items"], L["Repair Items tooltip"], ".repairitems")
 btnRepairItems:SetPoint("TOPLEFT", page2Title, "BOTTOMLEFT", 0, -15)
 
 -- Bouton unpossess
-local btnUnpossess = CreateServerButtonPage2("UnpossessButton", "Unpossess", "Syntax: .unpossess\r\n\r\nIf you are possessed, unpossesses yourself; otherwise unpossesses current possessed target.", ".unpossess")
+local btnUnpossess = CreateServerButtonPage2("UnpossessButton", L["Unpossess"], L["Unpossess tooltip"], ".unpossess")
 btnUnpossess:SetPoint("TOPLEFT", btnRepairItems, "TOPRIGHT", 10, 0)
 
 ----------------------------
@@ -427,7 +427,7 @@ local playerNameunstuckInput = CreateFrame("EditBox", nil, commandsFramePage2, "
 playerNameunstuckInput:SetSize(150, 22)
 playerNameunstuckInput:SetPoint("TOPLEFT", btnRepairItems, "BOTTOMLEFT", 0, -15)
 playerNameunstuckInput:SetAutoFocus(false)
-playerNameunstuckInput.defaultText = "Player Name"
+playerNameunstuckInput.defaultText = L["Player Name"]
 playerNameunstuckInput:SetText(playerNameunstuckInput.defaultText)
 playerNameunstuckInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -472,11 +472,11 @@ end)
 -- Bouton "Unstuck"
 local btnUnstuck = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
 btnUnstuck:SetSize(100, 22)
-btnUnstuck:SetText("UnStucke")
+btnUnstuck:SetText(L["UnStucke"])
 btnUnstuck:SetPoint("LEFT", unstuckLocationDropdown, "RIGHT", 10, 0)
 btnUnstuck:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .unstuck $playername [inn/graveyard/startzone]\n\nTeleports specified player to specified location. Default location is player\'s current hearth location.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["UnStucke tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnUnstuck:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -489,7 +489,7 @@ btnUnstuck:SetScript("OnClick", function()
         if playerName then
             -- print("La Cible est : " .. playerName) -- Pour debug
         else
-            print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -507,7 +507,7 @@ local kickNameInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxT
 kickNameInput:SetSize(150, 22)
 kickNameInput:SetPoint("TOPLEFT", playerNameunstuckInput, "BOTTOMLEFT", 0, -15)
 kickNameInput:SetAutoFocus(false)
-kickNameInput.defaultText = "Player Name"
+kickNameInput.defaultText = L["Player Name"]
 kickNameInput:SetText(kickNameInput.defaultText)
 kickNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -524,7 +524,7 @@ local reasonInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTem
 reasonInput:SetSize(150, 22)
 reasonInput:SetPoint("LEFT", kickNameInput, "RIGHT", 10, 0)
 reasonInput:SetAutoFocus(false)
-reasonInput.defaultText = "Reason"
+reasonInput.defaultText = L["Reason3"]
 reasonInput:SetText(reasonInput.defaultText)
 reasonInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -539,11 +539,11 @@ table.insert(inputFields, reasonInput)
 -- Bouton "Kick"
 local btnKick = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
 btnKick:SetSize(100, 22)
-btnKick:SetText("Kick")
+btnKick:SetText(L["Kick"])
 btnKick:SetPoint("LEFT", reasonInput, "RIGHT", 10, 0)
 btnKick:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("'Syntax: .kick [$charactername] [$reason]\r\n\r\nKick the given character name from the world with or without reason. If no character name is provided then the selected player (except for yourself) will be kicked. If no reason is provided, default is No Reason.)", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Kick tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnKick:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -557,7 +557,7 @@ btnKick:SetScript("OnClick", function()
         if playerName then
             -- print("La Cible est : " .. playerName) -- Pour debug
         else
-            print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -581,7 +581,7 @@ local levelupNameInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputB
 levelupNameInput:SetSize(150, 22)
 levelupNameInput:SetPoint("TOPLEFT", kickNameInput, "BOTTOMLEFT", 0, -15)
 levelupNameInput:SetAutoFocus(false)
-levelupNameInput.defaultText = "Player Name"
+levelupNameInput.defaultText = L["Player Name"]
 levelupNameInput:SetText(levelupNameInput.defaultText)
 levelupNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -598,7 +598,7 @@ local levelsInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTem
 levelsInput:SetSize(150, 22)
 levelsInput:SetPoint("LEFT", levelupNameInput, "RIGHT", 10, 0)
 levelsInput:SetAutoFocus(false)
-levelsInput.defaultText = "Levels ?"
+levelsInput.defaultText = L["Levels ?"]
 levelsInput:SetText(levelsInput.defaultText)
 levelsInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -613,11 +613,11 @@ table.insert(inputFields, levelsInput)
 -- Bouton "Levelup"
 local btnLevelup = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
 btnLevelup:SetSize(100, 22)
-btnLevelup:SetText("LevelUp")
+btnLevelup:SetText(L["LevelUp"])
 btnLevelup:SetPoint("LEFT", levelsInput, "RIGHT", 10, 0)
 btnLevelup:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("'Syntax: .levelup [$playername] [#numberoflevels]\r\n\r\nIncrease/decrease the level of character with $playername (or the selected if not name provided) by #numberoflevels Or +1 if no #numberoflevels provided). If #numberoflevels is omitted, the level will be increase by 1. If #numberoflevels is 0, the same level will be restarted. If no character is selected and name not provided, increase your level. Command can be used for offline character. All stats and dependent values recalculated. At level decrease talents can be reset if need. Also at level decrease equipped items with greater level requirement can be lost.)", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["LevelUp Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnLevelup:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -631,8 +631,7 @@ btnLevelup:SetScript("OnClick", function()
         if playerName then
             -- print("La Cible est : " .. playerName)
         else
-            print("Aucune cible sélectionnée.")
-            print("Veuillez entrer un nom de joueur valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -656,7 +655,7 @@ local spellIdInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTe
 spellIdInput:SetSize(150, 22)
 spellIdInput:SetPoint("TOPLEFT", levelupNameInput, "BOTTOMLEFT", 0, -15)
 spellIdInput:SetAutoFocus(false)
-spellIdInput.defaultText = "Spell ID"
+spellIdInput.defaultText = L["Spell ID"]
 spellIdInput:SetText(spellIdInput.defaultText)
 spellIdInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -669,11 +668,11 @@ table.insert(inputFields, spellIdInput)
 -- Bouton "Remove Cooldownd"
 local btnRemoveCooldown = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
 btnRemoveCooldown:SetSize(150, 22)
-btnRemoveCooldown:SetText("Remove Cooldownd")
+btnRemoveCooldown:SetText(L["Remove Cooldownd"])
 btnRemoveCooldown:SetPoint("LEFT", spellIdInput, "RIGHT", 10, 0)
 btnRemoveCooldown:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Remove all (if spell_id not provided) or #spel_id spell cooldown from selected character or their pet or you (if no selection).", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Remove Cooldownd Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnRemoveCooldown:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -693,7 +692,7 @@ end)
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetText(L["Reset"])
 btnResetInputs:SetPoint("TOPRIGHT", page2Title, "TOPRIGHT", 270, 0)
 btnResetInputs:SetScript("OnClick", ResetInputs)
 
@@ -706,7 +705,7 @@ commandsFramePage3:SetSize(500, 350)
 
 local page3Title = commandsFramePage3:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page3Title:SetPoint("TOPLEFT", commandsFramePage3, "TOPLEFT", 0, 0)
-page3Title:SetText("Characters Functions")
+page3Title:SetText(L["Characters Functions Part 3"])
 
 -- Fonction polyvalente pour réinitialiser les champs de saisie
 local function ResetInputs()
@@ -725,7 +724,7 @@ local renameNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBo
 renameNameInput:SetSize(150, 22)
 renameNameInput:SetPoint("TOPLEFT", page3Title, "BOTTOMLEFT", 0, -20)
 renameNameInput:SetAutoFocus(false)
-renameNameInput.defaultText = "Character Name"
+renameNameInput.defaultText = L["Character Name Rename"]
 renameNameInput:SetText(renameNameInput.defaultText)
 renameNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -741,7 +740,7 @@ local renameNewNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "Inpu
 renameNewNameInput:SetSize(150, 22)
 renameNewNameInput:SetPoint("LEFT", renameNameInput, "RIGHT", 10, 0)
 renameNewNameInput:SetAutoFocus(false)
-renameNewNameInput.defaultText = "New Name"
+renameNewNameInput.defaultText = L["New Name"]
 renameNewNameInput:SetText(renameNewNameInput.defaultText)
 renameNewNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -755,11 +754,11 @@ table.insert(inputFields, renameNewNameInput)
 -- Bouton "Rename"
 local btnRename = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnRename:SetSize(100, 22)
-btnRename:SetText("Rename")
+btnRename:SetText(L["Rename"])
 btnRename:SetPoint("LEFT", renameNewNameInput, "RIGHT", 10, 0)
 btnRename:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character rename [$name] [$newName]\n\nMark selected in-game or by $name in command character for rename at next login.\n\nIf $newName then the player will be forced rename.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Rename tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnRename:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -771,7 +770,7 @@ btnRename:SetScript("OnClick", function()
     if nameValue == "" or nameValue == renameNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue then
-            print("Veuillez entrer un nom valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -796,7 +795,7 @@ local reputationNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "Inp
 reputationNameInput:SetSize(150, 22)
 reputationNameInput:SetPoint("TOPLEFT", renameNameInput, "BOTTOMLEFT", 0, -10)
 reputationNameInput:SetAutoFocus(false)
-reputationNameInput.defaultText = "Character Name"
+reputationNameInput.defaultText = L["Character Name Rename"]
 reputationNameInput:SetText(reputationNameInput.defaultText)
 reputationNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -810,11 +809,11 @@ table.insert(inputFields, reputationNameInput)
 -- Bouton "Rename"
 local btnReputation = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnReputation:SetSize(130, 22)
-btnReputation:SetText("Show Reputation")
+btnReputation:SetText(L["Show Reputation"])
 btnReputation:SetPoint("LEFT", reputationNameInput, "RIGHT", 10, 0)
 btnReputation:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character reputation [$player_name]\r\n\r\nShow reputation information for selected player or player find by $player_name.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Show Reputation tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnReputation:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -825,7 +824,7 @@ btnReputation:SetScript("OnClick", function()
     if nameValue == "" or nameValue == reputationNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue then
-            print("Veuillez entrer un nom valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -845,7 +844,7 @@ local titlesNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBo
 titlesNameInput:SetSize(150, 22)
 titlesNameInput:SetPoint("TOPLEFT", reputationNameInput, "BOTTOMLEFT", 0, -10)
 titlesNameInput:SetAutoFocus(false)
-titlesNameInput.defaultText = "Character Name"
+titlesNameInput.defaultText = L["Character Name Rename"]
 titlesNameInput:SetText(titlesNameInput.defaultText)
 titlesNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -859,11 +858,11 @@ table.insert(inputFields, titlesNameInput)
 -- Bouton "Titles"
 local btnTitles = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnTitles:SetSize(110, 22)
-btnTitles:SetText("Show Titles")
+btnTitles:SetText(L["Show Titles"])
 btnTitles:SetPoint("LEFT", titlesNameInput, "RIGHT", 10, 0)
 btnTitles:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character titles [$player_name]\r\n\r\nShow known titles list for selected player or player find by $player_name.'", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Show Titles Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnTitles:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -874,7 +873,7 @@ btnTitles:SetScript("OnClick", function()
     if nameValue == "" or nameValue == titlesNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue then
-            print("Veuillez entrer un nom valide ou sélectionner une cible.")
+            print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -894,7 +893,7 @@ local changeraceNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "Inp
 changeraceNameInput:SetSize(150, 22)
 changeraceNameInput:SetPoint("TOPLEFT", titlesNameInput, "BOTTOMLEFT", 0, -10)
 changeraceNameInput:SetAutoFocus(false)
-changeraceNameInput.defaultText = "Character Name"
+changeraceNameInput.defaultText = L["Character Name Rename"]
 changeraceNameInput:SetText(changeraceNameInput.defaultText)
 changeraceNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -908,11 +907,11 @@ table.insert(inputFields, changeraceNameInput)
 -- Bouton "ChangeRace"
 local btnChangeRace = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnChangeRace:SetSize(120, 22)
-btnChangeRace:SetText("Change Race")
+btnChangeRace:SetText(L["Change Race"])
 btnChangeRace:SetPoint("LEFT", changeraceNameInput, "RIGHT", 10, 0)
 btnChangeRace:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character changerace $name\r\n\r\nChange character race.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Change Race Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnChangeRace:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -921,7 +920,7 @@ btnChangeRace:SetScript("OnClick", function()
 
     -- Si "Name" est vide, utilise automatiquement la cible actuelle
     if nameValue == "" or nameValue == changeraceNameInput.defaultText or not nameValue then
-        print("Veuillez entrer un nom valide ou sélectionner une cible.")
+        print(L["please_enter_valid_pname_or_target"])
         return
     end
 
@@ -940,7 +939,7 @@ local changefactionNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "
 changefactionNameInput:SetSize(150, 22)
 changefactionNameInput:SetPoint("TOPLEFT", changeraceNameInput, "BOTTOMLEFT", 0, -10)
 changefactionNameInput:SetAutoFocus(false)
-changefactionNameInput.defaultText = "Character Name"
+changefactionNameInput.defaultText = L["Character Name Rename"]
 changefactionNameInput:SetText(changefactionNameInput.defaultText)
 changefactionNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -954,11 +953,11 @@ table.insert(inputFields, changefactionNameInput)
 -- Bouton "ChangeRace"
 local btnChangefaction = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnChangefaction:SetSize(120, 22)
-btnChangefaction:SetText("Change Faction")
+btnChangefaction:SetText(L["Change Faction"])
 btnChangefaction:SetPoint("LEFT", changefactionNameInput, "RIGHT", 10, 0)
 btnChangefaction:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character changefaction $name\r\n\r\nChange character faction.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Change Faction Tooltip"]), 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnChangefaction:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -967,7 +966,7 @@ btnChangefaction:SetScript("OnClick", function()
 
     -- Si "Name" est vide, utilise automatiquement la cible actuelle
     if nameValue == "" or nameValue == changefactionNameInput.defaultText or not nameValue then
-        print("Veuillez entrer un nom valide ou sélectionner une cible.")
+        print(L["please_enter_value_or_select_player"])
         return
     end
 
@@ -986,7 +985,7 @@ local customizeNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "Inpu
 customizeNameInput:SetSize(150, 22)
 customizeNameInput:SetPoint("TOPLEFT", changefactionNameInput, "BOTTOMLEFT", 0, -10)
 customizeNameInput:SetAutoFocus(false)
-customizeNameInput.defaultText = "Character Name"
+customizeNameInput.defaultText = L["Character Name Rename"]
 customizeNameInput:SetText(customizeNameInput.defaultText)
 customizeNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1000,11 +999,11 @@ table.insert(inputFields, customizeNameInput)
 -- Bouton "ChangeRace"
 local btnCustomize = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnCustomize:SetSize(140, 22)
-btnCustomize:SetText("Character Customize")
+btnCustomize:SetText(L["Character Customize"])
 btnCustomize:SetPoint("LEFT", customizeNameInput, "RIGHT", 10, 0)
 btnCustomize:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character customize [$name]\r\n\r\nMark selected in game or by $name in command character for customize at next login.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Character Customize Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnCustomize:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1013,7 +1012,7 @@ btnCustomize:SetScript("OnClick", function()
 
     -- Si "Name" est vide, utilise automatiquement la cible actuelle
     if nameValue == "" or nameValue == customizeNameInput.defaultText or not nameValue then
-        print("Veuillez entrer un nom valide ou sélectionner une cible.")
+        print(L["please_enter_value_or_select_player"])
         return
     end
 
@@ -1031,7 +1030,7 @@ local charNameLevelInput = CreateFrame("EditBox", nil, commandsFramePage3, "Inpu
 charNameLevelInput:SetSize(150, 22)
 charNameLevelInput:SetPoint("TOPLEFT", customizeNameInput, "BOTTOMLEFT", 0, -10)
 charNameLevelInput:SetAutoFocus(false)
-charNameLevelInput.defaultText = "Character Name"
+charNameLevelInput.defaultText = L["Character Name Rename"]
 charNameLevelInput:SetText(charNameLevelInput.defaultText)
 charNameLevelInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1047,7 +1046,7 @@ local levelValueInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBo
 levelValueInput:SetSize(100, 22)
 levelValueInput:SetPoint("LEFT", charNameLevelInput, "RIGHT", 10, 0)
 levelValueInput:SetAutoFocus(false)
-levelValueInput.defaultText = "Level"
+levelValueInput.defaultText = L["Level5"]
 levelValueInput:SetText(levelValueInput.defaultText)
 levelValueInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1061,14 +1060,11 @@ table.insert(inputFields, levelValueInput)
 -- Bouton "Set Level"
 local btnSetLevel = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnSetLevel:SetSize(100, 22)
-btnSetLevel:SetText("Set")
+btnSetLevel:SetText(L["Set"])
 btnSetLevel:SetPoint("LEFT", levelValueInput, "RIGHT", 10, 0)
 btnSetLevel:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText(
-        "Syntax: .character level [$playername] [#level]\n\nSet the level of character with $playername (or the selected if not name provided) by #numberoflevels or +1 if no #numberoflevels provided. If #numberoflevels is omitted, the level will increase by 1. If #numberoflevels is 0, the same level will be restarted. If no character is selected and name not provided, increases your level. Command can be used for offline character. All stats and dependent values recalculated. At level decrease talents can be reset if needed. Also at level decrease equipped items with greater level requirement can be lost.",
-        1, 1, 1, 1, true
-    )
+    GameTooltip:SetText(L["set level tooltip"] , 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnSetLevel:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1081,7 +1077,7 @@ btnSetLevel:SetScript("OnClick", function()
     if charName == "" or charName == charNameLevelInput.defaultText then
         charName = UnitName("target")
         if not charName then
-            print("Veuillez entrer un nom valide ou sélectionner une cible.")
+            print(L["please_enter_value_or_select_player"])
             return
         end
     end
@@ -1101,7 +1097,7 @@ end)
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetText(L["Reset"])
 btnResetInputs:SetPoint("TOPRIGHT", page3Title, "TOPRIGHT", 420, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1113,7 +1109,7 @@ commandsFramePage4:SetSize(500, 350)
 
 local page4Title = commandsFramePage4:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page4Title:SetPoint("TOPLEFT", commandsFramePage4, "TOPLEFT", 0, 0)
-page4Title:SetText("Character Functions 2")
+page4Title:SetText(L["Characters Functions Part 4"])
 
 -- Fonction polyvalente pour réinitialiser les champs de saisie
 local function ResetInputs()
@@ -1132,7 +1128,7 @@ local characterchangeaccountNameInput = CreateFrame("EditBox", nil, commandsFram
 characterchangeaccountNameInput:SetSize(150, 22)
 characterchangeaccountNameInput:SetPoint("TOPLEFT", page3Title, "BOTTOMLEFT", 0, -20)
 characterchangeaccountNameInput:SetAutoFocus(false)
-characterchangeaccountNameInput.defaultText = "Character Name"
+characterchangeaccountNameInput.defaultText = L["Character Name Rename"]
 characterchangeaccountNameInput:SetText(characterchangeaccountNameInput.defaultText)
 characterchangeaccountNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1148,7 +1144,7 @@ local accountNewAccountInput = CreateFrame("EditBox", nil, commandsFramePage4, "
 accountNewAccountInput:SetSize(150, 22)
 accountNewAccountInput:SetPoint("LEFT", characterchangeaccountNameInput, "RIGHT", 10, 0)
 accountNewAccountInput:SetAutoFocus(false)
-accountNewAccountInput.defaultText = "Account"
+accountNewAccountInput.defaultText = L["Account6"]
 accountNewAccountInput:SetText(accountNewAccountInput.defaultText)
 accountNewAccountInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1162,11 +1158,11 @@ table.insert(inputFields, accountNewAccountInput)
 -- Bouton "Rename"
 local btnRename = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
 btnRename:SetSize(120, 22)
-btnRename:SetText("Change Account")
+btnRename:SetText(L["Change Account"])
 btnRename:SetPoint("LEFT", accountNewAccountInput, "RIGHT", 10, 0)
 btnRename:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .character changeaccount [$player] $account\n\nTransfers ownership of named (or selected) character to another account", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Change Account tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnRename:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1178,7 +1174,7 @@ btnRename:SetScript("OnClick", function()
     if nameValue == "" or nameValue == characterchangeaccountNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue or newAccountValue == "" or newAccountValue == accountNewAccountInput.defaultText then
-            print("Veuillez entrer un nom valide, un compte valide et/ou sélectionner une cible.")
+            print(L["change account error"])
             return
         end
     end
@@ -1197,10 +1193,10 @@ if not inputFields then inputFields = {} end
 
 -- Définition des options du dropdown
 local dropdownOptions = {
-    { text = "character deleted delete", defaultText = "Enter Char Name or Guid", command = ".character deleted delete", tooltip = "Syntax: .character deleted delete #guid|$name\r\nCompletely deletes the selected characters.\r\nIf $name is supplied, only characters with that string in their name will be deleted,\r\nif #guid is supplied, only the character with that GUID will be deleted." },
-    { text = "character deleted list", defaultText = "Enter Char Name or Guid", command = ".character deleted list", tooltip = "Syntax: .character deleted list [#guid|$name]\r\nShows a list with all deleted characters.\r\nIf $name is supplied, only characters with that string in their name will be selected,\r\nif #guid is supplied, only the character with that GUID will be selected." },
-    { text = "character deleted old", defaultText = "Enter keepDays Value", command = ".character deleted old", tooltip = "Syntax: .character deleted old [#keepDays]\r\nCompletely deletes all characters with deleted time longer #keepDays.\r\nIf #keepDays not provided the used value from mangosd.conf option 'CharDelete.KeepDays'.\r\nIf referenced config option disabled (use 0 value) then command can't be used without #keepDays." },
-    { text = "character erase", defaultText = "Enter Char Name", command = ".character erase", tooltip = "Syntax: .character erase $name\r\nDelete character $name. Character finally deleted in case any deleting options." },
+    { text = "character deleted delete", defaultText = L["Enter Char Name or Guid"], command = ".character deleted delete", tooltip = L["Enter Char Name or Guid delet tooltip"] },
+    { text = "character deleted list", defaultText = L["Enter Char Name or Guid"], command = ".character deleted list", tooltip = L["Enter Char Name or Guid delete list tooltip"] },
+    { text = "character deleted old", defaultText = L["Enter keepDays Value"], command = ".character deleted old", tooltip = L["Enter keepDays Value tooltip"] },
+    { text = "character erase", defaultText = L["Enter Char Name"], command = ".character erase", tooltip = L["Enter Char Name erase tooltip"] },
 }
 
 local selectedOption = dropdownOptions[1] -- Option par défaut initiale
@@ -1250,7 +1246,7 @@ end)
 -- Bouton "Execute"
 local btnExecute = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
 btnExecute:SetSize(100, 22)
-btnExecute:SetText("Execute")
+btnExecute:SetText(L["Execute3"])
 btnExecute:SetPoint("LEFT", dynamicDropdown, "RIGHT", -5, 2)
 
 btnExecute:SetScript("OnEnter", function(self)
@@ -1265,7 +1261,7 @@ btnExecute:SetScript("OnClick", function()
 
     -- Vérification rigoureuse du contenu du champ de saisie
     if inputValue == "" or inputValue == dynamicInput.defaultText then
-        print("Veuillez entrer une valeur valide dans le champ de saisie.")
+        print(L["Please enter a valid value in the input field."])
         return
     end
 
@@ -1285,7 +1281,7 @@ local restoreCharGuidInput = CreateFrame("EditBox", nil, commandsFramePage4, "In
 restoreCharGuidInput:SetSize(170, 22)
 restoreCharGuidInput:SetPoint("TOPLEFT", dynamicInput, "TOPLEFT", 0, -40)
 restoreCharGuidInput:SetAutoFocus(false)
-restoreCharGuidInput.defaultText = "Enter Char Name or Guid"
+restoreCharGuidInput.defaultText = L["Enter Char Name or Guid"]
 restoreCharGuidInput:SetText(restoreCharGuidInput.defaultText)
 restoreCharGuidInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1301,7 +1297,7 @@ local restoreNewNameInput = CreateFrame("EditBox", nil, commandsFramePage4, "Inp
 restoreNewNameInput:SetSize(150, 22)
 restoreNewNameInput:SetPoint("LEFT", restoreCharGuidInput, "RIGHT", 10, 0)
 restoreNewNameInput:SetAutoFocus(false)
-restoreNewNameInput.defaultText = "New Name"
+restoreNewNameInput.defaultText = L["New Name7"]
 restoreNewNameInput:SetText(restoreNewNameInput.defaultText)
 restoreNewNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1317,7 +1313,7 @@ local restoreNewAccountInput = CreateFrame("EditBox", nil, commandsFramePage4, "
 restoreNewAccountInput:SetSize(150, 22)
 restoreNewAccountInput:SetPoint("LEFT", restoreNewNameInput, "RIGHT", 10, 0)
 restoreNewAccountInput:SetAutoFocus(false)
-restoreNewAccountInput.defaultText = "New Account"
+restoreNewAccountInput.defaultText = L["New Account7"]
 restoreNewAccountInput:SetText(restoreNewAccountInput.defaultText)
 restoreNewAccountInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1331,15 +1327,12 @@ table.insert(inputFields, restoreNewAccountInput)
 -- Bouton "Restore"
 local btnRestore = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
 btnRestore:SetSize(100, 22)
-btnRestore:SetText("Restore")
+btnRestore:SetText(L["Restore7"])
 btnRestore:SetPoint("LEFT", restoreNewAccountInput, "RIGHT", 10, 0)
 
 btnRestore:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText(
-        "Syntax: .character deleted restore #guid|$name [$newname] [#new account]\nRestores deleted characters.\nIf $name is supplied, only characters with that string in their name will be restored, if $guid is supplied, only the character with that GUID will be restored.\nIf $newname is set, the character will be restored with that name instead of the original one. If #newaccount is set, the character will be restored to specific account character list. This works only with one character!",
-        1, 1, 1, 1, true
-    )
+    GameTooltip:SetText(L["Restore7 tooltip"] , 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnRestore:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1351,7 +1344,7 @@ btnRestore:SetScript("OnClick", function()
 
     -- Vérifie si le premier champ est renseigné
     if guidOrName == "" or guidOrName == restoreCharGuidInput.defaultText then
-        print("Erreur : Veuillez entrer un Char Name ou Guid valide.")
+        print(L["error restore"])
         return
     end
 
@@ -1374,7 +1367,7 @@ end)
 
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetText(L["Reset"]")
 btnResetInputs:SetPoint("TOPRIGHT", restoreNewAccountInput, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1386,7 +1379,7 @@ commandsFramePage5:SetSize(500, 350)
 
 local page5Title = commandsFramePage5:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page5Title:SetPoint("TOPLEFT", commandsFramePage5, "TOPLEFT", 0, 0)
-page5Title:SetText("Pets Functions")
+page5Title:SetText(L["Pets Functions"])
 
 -- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
 local function CreateServerButtonPage5(name, text, tooltip, cmd)
@@ -1427,7 +1420,7 @@ end
 ----------------------------
 -- Fonction Pet Create
 ----------------------------
-local btnPetCreate = CreateServerButtonPage5("PetCreateButton", "Create Pet", "Syntax: .pet create\r\n\r\nCreates a pet of the selected creature.", ".pet create")
+local btnPetCreate = CreateServerButtonPage5("PetCreateButton", L["Create Pet"], L["Create Pet Tooltip"] = "Creates a pet of the selected creature.", ".pet create")
 btnPetCreate:SetPoint("TOPLEFT", page5Title, "BOTTOMLEFT", 0, -15)
 
 ----------------------------
@@ -1438,7 +1431,7 @@ local petlearnInput = CreateFrame("EditBox", nil, commandsFramePage5, "InputBoxT
 petlearnInput:SetSize(90, 22)
 petlearnInput:SetPoint("TOPLEFT", btnPetCreate, "BOTTOMLEFT", 0, -10)
 petlearnInput:SetAutoFocus(false)
-petlearnInput.defaultText = "Spell ID"
+petlearnInput.defaultText = L["Spell ID"]
 petlearnInput:SetText(petlearnInput.defaultText)
 petlearnInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1452,11 +1445,11 @@ table.insert(inputFields, petlearnInput)
 -- Bouton "Learn Pet"
 local btnLearnPet = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
 btnLearnPet:SetSize(120, 22)
-btnLearnPet:SetText("Learn to Pet")
+btnLearnPet:SetText(L["Learn to Pet"])
 btnLearnPet:SetPoint("LEFT", petlearnInput, "RIGHT", 10, 0)
 btnLearnPet:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .pet learn\r\n\r\nLearn #spellid to pet.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Learn to Pet tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnLearnPet:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1465,7 +1458,7 @@ btnLearnPet:SetScript("OnClick", function()
     local petName = petlearnInput:GetText()
 	-- Si "petName" vide, on envoi erreur
         if not petName or petName == "" or petName == petlearnInput.defaultText then
-            print("Veuillez entrer une ID de Spell Valide.")
+            print(L["pet learn error"])
             return
 		end
     local cmd = ".pet learn " .. petName
@@ -1481,7 +1474,7 @@ local petlevelInput = CreateFrame("EditBox", nil, commandsFramePage5, "InputBoxT
 petlevelInput:SetSize(90, 22)
 petlevelInput:SetPoint("TOPLEFT", petlearnInput, "BOTTOMLEFT", 0, -10)
 petlevelInput:SetAutoFocus(false)
-petlevelInput.defaultText = "Level"
+petlevelInput.defaultText = L["Level69"]
 petlevelInput:SetText(petlevelInput.defaultText)
 petlevelInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1495,11 +1488,11 @@ table.insert(inputFields, petlevelInput)
 -- Bouton "level"
 local btnPetlevel = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
 btnPetlevel:SetSize(120, 22)
-btnPetlevel:SetText("Set Level")
+btnPetlevel:SetText(L["Set Level69"])
 btnPetlevel:SetPoint("LEFT", petlevelInput, "RIGHT", 10, 0)
 btnPetlevel:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .pet level #dLevel\nIncreases/decreases the pet\'s level by #dLevel. Pet\'s level cannot exceed the owner\'s level.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Set Level69 tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnPetlevel:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1508,7 +1501,7 @@ btnPetlevel:SetScript("OnClick", function()
     local petLevel = petlevelInput:GetText()
 	 -- Si "level" vide, on envoi erreur
         if not petLevel or petLevel == "" or petLevel == petlevelInput.defaultText then
-            print("Veuillez entrer un Niveau Valide.")
+            print(L["Set Level69 error"])
             return
 		end
     local cmd = ".pet level " .. petLevel
@@ -1524,7 +1517,7 @@ local spellidInput = CreateFrame("EditBox", nil, commandsFramePage5, "InputBoxTe
 spellidInput:SetSize(90, 22)
 spellidInput:SetPoint("TOPLEFT", petlevelInput, "BOTTOMLEFT", 0, -10)
 spellidInput:SetAutoFocus(false)
-spellidInput.defaultText = "Level"
+spellidInput.defaultText = L["Level69"]
 spellidInput:SetText(spellidInput.defaultText)
 spellidInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1538,11 +1531,11 @@ table.insert(inputFields, spellidInput)
 -- Bouton "unlearn"
 local btnPetUnlearn = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
 btnPetUnlearn:SetSize(120, 22)
-btnPetUnlearn:SetText("Unlearn")
+btnPetUnlearn:SetText(L["Unlearn69"])
 btnPetUnlearn:SetPoint("LEFT", spellidInput, "RIGHT", 10, 0)
 btnPetUnlearn:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .pet unleran\r\n\r\nunLearn #spellid to pet.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Unlearn69 tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnPetUnlearn:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1551,7 +1544,7 @@ btnPetUnlearn:SetScript("OnClick", function()
     local petSpell = spellidInput:GetText()
     -- Si "level" vide, on envoi erreur
         if not petSpell or petSpell == "" or petSpell == spellidInput.defaultText then
-            print("Veuillez entrer une ID se Spell Valide.")
+            print(L["Unlearn69 error"])
             return
 		end
 	
@@ -1562,7 +1555,7 @@ end)
 	
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetText(L["Reset"])
 btnResetInputs:SetPoint("TOPRIGHT", btnPetUnlearn, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1574,7 +1567,7 @@ commandsFramePage6:SetSize(500, 350)
 
 local page6Title = commandsFramePage6:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 page6Title:SetPoint("TOPLEFT", commandsFramePage6, "TOPLEFT", 0, 0)
-page6Title:SetText("Player Dumps")
+page6Title:SetText(L["Player Dumps"])
 
 -- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
 local function CreateServerButtonPage5(name, text, tooltip, cmd)
@@ -1620,7 +1613,7 @@ local pdumpcopyNameInput = CreateFrame("EditBox", nil, commandsFramePage6, "Inpu
 pdumpcopyNameInput:SetSize(150, 22)
 pdumpcopyNameInput:SetPoint("TOPLEFT", page6Title, "BOTTOMLEFT", 0, -20)
 pdumpcopyNameInput:SetAutoFocus(false)
-pdumpcopyNameInput.defaultText = "Player NameOrGUID"
+pdumpcopyNameInput.defaultText = L["Player NameOrGUID"]
 pdumpcopyNameInput:SetText(pdumpcopyNameInput.defaultText)
 pdumpcopyNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1636,7 +1629,7 @@ local accountInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTe
 accountInput:SetSize(70, 22)
 accountInput:SetPoint("LEFT", pdumpcopyNameInput, "RIGHT", 10, 0)
 accountInput:SetAutoFocus(false)
-accountInput.defaultText = "Account"
+accountInput.defaultText = L["Account69"]
 accountInput:SetText(accountInput.defaultText)
 accountInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1652,7 +1645,7 @@ local newnameInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTe
 newnameInput:SetSize(120, 22)
 newnameInput:SetPoint("LEFT", accountInput, "RIGHT", 10, 0)
 newnameInput:SetAutoFocus(false)
-newnameInput.defaultText = "New Name"
+newnameInput.defaultText = L["New Name70"]
 newnameInput:SetText(newnameInput.defaultText)
 newnameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1668,7 +1661,7 @@ local newguidInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTe
 newguidInput:SetSize(70, 22)
 newguidInput:SetPoint("LEFT", newnameInput, "RIGHT", 10, 0)
 newguidInput:SetAutoFocus(false)
-newguidInput.defaultText = "New Guid"
+newguidInput.defaultText = L["New Guid70"]
 newguidInput:SetText(newguidInput.defaultText)
 newguidInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1682,11 +1675,11 @@ table.insert(inputFields, newguidInput)
 -- Bouton "Rename"
 local btnDumpCopy = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
 btnDumpCopy:SetSize(70, 22)
-btnDumpCopy:SetText("Dump")
+btnDumpCopy:SetText(L["Dump70"])
 btnDumpCopy:SetPoint("LEFT", newguidInput, "RIGHT", 10, 0)
 btnDumpCopy:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .pdump copy $playerNameOrGUID $account [$newname] [$newguid]\nCopy character with name/guid $playerNameOrGUID into character list of $account with $newname, with first free or $newguid guid.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Dump70 Tooltip"] = "Syntax: .pdump copy $playerNameOrGUID $account [$newname] [$newguid]\nCopy character with name/guid $playerNameOrGUID into character list of $account with $newname, with first free or $newguid guid.", 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnDumpCopy:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1700,7 +1693,7 @@ btnDumpCopy:SetScript("OnClick", function()
     if nameValue == "" or nameValue == pdumpcopyNameInput.defaultText or
        accountValue == "" or accountValue == accountInput.defaultText or
        newNameValue == "" or newNameValue == newnameInput.defaultText then
-        print("Les champs Nom ou GUID, Account et New Name sont obligatoires. Veuillez les renseigner.")
+        print(L["pdump_error"])
         return
     end
 
@@ -1723,7 +1716,7 @@ local pdumploadFileInput = CreateFrame("EditBox", nil, commandsFramePage6, "Inpu
 pdumploadFileInput:SetSize(150, 22)
 pdumploadFileInput:SetPoint("TOPLEFT", pdumpcopyNameInput, "BOTTOMLEFT", 0, -20)
 pdumploadFileInput:SetAutoFocus(false)
-pdumploadFileInput.defaultText = "Enter Filename"
+pdumploadFileInput.defaultText = L["Enter Filename"]
 pdumploadFileInput:SetText(pdumploadFileInput.defaultText)
 pdumploadFileInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1739,7 +1732,7 @@ local accountLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputB
 accountLoadInput:SetSize(70, 22)
 accountLoadInput:SetPoint("LEFT", pdumploadFileInput, "RIGHT", 10, 0)
 accountLoadInput:SetAutoFocus(false)
-accountLoadInput.defaultText = "Account"
+accountLoadInput.defaultText = L["Account69"]
 accountLoadInput:SetText(accountLoadInput.defaultText)
 accountLoadInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1755,7 +1748,7 @@ local newnameLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputB
 newnameLoadInput:SetSize(120, 22)
 newnameLoadInput:SetPoint("LEFT", accountLoadInput, "RIGHT", 10, 0)
 newnameLoadInput:SetAutoFocus(false)
-newnameLoadInput.defaultText = "New Name"
+newnameLoadInput.defaultText = L["New Name70"]
 newnameLoadInput:SetText(newnameLoadInput.defaultText)
 newnameLoadInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1771,7 +1764,7 @@ local newguidLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputB
 newguidLoadInput:SetSize(70, 22)
 newguidLoadInput:SetPoint("LEFT", newnameLoadInput, "RIGHT", 10, 0)
 newguidLoadInput:SetAutoFocus(false)
-newguidLoadInput.defaultText = "New Guid"
+newguidLoadInput.defaultText = L["New Guid70"]
 newguidLoadInput:SetText(newguidLoadInput.defaultText)
 newguidLoadInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1785,11 +1778,11 @@ table.insert(inputFields, newguidLoadInput)
 -- Bouton "Load"
 local btnDumpLoad = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
 btnDumpLoad:SetSize(70, 22)
-btnDumpLoad:SetText("Load")
+btnDumpLoad:SetText(L["Load70"])
 btnDumpLoad:SetPoint("LEFT", newguidLoadInput, "RIGHT", 10, 0)
 btnDumpLoad:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .pdump load $filename $account [$newname] [$newguid]\r\nLoad character dump from dump file into character list of $account with saved or $newname, with saved (or first free) or $newguid guid.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Load70 Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnDumpLoad:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1803,7 +1796,7 @@ btnDumpLoad:SetScript("OnClick", function()
     if nameValue == "" or nameValue == pdumploadFileInput.defaultText or
        accountValue == "" or accountValue == accountLoadInput.defaultText or
        newNameValue == "" or newNameValue == newnameLoadInput.defaultText then
-        print("Les champs Filename, Account et New Name sont obligatoires. Veuillez les renseigner.")
+        print(L["Load70 error"])
         return
     end
 
@@ -1826,7 +1819,7 @@ local pdumpwriteFileInput = CreateFrame("EditBox", nil, commandsFramePage6, "Inp
 pdumpwriteFileInput:SetSize(120, 22)
 pdumpwriteFileInput:SetPoint("TOPLEFT", pdumploadFileInput, "BOTTOMLEFT", 0, -20)
 pdumpwriteFileInput:SetAutoFocus(false)
-pdumpwriteFileInput.defaultText = "Enter Filename"
+pdumpwriteFileInput.defaultText = L["Enter Filename"]
 pdumpwriteFileInput:SetText(pdumpwriteFileInput.defaultText)
 pdumpwriteFileInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1842,7 +1835,7 @@ local playerNameWriteInput = CreateFrame("EditBox", nil, commandsFramePage6, "In
 playerNameWriteInput:SetSize(150, 22)
 playerNameWriteInput:SetPoint("LEFT", pdumpwriteFileInput, "RIGHT", 10, 0)
 playerNameWriteInput:SetAutoFocus(false)
-playerNameWriteInput.defaultText = "PlayerName Or GUID"
+playerNameWriteInput.defaultText = L["Player NameOrGUID"]
 playerNameWriteInput:SetText(playerNameWriteInput.defaultText)
 playerNameWriteInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1856,11 +1849,11 @@ table.insert(inputFields, playerNameWriteInput)
 -- Bouton "Write"
 local btnDumpWrite = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
 btnDumpWrite:SetSize(70, 22)
-btnDumpWrite:SetText("Write")
+btnDumpWrite:SetText(L["Write"])
 btnDumpWrite:SetPoint("LEFT", playerNameWriteInput, "RIGHT", 10, 0)
 btnDumpWrite:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Syntax: .pdump write $filename $playerNameOrGUID\r\nWrite character dump with name/guid $playerNameOrGUID to file $filename.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Write tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnDumpWrite:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1871,7 +1864,7 @@ btnDumpWrite:SetScript("OnClick", function()
     -- Vérification des champs obligatoires
     if nameValueWrite == "" or nameValueWrite == pdumpwriteFileInput.defaultText or
        accountValueWrite == "" or accountValueWrite == playerNameWriteInput.defaultText then
-        print("Les champs Filename, Name or GUI sont obligatoires. Veuillez les renseigner.")
+        print(L["write error"])
         return
     end
 
@@ -1887,7 +1880,7 @@ end)
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText("Reset Inputs")
+btnResetInputs:SetText(L["Reset"])
 btnResetInputs:SetPoint("TOPRIGHT", btnDumpWrite, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -2015,7 +2008,7 @@ commandsFramePage7:SetSize(500, 350)
 
 local page7Title = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 page7Title:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, 0)
-page7Title:SetText("Advances Player Info And Items Send")
+page7Title:SetText(L["Advances Player Info And Items Send"])
 
 -- ============================================================
 -- 1) Variables de capture
@@ -2210,8 +2203,8 @@ local function ShowPlayerInfoAceGUI(infoTable)
     end
 
     pinfoAceFrame = AceGUI:Create("Frame")
-    pinfoAceFrame:SetTitle("Informations du joueur")
-    pinfoAceFrame:SetStatusText("Player Infos")
+    pinfoAceFrame:SetTitle(L["Informations du joueur"])
+    pinfoAceFrame:SetStatusText(L["Player Infos var"])
     pinfoAceFrame:SetLayout("Flow")
     pinfoAceFrame:SetWidth(600)
     pinfoAceFrame:SetHeight(500)
@@ -2229,7 +2222,7 @@ local function ShowPlayerInfoAceGUI(infoTable)
 
     -- Dans le ScrollFrame, on crée un InlineGroup qui contiendra le contenu
     local group = AceGUI:Create("InlineGroup")
-    group:SetTitle("Informations générales")
+    group:SetTitle(L["Informations générales"])
     group:SetFullWidth(true)
     group:SetLayout("Flow")
     scroll:AddChild(group)
@@ -2396,7 +2389,7 @@ end
 -- ============================================================
 local btnCapturePinfo = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
 btnCapturePinfo:SetPoint("TOPLEFT", page7Title, "TOPLEFT", 0, -20)
-btnCapturePinfo:SetText("Advanced .Pinfo")
+btnCapturePinfo:SetText(L["Advanced .Pinfo"])
 btnCapturePinfo:SetHeight(22)
 btnCapturePinfo:SetWidth(btnCapturePinfo:GetTextWidth() + 20)
 btnCapturePinfo:SetScript("OnClick", function()
@@ -2410,26 +2403,26 @@ end)
 
 local mailSubtitle = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 mailSubtitle:SetPoint("TOPLEFT", btnCapturePinfo, "BOTTOMLEFT", 0, -10)
-mailSubtitle:SetText("Send Items by Mail to Player")
+mailSubtitle:SetText(L["Send Items by Mail to Player"])
 
 -- Création des champs de saisie Player Name, Subject, Email Text
 local playerNameEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
 playerNameEditBox:SetSize(150, 22)
 playerNameEditBox:SetPoint("TOPLEFT", mailSubtitle, "BOTTOMLEFT", 0, -10)
 playerNameEditBox:SetAutoFocus(false)
-playerNameEditBox:SetText("Player Name")
+playerNameEditBox:SetText(L["Player Name"])
 
 local subjectEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
 subjectEditBox:SetSize(150, 22)
 subjectEditBox:SetPoint("LEFT", playerNameEditBox, "RIGHT", 10, 0)
 subjectEditBox:SetAutoFocus(false)
-subjectEditBox:SetText("Subject")
+subjectEditBox:SetText(L["Subject"])
 
 local emailTextEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
 emailTextEditBox:SetSize(150, 22)
 emailTextEditBox:SetPoint("LEFT", subjectEditBox, "RIGHT", 10, 0)
 emailTextEditBox:SetAutoFocus(false)
-emailTextEditBox:SetText("Email Text")
+emailTextEditBox:SetText(L["Email Text"])
 
 -- Création des 24 champs de saisie pour les Items et Counts, alignés précisément 3 paires par ligne
 local itemEditBoxes = {}
@@ -2477,7 +2470,7 @@ btnSendItems:SetHeight(22)
 btnSendItems:SetWidth(btnSendItems:GetTextWidth() + 20)
 
 
-local tooltipSendItems = "Syntax: .send items #playername \"#subject\" \"#text\" itemid1[:count1] itemid2[:count2] ... itemidN[:countN]\r\n\r\nSend a mail to a player. Subject and mail text must be in \"\". If for itemid not provided related count values then expected 1, if count > max items in stack then items will be send in required amount stacks. All stacks amount in mail limited to 12."
+local tooltipSendItems = L["tooltipSendItems tooltip"]
 
 btnSendItems:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -2507,7 +2500,7 @@ btnSendItems:SetScript("OnClick", function()
     end
 
     SendChatMessage(command, "SAY")
-    print("[DEBUG] Commande envoyée: " .. command)
+    -- print("[DEBUG] Commande envoyée: " .. command)
 end)
 
 ---------------------------------------------------------------
@@ -2520,20 +2513,20 @@ commandsFramePage8:SetSize(500, 350)
 
 local page8Title = commandsFramePage8:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 page8Title:SetPoint("TOPLEFT", commandsFramePage8, "TOPLEFT", 0, 0)
-page8Title:SetText("Send Mails Funcs")
+page8Title:SetText(L["Send Mails Funcs"])
 
 -- Send Mail Section
 local mailPlayerName = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 mailPlayerName:SetSize(150, 22)
 mailPlayerName:SetPoint("TOPLEFT", page8Title, "BOTTOMLEFT", 0, -15)
 mailPlayerName:SetAutoFocus(false)
-mailPlayerName:SetText("Player Name")
+mailPlayerName:SetText(L["Player Name"])
 
 local mailSubject = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 mailSubject:SetSize(150, 22)
 mailSubject:SetPoint("LEFT", mailPlayerName, "RIGHT", 10, 0)
 mailSubject:SetAutoFocus(false)
-mailSubject:SetText("Subject")
+mailSubject:SetText(L["Subject"])
 
 local mailText = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 mailText:SetSize(150, 22)
@@ -2543,12 +2536,12 @@ mailText:SetText("Text")
 
 local btnSendMail = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnSendMail:SetPoint("LEFT", mailText, "RIGHT", 10, 0)
-btnSendMail:SetText("Send Mail")
+btnSendMail:SetText(L["Email Text"])
 btnSendMail:SetHeight(22)
 btnSendMail:SetWidth(btnSendMail:GetTextWidth() + 20)
 btnSendMail:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText('Syntax: .send mail #playername "#subject" "#text"\r\n\r\nSend a mail to a player. Subject and mail text must be in "".', 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["sendemail tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnSendMail:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -2557,7 +2550,7 @@ btnSendMail:SetScript("OnClick", function()
     local subject = mailSubject:GetText()
     local text = mailText:GetText()
     if playerName == "" or subject == "" or text == "" then
-        print("Tous les champs doivent être remplis.")
+        print(L["sendmail error"])
         return
     end
     local cmd = '.send mail ' .. playerName .. ' "' .. subject .. '" "' .. text .. '"'
@@ -2569,22 +2562,22 @@ local msgPlayerName = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxT
 msgPlayerName:SetSize(150, 22)
 msgPlayerName:SetPoint("TOPLEFT", mailPlayerName, "BOTTOMLEFT", 0, -30)
 msgPlayerName:SetAutoFocus(false)
-msgPlayerName:SetText("Player Name")
+msgPlayerName:SetText(L["Player Name"])
 
 local msgText = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 msgText:SetSize(310, 22)
 msgText:SetPoint("LEFT", msgPlayerName, "RIGHT", 10, 0)
 msgText:SetAutoFocus(false)
-msgText:SetText("Message")
+msgText:SetText(L["PMessage"])
 
 local btnSendMessage = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnSendMessage:SetPoint("LEFT", msgText, "RIGHT", 10, 0)
-btnSendMessage:SetText("Send Message")
+btnSendMessage:SetText(L["Send Message"])
 btnSendMessage:SetHeight(22)
 btnSendMessage:SetWidth(btnSendMessage:GetTextWidth() + 20)
 btnSendMessage:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText('Syntax: .send message $playername $message\r\n\r\nSend screen message to player from ADMINISTRATOR.', 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Send Message tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnSendMessage:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -2592,7 +2585,7 @@ btnSendMessage:SetScript("OnClick", function()
     local playerName = msgPlayerName:GetText()
     local message = msgText:GetText()
     if playerName == "" or message == "" then
-        print("Tous les champs doivent être remplis.")
+        print(L["sendmail error"])
         return
     end
     local cmd = '.send message ' .. playerName .. ' ' .. message
@@ -2604,34 +2597,34 @@ local moneyPlayerName = CreateFrame("EditBox", nil, commandsFramePage8, "InputBo
 moneyPlayerName:SetSize(120, 22)
 moneyPlayerName:SetPoint("TOPLEFT", msgPlayerName, "BOTTOMLEFT", 0, -30)
 moneyPlayerName:SetAutoFocus(false)
-moneyPlayerName:SetText("Player Name")
+moneyPlayerName:SetText(L["Player Name"])
 
 local moneySubject = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 moneySubject:SetSize(120, 22)
 moneySubject:SetPoint("LEFT", moneyPlayerName, "RIGHT", 10, 0)
 moneySubject:SetAutoFocus(false)
-moneySubject:SetText("Subject")
+moneySubject:SetText(L["Subject"])
 
 local moneyText = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 moneyText:SetSize(120, 22)
 moneyText:SetPoint("LEFT", moneySubject, "RIGHT", 10, 0)
 moneyText:SetAutoFocus(false)
-moneyText:SetText("Text")
+moneyText:SetText(L["Money_Text"])
 
 local moneyAmount = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 moneyAmount:SetSize(80, 22)
 moneyAmount:SetPoint("LEFT", moneyText, "RIGHT", 10, 0)
 moneyAmount:SetAutoFocus(false)
-moneyAmount:SetText("Money")
+moneyAmount:SetText(L["V_Money"])
 
 local btnSendMoney = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnSendMoney:SetPoint("LEFT", moneyAmount, "RIGHT", 10, 0)
-btnSendMoney:SetText("Send Money")
+btnSendMoney:SetText(L["Send Money"])
 btnSendMoney:SetHeight(22)
 btnSendMoney:SetWidth(btnSendMoney:GetTextWidth() + 20)
 btnSendMoney:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText('Syntax: .send money #playername "#subject" "#text" #money\r\n\r\nSend mail with money to a player. Subject and mail text must be in "".', 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Send Money tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnSendMoney:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -2641,7 +2634,7 @@ btnSendMoney:SetScript("OnClick", function()
     local text = moneyText:GetText()
     local money = moneyAmount:GetText()
     if playerName == "" or subject == "" or text == "" or money == "" then
-        print("Tous les champs doivent être remplis.")
+        print(L["sendmail error"])
         return
     end
     local cmd = '.send money ' .. playerName .. ' "' .. subject .. '" "' .. text .. '" ' .. money
@@ -2650,7 +2643,7 @@ end)
 
 local convertSubtitle = commandsFramePage8:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 convertSubtitle:SetPoint("TOPLEFT", moneyPlayerName, "BOTTOMLEFT", 0, -20)
-convertSubtitle:SetText("To copper converter")
+convertSubtitle:SetText(L["To copper converter"])
 -- Champs Gold, Silver, Copper
 local goldInput = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
 goldInput:SetSize(80, 22)
