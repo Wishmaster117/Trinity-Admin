@@ -2,7 +2,7 @@ TrinityAdmin = LibStub("AceAddon-3.0"):NewAddon("TrinityAdmin", "AceConsole-3.0"
 L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Affiche un message de debug indiquant la langue détectée
-TrinityAdmin:Print("Langue détectée : " .. GetLocale())
+TrinityAdmin:Print(L["detected_language"] .. GetLocale())
 
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     type = "launcher",
@@ -17,7 +17,7 @@ local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     end,
     OnTooltipShow = function(tooltip)
         tooltip:AddLine("TrinityAdmin")
-        tooltip:AddLine("Cliquez pour ouvrir le menu principal.", 1, 1, 1)
+        tooltip:AddLine(L["click_to_open_main"], 1, 1, 1)
     end,
 })
 
@@ -172,7 +172,7 @@ end
 -- Fonctions d'initialisation
 ------------------------------------------------------------
 function TrinityAdmin:OnInitialize()
-    self:Print("Welcome to TrinityCore GM Tools By TheWarlock : http://www.leeroylegacy.online")
+    self:Print(L["trinity_admin_welcome"])
     self:RegisterChatCommand("trinityadmin", "ToggleUI")
     self.gmFlyOn = false
 end
@@ -212,7 +212,7 @@ function TrinityAdmin:OnEnable()
 end
 
 function TrinityAdmin:OnDisable()
-    self:Print("TrinityAdmin Fermé")
+    self:Print(L["trinityadmin_close"])
 end
 
 ------------------------------------------------------------

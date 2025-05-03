@@ -23,7 +23,7 @@ function Waypoints:CreateWaypointsPanel()
     
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Waypoints Panel")
+    panel.title:SetText(L["Waypoints Panel"])
     
     --------------------------------------------------------------------------------
     -- 1 - Bouton Waypoint GSP
@@ -31,14 +31,14 @@ function Waypoints:CreateWaypointsPanel()
     local btnWpgps = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpgps:SetSize(120, 24)
     btnWpgps:SetPoint("TOPLEFT", panel, "TOPLEFT", 20, -40)
-    btnWpgps:SetText("Waypoint GSP")
+    btnWpgps:SetText(L["Waypoint GSP"])
     btnWpgps:SetScript("OnClick", function()
         SendChatMessage(".wpgps", "SAY")
         -- print("[DEBUG] .wpgps envoyé.")
     end)
     btnWpgps:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Output current position to SQL developer log as partial SQL query to be used in pathing", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["Output_current_position_to_SQL_developer"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpgps:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -49,14 +49,14 @@ function Waypoints:CreateWaypointsPanel()
     local btnmovegens = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnmovegens:SetSize(120, 24)
     btnmovegens:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -40, -40)
-    btnmovegens:SetText("Movegens")
+    btnmovegens:SetText(L["Movegens"])
     btnmovegens:SetScript("OnClick", function()
         SendChatMessage(".movegens", "SAY")
         -- print("[DEBUG] .wpgps envoyé.")
     end)
     btnmovegens:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Show movement generators stack for selected creature or player.", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["Show_movement_generators"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnmovegens:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -67,10 +67,10 @@ function Waypoints:CreateWaypointsPanel()
     local btnWpAdd = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpAdd:SetSize(120, 24)
     btnWpAdd:SetPoint("TOPLEFT", btnWpgps, "BOTTOMLEFT", 0, -10)
-    btnWpAdd:SetText("Waypoint Add")
+    btnWpAdd:SetText(L["Waypoint Add"])
     btnWpAdd:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print("Erreur: Aucun PNJ ciblé.")
+            print(L["please_select_npc"])
             return
         end
         SendChatMessage(".wp add", "SAY")
@@ -78,7 +78,7 @@ function Waypoints:CreateWaypointsPanel()
     end)
     btnWpAdd:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Add a waypoint for the selected creature at your current position.", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["Add_waypoint_for_selected_creature"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpAdd:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -90,28 +90,28 @@ function Waypoints:CreateWaypointsPanel()
     wpLoadEdit:SetSize(80, 20)
     wpLoadEdit:SetPoint("TOPLEFT", btnWpAdd, "BOTTOMLEFT", 0, -10)
     wpLoadEdit:SetAutoFocus(false)
-    wpLoadEdit:SetText("Path ID")
+    wpLoadEdit:SetText(L["Path ID"])
     
     local btnWpLoad = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpLoad:SetSize(80, 24)
     btnWpLoad:SetPoint("LEFT", wpLoadEdit, "RIGHT", 10, 0)
-    btnWpLoad:SetText("Load")
+    btnWpLoad:SetText(L["Load"])
     btnWpLoad:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print("Erreur: Aucun PNJ ciblé.")
+            print(L["please_select_npc"])
             return
         end
         local pathID = wpLoadEdit:GetText()
         if pathID == "" or pathID == "Path ID" then
-            print("Erreur: Veuillez renseigner un Path ID.")
+            print(L["Error_enter_PathID"])
             return
         end
         SendChatMessage(".wp load " .. pathID, "SAY")
-        print("[DEBUG] .wp load " .. pathID .. " envoyé.")
+        -- print("[DEBUG] .wp load " .. pathID .. " envoyé.")
     end)
     btnWpLoad:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Load pathid number for selected creature. Creature must have no waypoint data.", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["pathid_explain"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpLoad:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -123,20 +123,20 @@ function Waypoints:CreateWaypointsPanel()
     wpReloadEdit:SetSize(80, 20)
     wpReloadEdit:SetPoint("TOPLEFT", wpLoadEdit, "BOTTOMLEFT", 0, -10)
     wpReloadEdit:SetAutoFocus(false)
-    wpReloadEdit:SetText("Path ID")
+    wpReloadEdit:SetText(L["Path ID"])
     
     local btnWpReload = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpReload:SetSize(80, 24)
     btnWpReload:SetPoint("LEFT", wpReloadEdit, "RIGHT", 10, 0)
-    btnWpReload:SetText("ReLoad")
+    btnWpReload:SetText(L["ReLoad"])
     btnWpReload:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print("Erreur: Aucun PNJ ciblé.")
+            print(L["please_select_npc"])
             return
         end
         local pathID = wpReloadEdit:GetText()
         if pathID == "" or pathID == "Path ID" then
-            print("Erreur: Veuillez renseigner un Path ID.")
+            print(L["error_pathid_missing"])
             return
         end
         SendChatMessage(".wp reload " .. pathID, "SAY")
@@ -144,7 +144,7 @@ function Waypoints:CreateWaypointsPanel()
     end)
     btnWpReload:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Load path changes ingame - IMPORTANT: must be applied first for new paths before .wp load #pathid", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["load_pathir_explain"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpReload:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -155,10 +155,10 @@ function Waypoints:CreateWaypointsPanel()
     local btnWpUnload = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpUnload:SetSize(120, 24)
     btnWpUnload:SetPoint("TOPLEFT", wpReloadEdit, "BOTTOMLEFT", 0, -20)
-    btnWpUnload:SetText("Waypoint Unload")
+    btnWpUnload:SetText(L["Waypoint Unload"])
     btnWpUnload:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print("Erreur: Aucun PNJ ciblé.")
+            print(L["please_select_npc"])
             return
         end
         SendChatMessage(".wp unload", "SAY")
@@ -166,7 +166,7 @@ function Waypoints:CreateWaypointsPanel()
     end)
     btnWpUnload:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Unload path for selected creature.", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["waypoint_unload_explain"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpUnload:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -175,11 +175,11 @@ function Waypoints:CreateWaypointsPanel()
     -- 6 - wp show : Dropdown + EditBox + Bouton Show
     --------------------------------------------------------------------------------
     local wpShowOptions = {
-        { text = ".wp show on", value = "on", tooltip = "Display the full waypoint path for the specified path ID.\nIf no path ID, works on selected creature with loaded path." },
-        { text = ".wp show first", value = "first", tooltip = "Display only the first waypoint of the path." },
-        { text = ".wp show last", value = "last", tooltip = "Display only the last waypoint of the path." },
-        { text = ".wp show off", value = "off", tooltip = "Hide all displayed paths." },
-        { text = ".wp show info", value = "info", tooltip = "Display detailed info of the selected waypoint." },
+        { text = ".wp show on", value = "on", tooltip = L["display_full_waypoint_explain"] },
+        { text = ".wp show first", value = "first", tooltip = L["disply_only_fisrt_wp"] },
+        { text = ".wp show last", value = "last", tooltip = L["disply_only_wp_path"] },
+        { text = ".wp show off", value = "off", tooltip = L["hide_all_path"] },
+        { text = ".wp show info", value = "info", tooltip = L["display_detailed_wp"] },
     }
     
     local wpShowDropdown = CreateFrame("Frame", "WPShowDropdown", panel, "UIDropDownMenuTemplate")
@@ -204,12 +204,12 @@ function Waypoints:CreateWaypointsPanel()
     wpShowEdit:SetSize(80, 20)
     wpShowEdit:SetPoint("TOPLEFT", wpShowDropdown, "TOPRIGHT", 10, -5)
     wpShowEdit:SetAutoFocus(false)
-    wpShowEdit:SetText("Path ID")
+    wpShowEdit:SetText(L["Path ID"])
     
     local btnWpShowExecute = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnWpShowExecute:SetSize(80, 24)
     btnWpShowExecute:SetPoint("TOPLEFT", wpShowEdit, "TOPRIGHT", 10, 3)
-    btnWpShowExecute:SetText("Show")
+    btnWpShowExecute:SetText(L["Show"])
     btnWpShowExecute:SetScript("OnClick", function()
         local option = UIDropDownMenu_GetSelectedValue(wpShowDropdown)
         local pathID = wpShowEdit:GetText()
@@ -223,7 +223,7 @@ function Waypoints:CreateWaypointsPanel()
             command = command .. " off"
         end
         if not UnitExists("target") and option ~= "off" then
-            print("Erreur: Aucun PNJ ciblé pour wp show (sauf pour 'off').")
+            print(L["please_select_npc"])
             return
         end
         SendChatMessage(command, "SAY")
@@ -231,7 +231,7 @@ function Waypoints:CreateWaypointsPanel()
     end)
     btnWpShowExecute:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Executes the .wp show command with the selected option and path ID (if provided).", nil, nil, nil, nil, true)
+        GameTooltip:SetText(L["show_wp_explain"], nil, nil, nil, nil, true)
         GameTooltip:Show()
     end)
     btnWpShowExecute:SetScript("OnLeave", function() GameTooltip:Hide() end)

@@ -27,7 +27,7 @@ function Tickets:CreateTicketsPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Tickets Management")
+    panel.title:SetText(L["T_management"])
 
     -------------------------------------------------------------------------------
     -- Nous allons créer 7 pages au total
@@ -62,7 +62,7 @@ function Tickets:CreateTicketsPanel()
     -- Bouton Précédent
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -73,7 +73,7 @@ function Tickets:CreateTicketsPanel()
     -- Bouton Suivant
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -109,21 +109,21 @@ function Tickets:CreateTicketsPanel()
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btn:SetSize(60, 22)
         btn:SetPoint("LEFT", edit2, "RIGHT", 10, 0)
-        btn:SetText("Send")
+        btn:SetText(L["Send"])
         btn:SetScript("OnClick", function()
             local param1 = edit1:GetText()
             local param2 = edit2:GetText()
             if not param1 or param1 == "" or param1 == defaultParam1 then
-                print("Veuillez saisir le paramètre 1 pour " .. commandLabel)
+                print(L["enter_first_param"] .. commandLabel)
                 return
             end
             if not param2 or param2 == "" or param2 == defaultParam2 then
-                print("Veuillez saisir le paramètre 2 pour " .. commandLabel)
+                print(L["enter second param"] .. commandLabel)
                 return
             end
             local fullCommand = commandPrefix .. " " .. param1 .. " " .. param2
             SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée: " .. fullCommand)
+            -- print("[DEBUG] Commande envoyée: " .. fullCommand)
         end)
     end
 
@@ -146,16 +146,16 @@ function Tickets:CreateTicketsPanel()
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btn:SetSize(60, 22)
         btn:SetPoint("LEFT", edit, "RIGHT", 10, 0)
-        btn:SetText("Send")
+        btn:SetText(L["Send"])
         btn:SetScript("OnClick", function()
             local param = edit:GetText()
             if not param or param == "" or param == defaultParam then
-                print("Veuillez saisir une valeur pour " .. commandLabel)
+                print(L["please enter value for"] .. commandLabel)
                 return
             end
             local fullCommand = commandPrefix .. " " .. param
             SendChatMessage(fullCommand, "SAY")
-            print("[DEBUG] Commande envoyée: " .. fullCommand)
+            -- print("[DEBUG] Commande envoyée: " .. fullCommand)
         end)
     end
 
@@ -172,10 +172,10 @@ function Tickets:CreateTicketsPanel()
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btn:SetSize(60, 22)
         btn:SetPoint("LEFT", label, "RIGHT", 10, 0)
-        btn:SetText("Send")
+        btn:SetText(L["Send"])
         btn:SetScript("OnClick", function()
             SendChatMessage(commandPrefix, "SAY")
-            print("[DEBUG] Commande envoyée: " .. commandPrefix)
+            -- print("[DEBUG] Commande envoyée: " .. commandPrefix)
         end)
     end
 
@@ -190,13 +190,13 @@ function Tickets:CreateTicketsPanel()
 
     local titleBug1 = frameBug1:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleBug1:SetPoint("TOPLEFT", frameBug1, "TOPLEFT", 0, 0)
-    titleBug1:SetText("Bug Tickets (1/2)")
+    titleBug1:SetText(L["bug tickets page1"])
     frameBug1.rowOffset = frameBug1.rowOffset + 35
 
-    AddTwoParamCommandRow(frameBug1, "Ticket Bug Assign", "TicketID", "GMName", ".ticket bug assign")
-    AddOneParamCommandRow(frameBug1, "Ticket Bug Close", "TicketID", ".ticket bug close")
-    AddNoParamCommandRow(frameBug1, "Ticket Bug ClosedList", ".ticket bug closedlist")
-    AddTwoParamCommandRow(frameBug1, "Ticket Bug Comment", "TicketID", "Comment", ".ticket bug comment")
+    AddTwoParamCommandRow(frameBug1, L["Ticket Bug Assign"], L["TicketID"], L["GMName"], ".ticket bug assign")
+    AddOneParamCommandRow(frameBug1, L["Ticket Bug Close"], L["TicketID"], ".ticket bug close")
+    AddNoParamCommandRow(frameBug1, L["Ticket Bug ClosedList"], ".ticket bug closedlist")
+    AddTwoParamCommandRow(frameBug1, L["Ticket Bug Comment"], L["TicketID"], L["Comment"], ".ticket bug comment")
 
     -------------------------------------------------------------
     -- PAGE 2 : Bug Tickets (2/2)
@@ -209,13 +209,13 @@ function Tickets:CreateTicketsPanel()
 
     local titleBug2 = frameBug2:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleBug2:SetPoint("TOPLEFT", frameBug2, "TOPLEFT", 0, 0)
-    titleBug2:SetText("Bug Tickets (2/2)")
+    titleBug2:SetText(L["bug tickets page2"])
     frameBug2.rowOffset = frameBug2.rowOffset + 35
 
-    AddOneParamCommandRow(frameBug2, "Ticket Bug Delete", "TicketID", ".ticket bug delete")
-    AddNoParamCommandRow(frameBug2, "Ticket Bug List", ".ticket bug list")
-    AddOneParamCommandRow(frameBug2, "Ticket Bug Unassign", "TicketID", ".ticket bug unassign")
-    AddOneParamCommandRow(frameBug2, "Ticket Bug View", "TicketID", ".ticket bug view")
+    AddOneParamCommandRow(frameBug2, L["Ticket Bug Delete"], L["TicketID"], ".ticket bug delete")
+    AddNoParamCommandRow(frameBug2, L["Ticket Bug List"], ".ticket bug list")
+    AddOneParamCommandRow(frameBug2, L["Ticket Bug Unassign"], L["TicketID"], ".ticket bug unassign")
+    AddOneParamCommandRow(frameBug2, L["Ticket Bug View"], L["TicketID"], ".ticket bug view")
 
     -------------------------------------------------------------
     -- PAGE 3 : Complaint Tickets (1/2)
@@ -228,13 +228,13 @@ function Tickets:CreateTicketsPanel()
 
     local titleComplaint1 = frameComplaint1:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleComplaint1:SetPoint("TOPLEFT", frameComplaint1, "TOPLEFT", 0, 0)
-    titleComplaint1:SetText("Complaint Tickets (1/2)")
+    titleComplaint1:SetText(L["Complaint Tickets (1/2)"])
     frameComplaint1.rowOffset = frameComplaint1.rowOffset + 35
 
-    AddTwoParamCommandRow(frameComplaint1, "Ticket Complaint Assign", "TicketID", "GMName", ".ticket complaint assign")
-    AddOneParamCommandRow(frameComplaint1, "Ticket Complaint Close", "TicketID", ".ticket complaint close")
-    AddNoParamCommandRow(frameComplaint1, "Ticket Complaint ClosedList", ".ticket complaint closedlist")
-    AddTwoParamCommandRow(frameComplaint1, "Ticket Complaint Comment", "TicketID", "Comment", ".ticket complaint comment")
+    AddTwoParamCommandRow(frameComplaint1, L["Ticket Complaint Assign"], L["TicketID"], L["GMName"], ".ticket complaint assign")
+    AddOneParamCommandRow(frameComplaint1, L["Ticket Complaint Close"], L["TicketID"], ".ticket complaint close")
+    AddNoParamCommandRow(frameComplaint1, L["Ticket Complaint ClosedList"], ".ticket complaint closedlist")
+    AddTwoParamCommandRow(frameComplaint1, L["Ticket Complaint Comment"], L["TicketID"], L["TComment"], ".ticket complaint comment")
 
     -------------------------------------------------------------
     -- PAGE 4 : Complaint Tickets (2/2)
@@ -247,13 +247,13 @@ function Tickets:CreateTicketsPanel()
 
     local titleComplaint2 = frameComplaint2:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleComplaint2:SetPoint("TOPLEFT", frameComplaint2, "TOPLEFT", 0, 0)
-    titleComplaint2:SetText("Complaint Tickets (2/2)")
+    titleComplaint2:SetText(L["Complaint Tickets (2/2)"])
     frameComplaint2.rowOffset = frameComplaint2.rowOffset + 35
 
-    AddOneParamCommandRow(frameComplaint2, "Ticket Complaint Delete", "TicketID", ".ticket complaint delete")
-    AddNoParamCommandRow(frameComplaint2, "Ticket Complaint List", ".ticket complaint list")
-    AddOneParamCommandRow(frameComplaint2, "Ticket Complaint Unassign", "TicketID", ".ticket complaint unassign")
-    AddOneParamCommandRow(frameComplaint2, "Ticket Complaint View", "TicketID", ".ticket complaint view")
+    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint Delete"], ["TicketID"], ".ticket complaint delete")
+    AddNoParamCommandRow(frameComplaint2, L["Ticket Complaint List"], ".ticket complaint list")
+    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint Unassign"], ["TicketID"], ".ticket complaint unassign")
+    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint View"], ["TicketID"], ".ticket complaint view")
 
     -------------------------------------------------------------
     -- PAGE 5 : Suggestion Tickets (1/2)
@@ -266,13 +266,13 @@ function Tickets:CreateTicketsPanel()
 
     local titleSuggestion1 = frameSuggestion1:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleSuggestion1:SetPoint("TOPLEFT", frameSuggestion1, "TOPLEFT", 0, 0)
-    titleSuggestion1:SetText("Suggestion Tickets (1/2)")
+    titleSuggestion1:SetText(L["Suggestion Tickets (1/2)"])
     frameSuggestion1.rowOffset = frameSuggestion1.rowOffset + 35
 
-    AddTwoParamCommandRow(frameSuggestion1, "Ticket Suggestion Assign", "TicketID", "GMName", ".ticket suggestion assign")
-    AddOneParamCommandRow(frameSuggestion1, "Ticket Suggestion Close", "TicketID", ".ticket suggestion close")
-    AddNoParamCommandRow(frameSuggestion1, "Ticket Suggestion ClosedList", ".ticket suggestion closedlist")
-    AddTwoParamCommandRow(frameSuggestion1, "Ticket Suggestion Comment", "TicketID", "Comment", ".ticket suggestion comment")
+    AddTwoParamCommandRow(frameSuggestion1, L["Ticket Suggestion Assign"], L["TicketID"], L["GMName"], ".ticket suggestion assign")
+    AddOneParamCommandRow(frameSuggestion1, L["Ticket Suggestion Close"], L["TicketID"], ".ticket suggestion close")
+    AddNoParamCommandRow(frameSuggestion1, L["Ticket Suggestion ClosedList"], ".ticket suggestion closedlist")
+    AddTwoParamCommandRow(frameSuggestion1, L["Ticket Suggestion Comment"], L["TicketID"], L["TComment"], ".ticket suggestion comment")
 
     -------------------------------------------------------------
     -- PAGE 6 : Suggestion Tickets (2/2)
@@ -285,13 +285,13 @@ function Tickets:CreateTicketsPanel()
 
     local titleSuggestion2 = frameSuggestion2:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleSuggestion2:SetPoint("TOPLEFT", frameSuggestion2, "TOPLEFT", 0, 0)
-    titleSuggestion2:SetText("Suggestion Tickets (2/2)")
+    titleSuggestion2:SetText(L["Suggestion Tickets (2/2)"])
     frameSuggestion2.rowOffset = frameSuggestion2.rowOffset + 35
 
-    AddOneParamCommandRow(frameSuggestion2, "Ticket Suggestion Delete", "TicketID", ".ticket suggestion delete")
-    AddNoParamCommandRow(frameSuggestion2, "Ticket Suggestion List", ".ticket suggestion list")
-    AddOneParamCommandRow(frameSuggestion2, "Ticket Suggestion Unassign", "TicketID", ".ticket suggestion unassign")
-    AddOneParamCommandRow(frameSuggestion2, "Ticket Suggestion View", "TicketID", ".ticket suggestion view")
+    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion Delete"], ["TicketID"], ".ticket suggestion delete")
+    AddNoParamCommandRow(frameSuggestion2, L["Ticket Suggestion List"], ".ticket suggestion list")
+    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion Unassign"], ["TicketID"], ".ticket suggestion unassign")
+    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion View"], ["TicketID"], ".ticket suggestion view")
 
     -------------------------------------------------------------
     -- PAGE 7 : Ticket Reset
@@ -304,14 +304,14 @@ function Tickets:CreateTicketsPanel()
 
     local titleReset = frameReset:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     titleReset:SetPoint("TOPLEFT", frameReset, "TOPLEFT", 0, 0)
-    titleReset:SetText("Ticket Reset")
+    titleReset:SetText(L["Ticket Reset"])
     frameReset.rowOffset = frameReset.rowOffset + 35
 
-    AddNoParamCommandRow(frameReset, "Ticket Reset", ".ticket reset")
-    AddNoParamCommandRow(frameReset, "Ticket Reset All", ".ticket reset all")
-    AddNoParamCommandRow(frameReset, "Ticket Reset Bug", ".ticket reset bug")
-    AddNoParamCommandRow(frameReset, "Ticket Reset Complaint", ".ticket reset complaint")
-    AddNoParamCommandRow(frameReset, "Ticket Reset Suggestion", ".ticket reset suggestion")
+    AddNoParamCommandRow(frameReset, L["Ticket Reset"], ".ticket reset")
+    AddNoParamCommandRow(frameReset, L["Ticket Reset All"], ".ticket reset all")
+    AddNoParamCommandRow(frameReset, L["Ticket Reset Bug"], ".ticket reset bug")
+    AddNoParamCommandRow(frameReset, L["Ticket Reset Complaint"], ".ticket reset complaint")
+    AddNoParamCommandRow(frameReset, L["Ticket Reset Suggestion"], ".ticket reset suggestion")
 
     ---------------------------------------------------------------------------
     -- Bouton "Back"
@@ -332,7 +332,7 @@ function Tickets:CreateTicketsPanel()
 end
 
 ---------------------------------------------------------------------
--- (Optionnel) Fonction pour afficher un popup de retour
+-- Fonction pour afficher un popup de retour
 -- Vous pouvez la lier à un event chat pour capturer les retours GM
 ---------------------------------------------------------------------
 function Tickets:ShowPopup(message)
@@ -343,7 +343,7 @@ function Tickets:ShowPopup(message)
         
         self.popupFrame.title = self.popupFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         self.popupFrame.title:SetPoint("TOP", self.popupFrame, "TOP", 0, -10)
-        self.popupFrame.title:SetText("Tickets Output")
+        self.popupFrame.title:SetText(L["Tickets Output"])
         
         self.popupFrame.content = self.popupFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         self.popupFrame.content:SetPoint("CENTER", self.popupFrame, "CENTER", 0, 0)
