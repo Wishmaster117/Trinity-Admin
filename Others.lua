@@ -27,7 +27,7 @@ function Others:CreateOthersPanel()
 
 	panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 	panel.title:SetPoint("TOPLEFT", 10, -10)
-	panel.title:SetText("Other Stuffs")
+	panel.title:SetText(L["Other Stuffs"])
 
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
@@ -79,7 +79,7 @@ function Others:CreateOthersPanel()
 	
 	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 	btnPrev:SetSize(80, 22)
-	btnPrev:SetText("Précédent")
+	btnPrev:SetText(L["Preview"])
 	btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
 	btnPrev:SetScript("OnClick", function()
 		if currentPage > 1 then
@@ -89,7 +89,7 @@ function Others:CreateOthersPanel()
 	
 	btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 	btnNext:SetSize(80, 22)
-	btnNext:SetText("Suivant")
+	btnNext:SetText(L["Next"])
 	btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 	btnNext:SetScript("OnClick", function()
 		if currentPage < totalPages then
@@ -108,13 +108,13 @@ function Others:CreateOthersPanel()
 	
 	local page1Title = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	page1Title:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, 0)
-	page1Title:SetText("Desable Functions")
+	page1Title:SetText(L["Desable Functions"])
     -----------------------------------------------------------------
     -- Section "Desable Add"
     -----------------------------------------------------------------
     local addSubtitle = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     addSubtitle:SetPoint("TOPLEFT", page1Title, "BOTTOMLEFT", 0, -20)
-    addSubtitle:SetText("Desable Add")
+    addSubtitle:SetText(L["Desable Add"])
 
     local disableAddOptions = {
         "disable add battleground",
@@ -184,12 +184,12 @@ function Others:CreateOthersPanel()
         local flagVal = addFlag:GetText()
         local commentVal = addComment:GetText()
         if entryVal == "" or entryVal == "Entry" or flagVal == "" or flagVal == "Flag" or commentVal == "" or commentVal == "Comment" then
-            print("Tous les champs sont obligatoires pour Desable Add!")
+            print(LL["Error_All_fields_required"])
             return
         end
         local command = "." .. selectedAddCommand .. " " .. entryVal .. " " .. flagVal .. " " .. commentVal
         SendChatMessage(command, "SAY")
-        print("Commande envoyée: " .. command)
+        -- print("Commande envoyée: " .. command)
     end)
 
     -----------------------------------------------------------------
@@ -197,7 +197,7 @@ function Others:CreateOthersPanel()
     -----------------------------------------------------------------
     local removeSubtitle = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     removeSubtitle:SetPoint("TOPLEFT", addDropdown, "BOTTOMLEFT", 0, -20)
-    removeSubtitle:SetText("Desable remove")
+    removeSubtitle:SetText(L["Desable remove"])
 
     local disableRemoveOptions = {
         "disable remove battleground",
@@ -252,12 +252,12 @@ function Others:CreateOthersPanel()
     removeButton:SetScript("OnClick", function()
         local entryVal = removeEntry:GetText()
         if entryVal == "" or entryVal == "Entry" then
-            print("Le champ Entry est obligatoire pour Desable remove!")
+            print(L["Error_entry_required"])
             return
         end
         local command = "." .. selectedRemoveCommand .. " " .. entryVal
         SendChatMessage(command, "SAY")
-        print("Commande envoyée: " .. command)
+        -- print("Commande envoyée: " .. command)
     end)
 	
 	
@@ -270,7 +270,7 @@ function Others:CreateOthersPanel()
 	
 	local page2Title = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	page2Title:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, 0)
-	page2Title:SetText("Cast and Mmaps Functions")
+	page2Title:SetText(L["Cast and Mmaps Functions"])
 		-- Ici, vous ajoutez les boutons pour la page 2
 	
 	-----------------------------------------------------------
@@ -278,7 +278,7 @@ function Others:CreateOthersPanel()
 	-----------------------------------------------------------
 	local castSubtitle = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	castSubtitle:SetPoint("TOPLEFT", page2Title, "BOTTOMLEFT", 0, -20)
-	castSubtitle:SetText("Cast Commands")
+	castSubtitle:SetText(L["Cast Commands"])
 	
 	local castOptions = {
 		"cast back",
@@ -339,7 +339,7 @@ function Others:CreateOthersPanel()
 	castBackSpellID:SetSize(100, 22)
 	castBackSpellID:SetPoint("TOPLEFT", castBackFrame, "TOPLEFT", 0, 0)
 	castBackSpellID:SetAutoFocus(false)
-	castBackSpellID:SetText("Spell ID")
+	castBackSpellID:SetText(L["SpellID1"])
 	-- Case à cocher Triggered
 	local castBackTriggered = CreateFrame("CheckButton", nil, castBackFrame, "UICheckButtonTemplate")
 	castBackTriggered:SetPoint("TOPLEFT", castBackSpellID, "BOTTOMLEFT", 0, -5)
@@ -350,17 +350,17 @@ function Others:CreateOthersPanel()
 	local castBackButton = CreateFrame("Button", nil, castBackFrame, "UIPanelButtonTemplate")
 	castBackButton:SetSize(100, 22)
 	castBackButton:SetPoint("TOPLEFT", castBackTriggered, "BOTTOMLEFT", 0, -10)
-	castBackButton:SetText("Cast")
+	castBackButton:SetText(L["Cast"])
 	castBackButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Selected target will cast #spellid to your character. If 'triggered' or part provided then spell casted with triggered flag.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["castbacktooltip"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	castBackButton:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 	castBackButton:SetScript("OnClick", function()
 		local spellID = castBackSpellID:GetText()
-		if spellID == "" or spellID == "Spell ID" then
-			print("Le champ Spell ID est obligatoire!")
+		if spellID == "" or spellID == L["SpellID1"] then
+			print(L["error_spell_requires"])
 			return
 		end
 		local cmd = ".cast back " .. spellID
@@ -368,7 +368,7 @@ function Others:CreateOthersPanel()
 			cmd = cmd .. " triggered"
 		end
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
 	-------------------------------
@@ -405,10 +405,10 @@ function Others:CreateOthersPanel()
 	local castDestButton = CreateFrame("Button", nil, castDestFrame, "UIPanelButtonTemplate")
 	castDestButton:SetSize(100, 22)
 	castDestButton:SetPoint("TOPLEFT", castDestTriggered, "BOTTOMLEFT", 0, -10)
-	castDestButton:SetText("Cast")
+	castDestButton:SetText(L["Cast"])
 	castDestButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Selected target will cast #spellid at provided destination. If 'triggered' or part provided then spell casted with triggered flag.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["castdesttooltip"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	castDestButton:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
@@ -418,7 +418,7 @@ function Others:CreateOthersPanel()
 		local y = castDestY:GetText()
 		local z = castDestZ:GetText()
 		if spellID == "" or spellID == "Spell ID" or x == "" or x == "X" or y == "" or y == "Y" or z == "" or z == "Z" then
-			print("Tous les champs sont obligatoires pour cast dest!")
+			print(L["castdesterror"])
 			return
 		end
 		local cmd = ".cast dest " .. spellID .. " " .. x .. " " .. y .. " " .. z
@@ -426,7 +426,7 @@ function Others:CreateOthersPanel()
 			cmd = cmd .. " triggered"
 		end
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
 	-------------------------------
@@ -448,17 +448,17 @@ function Others:CreateOthersPanel()
 	local castDistButton = CreateFrame("Button", nil, castDistFrame, "UIPanelButtonTemplate")
 	castDistButton:SetSize(100, 22)
 	castDistButton:SetPoint("TOPLEFT", castDistTriggered, "BOTTOMLEFT", 0, -10)
-	castDistButton:SetText("Cast")
+	castDistButton:SetText(L["Cast"])
 	castDistButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("You will cast spell to pint at distance #dist. If 'triggered' or part provided then spell casted with triggered flag. Not all spells can be casted as area spells.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["castdisttooltip"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	castDistButton:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 	castDistButton:SetScript("OnClick", function()
 		local dist = castDistValue:GetText()
 		if dist == "" or dist == "Dist" then
-			print("Le champ Dist est obligatoire pour cast dist!")
+			print(L["castdisterror"])
 			return
 		end
 		local cmd = ".cast dist " .. dist
@@ -466,7 +466,7 @@ function Others:CreateOthersPanel()
 			cmd = cmd .. " triggered"
 		end
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
 	-------------------------------
@@ -488,17 +488,17 @@ function Others:CreateOthersPanel()
 	local castSelfButton = CreateFrame("Button", nil, castSelfFrame, "UIPanelButtonTemplate")
 	castSelfButton:SetSize(100, 22)
 	castSelfButton:SetPoint("TOPLEFT", castSelfTriggered, "BOTTOMLEFT", 0, -10)
-	castSelfButton:SetText("Cast")
+	castSelfButton:SetText(L["Cast"])
 	castSelfButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Cast #spellid by target at target itself. If 'triggered' or part provided then spell casted with triggered flag.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["castselftooltip"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	castSelfButton:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 	castSelfButton:SetScript("OnClick", function()
 		local spellID = castSelfSpellID:GetText()
 		if spellID == "" or spellID == "Spell ID" then
-			print("Le champ Spell ID est obligatoire pour cast self!")
+			print(L["castselferror"])
 			return
 		end
 		local cmd = ".cast self " .. spellID
@@ -506,7 +506,7 @@ function Others:CreateOthersPanel()
 			cmd = cmd .. " triggered"
 		end
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
 	-------------------------------
@@ -528,17 +528,17 @@ function Others:CreateOthersPanel()
 	local castTargetButton = CreateFrame("Button", nil, castTargetFrame, "UIPanelButtonTemplate")
 	castTargetButton:SetSize(100, 22)
 	castTargetButton:SetPoint("TOPLEFT", castTargetTriggered, "BOTTOMLEFT", 0, -10)
-	castTargetButton:SetText("Cast")
+	castTargetButton:SetText(L["Cast"])
 	castTargetButton:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .cast target #spellid [triggered]\r\n  Selected target will cast #spellid to his victim. If 'triggered' or part provided then spell casted with triggered flag.", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["casttargettooltip"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	castTargetButton:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
 	castTargetButton:SetScript("OnClick", function()
 		local spellID = castTargetSpellID:GetText()
 		if spellID == "" or spellID == "Spell ID" then
-			print("Le champ Spell ID est obligatoire pour cast target!")
+			print(L["casttargererror"])
 			return
 		end
 		local cmd = ".cast target " .. spellID
@@ -546,7 +546,7 @@ function Others:CreateOthersPanel()
 			cmd = cmd .. " triggered"
 		end
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
 	-----------------------------------------------------------
@@ -555,7 +555,7 @@ function Others:CreateOthersPanel()
 	local mmapsSubtitle = commandsFramePage2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	-- On ancre la section "Mmaps Functions" à droite du conteneur des cast commands (castContainer)
 	mmapsSubtitle:SetPoint("TOPLEFT", castContainer, "TOPRIGHT", -100, 62)
-	mmapsSubtitle:SetText("Mmaps Functions")
+	mmapsSubtitle:SetText(L["Mmaps Functions"])
 	
 	local mmapsListening = false
 	
@@ -591,19 +591,19 @@ function Others:CreateOthersPanel()
 	mmapsButton:SetSize(100, 22)
 	-- On ancre le bouton à droite du dropdown
 	mmapsButton:SetPoint("TOPLEFT", mmapsDropdown, "TOPRIGHT", 10, 0)
-	mmapsButton:SetText("Execute")
+	mmapsButton:SetText(L["Execute3"])
 	mmapsButton:SetScript("OnEnter", function(self)
 		local tooltipText = ""
 		if selectedMmapsOption == "mmap loadedtiles" then
-			tooltipText = "Show which tiles are currently loaded."
+			tooltipText = L["Show which tiles are currently loaded."]
 		elseif selectedMmapsOption == "mmap loc" then
-			tooltipText = "Print on which tile one is."
+			tooltipText = L["Print on which tile one is."]
 		elseif selectedMmapsOption == "mmap path" then
-			tooltipText = "Calculate and show a path to current select unit."
+			tooltipText = L["Calculate and show a path to current select unit."]
 		elseif selectedMmapsOption == "mmap stats" then
-			tooltipText = "Show information about current state of mmaps."
+			tooltipText = L["Show information about current state of mmaps."]
 		elseif selectedMmapsOption == "mmap testarea" then
-			tooltipText = "Calculate paths for all nearby npcs to player."
+			tooltipText = L["Calculate paths for all nearby npcs to player."]
 		end
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetText(tooltipText, 1, 1, 1, 1, true)
@@ -615,7 +615,7 @@ function Others:CreateOthersPanel()
 		mmapsListening = true  -- Activer l'écoute uniquement pour cette commande
 		mmapsPopupText = ""    -- Réinitialiser le contenu de la popup
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 		-- Désactiver l'écoute après 2 secondes
 		C_Timer.After(2, function() mmapsListening = false end)
 	end)
@@ -629,7 +629,7 @@ local function ShowMmapsPopup(message)
     mmapsPopupText = mmapsPopupText .. "\n" .. message
     if not mmapsPopupFrame then
         mmapsPopupFrame = AceGUI:Create("Frame")
-        mmapsPopupFrame:SetTitle("Mmaps Response")
+        mmapsPopupFrame:SetTitle(L["Mmaps Response"])
         mmapsPopupFrame:SetLayout("Flow")
         mmapsPopupFrame:SetWidth(300)
         mmapsPopupFrame:SetHeight(200)
@@ -679,8 +679,7 @@ commandsFramePage3:SetSize(500, 350)
 
 local page3Title = commandsFramePage3:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 page3Title:SetPoint("TOPLEFT", commandsFramePage3, "TOPLEFT", 0, 0)
-page3Title:SetText("GMs Permission")
--- Ici, vous ajoutez les boutons pour la page 2
+page3Title:SetText(L["GMs Permission"])
 
 --------------------------------------------------------------------------------
 -- Préparatifs pour la capture des messages système et affichage dans une popup Ace3
@@ -694,8 +693,8 @@ end)
 local AceGUI = LibStub("AceGUI-3.0")
 local function ShowRbacPopup(text)
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("RBAC Permissions")
-	frame:SetStatusText("You can copy/past this")
+    frame:SetTitle(L["RBAC Permissions"])
+	frame:SetStatusText(L["You can copy/past this"])
     frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
     --frame:SetLayout("Fill")
 	frame:SetLayout("Flow")
@@ -733,10 +732,10 @@ editRbacID:SetText("ID")
 local btnShowRbacList = CreateFrame("Button", nil, row1, "UIPanelButtonTemplate")
 btnShowRbacList:SetSize(150, 22)
 btnShowRbacList:SetPoint("LEFT", editRbacID, "RIGHT", 10, 0)
-btnShowRbacList:SetText("Show rbac Id's List")
+btnShowRbacList:SetText(L["Show rbac Id's List"])
 btnShowRbacList:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("View list of all permissions. If $id is given will show only info for that permission.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["rbcatooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnShowRbacList:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -820,16 +819,16 @@ UIDropDownMenu_Initialize(actionDropdown, function(self, level, menuList)
             -- Mise à jour du bouton d'action selon l'option choisie
             if action == "rbac account deny" then
                 btnAccountAction:SetText("Deny")
-                btnAccountAction.tooltip = "Deny a permission to selected player or given account.\n\n#reamID may be -1 for all realms."
+                btnAccountAction.tooltip = L["rbcadeny"]
             elseif action == "rbac account grant" then
                 btnAccountAction:SetText("Grant")
-                btnAccountAction.tooltip = "Grant a permission to selected player or given account.\n\n#reamID may be -1 for all realms."
+                btnAccountAction.tooltip = L["rbcagrant"]
             elseif action == "rbac account list" then
                 btnAccountAction:SetText("View")
-                btnAccountAction.tooltip = "View permissions of selected player or given account\nNote: Only those that affect current realm"
+                btnAccountAction.tooltip = L["rbcaview"]
             elseif action == "rbac account revoke" then
                 btnAccountAction:SetText("Revoke")
-                btnAccountAction.tooltip = "Remove a permission from an account\n\nNote: Removes the permission from granted or denied permissions"
+                btnAccountAction.tooltip = L["rbcarevoke"]
             else
                 btnAccountAction:SetText("Choose")
                 btnAccountAction.tooltip = ""
@@ -860,11 +859,11 @@ end
 btnAccountAction = CreateFrame("Button", nil, row2, "UIPanelButtonTemplate")
 btnAccountAction:SetSize(100, 22)
 btnAccountAction:SetPoint("LEFT", actionDropdown, "RIGHT", 10, 0)
-btnAccountAction:SetText("Choose")
+btnAccountAction:SetText(L["choose3"])
 btnAccountAction.tooltip = ""
 btnAccountAction:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText(self.tooltip or "Choose an action", 1, 1, 1, 1, true)
+    GameTooltip:SetText(self.tooltip or L["Choose an action"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnAccountAction:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -881,36 +880,36 @@ btnAccountAction:SetScript("OnClick", function()
     local cmd = nil
     if selected == "rbac account deny" then
         if idVal == "" then
-            print("Erreur: le champ ID est obligatoire pour cette action.")
+            print(L["demyerror"])
             return
         end
         cmd = ".rbac account deny " .. accountVal .. " " .. idVal .. " " .. realmVal
     elseif selected == "rbac account grant" then
         if idVal == "" then
-            print("Erreur: le champ ID est obligatoire pour cette action.")
+            print(L["demyerror1"])
             return
         end
         cmd = ".rbac account grant " .. accountVal .. " " .. idVal .. " " .. realmVal
     elseif selected == "rbac account list" then
         if accountVal == "" then
-            print("Erreur: le champ Account est obligatoire pour cette action.")
+            print(L["demyerror2"])
             return
         end
         cmd = ".rbac account list " .. accountVal
     elseif selected == "rbac account revoke" then
         if idVal == "" then
-            print("Erreur: le champ ID est obligatoire pour cette action.")
+            print(L["demyerror3"])
             return
         end
         cmd = ".rbac account revoke " .. accountVal .. " " .. idVal .. " " .. realmVal
     else
-        print("Veuillez sélectionner une action.")
+        print(L["demyerror4"])
         return
     end
 
     -- Envoyer la commande dans le chat
     SendChatMessage(cmd, "SAY")
-    print("[DEBUG] Commande envoyée: " .. cmd)
+    -- print("[DEBUG] Commande envoyée: " .. cmd)
     -- Capture les messages système pendant 2 secondes puis affiche la popup
     CaptureChatAndPopup(2)
 end)
@@ -932,7 +931,7 @@ local function CreateServerButton(name, text, tooltip, cmd)
     end)
     btn:SetScript("OnClick", function(self)
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)
     return btn
 end

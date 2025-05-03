@@ -69,7 +69,7 @@ local function ParseServerInfo(fullText)
     end
 
     local infoTable = {}
-    table.insert(infoTable, { label="Version du core",    value=versionCore })
+    table.insert(infoTable, { label="Core Version",    value=versionCore })
     table.insert(infoTable, { label="Online Players",     value=onlinePlayers.." (max: "..(onlinePlayersMax or "")..")" })
     table.insert(infoTable, { label="Active Connections", value=activeConnections.." (max: "..(activeConnectionsMax or "")..")" })
     table.insert(infoTable, { label="Queued Connections", value=queuedConnections.." (max: "..(queuedConnectionsMax or "")..")" })
@@ -158,7 +158,7 @@ function ServerAdmin:CreateServerAdminPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Server Admin Panel")
+    panel.title:SetText(L["Server Admin Panel"])
 
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages
@@ -226,23 +226,23 @@ function ServerAdmin:CreateServerAdminPanel()
     end
 	
     -- Ajout des boutons sur la page 1
-    local btnServerCorpses = CreateServerButtonPage1("ServerCorpsesButton", "server corpses", "Syntax: .server corpses\r\nTrigger corpses expire check.", ".server corpses")
+    local btnServerCorpses = CreateServerButtonPage1("ServerCorpsesButton", L["server corpses"], L["servercorpstooltip"], ".server corpses")
     btnServerCorpses:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, NextPosition1(22))
 
-    local btnServerDebug = CreateServerButtonPage1("ServerDebugButton", "server debug", "Syntax: .server debug\nShows detailed server info.", ".server debug")
+    local btnServerDebug = CreateServerButtonPage1("ServerDebugButton", L["server debug"], L["serverdebugtooltip"], ".server debug")
     btnServerDebug:SetPoint("TOPLEFT", btnServerCorpses, "TOPRIGHT", 10, 0)
 
-     local btnServerMotd = CreateServerButtonPage1("ServerMotdButton", "server motd", "Syntax: .server motd\r\nShow server Message of the day.", ".server motd")
+     local btnServerMotd = CreateServerButtonPage1("ServerMotdButton", L["server motd"], L["servermotdtooltip"], ".server motd")
     btnServerMotd:SetPoint("TOPLEFT", btnServerDebug, "TOPRIGHT", 10, 0)
 
     -- Bouton server info => active la capture
     local btnServerInfo = CreateFrame("Button", "ServerInfoButton", panel, "UIPanelButtonTemplate")
     btnServerInfo:SetSize(150, 22)
-    btnServerInfo:SetText("server info")
+    btnServerInfo:SetText(L["server info"])
     btnServerInfo:SetPoint("TOPLEFT", btnServerMotd, "TOPRIGHT", 10, 0)
     btnServerInfo:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .server info\r\nDisplay server version and connected players.", 1, 1, 1, 1, true)
+        GameTooltip:SetText(L["serverinfotooltip"], 1, 1, 1, 1, true)
         GameTooltip:Show()
     end)
     btnServerInfo:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -256,15 +256,15 @@ function ServerAdmin:CreateServerAdminPanel()
             ShowServerInfoAceGUI(fullText)
         end)
         SendChatMessage(".server info", "SAY")
-        print("Commande envoyée: .server info")
+        -- print("Commande envoyée: .server info")
     end)
 
     local btnServerIdleRestart = CreateFrame("Button", "ServerIdleRestartButton", commandsFramePage1, "UIPanelButtonTemplate")
     btnServerIdleRestart:SetSize(150, 22)
-    btnServerIdleRestart:SetText("server idlerestart")
+    btnServerIdleRestart:SetText(L["server idlerestart"])
     btnServerIdleRestart:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .server idlerestart #delay [#exit_code] [reason]\nRestart after delay if no players are connected. Use exit code 2.", 1, 1, 1, 1, true)
+        GameTooltip:SetText(L["serveridlerestarttooltip"], 1, 1, 1, 1, true)
         GameTooltip:Show()
     end)
     btnServerIdleRestart:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
@@ -272,12 +272,12 @@ function ServerAdmin:CreateServerAdminPanel()
 
     local idlerestartDelay = CreateFrame("EditBox", "IdlerestartDelayBox", commandsFramePage1, "InputBoxTemplate")
     idlerestartDelay:SetSize(80, 22)
-    idlerestartDelay:SetText("Delay in s")
+    idlerestartDelay:SetText(L["Delay in s"])
     idlerestartDelay:SetPoint("TOPRIGHT", btnServerIdleRestart, "TOPRIGHT", 90, 0)
 
     local idlerestartReason = CreateFrame("EditBox", "IdlerestartReasonBox", commandsFramePage1, "InputBoxTemplate")
     idlerestartReason:SetSize(120, 22)
-    idlerestartReason:SetText("Reason")
+    idlerestartReason:SetText(L["Reason1"])
     idlerestartReason:SetPoint("TOPRIGHT", idlerestartDelay, "TOPRIGHT", 130, 0)
 
     btnServerIdleRestart:SetScript("OnClick", function(self)
@@ -285,23 +285,23 @@ function ServerAdmin:CreateServerAdminPanel()
         local reason = idlerestartReason:GetText()
         local cmd = ".server idlerestart " .. delay .. " 2 " .. reason
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)
 
-    local btnserveridlerestartcancel = CreateServerButtonPage1("ServerIdleRestartCancelButton", "idlerestart cancel", "Syntax: .server idlerestart cancel\r\n\r\nCancel the restart/shutdown timer if any.", ".server idlerestart cancel")
+    local btnserveridlerestartcancel = CreateServerButtonPage1("ServerIdleRestartCancelButton", L["idlerestart cancel"], L["idlerestartcanceltooltip"], ".server idlerestart cancel")
     btnserveridlerestartcancel:SetPoint("TOPLEFT", btnServerIdleRestart, "TOPRIGHT", 230, 0)
     
-	local btnServerIdleShutdown = CreateServerButtonPage1("ServerIdleShutdownButton", "server idleshutdown", "Syntax: .server idleshutdown #delay [#exit_code] [reason]\nShut down after delay if no players are connected. Use exit code 0.", ".server idleshutdown")
+	local btnServerIdleShutdown = CreateServerButtonPage1("ServerIdleShutdownButton", L["server idleshutdown"], L["serveridleshutdowntooltip"], ".server idleshutdown")
     btnServerIdleShutdown:SetPoint("TOPLEFT", btnServerIdleRestart, "BOTTOMLEFT", 0, -10)
 
     local idleshutdownDelay = CreateFrame("EditBox", "IdleshutdownDelayBox", commandsFramePage1, "InputBoxTemplate")
     idleshutdownDelay:SetSize(80, 22)
-    idleshutdownDelay:SetText("Delay in s")
+    idleshutdownDelay:SetText(L["Delay in s"])
     idleshutdownDelay:SetPoint("TOPRIGHT", btnServerIdleShutdown, "TOPRIGHT", 90, 0)
 
     local idleshutdownReason = CreateFrame("EditBox", "IdleshutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
     idleshutdownReason:SetSize(120, 22)
-    idleshutdownReason:SetText("Reason")
+    idleshutdownReason:SetText(L["Reason1"])
     idleshutdownReason:SetPoint("TOPRIGHT", idleshutdownDelay, "TOPRIGHT", 130, 0)
 
     btnServerIdleShutdown:SetScript("OnClick", function(self)
@@ -309,26 +309,26 @@ function ServerAdmin:CreateServerAdminPanel()
         local reason = idleshutdownReason:GetText()
         local cmd = ".server idleshutdown " .. delay .. " 0 " .. reason
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)
 	
-    local btnServerIdleShutdownCancel = CreateServerButtonPage1("ServerIdleShutdownCancelButton", "idleshutdown cancel", "Syntax: .server idleshutdown cancel\r\nCancel the shutdown timer.", ".server idleshutdown cancel")
+    local btnServerIdleShutdownCancel = CreateServerButtonPage1("ServerIdleShutdownCancelButton", L["idleshutdown cancel"], L["idleshutdowncanceltooltip"], ".server idleshutdown cancel")
     btnServerIdleShutdownCancel:SetPoint("TOPLEFT", idleshutdownReason, "TOPRIGHT", 10, 0)
 	
 	-------------------------------------------------------------------------------
 	-- Server Restart Button
 	-------------------------------------------------------------------------------
-	local btnServerRestart = CreateServerButtonPage1("ServerRestartButton", "Server Restart", "Syntax: .server restart [force] #delay [#exit_code] [reason]\n\nRestart the server after #delay seconds. Use #exit_code or 2 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.", ".server restart")
+	local btnServerRestart = CreateServerButtonPage1("ServerRestartButton", L["Server Restart"], L["ServerRestarttooltip"], ".server restart")
     btnServerRestart:SetPoint("TOPLEFT", btnServerIdleShutdown, "BOTTOMLEFT", 0, -10)
 
     local ServerRestartDelay = CreateFrame("EditBox", "ServerRestartDelayBox", commandsFramePage1, "InputBoxTemplate")
     ServerRestartDelay:SetSize(80, 22)
-    ServerRestartDelay:SetText("Delay in s")
+    ServerRestartDelay:SetText(L["Delay in s"])
     ServerRestartDelay:SetPoint("TOPRIGHT", btnServerRestart, "TOPRIGHT", 90, 0)
 
     local ServerRestartReason = CreateFrame("EditBox", "IdleshutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
     ServerRestartReason:SetSize(120, 22)
-    ServerRestartReason:SetText("Reason")
+    ServerRestartReason:SetText(L["Reason1"])
     ServerRestartReason:SetPoint("TOPRIGHT", ServerRestartDelay, "TOPRIGHT", 130, 0)
 
     btnServerRestart:SetScript("OnClick", function(self)
@@ -336,29 +336,29 @@ function ServerAdmin:CreateServerAdminPanel()
         local reason = ServerRestartReason:GetText()
         local cmd = ".server restart " .. delay .. " 2 " .. reason
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)	
 
 	-------------------------------------------------------------------------------
 	-- Server Restart CANCEL Button
 	-------------------------------------------------------------------------------
-    local btnServerRestartCancel = CreateServerButtonPage1("ServerRestartCancelButton", "restart cancel", "Syntax: .server restart cancel\r\nCancel the restart timer.", ".server restart cancel")
+    local btnServerRestartCancel = CreateServerButtonPage1("ServerRestartCancelButton", L["restart cancel"], L["restartcanceltooltip"], ".server restart cancel")
     btnServerRestartCancel:SetPoint("TOPLEFT", btnServerRestart, "TOPRIGHT", 230, 0)
 	
 	-------------------------------------------------------------------------------
 	-- Server Restart FORCE Button
 	-------------------------------------------------------------------------------
-	local btnServerRestartForce = CreateServerButtonPage1("btnServerRestartForceButton", "Restart Force", "Syntax: .server restart [force] #delay [#exit_code] [reason]\n\nRestart the server after #delay seconds. Use #exit_code or 2 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.", ".server restart force")
+	local btnServerRestartForce = CreateServerButtonPage1("btnServerRestartForceButton", L["Restart Force"], L["RestartForcetooltip"], ".server restart force")
     btnServerRestartForce:SetPoint("TOPLEFT", btnServerRestart, "BOTTOMLEFT", 0, -10)
 	
 	local ServerRestartForceDelay = CreateFrame("EditBox", "ServerRestartForceDelayBox", commandsFramePage1, "InputBoxTemplate")
     ServerRestartForceDelay:SetSize(80, 22)
-    ServerRestartForceDelay:SetText("Delay in s")
+    ServerRestartForceDelay:SetText(L["Delay in s"])
     ServerRestartForceDelay:SetPoint("TOPRIGHT", btnServerRestartForce, "TOPRIGHT", 90, 0)
 
     local ServerRestartForceReason = CreateFrame("EditBox", "IdleshutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
     ServerRestartForceReason:SetSize(120, 22)
-    ServerRestartForceReason:SetText("Reason")
+    ServerRestartForceReason:SetText(L["Reason1"])
     ServerRestartForceReason:SetPoint("TOPRIGHT", ServerRestartForceDelay, "TOPRIGHT", 130, 0)
 
     btnServerRestartForce:SetScript("OnClick", function(self)
@@ -372,17 +372,17 @@ function ServerAdmin:CreateServerAdminPanel()
 	-------------------------------------------------------------------------------
 	-- Server Shutdown Button
 	-------------------------------------------------------------------------------
-    local btnServerShutdown = CreateServerButtonPage1("ServerShutdownButton", "server shutdown", "Syntax: .server shutdown #delay [#exit_code] [reason]\nShut the server down after delay. Use exit code 0.", ".server shutdown")
+    local btnServerShutdown = CreateServerButtonPage1("ServerShutdownButton", L["server shutdown"], L["servershutdowntooltip"], ".server shutdown")
     btnServerShutdown:SetPoint("TOPLEFT", btnServerRestartForce, "BOTTOMLEFT", 0, -10)
 
     local ServerShutdownDelay = CreateFrame("EditBox", "ServerShutdownDelayBox", commandsFramePage1, "InputBoxTemplate")
     ServerShutdownDelay:SetSize(80, 22)
-    ServerShutdownDelay:SetText("Delay in s")
+    ServerShutdownDelay:SetText(L["Delay in s"])
     ServerShutdownDelay:SetPoint("TOPRIGHT", btnServerShutdown, "TOPRIGHT", 90, 0)
 
     local ServerShutdownReason = CreateFrame("EditBox", "ServerShutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
     ServerShutdownReason:SetSize(120, 22)
-    ServerShutdownReason:SetText("Reason")
+    ServerShutdownReason:SetText(L["Reason1"])
     ServerShutdownReason:SetPoint("TOPRIGHT", ServerShutdownDelay, "TOPRIGHT", 130, 0)
 
     btnServerShutdown:SetScript("OnClick", function(self)
@@ -390,26 +390,26 @@ function ServerAdmin:CreateServerAdminPanel()
         local reason = ServerShutdownReason:GetText()
         local cmd = ".server shutdown " .. delay .. " 0 " .. reason
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)	
 
-	local btnServerShutdownCancel = CreateServerButtonPage1("ServerShutdownCancelButton", "shutdown cancel", "Syntax: .server shutdown cancel\r\nCancel the shutdown timer.", ".server shutdown cancel")
+	local btnServerShutdownCancel = CreateServerButtonPage1("ServerShutdownCancelButton", L["shutdown cancel"], L["shutdowncanceltooltip"], ".server shutdown cancel")
     btnServerShutdownCancel:SetPoint("TOPLEFT", btnServerShutdown, "TOPRIGHT", 230, 0)
 
 	-------------------------------------------------------------------------------
 	-- Server Shutdown FORCE Button
 	-------------------------------------------------------------------------------	
-    local btnServerShutdownForce = CreateServerButtonPage1("ServerShutdownForceButton", "shutdown force", "Syntax: .server shutdown [force] #delay [#exit_code] [reason]\n\nShut the server down after #delay seconds. Use #exit_code or 0 as program exit code. Specify \'force\' to allow short-term shutdown despite other players being connected.", ".server shutdown force")
+    local btnServerShutdownForce = CreateServerButtonPage1("ServerShutdownForceButton", L["shutdown force"], L["shutdownforcetooltip"], ".server shutdown force")
     btnServerShutdownForce:SetPoint("TOPLEFT", btnServerShutdown, "BOTTOMLEFT", 0, -10)
 	
     local ServerShutdownForceDelay = CreateFrame("EditBox", "ServerShutdownForceDelayBox", commandsFramePage1, "InputBoxTemplate")
     ServerShutdownForceDelay:SetSize(80, 22)
-    ServerShutdownForceDelay:SetText("Delay in s")
+    ServerShutdownForceDelay:SetText(L["Delay in s"])
     ServerShutdownForceDelay:SetPoint("TOPRIGHT", btnServerShutdownForce, "TOPRIGHT", 90, 0)
 
     local ServerShutdownForceReason = CreateFrame("EditBox", "ServerShutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
     ServerShutdownForceReason:SetSize(120, 22)
-    ServerShutdownForceReason:SetText("Reason")
+    ServerShutdownForceReason:SetText("Reason1"])
     ServerShutdownForceReason:SetPoint("TOPRIGHT", ServerShutdownForceDelay, "TOPRIGHT", 130, 0)
 
     btnServerShutdownForce:SetScript("OnClick", function(self)
@@ -417,7 +417,7 @@ function ServerAdmin:CreateServerAdminPanel()
         local reason = ServerShutdownForceReason:GetText()
         local cmd = ".server shutdown force " .. delay .. " 0 " .. reason
         SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)
 	
 	-------------------------------------------------------------------------------
@@ -450,19 +450,19 @@ function ServerAdmin:CreateServerAdminPanel()
         btn:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
         btn:SetScript("OnClick", function(self)
             SendChatMessage(cmd, "SAY")
-            print("Commande envoyée: " .. cmd)
+            -- print("Commande envoyée: " .. cmd)
         end)
         return btn
     end
 
 	-- Créez d'abord le bouton pour la commande server set motd
-	local btnServerSetMotd = CreateServerButtonPage2("ServerSetMotdButton", "server set motd", "Syntax: .server set motd $MOTD\r\nSet server Message of the day.", ".server set motd")
+	local btnServerSetMotd = CreateServerButtonPage2("ServerSetMotdButton", L["server set motd"], L["serversetmotdtooltip"], ".server set motd")
 	btnServerSetMotd:SetPoint("TOPLEFT", commandsFramePage2, "TOPLEFT", 0, NextPosition2(22))
 	
 	-- Créez ensuite l'EditBox pour saisir le message MOTD
 	local editServerMotd = CreateFrame("EditBox", "ServerSetMotdMessageBox", commandsFramePage2, "InputBoxTemplate")
 	editServerMotd:SetSize(350, 22)
-	editServerMotd:SetText("Set Message Of The Day")
+	editServerMotd:SetText(L["Set Message Of The Day"])
 	editServerMotd:SetPoint("TOPRIGHT", btnServerSetMotd, "TOPRIGHT", 360, 0)
 	
 	-- Ajoutez le script OnClick au bouton pour récupérer le texte de l'editbox et envoyer la commande
@@ -470,7 +470,7 @@ function ServerAdmin:CreateServerAdminPanel()
 		local message = editServerMotd:GetText()
 		local cmd = ".server set motd " .. message
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 
  	-------------------------------------------------------------------------------
@@ -485,7 +485,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	-- Créez un label pour afficher "Allow Server Connections :"
 	local allowLabel = closedFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	allowLabel:SetPoint("LEFT", closedFrame, "LEFT", 0, 0)
-	allowLabel:SetText("Desable Server Connections : ")
+	allowLabel:SetText(L["Desable Server Connections"])
 	
 	-- Création du bouton radio "On" et positionnement à droite du label
 	local radioOn = CreateFrame("CheckButton", "ServerSetClosedRadioOn", closedFrame, "UIRadioButtonTemplate")
@@ -530,7 +530,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnServerSetClosed:SetPoint("LEFT", radioOff, "RIGHT", 50, 0)
 	btnServerSetClosed:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .server set closed on/off\r\nSets whether the world accepts new client connections.", 1,1,1,1,true)
+		GameTooltip:SetText(L["serverdesabletooltip"], 1,1,1,1,true)
 		GameTooltip:Show()
 	end)
 	btnServerSetClosed:SetScript("OnLeave", function(self)
@@ -540,7 +540,7 @@ function ServerAdmin:CreateServerAdminPanel()
 		local state = radioOn:GetChecked() and "on" or "off"
 		local cmd = ".server set closed " .. state
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
  	-------------------------------------------------------------------------------
@@ -554,7 +554,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	-- Label pour indiquer la commande
 	local plimitLabel = plimitFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	plimitLabel:SetPoint("LEFT", plimitFrame, "LEFT", 0, 0)
-	plimitLabel:SetText("Player Limit: ")
+	plimitLabel:SetText(L["Player Limit"])
 	
 	-- Champ de saisie pour l'argument (par défaut "Arg")
 	local plimitInput = CreateFrame("EditBox", "ServerPlimitInputBox", plimitFrame, "InputBoxTemplate")
@@ -569,7 +569,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnServerPlimit:SetPoint("LEFT", plimitInput, "RIGHT", 10, 0)
 	btnServerPlimit:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .server plimit [#num|-1|-2|-3||reset|player|moderator|gamemaster|administrator]\r\nWithout arg, show current limit; with arg, set the limit.\r\nAvec argument numérique positif :Par exemple, .server plimit 100 définira que 100 joueurs maximum peuvent se connecter au serveur.\r\nAvec argument numérique négatif : Un nombre négatif est utilisé pour définir une limitation de sécurité (par exemple, .server plimit -1). Cela signifie que seuls les joueurs ayant un certain niveau de sécurité (ou mieux) peuvent se connecter. Les valeurs négatives correspondent souvent à des niveaux de sécurité internes.\r\nAvec argument textuel (player, moderator, gamemaster, administrator) : Vous pouvez aussi utiliser des mots-clés qui représentent des niveaux de sécurité. Par exemple, .server plimit moderator limiterait les connexions aux joueurs qui possèdent un niveau de modérateur ou supérieur.", 1,1,1,1,true)
+		GameTooltip:SetText(L["PlayerLimittooltip"], 1,1,1,1,true)
 		GameTooltip:Show()
 	end)
 	btnServerPlimit:SetScript("OnLeave", function(self)
@@ -584,17 +584,17 @@ function ServerAdmin:CreateServerAdminPanel()
 			cmd = ".server plimit " .. arg
 		end
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 	
 	-- Bouton "Reset" placé à droite du bouton "Set"
 	local btnServerPlimitReset = CreateFrame("Button", "ServerPlimitResetButton", plimitFrame, "UIPanelButtonTemplate")
 	btnServerPlimitReset:SetSize(80, 22)
-	btnServerPlimitReset:SetText("Reset")
+	btnServerPlimitReset:SetText(L["Reset"])
 	btnServerPlimitReset:SetPoint("LEFT", btnServerPlimit, "RIGHT", 10, 0)
 	btnServerPlimitReset:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Reset des Valeurs", 1,1,1,1,true)
+		GameTooltip:SetText(L["Reset Values"], 1,1,1,1,true)
 		GameTooltip:Show()
 	end)
 	btnServerPlimitReset:SetScript("OnLeave", function(self)
@@ -603,7 +603,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnServerPlimitReset:SetScript("OnClick", function(self)
 		local cmd = ".server plimit reset"
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 
  	-------------------------------------------------------------------------------
@@ -617,7 +617,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	-- Label indiquant la commande
 	local loglevelLabel = loglevelFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 	loglevelLabel:SetPoint("LEFT", loglevelFrame, "LEFT", 0, 0)
-	loglevelLabel:SetText("Set Loglevel: ")
+	loglevelLabel:SetText(L["Set Loglevel"])
 	
 	-- Zone de saisie pour le facility ($facility)
 	local editFacility = CreateFrame("EditBox", "ServerSetLoglevelFacility", loglevelFrame, "InputBoxTemplate")
@@ -628,7 +628,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	-- Zone de saisie pour le nom ($name)
 	local editName = CreateFrame("EditBox", "ServerSetLoglevelName", loglevelFrame, "InputBoxTemplate")
 	editName:SetSize(100, 22)
-	editName:SetText("Name")
+	editName:SetText(L"NameLogs"])
 	editName:SetPoint("LEFT", editFacility, "RIGHT", 5, 0)
 	
 	-- Zone de saisie pour le niveau de log ($loglevel)
@@ -644,7 +644,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnSetLoglevel:SetPoint("LEFT", editLevel, "RIGHT", 10, 0)
 	btnSetLoglevel:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Syntax: .server set loglevel $facility $name $loglevel\r\n$facility: appender (a) or logger (l).\r\n$loglevel: 0-disabled, 1-trace, 2-debug, 3-info, 4-warn, 5-error, 6-fatal.", 1,1,1,1,true)
+		GameTooltip:SetText(L["setlogstooltip"], 1,1,1,1,true)
 		GameTooltip:Show()
 	end)
 	btnSetLoglevel:SetScript("OnLeave", function(self)
@@ -656,7 +656,7 @@ function ServerAdmin:CreateServerAdminPanel()
 		local level = editLevel:GetText()
 		local cmd = ".server set loglevel " .. facility .. " " .. name .. " " .. level
 		SendChatMessage(cmd, "SAY")
-		print("Commande envoyée: " .. cmd)
+		-- print("Commande envoyée: " .. cmd)
 	end)
 
 
@@ -668,7 +668,7 @@ function ServerAdmin:CreateServerAdminPanel()
 
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -679,7 +679,7 @@ function ServerAdmin:CreateServerAdminPanel()
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then

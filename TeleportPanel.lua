@@ -82,7 +82,7 @@ function TeleportModule:CreateTeleportPanel()
     -- ======================================================================
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -93,7 +93,7 @@ function TeleportModule:CreateTeleportPanel()
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -108,7 +108,7 @@ function TeleportModule:CreateTeleportPanel()
     do
         local worldTitle = page1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         worldTitle:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -5)
-        worldTitle:SetText("World teleportations")
+        worldTitle:SetText(L["World teleportations"])
 
         -- === continentDropdown, zoneDropdown, locationDropdown, goButton ===
         local continentDropdown = CreateFrame("Frame", "TrinityAdminContinentDropdown", page1, "UIDropDownMenuTemplate")
@@ -159,7 +159,7 @@ function TeleportModule:CreateTeleportPanel()
 
         local goButton = CreateFrame("Button", "TrinityAdminGoButton", page1, "UIPanelButtonTemplate")
         goButton:SetPoint("LEFT", locationDropdown, "RIGHT", 10, 0)
-        goButton:SetText("Go")
+        goButton:SetText(L["Go"])
         goButton:SetHeight(22)
         goButton:SetWidth(goButton:GetTextWidth() + 20)
         goButton:Hide()
@@ -179,7 +179,7 @@ function TeleportModule:CreateTeleportPanel()
         -- === Special Teleports ===
         local specialTitle = page1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         specialTitle:SetPoint("TOPLEFT", continentDropdown, "BOTTOMLEFT", 0, -20)
-        specialTitle:SetText("Special teleportations")
+        specialTitle:SetText(L["Special teleportations"])
 
         local specialOptions = {
             { text = "tele add", command = ".tele add", tooltip = L["Tele_Add"] },
@@ -225,7 +225,7 @@ function TeleportModule:CreateTeleportPanel()
         specialEdit:SetAutoFocus(false)
         specialEdit:SetSize(150, 22)
         specialEdit:SetPoint("TOPLEFT", specialTitle, "BOTTOMLEFT", 0, -10)
-        specialEdit:SetText("Enter Value")
+        specialEdit:SetText(L["Enter_Value"])
         specialEdit:SetScript("OnEnter", function(self)
             local opt = specialDropdown.selectedOption or specialOptions[1]
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -239,7 +239,7 @@ function TeleportModule:CreateTeleportPanel()
 
         local btnSpecialGo = CreateFrame("Button", "TrinityAdminSpecialGoButton", page1, "UIPanelButtonTemplate")
         btnSpecialGo:SetSize(40, 22)
-        btnSpecialGo:SetText("Go")
+        btnSpecialGo:SetText(L["Go"])
         btnSpecialGo:SetPoint("LEFT", specialDropdown, "RIGHT", 10, 0)
         btnSpecialGo:SetScript("OnClick", function()
             local inputValue = specialEdit:GetText()
@@ -251,12 +251,12 @@ function TeleportModule:CreateTeleportPanel()
                 if targetName then
                     finalCommand = command .. " " .. targetName
                 else
-                    print("Veuillez saisir une valeur ou cibler un joueur.")
+                    print(L["please_enter_value_or_select_player"])
                     return
                 end
             end
             SendChatMessage(finalCommand, "SAY")
-            print("[DEBUG] Commande envoyée: " .. finalCommand)
+            -- print("[DEBUG] Commande envoyée: " .. finalCommand)
         end)
 
         btnSpecialGo:SetScript("OnEnter", function(self)
@@ -280,7 +280,7 @@ function TeleportModule:CreateTeleportPanel()
         local label_page2 = page2:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         --label_page2:SetPoint("TOPLEFT", 10, -10)
 		label_page2:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -10)
-        label_page2:SetText("Extended Teleports 2")
+        label_page2:SetText(L["Extended Teleports 2"])
 		
         -- A) go xyz
         do
@@ -309,12 +309,12 @@ function TeleportModule:CreateTeleportPanel()
             local btn_xyz = CreateFrame("Button", nil, row_xyz, "UIPanelButtonTemplate")
             btn_xyz:SetSize(60, 22)
             btn_xyz:SetPoint("TOPLEFT", row_xyz, "TOPLEFT", xOffset, -25)
-            btn_xyz:SetText("Go")
+            btn_xyz:SetText(L["Go"])
 			
 			-- Ajouter un tooltip pour afficher le texte complet au survol
 			btn_xyz:SetScript("OnEnter", function(self)
 					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					GameTooltip:SetText("Syntax: .go xyz <x> <y> [<z> [<mapid> [<o>]]]\nTeleport yourself to the specified location in the specified (or current) map.\nIf no z coordinate is specified, defaults to ground/water level.", 1, 1, 1, 1, true)
+					GameTooltip:SetText(L["teleport1_explain"], 1, 1, 1, 1, true)
 					GameTooltip:Show()
 				end)
 			btn_xyz:SetScript("OnLeave", function(self)
@@ -337,7 +337,7 @@ function TeleportModule:CreateTeleportPanel()
                     command = command .. " " .. vals[5]
                 end
                 SendChatMessage(command, "SAY")
-                print("[DEBUG] Commande envoyée: " .. command)
+                -- print("[DEBUG] Commande envoyée: " .. command)
             end)
         end
 
@@ -368,12 +368,12 @@ function TeleportModule:CreateTeleportPanel()
             local btn_offset = CreateFrame("Button", nil, row_offset, "UIPanelButtonTemplate")
             btn_offset:SetSize(60, 22)
             btn_offset:SetPoint("TOPLEFT", row_offset, "TOPLEFT", xOffset, -20)
-            btn_offset:SetText("Go")
+            btn_offset:SetText(L["Go"])
 			
 			-- Ajouter un tooltip pour afficher le texte complet au survol
 			btn_offset:SetScript("OnEnter", function(self)
 					   GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-					   GameTooltip:SetText("Syntax: .go offset [<dForward> [<dSideways> [<dZ [<dO>]]]]\nTeleport yourself by the specified amount relative to your current position and orientation.", 1, 1, 1, 1, true)
+					   GameTooltip:SetText(L["teleport2_explain"], 1, 1, 1, 1, true)
 					   GameTooltip:Show()
 				end)
 			btn_offset:SetScript("OnLeave", function(self)
@@ -386,18 +386,18 @@ function TeleportModule:CreateTeleportPanel()
                     table.insert(vals, edits_offset[i]:GetText())
                 end
                 if vals[1] == "dForward" or vals[1] == "" then
-                    print("dForward is mandatory and must be modified.")
+                    print(L["dForward is mandatory and must be modified."])
                     return
                 end
                 for i = 2, 4 do
                     if vals[i] == fields_offset[i] then
-                        print("If a field after dForward is modified, all subsequent fields must be provided.")
+                        print(L["dForward_error"])
                         return
                     end
                 end
                 local command = ".go offset " .. table.concat(vals, " ")
                 SendChatMessage(command, "SAY")
-                print("[DEBUG] Commande envoyée: " .. command)
+                -- print("[DEBUG] Commande envoyée: " .. command)
             end)
         end
 
@@ -416,15 +416,13 @@ do
             text    = "go zonexy",
             command = ".go zonexy",
             fields  = {"X", "Y", "Zone"},
-            tooltip = "Syntax: .go zonexy <x> <y> [<zone>]\n" ..
-                      "Teleport yourself to the given local (x,y) position in the specified (or current) zone."
+            tooltip = L["go zonexy tooltip"]
         },
         {
             text    = "go grid",
             command = ".go grid",
             fields  = {"gridX", "gridY", "mapId"},
-            tooltip = "Syntax: .go grid <gridX> <gridY> [<mapId>]\n" ..
-                      "Teleport yourself to center of grid at the provided indices in specified (or current) map."
+            tooltip = L["go grid tooltip"]
         },
     }
 
@@ -481,7 +479,7 @@ do
     local btnOption = CreateFrame("Button", nil, row_option, "UIPanelButtonTemplate")
     btnOption:SetSize(60, 22)
     btnOption:SetPoint("TOPLEFT", row_option, "TOPLEFT", xOffset, -20)
-    btnOption:SetText("Go")
+    btnOption:SetText(L["Go"])
 
     -- Script OnClick : envoie la commande
     btnOption:SetScript("OnClick", function()
@@ -493,7 +491,7 @@ do
 
         local command = opt.command .. " " .. table.concat(vals, " ")
         SendChatMessage(command, "SAY")
-        print("[DEBUG] Commande envoyée: " .. command)
+        -- print("[DEBUG] Commande envoyée: " .. command)
     end)
 
     -- **Ajout du Tooltip** dynamique selon l’option sélectionnée
@@ -503,7 +501,7 @@ do
         if opt and opt.tooltip then
             GameTooltip:SetText(opt.tooltip, 1, 1, 1, 1, true)
         else
-            GameTooltip:SetText("No tooltip available.", 1, 1, 1, 1, true)
+            GameTooltip:SetText(L["No tooltip available."], 1, 1, 1, 1, true)
         end
         GameTooltip:Show()
     end)
@@ -522,7 +520,7 @@ end
         local label_page3 = page3:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         -- label_page3:SetPoint("TOPLEFT", 10, -10)
 		label_page3:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -5)
-        label_page3:SetText("Extra Teleports")
+        label_page3:SetText(L["Extra Teleports"])
 
         local goOptions = {
             { text = "go areatrigger", command = ".go areatrigger", defaultText = "AreatriggerID", tooltip = "Syntax: .go areatrigger <areatriggerId>" },
@@ -609,18 +607,18 @@ end
 		local btnOption2 = CreateFrame("Button", nil, row_option2, "UIPanelButtonTemplate")
 		btnOption2:SetSize(60, 22)
 		btnOption2:SetPoint("LEFT", optionEditBox2, "RIGHT", 10, 0)
-		btnOption2:SetText("Go")
+		btnOption2:SetText(L["Go"])
 	
 		btnOption2:SetScript("OnClick", function()
 			local opt = optionDropdown2.selectedOption or goOptions[1]
 			local val = optionEditBox2:GetText()
 			if not val or val == "" or val == opt.defaultText then
-				print("Veuillez saisir une valeur pour " .. opt.text)
+				print(L["please_enter_value2"] .. opt.text)
 				return
 			end
 			local command = opt.command .. " " .. val
 			SendChatMessage(command, "SAY")
-			print("[DEBUG] Commande envoyée: " .. command)
+			-- print("[DEBUG] Commande envoyée: " .. command)
 		end)
 	end
 	
@@ -673,7 +671,7 @@ function TeleportModule:PopulateLocationDropdown(continentName, zoneName, panel)
         local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
         local locTable = TeleportData[continentName] and TeleportData[continentName][zoneName]
         if not locTable then
-            print("Aucun lieu pour la zone:", zoneName, "du continent:", continentName)
+            print(L["No location for zone:"], zoneName, L["of continent:"], continentName)
             return
         end
         for locationName, command in pairs(locTable) do
