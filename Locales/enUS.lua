@@ -965,7 +965,43 @@ if not L then return end
 	L["Damage GameObject tooltip"] = "Apply $damage to destructible gameobject."
 	L["deal_damage_gob_erreor"] = "Erreur: Guid an Damage Amount required for Damage GameObject."
 	
-
+	-- Fichiers guild.lua
+	L["Guild Info"] = "Guild Info"
+	L["Information about the guild"] = "Information about the guild"
+	L["Guild's Management"] = "Guild's Management"
+	L["Guild Leader Name"] = "Guild Leader Name"
+	L["Guild Name"] = "Guild Name"
+	L["CreateG"] = "Create"
+	L["CreateG_tooltip"] = "Create a guild named \"Guild Name\" with the player LeaderName as leader."
+	L["enter_valid_guild_name_error"] = "Please specify a valid Guild Name!"
+	L["enter_valid_guild_leader_name_error"] = "Please specify a valid Guild Leader Name!"
+	L["DeleteG"] = "Delete"
+	L["DeleteG_tooltip"] = "Delete guild named <Guild Name>."
+	L["enter_valid_guild_name_delete_error"] = "Please specify a valid Guild Name to delete!"
+	L["Guild ID Info"] = "Guild ID"
+	L["Guild ID Info_tooltip"] = "Show informations about entered Guild ID"
+	L["enter_valid_guild_id_info_error"] = "Please specify a valid Guild ID for info!"
+	L["InfoG2"] = "Info"
+	L["Invite_guild"] = L["Invite_guild_tooltip"] = "Add player <PlayerName> or targeted player into the guild <Guild Name>"
+	L["enter_valid_guild_name_invite_error"] = "Please specify a valid Guild Name for invite!"
+	L["no_valid_player_or_target_error"] = "No valid player name or target selected!"
+	L["GRank"] = "Rank"
+	L["Set_Rank_tooltip"] = "Set rank <Rank> for player <PlayerName> in a guild."
+	L["enter_valid_rank_error"] = "Please specify a valid Rank!"
+	L["no_valid_player_or_target_error"] = "No valid player name or target selected!"
+	L["New Guild Name"] = "New Guild Name"
+	L["RenameG"] = "Rename"
+	L["RenameG_tooltip"] = "Rename guild <Old Name> to <New Name>."
+	L["enter_current_guild_name_error"] = "Please specify the current Guild Name!"
+	L["enter_new_guild_name_error"] = "Please specify the New Guild Name!"
+	L["UninviteG"] = "Uninvite"
+	L["UninviteG_tooltip"] = "Remove player <PlayerName> from a guild."
+	L["no_valid_player_or_target_error"] = "No valid player name or target selected!"
+	
+	
+	
+	
+	
 	
 -- Titres
 L["Private %s"] = "Private %s"

@@ -115,8 +115,8 @@ local function ShowGuildInfoAceGUI(fullText)
 
     -- Crée la fenêtre
     local frame = AceGUI:Create("Frame")
-    frame:SetTitle("Guild Info")
-    frame:SetStatusText("Information about the guild")
+    frame:SetTitle(L["Guild Info"])
+    frame:SetStatusText(L["Information about the guild"])
     frame:SetLayout("Flow")
     frame:SetWidth(500)
     frame:SetHeight(400)
@@ -256,7 +256,7 @@ function Guild:CreateGuildPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("Guild's Management")
+    panel.title:SetText(L["Guild's Management"])
 
     ------------------------------------------------------
     -- Bouton "Back" pour revenir au menu principal
@@ -283,21 +283,21 @@ function Guild:CreateGuildPanel()
     guildCreateLeaderEB:SetSize(120, 20)
     guildCreateLeaderEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildCreateLeaderEB:SetAutoFocus(false)
-    guildCreateLeaderEB:SetText("Guild Leader Name")
+    guildCreateLeaderEB:SetText([L["Guild Leader Name"])
 
     local guildCreateNameEB = CreateFrame("EditBox", "$parentGuildCreateNameEB", panel, "InputBoxTemplate")
     guildCreateNameEB:SetSize(120, 20)
     guildCreateNameEB:SetPoint("LEFT", guildCreateLeaderEB, "RIGHT", 10, 0)
     guildCreateNameEB:SetAutoFocus(false)
-    guildCreateNameEB:SetText("Guild Name")
+    guildCreateNameEB:SetText(L["Guild Name"])
 
     local createButton = CreateFrame("Button", "$parentCreateButton", panel, "UIPanelButtonTemplate")
     createButton:SetSize(80, 22)
     createButton:SetPoint("LEFT", guildCreateNameEB, "RIGHT", 10, 0)
-    createButton:SetText("Create")
+    createButton:SetText(L["CreateG"])
     createButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild create <LeaderName> \"Guild Name\"\r\n\r\nCreate a guild named \"Guild Name\" with the player LeaderName as leader.")
+        GameTooltip:SetText(L["CreateG_tooltip"])
     end)
     createButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
@@ -306,12 +306,12 @@ function Guild:CreateGuildPanel()
         local leader = guildCreateLeaderEB:GetText()
         local gName  = guildCreateNameEB:GetText()
 
-        if (not leader or leader == "" or leader == "Guild Leader Name") then
-            TrinityAdmin:Print("Please specify a valid Guild Leader Name!")
+        if (not leader or leader == "" or leader == L["Guild Leader Name"]) then
+            TrinityAdmin:print(L["enter_valid_guild_leader_name_error"])
             return
         end
-        if (not gName or gName == "" or gName == "Guild Name") then
-            TrinityAdmin:Print("Please specify a valid Guild Name!")
+        if (not gName or gName == "" or gName == L["Guild Name"]) then
+            TrinityAdmin:print(L["enter_valid_guild_name_error"])
             return
         end
 
@@ -329,15 +329,15 @@ function Guild:CreateGuildPanel()
     guildDeleteNameEB:SetSize(120, 20)
     guildDeleteNameEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildDeleteNameEB:SetAutoFocus(false)
-    guildDeleteNameEB:SetText("Guild Name")
+    guildDeleteNameEB:SetText(L["Guild Name"])
 
     local deleteButton = CreateFrame("Button", "$parentDeleteButton", panel, "UIPanelButtonTemplate")
     deleteButton:SetSize(80, 22)
     deleteButton:SetPoint("LEFT", guildDeleteNameEB, "RIGHT", 10, 0)
-    deleteButton:SetText("Delete")
+    deleteButton:SetText(L["DeleteG"])
     deleteButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild delete \"Guild Name\"\r\n\r\nDelete guild named \"Guild Name\".")
+        GameTooltip:SetText(L["DeleteG_tooltip"])
     end)
     deleteButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
@@ -345,8 +345,8 @@ function Guild:CreateGuildPanel()
     deleteButton:SetScript("OnClick", function()
         local gName = guildDeleteNameEB:GetText()
 
-        if (not gName or gName == "" or gName == "Guild Name") then
-            TrinityAdmin:Print("Please specify a valid Guild Name to delete!")
+        if (not gName or gName == "" or gName == L["Guild Name"]) then
+            TrinityAdmin:Print(L["enter_valid_guild_name_delete_error"])
             return
         end
 
@@ -362,23 +362,23 @@ function Guild:CreateGuildPanel()
     guildInfoNameEB:SetSize(120, 20)
     guildInfoNameEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildInfoNameEB:SetAutoFocus(false)
-    guildInfoNameEB:SetText("Guild ID")
+    guildInfoNameEB:SetText(L["Guild ID Info"])
 
     local infoButton = CreateFrame("Button", "$parentInfoButton", panel, "UIPanelButtonTemplate")
     infoButton:SetSize(80, 22)
     infoButton:SetPoint("LEFT", guildInfoNameEB, "RIGHT", 10, 0)
-    infoButton:SetText("Info")
+    infoButton:SetText(L["InfoG2"])
     infoButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild info \"Guild ID\"")
+        GameTooltip:SetText(L["Guild ID Info_tooltip"]")
     end)
     infoButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
     infoButton:SetScript("OnClick", function()
         local gName = guildInfoNameEB:GetText()
-        if (not gName or gName == "" or gName == "Guild ID") then
-            TrinityAdmin:Print("Please specify a valid Guild ID for info!")
+        if (not gName or gName == "" or gName == L["Guild ID Info") then
+            TrinityAdmin:Print(L["enter_valid_guild_id_info_error"])
             return
         end
 
@@ -407,21 +407,21 @@ function Guild:CreateGuildPanel()
     guildInvitePlayerEB:SetSize(120, 20)
     guildInvitePlayerEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildInvitePlayerEB:SetAutoFocus(false)
-    guildInvitePlayerEB:SetText("Player Name")
+    guildInvitePlayerEB:SetText(L["Player Name"])
 
     local guildInviteNameEB = CreateFrame("EditBox", "$parentGuildInviteNameEB", panel, "InputBoxTemplate")
     guildInviteNameEB:SetSize(120, 20)
     guildInviteNameEB:SetPoint("LEFT", guildInvitePlayerEB, "RIGHT", 10, 0)
     guildInviteNameEB:SetAutoFocus(false)
-    guildInviteNameEB:SetText("Guild Name")
+    guildInviteNameEB:SetText(L["Guild Name"])
 
     local inviteButton = CreateFrame("Button", "$parentInviteButton", panel, "UIPanelButtonTemplate")
     inviteButton:SetSize(80, 22)
     inviteButton:SetPoint("LEFT", guildInviteNameEB, "RIGHT", 10, 0)
-    inviteButton:SetText("Invite")
+    inviteButton:SetText(L["Invite_guild"])
     inviteButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild invite <PlayerName> \"Guild Name\"\r\n\r\nAdd player <PlayerName> into the guild \"Guild Name\".")
+        GameTooltip:SetText(L["Invite_guild_tooltip"])
     end)
     inviteButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
@@ -430,17 +430,17 @@ function Guild:CreateGuildPanel()
         local playerName = guildInvitePlayerEB:GetText()
         local gName      = guildInviteNameEB:GetText()
 
-        if (not gName or gName == "" or gName == "Guild Name") then
-            TrinityAdmin:Print("Please specify a valid Guild Name for invite!")
+        if (not gName or gName == "" or gName == L["Guild Name"]) then
+            TrinityAdmin:Print(L["enter_valid_guild_name_invite_error"])
             return
         end
 
         -- Si champ Player Name vide/par défaut => utilisation de la cible du MJ
-        if (not playerName or playerName == "" or playerName == "Player Name") then
+        if (not playerName or playerName == "" or playerName == L["Player Name"]) then
             if UnitExists("target") then
                 playerName = UnitName("target")
             else
-                TrinityAdmin:Print("No valid player name or target selected!")
+                TrinityAdmin:Print(L["no_valid_player_or_target_error"])
                 return
             end
         end
@@ -458,21 +458,21 @@ function Guild:CreateGuildPanel()
     guildRankPlayerEB:SetSize(120, 20)
     guildRankPlayerEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildRankPlayerEB:SetAutoFocus(false)
-    guildRankPlayerEB:SetText("Player Name")
+    guildRankPlayerEB:SetText(L["Player Name"])
 
     local guildRankValueEB = CreateFrame("EditBox", "$parentGuildRankValueEB", panel, "InputBoxTemplate")
     guildRankValueEB:SetSize(120, 20)
     guildRankValueEB:SetPoint("LEFT", guildRankPlayerEB, "RIGHT", 10, 0)
     guildRankValueEB:SetAutoFocus(false)
-    guildRankValueEB:SetText("Rank")
+    guildRankValueEB:SetText(L["GRank"])
 
     local rankButton = CreateFrame("Button", "$parentRankButton", panel, "UIPanelButtonTemplate")
     rankButton:SetSize(80, 22)
     rankButton:SetPoint("LEFT", guildRankValueEB, "RIGHT", 10, 0)
-    rankButton:SetText("Set")
+    rankButton:SetText(L["Set"])
     rankButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild rank <PlayerName> <Rank>\r\n\r\nSet rank <Rank> for player <PlayerName> in a guild.")
+        GameTooltip:SetText(L["Set_Rank_tooltip"]")
     end)
     rankButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
@@ -481,17 +481,17 @@ function Guild:CreateGuildPanel()
         local playerName = guildRankPlayerEB:GetText()
         local rankValue  = guildRankValueEB:GetText()
 
-        if (not rankValue or rankValue == "" or rankValue == "Rank") then
-            TrinityAdmin:Print("Please specify a valid Rank!")
+        if (not rankValue or rankValue == "" or rankValue == L["GRank"]) then
+            TrinityAdmin:Print(L["enter_valid_rank_error"])
             return
         end
 
         -- Si champ Player Name vide/par défaut => utilisation de la cible du MJ
-        if (not playerName or playerName == "" or playerName == "Player Name") then
+        if (not playerName or playerName == "" or playerName == L["Player Name"]) then
             if UnitExists("target") then
                 playerName = UnitName("target")
             else
-                TrinityAdmin:Print("No valid player name or target selected!")
+                TrinityAdmin:Print(L["no_valid_player_or_target_error"])
                 return
             end
         end
@@ -509,21 +509,21 @@ function Guild:CreateGuildPanel()
     guildRenameOldEB:SetSize(120, 20)
     guildRenameOldEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildRenameOldEB:SetAutoFocus(false)
-    guildRenameOldEB:SetText("Guild Name")
+    guildRenameOldEB:SetText(L["Guild Name"])
 
     local guildRenameNewEB = CreateFrame("EditBox", "$parentGuildRenameNewEB", panel, "InputBoxTemplate")
     guildRenameNewEB:SetSize(120, 20)
     guildRenameNewEB:SetPoint("LEFT", guildRenameOldEB, "RIGHT", 10, 0)
     guildRenameNewEB:SetAutoFocus(false)
-    guildRenameNewEB:SetText("New Guild Name")
+    guildRenameNewEB:SetText(L["New Guild Name"])
 
     local renameButton = CreateFrame("Button", "$parentRenameButton", panel, "UIPanelButtonTemplate")
     renameButton:SetSize(80, 22)
     renameButton:SetPoint("LEFT", guildRenameNewEB, "RIGHT", 10, 0)
-    renameButton:SetText("Rename")
+    renameButton:SetText(L["RenameG"])
     renameButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild rename \"Old Name\" \"New Name\"\n\nRename guild \"Old Name\" to \"New Name\".")
+        GameTooltip:SetText(L["RenameG_tooltip"])
     end)
     renameButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
@@ -532,12 +532,12 @@ function Guild:CreateGuildPanel()
         local oldName = guildRenameOldEB:GetText()
         local newName = guildRenameNewEB:GetText()
 
-        if (not oldName or oldName == "" or oldName == "Guild Name") then
-            TrinityAdmin:Print("Please specify the current Guild Name!")
+        if (not oldName or oldName == "" or oldName == L["Guild Name"]) then
+            TrinityAdmin:Print(L["enter_current_guild_name_error"])
             return
         end
-        if (not newName or newName == "" or newName == "New Guild Name") then
-            TrinityAdmin:Print("Please specify the New Guild Name!")
+        if (not newName or newName == "" or newName == L["New Guild Name"]) then
+            TrinityAdmin:Print(L["enter_new_guild_name_error"])
             return
         end
 
@@ -554,15 +554,15 @@ function Guild:CreateGuildPanel()
     guildUninvitePlayerEB:SetSize(120, 20)
     guildUninvitePlayerEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildUninvitePlayerEB:SetAutoFocus(false)
-    guildUninvitePlayerEB:SetText("Player Name")
+    guildUninvitePlayerEB:SetText(L["Player Name"])
 
     local uninviteButton = CreateFrame("Button", "$parentUninviteButton", panel, "UIPanelButtonTemplate")
     uninviteButton:SetSize(80, 22)
     uninviteButton:SetPoint("LEFT", guildUninvitePlayerEB, "RIGHT", 10, 0)
-    uninviteButton:SetText("Uninvite")
+    uninviteButton:SetText(L["UninviteG"])
     uninviteButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Syntax: .guild uninvite <PlayerName>\r\n\r\nRemove player <PlayerName> from a guild.")
+        GameTooltip:SetText(L["UninviteG_tooltip"])
     end)
     uninviteButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
@@ -571,11 +571,11 @@ function Guild:CreateGuildPanel()
         local playerName = guildUninvitePlayerEB:GetText()
 
         -- Si champ Player Name vide/par défaut => utilisation de la cible du MJ
-        if (not playerName or playerName == "" or playerName == "Player Name") then
+        if (not playerName or playerName == "" or playerName == L["Player Name"]) then
             if UnitExists("target") then
                 playerName = UnitName("target")
             else
-                TrinityAdmin:Print("No valid player name or target selected!")
+                TrinityAdmin:Print(L["no_valid_player_or_target_error"])
                 return
             end
         end
