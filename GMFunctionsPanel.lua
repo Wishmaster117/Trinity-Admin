@@ -1854,11 +1854,11 @@ end
 		if chkGraveHorde:GetChecked() then
 			local cmd = ".linkgrave " .. graveID .. " horde"
 			SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " .. cmd)
+			-- print("[DEBUG] Commande envoyée: " .. cmd)
 		elseif chkGraveAlliance:GetChecked() then
 			local cmd = ".linkgrave " .. graveID .. " alliance"
 			SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " .. cmd)
+			-- print("[DEBUG] Commande envoyée: " .. cmd)
 		else
 			print("Erreur: veuillez cocher Horde ou Alliance pour .linkgrave.")
 		end
