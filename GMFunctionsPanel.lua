@@ -4,7 +4,7 @@ local L = _G.L
 local gpsFrame
 local mapEdit, zoneEdit, areaEdit, xEdit, yEdit, zEdit, oEdit, GridEdit, CellEdit, InstanceIDEdit
 
-print("At top of file: gpsFrame =", gpsFrame)  -- Devrait afficher "nil"
+-- print("At top of file: gpsFrame =", gpsFrame)  -- Devrait afficher "nil"
 
 -------------------------------------------------------------
 -- Création de la popup GPS avec les champs de saisie
@@ -13,7 +13,7 @@ local function CreateGPSFrame()
  print("CreateGPSFrame() is running...")
     local AceGUI = LibStub("AceGUI-3.0")
     gpsFrame = AceGUI:Create("Frame")
-	print("gpsFrame created =>", gpsFrame)
+	-- print("gpsFrame created =>", gpsFrame)
     gpsFrame:SetTitle("GPS Info")
     gpsFrame:SetStatusText("Information GPS")
     gpsFrame:SetCallback("OnClose", function(widget)
@@ -24,7 +24,7 @@ local function CreateGPSFrame()
     
     local group = AceGUI:Create("InlineGroup")
     group:SetFullWidth(true)
-    group:SetTitle("Coordonnées")
+    group:SetTitle("Coordinates")
     group:SetLayout("Flow")
     gpsFrame:AddChild(group)
     
@@ -79,7 +79,7 @@ local function CreateGPSFrame()
     group:AddChild(InstanceIDEdit)
     
     --gpsFrame:Hide()
-	print("Fin de CreateGPSFrame(), gpsFrame =", gpsFrame)
+	-- print("Fin de CreateGPSFrame(), gpsFrame =", gpsFrame)
 end
 
 -------------------------------------------------------------
@@ -110,7 +110,7 @@ end)
 -- Fonction de traitement de la capture GPS
 ------------------------------------------------------------
 FinishGPSInfoCapture = function()
-print("FinishGPSInfoCapture() => gpsFrame:", gpsFrame)
+-- print("FinishGPSInfoCapture() => gpsFrame:", gpsFrame)
     capturingGPSInfo = false
     if #gpsInfoCollected > 0 then
         local fullText = table.concat(gpsInfoCollected, "\n")
@@ -132,7 +132,7 @@ print("FinishGPSInfoCapture() => gpsFrame:", gpsFrame)
         local areaText = areaNum and (areaNum .. (areaName and " (" .. areaName .. ")" or "")) or ""
         
         if not gpsFrame then
-		print("gpsFrame is nil, so calling CreateGPSFrame() now...")
+		-- print("gpsFrame is nil, so calling CreateGPSFrame() now...")
             CreateGPSFrame()
         end
         
@@ -147,7 +147,7 @@ print("FinishGPSInfoCapture() => gpsFrame:", gpsFrame)
         CellEdit:SetText(cell or "")
         InstanceIDEdit:SetText(instanceid or "")
         
-		print("After CreateGPSFrame(), gpsFrame:", gpsFrame)
+		-- print("After CreateGPSFrame(), gpsFrame:", gpsFrame)
         gpsFrame:Show()
     else
         print("Aucune information GPS capturée.")
@@ -248,7 +248,7 @@ local buttonDefs = {
         name = "btnFly",
         textON = "GM Fly ON",  
         textOFF = "GM Fly OFF",
-        tooltip = "Active ou désactive la possibilité de voler en GM",
+        tooltip = L["btnFly tooltip"],
         commandON = ".gm fly on",
         commandOFF = ".gm fly off",
         isToggle = true,
@@ -262,7 +262,7 @@ local buttonDefs = {
         name = "btnGmOn",
         textON = "GM ON",
         textOFF = "GM OFF",
-        tooltip = "Active ou désactive le mode GM",
+        tooltip = L["btnGmOn tooltip"],
         commandON = ".gm on",
         commandOFF = ".gm off",
         isToggle = true,
@@ -276,7 +276,7 @@ local buttonDefs = {
         name = "btnGmChat",
         textON = "GM Chat ON",
         textOFF = "GM Chat OFF",
-        tooltip = "Active ou désactive le chat GM",
+        tooltip = L["btnGmChat tooltip"],
         commandON = ".gm chat on",
         commandOFF = ".gm chat off",
         isToggle = true,
@@ -289,7 +289,7 @@ local buttonDefs = {
     {
         name = "btnGmIngame",
         text = "GM Ingame",
-        tooltip = "Active le mode GM ingame (sans toggle).",
+        tooltip = L["btnGmIngame tooltip"],
         command = ".gm ingame",
         isToggle = false,
         anchorTo = "LEFT",
@@ -300,7 +300,7 @@ local buttonDefs = {
     {
         name = "btnGmList",
         text = "GM List",
-        tooltip = "Affiche la liste des GMs en jeu.",
+        tooltip = L["btnGmList tooltip"],
         command = ".gm list",
         isToggle = false,
         anchorTo = "LEFT",
@@ -312,7 +312,7 @@ local buttonDefs = {
         name = "btnGmVisible",
         textON = "GM Visible ON",
         textOFF = "GM Visible OFF",
-        tooltip = "Active ou désactive la visibilité GM.",
+        tooltip = L["btnGmVisible tooltip"],
         commandON = ".gm visible on",
         commandOFF = ".gm visible off",
         isToggle = true,
@@ -331,7 +331,7 @@ local buttonDefs = {
     {
         name = "btnRevive",
         text = "Revive",
-        tooltip = "Ressuscite le personnage.",
+        tooltip = L["btnRevive tooltip"],
         command = ".revive",
         isToggle = false,
         anchorTo = "TOPLEFT",
@@ -342,7 +342,7 @@ local buttonDefs = {
     {
         name = "btnDie",
         text = "Die",
-        tooltip = "Fait mourir instantanément le personnage.",
+        tooltip = L["btnDie tooltip"],
         command = ".die",
         isToggle = false,
         anchorTo = "LEFT",
@@ -353,7 +353,7 @@ local buttonDefs = {
     {
         name = "btnSave",
         text = "Save",
-        tooltip = "Sauvegarde votre personnage.",
+        tooltip = L["btnSave tooltip"],
         command = ".save",
         isToggle = false,
         anchorTo = "LEFT",
@@ -364,7 +364,7 @@ local buttonDefs = {
     {
         name = "btnSaveAll",
         text = "Save All",
-        tooltip = "Sauvegarde tous les personnages.",
+        tooltip = L["btnSaveAll tooltip"],
         command = ".saveall",
         isToggle = false,
         anchorTo = "LEFT",
@@ -375,7 +375,7 @@ local buttonDefs = {
     {
         name = "btnRespawn",
         text = "Respawn",
-        tooltip = "Respawn toutes les créatures mortes autour.",
+        tooltip = L["btnRespawn tooltip"],
         command = ".respawn",
         isToggle = false,
         anchorTo = "LEFT",
@@ -386,7 +386,7 @@ local buttonDefs = {
     {
         name = "btnDemorph",
         text = "Demorph",
-        tooltip = "Demorph the selected player.",
+        tooltip = L["btnDemorph tooltip"],
         command = ".demorph",
         isToggle = false,
         anchorTo = "LEFT",
@@ -398,7 +398,7 @@ local buttonDefs = {
         name = "btnWhispers",
         textON = "GM Whispers ON",
         textOFF = "GM Whispers OFF",
-        tooltip = "Enable/disable accepting whispers by GM from players.",
+        tooltip = L["btnWhispers tooltip"],
         commandON = ".whispers on",
         commandOFF = ".whispers off",
         isToggle = true,
@@ -411,7 +411,7 @@ local buttonDefs = {
     {
         name = "btnMailbox",
         text = "MailBox",
-        tooltip = "Show your mailbox content.",
+        tooltip = L["btnMailbox tooltip"],
         command = ".mailbox",
         isToggle = false,
         anchorTo = "TOPLEFT",
@@ -422,7 +422,7 @@ local buttonDefs = {
     {
         name = "btnBank",
         text = "Bank",
-        tooltip = "Show your bank inventory.",
+        tooltip = L["btnBank tooltip"],
         command = ".bank",
         isToggle = false,
         anchorTo = "LEFT",
@@ -433,7 +433,7 @@ local buttonDefs = {
     {
         name = "btncometome",
         text = "Come To Me",
-        tooltip = "Make selected creature come to your current location (new position not saved to DB).",
+        tooltip = L["btncometome tooltip"],
         command = ".cometome",
         isToggle = false,
         anchorTo = "LEFT",
@@ -444,7 +444,7 @@ local buttonDefs = {
     {
         name = "btnguid",
         text = "Character Guid",
-        tooltip = "Display the GUID for the selected character.",
+        tooltip = L["btnguid tooltip"],
         command = ".guid",
         isToggle = false,
         anchorTo = "LEFT",
@@ -455,7 +455,7 @@ local buttonDefs = {
     {
         name = "btndismount",
         text = "Dismount",
-        tooltip = "Dismount you, if you are mounted.",
+        tooltip = L["btndismount tooltip"],
         command = ".dismount",
         isToggle = false,
         anchorTo = "LEFT",
@@ -466,7 +466,7 @@ local buttonDefs = {
     {
         name = "btnpossess",
         text = "Possess",
-        tooltip = "Possesses indefinitely the selected creature.",
+        tooltip = L["btnpossess tooltip"],
         command = ".possess",
         isToggle = false,
         anchorTo = "LEFT",
@@ -477,7 +477,7 @@ local buttonDefs = {
 	{
 		name = "btnGPS",
 		text = "GPS",
-		tooltip = "Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id",
+		tooltip = L["btnGPS tooltip"],
 		isToggle = false,
 		anchorTo = "LEFT",
 		anchorOffsetX = 10,
@@ -544,7 +544,7 @@ local function CreateGMButton(panel, def, module, buttonRefs)
         end)
     else
         btn:SetScript("OnClick", function()
-            print("Commande envoyée :" .. def.command)
+            -- print("Commande envoyée :" .. def.command)
             SendChatMessage(def.command, "SAY")
         end)
     end
@@ -630,7 +630,7 @@ function module:CreateGMFunctionsPanel()
 
     btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Précédent")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -641,7 +641,7 @@ function module:CreateGMFunctionsPanel()
 
     btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Suivant")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -703,13 +703,13 @@ end
         if anchor then
             local appearLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             appearLabel:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -20)
-            appearLabel:SetText("Appear Function")
+            appearLabel:SetText(L["Appear Function"])
 
             local appearEdit = CreateFrame("EditBox", "TrinityAdminAppearEditBox", page, "InputBoxTemplate")
             appearEdit:SetAutoFocus(false)
             appearEdit:SetSize(120, 22)
             appearEdit:SetPoint("TOPLEFT", appearLabel, "BOTTOMLEFT", 0, -5)
-            appearEdit:SetText("Character Name")
+            appearEdit:SetText(L["Character Name_appear"])
             appearEdit:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(L["Tele_to_Player"], 1, 1, 1, 1, true)
@@ -731,11 +731,11 @@ end
                 if playerName and playerName ~= "" then
                     SendChatMessage(".appear " .. playerName, "SAY")
                 else
-                    print("Veuillez saisir le nom du joueur pour .appear.")
+                    print(L["enter_player_name_appear_error"])
                 end
             end)
         else
-            print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le champ Appear.")
+           print(L["btn_mailbox_anchor_error"])
         end
 
         ------------------------------------------------------------------
@@ -745,27 +745,27 @@ end
         if anchor2 then
             local morphLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             morphLabel:SetPoint("TOPLEFT", anchor2, "BOTTOMLEFT", 180, -20)
-            morphLabel:SetText("Morph Function")
+            morphLabel:SetText(L["Morph Function"])
 
             local morphEdit = CreateFrame("EditBox", "TrinityAdminMorphEditBox", page, "InputBoxTemplate")
             morphEdit:SetAutoFocus(false)
             morphEdit:SetSize(120, 22)
             morphEdit:SetPoint("TOPLEFT", morphLabel, "BOTTOMLEFT", 0, -5)
-            morphEdit:SetText("Display ID")
+            morphEdit:SetText(L["Display ID Morph"])
             morphEdit:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Change your current model id to #displayid.", 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["display-id-tooltip"], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             morphEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
             morphEdit:SetScript("OnEditFocusGained", function(self)
-                if self:GetText() == "Display ID" then
+                if self:GetText() == L["Display ID Morph"] then
                     self:SetText("")
                 end
             end)
             morphEdit:SetScript("OnEditFocusLost", function(self)
                 if self:GetText() == "" then
-                    self:SetText("Display ID")
+                    self:SetText(L["Display ID Morph"])
                 end
             end)
             morphEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
@@ -776,14 +776,14 @@ end
             btnMorphGo:SetPoint("LEFT", morphEdit, "RIGHT", 10, 0)
             btnMorphGo:SetScript("OnClick", function()
                 local displayId = morphEdit:GetText()
-                if displayId and displayId ~= "" and displayId ~= "Display ID" then
+                if displayId and displayId ~= "" and displayId ~= L["Display ID Morph"] then
                     SendChatMessage(".morph " .. displayId, "SAY")
                 else
-                    print("Veuillez saisir un Display ID pour .morph.")
+                   print(L["enter_display_id_morph_error"])
                 end
             end)
         else
-            print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le champ Morph.")
+            -- print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le champ Morph.")
         end
 
         ------------------------------------------------------------------
@@ -793,16 +793,16 @@ end
         if anchorMute then
             local muteLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             muteLabel:SetPoint("TOPLEFT", anchorMute, "BOTTOMLEFT", 0, -80)
-            muteLabel:SetText("Mute Function")
+            muteLabel:SetText(L["Mute Function"])
 
             local muteDropdown = CreateFrame("Frame", "TrinityAdminMuteDropdown", page, "UIDropDownMenuTemplate")
             muteDropdown:SetPoint("TOPLEFT", muteLabel, "BOTTOMLEFT", 0, -5)
             UIDropDownMenu_SetWidth(muteDropdown, 110)
             UIDropDownMenu_SetButtonWidth(muteDropdown, 240)
             local muteOptions = {
-                { text = "mute", command = ".mute", tooltip = "Syntax : PlayerName TimeInMinutes Reason" },
-                { text = "unmute", command = ".unmute", tooltip = "" },
-                { text = "mutehistory", command = ".mutehistory", tooltip = "" },
+                { text = "mute", command = ".mute", tooltip = L["MUTE_TOOLTIP"] },
+                { text = "unmute", command = ".unmute", tooltip = L["UNMUTE_TOOLTIP"] },
+                { text = "mutehistory", command = ".mutehistory", tooltip = L["MUTEhistory_TOOLTIP"] },
             }
             if not muteDropdown.selectedID then 
                 muteDropdown.selectedID = 1 
@@ -839,7 +839,7 @@ end
 			nameEdit:SetText("")  -- par défaut vide
 			nameEdit:SetScript("OnEnter", function(self)
 				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-				GameTooltip:SetText("Player Name (facultatif si vous avez ciblé un joueur)", 1, 1, 1, 1, true)
+				GameTooltip:SetText(L["TOOLTIP_INFO_MUTE_PLAYER"], 1, 1, 1, 1, true)
 				GameTooltip:Show()
 			end)
 			nameEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -857,7 +857,7 @@ end
 			timeEdit:SetText("")  
 			timeEdit:SetScript("OnEnter", function(self)
 				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-				GameTooltip:SetText("Durée du mute (en minutes)", 1, 1, 1, 1, true)
+				GameTooltip:SetText(L["tooltip_howmanytime"], 1, 1, 1, 1, true)
 				GameTooltip:Show()
 			end)
 			timeEdit:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -949,12 +949,12 @@ end
 				-- Envoi de la commande
 				------------------------------------------------------------------
 				if finalCommand ~= "" then
-					print("Commande envoyée : " .. finalCommand)
+					-- print("Commande envoyée : " .. finalCommand)
 					SendChatMessage(finalCommand, "SAY")
 				end
 			end)
         else
-            print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le bloc Mute.")
+            -- print("Erreur: impossible de trouver 'btnMailbox' pour ancrer le bloc Mute.")
         end
     end
 
@@ -969,7 +969,7 @@ end
             row = CreateRow(page, 30)
             local devStatusLabel = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             devStatusLabel:SetPoint("LEFT", row, "LEFT", 0, -40)
-            devStatusLabel:SetText("Dev Status")
+            devStatusLabel:SetText(L["Dev Status"])
 
             local devStatusValue = "on"
 			local radioOn, radioOff
@@ -1004,7 +1004,7 @@ end
             end)
             btnDevSet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .dev [on/off]\r\n\r\nEnable or Disable in game Dev tag or show current state if on/off not provided.", 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["devstatus_tooltip"], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnDevSet:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1015,14 +1015,14 @@ end
             announceEdit:SetSize(150, 22)
             announceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
             announceEdit:SetAutoFocus(false)
-            announceEdit:SetText("Message")
+            announceEdit:SetText(L["Global_Message"])
             local btnAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnAnnounce:SetSize(60, 22)
             btnAnnounce:SetText("Send")
             btnAnnounce:SetPoint("LEFT", announceEdit, "RIGHT", 10, 0)
             btnAnnounce:SetScript("OnClick", function()
                 local text = announceEdit:GetText()
-                if not text or text == "" or text == "Message" then
+                if not text or text == "" or text == L["Global_Message"] then
                     print(L["Error : Please enter a message."])
                 else
                     SendChatMessage('.announce "' .. text .. '"', "SAY")
@@ -1030,7 +1030,7 @@ end
             end)
             btnAnnounce:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .announce $MessageToBroadcast\r\n\r\nSend a global message to all players online in chat log.", 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["Global_Message_tooltip"], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnAnnounce:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1041,14 +1041,14 @@ end
             gmMessageEdit:SetSize(150, 22)
             gmMessageEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
             gmMessageEdit:SetAutoFocus(false)
-            gmMessageEdit:SetText("GM Message")
+            gmMessageEdit:SetText(L["GM Message 2"])
             local btnGmMessage = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnGmMessage:SetSize(60, 22)
             btnGmMessage:SetText("Send")
             btnGmMessage:SetPoint("LEFT", gmMessageEdit, "RIGHT", 10, 0)
             btnGmMessage:SetScript("OnClick", function()
                 local text = gmMessageEdit:GetText()
-                if not text or text == "" or text == "GM Message" then
+                if not text or text == "" or text == L["GM Message 2"] then
                     print(L["Error : Please enter a message."])
                 else
                     SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
@@ -1056,7 +1056,7 @@ end
             end)
             btnGmMessage:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .gmnameannounce $announcement.\r\nSend an announcement to all online GM's, displaying the name of the sender.", 1, 1, 1, 1, true)
+                GameTooltip:SetText(L["GM Message 2 tooltip"], 1, 1, 1, 1, true)
                 GameTooltip:Show()
             end)
             btnGmMessage:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1067,14 +1067,14 @@ end
             gmNotifyEdit:SetSize(150, 22)
             gmNotifyEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
             gmNotifyEdit:SetAutoFocus(false)
-            gmNotifyEdit:SetText("GM Notification")
+            gmNotifyEdit:SetText(L["GM Notification"])
             local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnGmNotify:SetSize(60, 22)
             btnGmNotify:SetText("Send")
             btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
-                if not text or text == "" or text == "GM Notification" then
+                if not text or text == "" or text == L["GM Notification"] then
                     print(L["Error : Please enter a message."])
                 else
                     SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
@@ -1093,14 +1093,14 @@ end
             gmAnnounceEdit:SetSize(150, 22)
             gmAnnounceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
             gmAnnounceEdit:SetAutoFocus(false)
-            gmAnnounceEdit:SetText("GM Announcement")
+            gmAnnounceEdit:SetText(L["GM Announcement"])
             local btnGmAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnGmAnnounce:SetSize(60, 22)
             btnGmAnnounce:SetText("Send")
             btnGmAnnounce:SetPoint("LEFT", gmAnnounceEdit, "RIGHT", 10, 0)
             btnGmAnnounce:SetScript("OnClick", function()
                 local text = gmAnnounceEdit:GetText()
-                if not text or text == "" or text == "GM Announcement" then
+                if not text or text == "" or text == L["GM Announcement"] then
                     print(L["Error : Please enter a message for nameannounce."])
                 else
                     SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
@@ -1120,14 +1120,14 @@ end
             gmNotifyEdit:SetSize(150, 22)
             gmNotifyEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
             gmNotifyEdit:SetAutoFocus(false)
-            gmNotifyEdit:SetText("GM Notify")
+            gmNotifyEdit:SetText(L["GM Notify"])
             local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
             btnGmNotify:SetSize(60, 22)
             btnGmNotify:SetText("Send")
             btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
-                if not text or text == "" or text == "GM Notify" then
+                if not text or text == "" or text == L["GM Notify"] then
                     print(L["Error : Please enter a message to Notify."])
                 else
                     SendChatMessage('.notify "' .. text .. '"', "SAY")
@@ -1135,7 +1135,7 @@ end
             end)
             btnGmNotify:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText("Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.")
+                GameTooltip:SetText(L["GM Notify Tooltip"] = "Send a global message to all players online in screen.")
                 GameTooltip:Show()
             end)
             btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1149,7 +1149,7 @@ end
 		local displayButton = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
 		displayButton:SetSize(220, 22)
 		displayButton:SetPoint("LEFT", row, "LEFT", 0, -40)
-		displayButton:SetText("Select Skill")
+		displayButton:SetText(L["Select Skill"])
 		-- On stocke la sélection dans displayButton.selectedSkill
 		
 		-- Création du cadre du menu déroulant personnalisé (initialement caché)
@@ -1285,17 +1285,12 @@ end
         local btnDistance = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnDistance:SetSize(80, 22)
         btnDistance:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
-        btnDistance:SetText("Distance")
+        btnDistance:SetText(L["Distance71"])
 
         -- Tooltip
         btnDistance:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .distance [link]\r\n\r\n" ..
-                "Display the distance from your character to the selected unit " ..
-                "or given creature/player/gameobject.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Distance71_Tooltip"], 1,1,1,1,true)
         end)
         btnDistance:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -1303,12 +1298,12 @@ end
         btnDistance:SetScript("OnClick", function()
             local targetName = UnitName("target")
             if not targetName then
-                print("Erreur: Veuillez cibler une unité pour la commande .distance.")
+                print(L["distance_target_error"])
                 return
             end
             local cmd = ".distance "
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
         -----------------------------------------------------------
@@ -1318,35 +1313,30 @@ end
         editAreaHide:SetSize(60, 22)
         editAreaHide:SetPoint("LEFT", btnDistance, "RIGHT", 30, 0)
         editAreaHide:SetAutoFocus(false)
-        editAreaHide:SetText("Area ID")
+        editAreaHide:SetText(L["Area ID"])
 
         local btnHideArea = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnHideArea:SetSize(80, 22)
         btnHideArea:SetPoint("LEFT", editAreaHide, "RIGHT", 5, 0)
-        btnHideArea:SetText("Hide Area")
+        btnHideArea:SetText(L["Hide Area"])
 
         btnHideArea:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .hidearea #areaid\r\n\r\n" ..
-                "Hide the area of #areaid to the selected character.\n" ..
-                "If no character is selected, hide this area to you.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Hide Area Tooltip"], 1,1,1,1,true)
         end)
         btnHideArea:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnHideArea:SetScript("OnClick", function()
             local val = editAreaHide:GetText()
-            if not val or val == "" or val == "Area ID" then
-                print("Erreur: veuillez saisir un Area ID pour .hidearea.")
+            if not val or val == "" or val == L["Area ID"] then
+                print(L["enter_area_id_hidearea_error"])
                 return
             end
             local cmd = ".hidearea " .. val
             -- We do NOT actually add the target's name to the command,
             -- so if there's a target, it applies to them; if no target, applies to you.
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
         -----------------------------------------------------------
@@ -1361,23 +1351,18 @@ end
         local btnShowArea = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnShowArea:SetSize(80, 22)
         btnShowArea:SetPoint("LEFT", editAreaShow, "RIGHT", 5, 0)
-        btnShowArea:SetText("Show Area")
+        btnShowArea:SetText(L["Show Area"])
 
         btnShowArea:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .showarea #areaid\r\n\r\n" ..
-                "Reveal the area of #areaid to the selected character.\n" ..
-                "If no character is selected, reveal this area to you.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Show Area tooltip"], 1,1,1,1,true)
         end)
         btnShowArea:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnShowArea:SetScript("OnClick", function()
             local val = editAreaShow:GetText()
-            if not val or val == "" or val == "Area ID" then
-                print("Erreur: veuillez saisir un Area ID pour .showarea.")
+            if not val or val == "" or val == (L["Area ID"] then
+                -- print("Erreur: veuillez saisir un Area ID pour .showarea.")
                 return
             end
             local cmd = ".showarea " .. val
@@ -1399,32 +1384,28 @@ end
         editSummon:SetSize(100, 22)
         editSummon:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
         editSummon:SetAutoFocus(false)
-        editSummon:SetText("Player Name")
+        editSummon:SetText(L["Player Name"])
 
         local btnSummon = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnSummon:SetSize(80, 22)
         btnSummon:SetPoint("LEFT", editSummon, "RIGHT", 5, 0)
-        btnSummon:SetText("Summon")
+        btnSummon:SetText(L["SummonP"])
 
         btnSummon:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .summon [$charactername]\r\n\r\n" ..
-                "Teleport the given character to you. Character can be offline.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["SummonP_tooltip"], 1,1,1,1,true)
         end)
         btnSummon:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnSummon:SetScript("OnClick", function()
             local val = editSummon:GetText()
-            if not val or val == "" or val == "Player Name" then
-                print("Erreur: veuillez saisir un nom de joueur pour .summon.")
+            if not val or val == "" or val == L["Player Name"] then
+               print(L["enter_player_name_summon_error"])
                 return
             end
             local cmd = ".summon " .. val
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
         -----------------------------------------------------------
@@ -1434,32 +1415,26 @@ end
         editRecall:SetSize(100, 22)
         editRecall:SetPoint("LEFT", btnSummon, "RIGHT", 20, 0)
         editRecall:SetAutoFocus(false)
-        editRecall:SetText("Player Name")
+        editRecall:SetText(L["Player Name"])
 
         local btnRecall = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnRecall:SetSize(80, 22)
         btnRecall:SetPoint("LEFT", editRecall, "RIGHT", 5, 0)
-        btnRecall:SetText("Recall")
+        btnRecall:SetText(L["RecallP"])
 
         btnRecall:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .recall [$playername]\r\n\r\n" ..
-                "Teleport $playername or selected player to the place " ..
-                "where he has been before last use of a teleportation command.\n" ..
-                "If no $playername is entered and no player is selected, it will teleport you.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["RecallP_tooltip"], 1,1,1,1,true)
         end)
         btnRecall:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnRecall:SetScript("OnClick", function()
             local val = editRecall:GetText()
-            if not val or val == "" or val == "Player Name" then
+            if not val or val == "" or val == L["Player Name"] then
                 -- If empty => use target
                 local targetName = UnitName("target")
                 if not targetName then
-                    print("Erreur: veuillez saisir un nom ou cibler un joueur pour .recall.")
+                   print(L["enter_name_or_target_recall_error"])
                     return
                 end
                 local cmd = ".recall " .. targetName
@@ -1468,7 +1443,7 @@ end
                 -- Use the typed name
                 local cmd = ".recall " .. val
                 SendChatMessage(cmd, "SAY")
-				print("[DEBUG] Commande envoyée: " ..cmd)
+				-- print("[DEBUG] Commande envoyée: " ..cmd)
             end
         end)
 
@@ -1484,55 +1459,46 @@ end
         local btnBindsight = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnBindsight:SetSize(80, 22)
         btnBindsight:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
-        btnBindsight:SetText("Bindsight")
+        btnBindsight:SetText(L["Bindsight"])
 
         btnBindsight:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .bindsight\r\n\r\n" ..
-                "Binds vision to the selected unit indefinitely.\n" ..
-                "Cannot be used while currently possessing a target.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Bindsight_tooltip"], 1,1,1,1,true)
         end)
         btnBindsight:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnBindsight:SetScript("OnClick", function()
             local targetName = UnitName("target")
             if not targetName then
-                print("Erreur: vous devez cibler quelqu'un pour .bindsight.")
+                print(L["target_required_bindsight_error"])
                 return
             end
             local cmd = ".bindsight"
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
         -- 2) Unbindsight
         local btnUnbindsight = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnUnbindsight:SetSize(100, 22)
         btnUnbindsight:SetPoint("LEFT", btnBindsight, "RIGHT", 20, 0)
-        btnUnbindsight:SetText("Unbindsight")
+        btnUnbindsight:SetText(L["Unbindsight"])
 
         btnUnbindsight:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .unbindsight\r\n\r\n" ..
-                "Removes bound vision. Cannot be used while currently possessing a target.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Unbindsight_tooltip"], 1,1,1,1,true)
         end)
         btnUnbindsight:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnUnbindsight:SetScript("OnClick", function()
             local targetName = UnitName("target")
             if not targetName then
-                print("Erreur: vous devez cibler quelqu'un pour .unbindsight.")
+                print(L["target_required_unbindsight_error"])
                 return
             end
             local cmd = ".unbindsight"
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
         -- 3) Honor Update
