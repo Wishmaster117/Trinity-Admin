@@ -23,12 +23,12 @@ function GameObjects:CreateGameObjectsPanel()
 
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText("GameObjects Panel")  -- Vous pouvez utiliser L si nécessaire
+    panel.title:SetText(L["GameObjects Panel"])  -- Vous pouvez utiliser L si nécessaire
 
     -- Section: Game Objects Tools
 local toolsTitle = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 toolsTitle:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -20)
-toolsTitle:SetText("Game Objects Tools")
+toolsTitle:SetText(L["Game Objects Tools"])
 
 -- Champ de saisie pour la commande spéciale
 local specialInput = CreateFrame("EditBox", "TrinityAdminSpecialInput", panel, "InputBoxTemplate")
@@ -36,22 +36,22 @@ specialInput:SetAutoFocus(false)
 specialInput:SetSize(150, 22)
 specialInput:SetPoint("TOPLEFT", toolsTitle, "BOTTOMLEFT", 0, -5)
 -- On lui affecte une valeur par défaut (celle de la première option)
-specialInput:SetText("Enter Guid")
+specialInput:SetText(L["Enter Guid"])
 
 -- Table des options du menu déroulant
 local specialOptions = {
-    { text = "gobject activate", command = ".gobject activate", defaultText = "Enter guid", tooltip = "Syntax: .gobject activate #guid\r\n\r\nActivates an object like a door or a button." },
-    { text = "gobject add", command = ".gobject add", defaultText = "Enter Id Spawntime", tooltip = "Syntax: .gobject add #id <spawntimeSecs>\r\n\r\nAdd a game object from game object templates to the world at your current location using the #id.\r\nspawntimesecs sets the spawntime, it is optional.\r\n\r\nNote: this is a copy of .gameobject." },
-    { text = "gobject add temp", command = ".gobject add temp", defaultText = "Enter uid or Id", tooltip = "Adds a temporary gameobject that is not saved to DB." },
-    { text = "gobject delete", command = ".gobject delete", defaultText = "Enter Gobject guid", tooltip = "Syntax: .gobject delete #go_guid\r\nDelete gameobject with guid #go_guid." },
-    { text = "gobject despawngroup", command = ".gobject despawngroup", defaultText = "Enter GroupId", tooltip = "Syntax: .gobject despawngroup $groupId [removerespawntime]." },
-    { text = "gobject info", command = ".gobject info", defaultText = "Enter Entry or Link", tooltip = "Syntax: .gobject info [$entry|$link]\r\n\r\nQuery Gameobject information for given gameobject entry or link.\r\nFor example .gobject info 36." },
-    { text = "gobject info guid", command = ".gobject info guid", defaultText = "Enter Guid or Link", tooltip = "Syntax: .gobject info guid [$guid|$link]\r\n\r\nQuery Gameobject information for given gameobject guid or link.\r\nFor example .gobject info guid 100" },
-    { text = "gobject near", command = ".gobject near", defaultText = "Enter Distance", tooltip = "Syntax: .gobject near [#distance]\r\n\r\nOutput gameobjects at distance #distance from player. If #distance not provided, use 10 as default." },
-    { text = "gobject set phase", command = ".gobject set phase", defaultText = "Enter Guid PhaseMask", tooltip = "Syntax: .gobject set phase #guid #phasemask\r\n\r\nGameobject with DB guid #guid phasemask changed to #phasemask and saved to DB." },
-    { text = "gobject set state", command = ".gobject set state", defaultText = "Enter State", tooltip = "" },
-    { text = "gobject spawngroup", command = ".gobject spawngroup", defaultText = "Enter GroupId", tooltip = "Syntax: .gobject spawngroup $groupId [ignorerespawn] [force]" },
-    { text = "gobject target", command = ".gobject target", defaultText = "Enter Guid or Name part", tooltip = "Syntax: .gobject target [#go_id|#go_name_part]\r\n\r\nLocate and show position of the nearest gameobject matching the provided id or name part." },
+    { text = L["gobject activate"], command = ".gobject activate", defaultText = L["Enter Guid"], tooltip = L["Enter_Guid_tooltip"] },
+    { text = L["gobject add"], command = ".gobject add", defaultText = L["Enter Id Spawntime"], tooltip = L["EnterIdSpawntime_tooltip"] },
+    { text = L["gobject add temp"], command = ".gobject add temp", defaultText = L["Enter Guid or Id"], tooltip = L["EnterGuidorId_tooltip"] },
+    { text = L["gobject delete"], command = ".gobject delete", defaultText = L["Enter Gobject guid"], tooltip = L["EnterGobjectguid_tooltip"] },
+    { text = L["gobject despawngroup"], command = ".gobject despawngroup", defaultText = L["Enter GroupId"], tooltip = L["EnterGroupId_tooltip"] },
+    { text = L["gobject info"], command = ".gobject info", defaultText = L["Enter Entry or Link"], tooltip = L["EnterEntryorLink_tooltip"] },
+    { text = L["gobject info guid"], command = ".gobject info guid", defaultText = L["Enter Guid or Link"], tooltip = L["EnterGuidorLink_tooltip"] },
+    { text = L["gobject near"], command = ".gobject near", defaultText = L["Enter Distance"], tooltip = L["EnterDistance_tooltip"] },
+    { text = L["gobject set phase"], command = ".gobject set phase", defaultText = L["Enter Guid PhaseMask"], tooltip = L["EnterGuidPhaseMask_tooltip"] },
+    { text = L["gobject set state"], command = ".gobject set state", defaultText = L["Enter State"], tooltip = "" },
+    { text = L["gobject spawngroup"], command = ".gobject spawngroup", defaultText = L["Enter GroupId"], tooltip = L["EnterGroupId_tooltip2"] },
+    { text = L["gobject target"], command = ".gobject target", defaultText = L["Enter Guid or Name part"], tooltip = L["EnterGuidorNamepart_tooltip"] },
 }
 
 	-- Création du menu déroulant pour les options
@@ -104,7 +104,7 @@ local specialOptions = {
 			if targetName then
 				finalCommand = command .. " " .. targetName
 			else
-				print("Veuillez saisir une valeur ou cibler un joueur.")
+				print(L["enter_value_or_target_error"])
 				return
 			end
 		end
@@ -126,31 +126,31 @@ local specialOptions = {
     -- Sous-titre "Game Object Advanced"
     local advLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     advLabel:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -180)  -- Ajustez l'offset vertical selon votre layout
-    advLabel:SetText("Game Object Advanced")
+    advLabel:SetText(L["Game Object Advanced"])
     
     -- Champ de saisie pour le GUID
     local advGuidEdit = CreateFrame("EditBox", "TrinityAdminAdvGuidEditBox", panel, "InputBoxTemplate")
     advGuidEdit:SetSize(150, 22)
     advGuidEdit:SetPoint("TOPLEFT", advLabel, "BOTTOMLEFT", 0, -5)
-    advGuidEdit:SetText("Enter Guid")
+    advGuidEdit:SetText(L["EnterGuid_69"])
     
     -- Champ de saisie pour X
     local advXEdit = CreateFrame("EditBox", "TrinityAdminAdvXEditBox", panel, "InputBoxTemplate")
     advXEdit:SetSize(80, 22)
     advXEdit:SetPoint("TOPLEFT", advGuidEdit, "TOPRIGHT", 10, 0)
-    advXEdit:SetText("Enter X")
+    advXEdit:SetText(L["Enter X"])
     
     -- Champ de saisie pour Y
     local advYEdit = CreateFrame("EditBox", "TrinityAdminAdvYEditBox", panel, "InputBoxTemplate")
     advYEdit:SetSize(80, 22)
     advYEdit:SetPoint("TOPLEFT", advXEdit, "TOPRIGHT", 10, 0)
-    advYEdit:SetText("Enter Y")
+    advYEdit:SetText(L["Enter Y"])
     
     -- Champ de saisie pour Z
     local advZEdit = CreateFrame("EditBox", "TrinityAdminAdvZEditBox", panel, "InputBoxTemplate")
     advZEdit:SetSize(80, 22)
     advZEdit:SetPoint("TOPLEFT", advYEdit, "TOPRIGHT", 10, 0)
-    advZEdit:SetText("Enter Z")
+    advZEdit:SetText(L["Enter Z"])
     
     -- Dropdown pour choisir l'action ("gobject move" ou "gobject turn")
     local advDropdown = CreateFrame("Frame", "TrinityAdminAdvDropdown", panel, "UIDropDownMenuTemplate")
@@ -158,8 +158,8 @@ local specialOptions = {
     UIDropDownMenu_SetWidth(advDropdown, 150)
     UIDropDownMenu_SetButtonWidth(advDropdown, 170)
     local advOptions = {
-        { text = "gobject move", command = ".gobject move", defaultText = "Enter Guid", tooltip = "Syntax: .gobject move #goguid [#x #y #z]\r\n\r\nMove gameobject #goguid to character coordinates (or to (#x,#y,#z) coordinates if provided)." },
-        { text = "gobject turn", command = ".gobject turn", defaultText = "Enter Guid", tooltip = "Syntax: .gobject turn [guid|link] [oz [oy [ox]]]\r\n\r\nSet the orientation of the gameobject to player's orientation or the given orientation." },
+        { text = L["gobject move"], command = ".gobject move", defaultText = L["Enter Guid"], tooltip = L["gobject_move_tooltip"] },
+        { text = L["gobject turn"], command = ".gobject turn", defaultText = L["Enter Guid"], tooltip = L["gobject_turn_tooltip"] },
     }
     if not advDropdown.selectedID then advDropdown.selectedID = 1 end
     UIDropDownMenu_Initialize(advDropdown, function(dropdownFrame, level, menuList)
@@ -192,7 +192,7 @@ local specialOptions = {
     -- Bouton "Move"
     local advButton = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     advButton:SetSize(60, 22)
-    advButton:SetText("Move")
+    advButton:SetText(L["Movegob"])
     advButton:SetPoint("LEFT", advDropdown, "RIGHT", 10, 0)
     advButton:SetScript("OnClick", function()
         local guid = advGuidEdit:GetText()
@@ -202,11 +202,11 @@ local specialOptions = {
         local option = advDropdown.selectedOption
         local command = option.command
         if guid == "" or guid == option.defaultText then
-            print("Veuillez saisir un GUID valide.")
+            print(L["enter_valid_guid_error"])
             return
         end
         local finalCommand = command .. " " .. guid .. " " .. x .. " " .. y .. " " .. z
-        print("Debug: Commande envoyée: " .. finalCommand)  -- pour débug
+        -- print("Debug: Commande envoyée: " .. finalCommand)  -- pour débug
         SendChatMessage(finalCommand, "SAY")
     end)
     advButton:SetScript("OnEnter", function(self)
@@ -234,7 +234,7 @@ local specialOptions = {
     ------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBack:SetSize(80, 22)
-    btnBack:SetText("Retour")
+    btnBack:SetText(L["Back"])
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
@@ -246,7 +246,7 @@ local specialOptions = {
     ------------------------------------------------------------
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
-    advancedLabel:SetText("Game Objects Advanced Add")
+    advancedLabel:SetText(L["Game Objects Advanced Add"])
 
     ------------------------------------------------------------
     -- Champ de saisie pour filtrer la liste
@@ -274,12 +274,12 @@ local specialOptions = {
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
-    btnPrev:SetText("Preview")
+    btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
-    btnNext:SetText("Next")
+    btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -357,7 +357,7 @@ local specialOptions = {
 			-- end)
 
 			btn:SetScript("OnClick", function()
-				print("Option cliquée :", fullText, "Entry:", option.entry)
+				-- print("Option cliquée :", fullText, "Entry:", option.entry)
 				SendChatMessage(".gobject add " .. option.entry, "SAY")
 			end)
 		
@@ -462,7 +462,7 @@ local specialOptions = {
 	
 		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
 		if #searchText < 3 then
-			print("Veuillez entrer au moins 3 caractères pour la recherche.")
+			print(L["min_search_length_error"])
 			return
 		end
 	
@@ -512,7 +512,7 @@ local specialOptions = {
 	------------------------------------------------------------
 	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 	btnReset:SetSize(80, 22)
-	btnReset:SetText("Reset")
+	btnReset:SetText(L["Reset"])
 	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnClick", function()
 		filterEditBox:SetText("")  -- Efface le champ de recherche
