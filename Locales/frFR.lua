@@ -264,7 +264,7 @@ if not L then return end
 	L["How many?"] = "Quantité ?"
 	L["BonusList id's separated by ;"] = "Bonus séparée par ;"
 	L["Item Set Easy Add"] = "Ajouts de Sets Simplifié"
-	
+
 	L["The 'ItemSet ID' field is required."] = "Le champ 'ItemSet ID' est obligatoire."
 	L["The 'ID or Name' field is required."] = "Le champ 'ID or Name' est obligatoire."
 	L["Please fill in the required field."] = "Veuillez remplir le champ requis."
@@ -286,7 +286,7 @@ if not L then return end
 	L["Please enter a value or select a player."] = "Please enter a value or select a player."
 	L["Syntax: .unban ip $Ip\nUnban accounts for IP pattern."] = "Syntax: .unban ip $Ip\nUnban accounts for IP pattern."
 	L["Enter Value"] = "Entrer une Valeur"
-	
+
 	L["Faction"]                = "Faction"
 	L["Gender"]                 = "Gender"
 	L["Modify_Faction"]         = "Syntax: .modify faction #factionid #flagid #npcflagid #dynamicflagid\r\n\r\nModify the faction and flags of the selected creature. Without arguments, display the faction and flags of the selected creature."
@@ -497,8 +497,9 @@ if not L then return end
 	L["Please enter a reason for the mute."] = "Veuillez saisir une raison pour le mute"
 	L["Please, enter time in minuts."] = "Veuillez entrer le temps du mute en minutes."
 	L["Mute reason (required)"] = "Raison du mute (obligatoire)"
-	
-	L["Please_select_option_infoban"] = "Veuillez sélectionner une option pour Infos Ban."L["Please_enter_value_for"] = "Veuillez entrer une valeur pour "
+		-- Ajouts
+	L["Please_select_option_infoban"] = "Veuillez sélectionner une option pour Infos Ban."
+	L["Please_enter_value_for"] = "Veuillez entrer une valeur pour "
 	L["Select_ban_type"] = "Selected ban type: "
 	L["Go"] = "Go"
 	L["Clean"] = "Vider"

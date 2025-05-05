@@ -298,7 +298,7 @@ if not L then return end
 	L["Bantime"]				= "Bantime"
 	L["Reason"]					= "Reason"
 	L["Ban"]					= "Ban"
-	L["Execute"] = "Execute"	
+	L["Execute"] = "Execute"
 
 
   
