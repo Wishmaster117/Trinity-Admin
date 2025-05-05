@@ -213,9 +213,9 @@ function DatabaseModule:CreateDatabasePanel()
 
     -- Création des 3 groupes de commandes
     -- Par exemple, on commence à y = -40 pour le premier groupe, puis on décale de -80 pour le second, -120 pour le troisième
-    CreateDatabaseGroup(panel, "Database Part 1", part1Options, -40)
-    CreateDatabaseGroup(panel, "Database Part 2", part2Options, -140)
-    CreateDatabaseGroup(panel, "Database Part 3", part3Options, -240)
+    CreateDatabaseGroup(panel, L["Database Part 1"], part1Options, -40)
+    CreateDatabaseGroup(panel, L["Database Part 2"], part2Options, -140)
+    CreateDatabaseGroup(panel, L["Database Part 3"], part3Options, -240)
 
     -- Bouton Back pour revenir au menu principal
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")

@@ -1170,6 +1170,13 @@ if not L then return end
 	L["enter_playback_flags_error"] = "Error: Please enter the Playback Flags."
 	L["select_action_dropdown_error"] = "Please select an action from the dropdown."
 	
+	-- Fichier databasepanel.lua
+	L["Database Part 1"] = "Database Part 1"
+	L["Database Part 2"] = "Database Part 2"
+	L["Database Part 3"] = "Database Part 3"
+	
+	
+	
 	
 -- Titres
 L["Private %s"] = "Private %s"
