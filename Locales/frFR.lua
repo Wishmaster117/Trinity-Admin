@@ -264,7 +264,7 @@ if not L then return end
 	L["How many?"] = "Quantité ?"
 	L["BonusList id's separated by ;"] = "Bonus séparée par ;"
 	L["Item Set Easy Add"] = "Ajouts de Sets Simplifié"
-	L["Please enter at least 3 characters for the search."] = "Veuillez entrer au moins 3 caractères pour la recherche."
+	
 	L["The 'ItemSet ID' field is required."] = "Le champ 'ItemSet ID' est obligatoire."
 	L["The 'ID or Name' field is required."] = "Le champ 'ID or Name' est obligatoire."
 	L["Please fill in the required field."] = "Veuillez remplir le champ requis."
