@@ -604,7 +604,7 @@ if not L then return end
 	L["Triggers a stack out of bounds read.\nUse only when testing dynamic analysis tools."] = "Triggers a stack out of bounds read.\nUse only when testing dynamic analysis tools."
 	L["Debug Functions Page 2"] = "Debug Functions Page 2"
 	L["Start"] = "Start"
-	L["Set"] = "Set"
+
 
 	-- Titres
 	L["Private %s"] = "Soldat %s"

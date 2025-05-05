@@ -1287,10 +1287,7 @@ if not L then return end
 	L["Debug Functions Page 2"] = "Debug Functions Page 2"
 	L["Start"] = "Start"
 	
-
-	
-	
-	
+		
 -- Titres
 L["Private %s"] = "Private %s"
 L["Corporal %s"] = "Corporal %s"
@@ -1895,6 +1892,7 @@ L["Junkmaestro %s"] = "Junkmaestro %s"
 L["Part-Timer %s"] = "Part-Timer %s"
 L["%s, Employee of the Month"] = "%s, Employee of the Month"
 L["%s, the Reel Deal"] = "%s, the Reel Deal"	
+
 --Items Sets
 L["The Gladiator"] =	"The Gladiator"
 L["Dal'Rend's Arms"] =	"Dal'Rend's Arms"
@@ -2849,6 +2847,7 @@ L["Currents of the Gale Sovereign"] =	"Currents of the Gale Sovereign"
 L["Spliced Fiendtrader's Influence"] =	"Spliced Fiendtrader's Influence"
 L["Underpin Strongarm's Muscle"] =	"Underpin Strongarm's Muscle"
 	-- Fin traduction des sets
+
 -- Traduction des skill
 L["Enchanting"] = "Enchanting"
 L["Engineering"] = "Engineering"
