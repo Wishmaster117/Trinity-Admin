@@ -1067,8 +1067,25 @@ if not L then return end
 	L["Unbindsight"] = "Unbindsight"
 	L["Unbindsight_tooltip"] = "Removes bound vision. Cannot be used while currently possessing a target."
 	L["target_required_unbindsight_error"] = "Error: You must target someone for .unbindsight."
+	L["Honor Update"] = "Honor Update"
+	L["Honor_Update_tooltip"] = "Force the yesterday's honor fields to be updated with today's data,\nwhich will get reset for the selected player."
+	L["Channel"] = "Channel"
+	L["Channel_tooltip"] = "Grant ownership to the first person that joins the channel."
+	L["Set Ownership"] = "Set Ownership"
+	L["enter_channel_error"] = "Error: Please enter a channel."
+	L["check_on_off_error"] = "Please check On or Off."
+	L["Set Weather"] = "Set Weather"
+	L["Set_Weather_tooltip"] = "Set current weather to #weathertype with an intensity of #status.\r\n\r\n#weathertype can be 1 for rain, 2 for snow, 3 for sand.\r\n#status can be 0 for disabled, 1 for enabled."
+	L["select_weather_type_error"] = "Error: Please select a Weather Type."
+	L["select_status_error"] = "Error: Please select a Status."
+	L["Show Grave"] = "Show Grave"
+	L["Show_Grave_tooltip"] = "Find nearest graveyard linked to zone (or only nearest that accepts alliance/horde ghosts)."
+	L["Link Grave"] = "Link Grave"
+	L["Link_Grave_tooltip"] = "Link current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map)"
+	L["enter_grave_id_linkgrave_error"] = "Error: Please enter a Grave ID for .linkgrave."
+	L["select_faction_linkgrave_error"] = "Error: Please check Horde or Alliance for .linkgrave."
 	
-	-- Arret à 3) Honor Update
+	-- Arret à 
 	
 	
 	

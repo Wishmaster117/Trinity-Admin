@@ -1505,23 +1505,18 @@ end
         local btnHonorUpdate = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnHonorUpdate:SetSize(100, 22)
         btnHonorUpdate:SetPoint("LEFT", btnUnbindsight, "RIGHT", 20, 0)
-        btnHonorUpdate:SetText("Honor Update")
+        btnHonorUpdate:SetText(L["Honor Update"])
 
         btnHonorUpdate:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .honor update\r\n\r\n" ..
-                "Force the yesterday's honor fields to be updated with today's data,\n" ..
-                "which will get reset for the selected player.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Honor_Update_tooltip"], 1,1,1,1,true)
         end)
         btnHonorUpdate:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnHonorUpdate:SetScript("OnClick", function()
             local cmd = ".honor update"
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
     ---------------------------------------------------------------
@@ -1538,7 +1533,7 @@ end
         editChannel:SetSize(100, 22)
         editChannel:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
         editChannel:SetAutoFocus(false)
-        editChannel:SetText("Channel")
+        editChannel:SetText(L["Channel"])
 
         -- Radio "On"
         local radioOn = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
@@ -1587,22 +1582,18 @@ end
         local btnSetOwner = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnSetOwner:SetSize(120, 22)
         btnSetOwner:SetPoint("LEFT", radioOff, "RIGHT", 40, 0)
-        btnSetOwner:SetText("Set Ownership")
+        btnSetOwner:SetText(L["Set Ownership"])
 
         btnSetOwner:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .channel set ownership $channel [on/off]\n\n" ..
-                "Grant ownership to the first person that joins the channel.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Channel_tooltip"], 1,1,1,1,true)
         end)
         btnSetOwner:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnSetOwner:SetScript("OnClick", function()
             local chanName = editChannel:GetText()
-            if not chanName or chanName == "" or chanName == "Channel" then
-                print("Erreur: veuillez saisir un Channel.")
+            if not chanName or chanName == "" or chanName == L["Channel"] then
+                print(L["enter_channel_error"])
                 return
             end
 
@@ -1615,13 +1606,13 @@ end
             end
 
             if not state then
-                print("Veuillez cocher On ou Off.")
+                print(L["check_on_off_error"])
                 return
             end
 
             local cmd = ".channel set ownership " .. chanName .. " " .. state
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
     ---------------------------------------------------------------
@@ -1685,27 +1676,21 @@ end
         local btnWeather = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnWeather:SetPoint("LEFT", statusDropdown, "RIGHT", 20, 0)
         btnWeather:SetSize(100, 22)
-        btnWeather:SetText("Set Weather")
+        btnWeather:SetText(L["Set Weather"])
 
         btnWeather:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .wchange #weathertype #status\r\n\r\n" ..
-                "Set current weather to #weathertype with an intensity of #status.\r\n\r\n" ..
-                "#weathertype can be 1 for rain, 2 for snow, 3 for sand.\r\n" ..
-                "#status can be 0 for disabled, 1 for enabled.",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Set_Weather_tooltip"], 1,1,1,1,true)
         end)
         btnWeather:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
         btnWeather:SetScript("OnClick", function()
             if not weatherDropdown.selected then
-                print("Erreur: veuillez sélectionner un Weather Type.")
+                print(L["select_weather_type_error"])
                 return
             end
             if not statusDropdown.selected then
-                print("Erreur: veuillez sélectionner un Status.")
+                print(L["select_status_error"])
                 return
             end
 
@@ -1722,7 +1707,7 @@ end
             -- so we'll just pass them directly:
             local cmd = ".wchange " .. wID .. " " .. sID
             SendChatMessage(cmd, "SAY")
-			print("[DEBUG] Commande envoyée: " ..cmd)
+			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
     ---------------------------------------------------------------
@@ -1767,16 +1752,11 @@ end
         local btnShowGrave = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnShowGrave:SetSize(100, 22)
         btnShowGrave:SetPoint("LEFT", chkHorde, "RIGHT", 60, 0)
-        btnShowGrave:SetText("Show Grave")
+        btnShowGrave:SetText(L["Show Grave"])
 
         btnShowGrave:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(
-                "Syntax: .neargrave [alliance|horde]\r\n\r\n" ..
-                "Find nearest graveyard linked to zone (or only nearest " ..
-                "that accepts alliance/horde ghosts).",
-                1,1,1,1,true
-            )
+            GameTooltip:SetText(L["Show_Grave_tooltip"], 1,1,1,1,true)
         end)
         btnShowGrave:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
@@ -1838,17 +1818,17 @@ end
 	local btnLinkGrave = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
 	btnLinkGrave:SetSize(100, 22)
 	btnLinkGrave:SetPoint("LEFT", chkGraveAlliance, "RIGHT", 60, 0)
-	btnLinkGrave:SetText("Link Grave")
+	btnLinkGrave:SetText(L["Link Grave"])
 	btnLinkGrave:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		GameTooltip:SetText("Link current zone to graveyard for any (or alliance/horde faction ghosts). This let character ghost from zone teleport to graveyard after die if graveyard is nearest from linked to zone and accept ghost of this faction. Add only single graveyard at another map and only if no graveyards linked (or planned linked at same map)", 1, 1, 1, 1, true)
+		GameTooltip:SetText(L["Link_Grave_tooltip"], 1, 1, 1, 1, true)
 		GameTooltip:Show()
 	end)
 	btnLinkGrave:SetScript("OnLeave", function() GameTooltip:Hide() end)
 	btnLinkGrave:SetScript("OnClick", function()
 		local graveID = editGraveID:GetText()
 		if graveID == "" or graveID == "Grave ID" then
-			print("Erreur: veuillez saisir un Grave ID pour .linkgrave.")
+			print(L["enter_grave_id_linkgrave_error"])
 			return
 		end
 		if chkGraveHorde:GetChecked() then
@@ -1860,7 +1840,7 @@ end
 			SendChatMessage(cmd, "SAY")
 			-- print("[DEBUG] Commande envoyée: " .. cmd)
 		else
-			print("Erreur: veuillez cocher Horde ou Alliance pour .linkgrave.")
+			print(L["select_faction_linkgrave_error"])
 		end
 	end)
 
