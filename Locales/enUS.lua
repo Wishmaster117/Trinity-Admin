@@ -1175,6 +1175,8 @@ if not L then return end
 	L["Database Part 2"] = "Database Part 2"
 	L["Database Part 3"] = "Database Part 3"
 	
+	L["Reveal"] = "Reveal"
+	
 	
 	
 	

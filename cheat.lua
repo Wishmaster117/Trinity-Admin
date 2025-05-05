@@ -184,7 +184,7 @@ local checkboxReveal = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemp
 checkboxReveal:SetPoint("TOPLEFT", checkboxHide, "TOPRIGHT", 60, 0)
 checkboxReveal.text = checkboxReveal:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 checkboxReveal.text:SetPoint("LEFT", checkboxReveal, "RIGHT", 2, 0)
-checkboxReveal.text:SetText("Reveal")
+checkboxReveal.text:SetText(L["Reveal"])
 checkboxReveal:SetChecked(false)
 
 checkboxHide:SetScript("OnClick", function(self)
