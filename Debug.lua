@@ -376,128 +376,128 @@ function Debug:CreateDebugPanel()
 	["debug boundary"] = {
 		fields = { {default="Fill"}, {default="Duration"} },
 		buttonText = L["Start"],
-		tooltip = "Flood fills the targeted unit's movement boundary and marks the edge of said boundary with debug creatures.\nSpecify 'fill' as first parameter to fill the entire area with debug creatures.",
+		tooltip = L["debug_boundary_tooltip"],
 		commandPrefix = ".debug boundary",
 		mandatory = {1}  -- Le champ Fill est obligatoire si Duration est renseigné
 	},
 	["debug conversation"] = {
 		fields = { {default="Conversation ID"} },
 		buttonText = L["Start"],
-		tooltip = "Play given conversation.",
+		tooltip = L["debug_conversation_tooltip"],
 		commandPrefix = ".debug conversation",
 		mandatory = {1}
 	},
 	["debug guidlimits"] = {
 		fields = { {default="Map ID"} },
 		buttonText = L["Start"],
-		tooltip = "Shows the current Creature and GameObject highest Guid for the specified map id or for all maps if none is specified\n",
+		tooltip = L["debug_guidlimits_tooltip"],
 		commandPrefix = ".debug guidlimits"
 	},
 	["debug instancespawn"] = {
 		fields = { {default="Group ID or explain"} },
 		buttonText = L["Start"],
-		tooltip = "Displays information about the spawn groups being managed by the current instance script. If groupID is specified, additionally explains why that spawn group is in the listed state. If 'explain' is specified, explains all spawn groups.",
+		tooltip = L["debug_instancespawn_tooltip"],
 		commandPrefix = ".debug instancespawn"
 	},
 	["debug loadcells"] = {
 		fields = { {default="Map ID"} },
 		buttonText = L["Start"],
-		tooltip = "Loads all cells for debugging purposes",
+		tooltip = L["debug_loadcells_tooltip"],
 		commandPrefix = ".debug loadcells"
 	},
 	["debug moveflags"] = {
 		fields = { {default="NewMoveFlags"}, {default="NewMoveFlags2"} },
 		buttonText = L["Start"],
-		tooltip = "No params given will output the current moveflags of the target",
+		tooltip = L["debug_moveflags_tooltip"],
 		commandPrefix = ".debug moveflags"
 	},
 	["debug neargraveyard"] = {
 		fields = { {default="Nothing or linked"} },
 		buttonText = L["Start"],
-		tooltip = "Find the nearest graveyard from dbc or db (if linked)",
+		tooltip = L["debug_neargraveyard_tooltip"],
 		commandPrefix = ".debug neargraveyard"
 	},
 	["debug objectcount"] = {
 		fields = { {default="Map ID"} },
 		buttonText = L["Start"],
-		tooltip = "Shows the number of Creatures and GameObjects for the specified map id or for all maps if none is specified\n",
+		tooltip = L["debug_objectcount_tooltip"],
 		commandPrefix = ".debug objectcount"
 	},
 	["debug play cinematic"] = {
 		fields = { {default="Cinematic ID"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug play cinematic #cinematicid\r\n\r\nPlay cinematic #cinematicid for you. You stay at place while your mind fly.\r\n",
+		tooltip = L["debugplaycinematic_tooltip"],
 		commandPrefix = ".debug play cinematic",
 		mandatory = {1}
 	},
 	["debug play movie"] = {
 		fields = { {default="Movie ID"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug play movie #movieid\r\n\r\nPlay movie #movieid for you.",
+		tooltip = L["debugplaymovie_tooltip"],
 		commandPrefix = ".debug play movie",
 		mandatory = {1}
 	},
 	["debug play music"] = {
 		fields = { {default="Music ID"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug play music #musicId\nPlay music with #musicId.\nMusic will be played only for you. Other players will not hear this.",
+		tooltip = L["debugplaymusic_tooltip"],
 		commandPrefix = ".debug play music",
 		mandatory = {1}
 	},
 	["debug objectsound"] = {
 		fields = { {default="SoundKit Id"}, {default="BroadcastText Id"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug play objectsound #soundKitId [#broadcastTextId]\nPlay object sound with #soundKitId [and #broadcastTextId].\nSound will be played only for you. Other players will not hear this.",
+		tooltip = L["debugobjectsound_tooltip"],
 		commandPrefix = ".debug play objectsound"
 	},
 	["debug play sound"] = {
 		fields = { {default="Sound ID"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug play sound #soundid\r\n\r\nPlay sound with #soundid.\r\nSound will be play only for you. Other players do not hear this.\r\nWarning: client may have more 5000 sounds...",
+		tooltip = L["debugplaysound_tooltip"],
 		commandPrefix = ".debug play sound",
 		mandatory = {1}
 	},
 	["debug questreset"] = {
 		dropdown = { options = {"daily", "weekly", "monthly", "all"}, default = "daily" },
 		buttonText = "Reset",
-		tooltip = "Syntax: .debug questreset <daily/weekly/monthly/all>\n\nPerforms quest reset procedure for the specified type (or all types).\nQuest pools will be re-generated, and quest completion status will be reset.",
+		tooltip = L["debugquestreset_tooltip"],
 		commandPrefix = ".debug questreset"
 	},
 	["debug raidreset"] = {
 		fields = { {default="Map ID"}, {default="Difficulty"} },
 		buttonText = "Reset",
-		tooltip = "Syntax: .debug raidreset mapid [difficulty]\nForces a global reset of the specified map on all difficulties (or only the specific difficulty if specified). Effectively the same as setting the specified map's reset timer to now.",
+		tooltip = L["debugraidreset_tooltip"],
 		commandPrefix = ".debug raidreset",
 		mandatory = {1}  -- Map ID est obligatoire
 	},
 	["debug send playerchoice"] = {
 		fields = { {default="Choice Id"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug send playerchoice $choiceId\r\nSend given choice to player.",
+		tooltip = L["debugsendplayerchoice_tooltip"],
 		commandPrefix = ".debug send playerchoice",
 		mandatory = {1}
 	},
 	["debug transport"] = {
 		dropdown = { options = {"Start", "stop"}, default = "start" },
 		buttonText = L["Set"],
-		tooltip = "Syntax: .debug transport [start/stop]\n\nAllows to stop the current transport at its nearest wait point and start movement of a stopped one. Not all transports can be started or stopped.",
+		tooltip = L["debugtransport_tooltip"],
 		commandPrefix = ".debug transport"
 	},
 	["debug warden force"] = {
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug warden force\nForces the warden to perform its action.",
+		tooltip = L["debugwardenforce_tooltip"],
 		commandPrefix = ".debug warden force"
 	},
 	["debug worldstate"] = {
 		fields = { {default="State Id"}, {default="Value"} },
 		buttonText = L["Start"],
-		tooltip = "Syntax: debug worldstate $stateId $value\n\nSends a world state update for the specified state to your client.",
+		tooltip = L["debugworldstate_tooltip"],
 		commandPrefix = ".debug worldstate",
 		mandatory = {1,2}
 	},
 	["debug dummy"] = {
 		buttonText = L["Start"],
-		tooltip = "Syntax: .debug dummy\nA dummy debug command.",
+		tooltip = L["debugdummy_tooltip"],
 		commandPrefix = ".debug dummy"
 	}
 	}
@@ -599,7 +599,8 @@ function Debug:CreateDebugPanel()
 			end
 			return false
 			end)() and (not text or text == field.default) then
-			print("Erreur : le champ '" .. field.default .. "' est obligatoire!")
+			-- print("Erreur : le champ '" .. field.default .. "' est obligatoire!")
+			print(string.format(L["field_required_error"], field.default))
 			return
 			end
 			if commandName == "debug boundary" and i == 1 and (not text or text == field.default) then
@@ -637,7 +638,7 @@ sceneToggleButton:SetPoint("TOPLEFT", sceneDebugFrame, "TOPLEFT", 0, 0)
 sceneToggleButton:SetText("Scene debug is OFF")
 sceneToggleButton:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText("Toggle debug mode for scenes. In debug mode GM will be notified in chat when scenes start/stop/trigger event", 1,1,1,1,true)
+    GameTooltip:SetText(L["scene_debug_tooltip"], 1,1,1,1,true)
     GameTooltip:Show()
 end)
 sceneToggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -697,7 +698,7 @@ local sceneActionButton = CreateFrame("Button", nil, sceneDebugFrame, "UIPanelBu
 sceneActionButton:SetSize(150, 22)
 sceneActionButton:SetPoint("TOPLEFT", sceneInputFrame, "BOTTOMLEFT", 0, -10)
 sceneActionButton:SetText("Choose")
-sceneActionButton.tooltip = "Choose an action"
+sceneActionButton.tooltip = L["choose_action_tooltip"]
 sceneActionButton:Hide()
 sceneActionButton:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -716,7 +717,7 @@ function UpdateSceneUI(option)
         sceneInput1:SetAutoFocus(false)
         sceneInput1:SetText("Scene Id")
         sceneActionButton:SetText("Play")
-        sceneActionButton.tooltip = "Plays scene with id for targeted player."
+        sceneActionButton.tooltip = L["sceneplay_tooltip"]
         sceneActionButton:Show()
     elseif option == "scene cancel" then
         sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
@@ -725,7 +726,7 @@ function UpdateSceneUI(option)
         sceneInput1:SetAutoFocus(false)
         sceneInput1:SetText("Scene Package Id")
         sceneActionButton:SetText("Cancel")
-        sceneActionButton.tooltip = "Cancels scene with package id for targeted player."
+        sceneActionButton.tooltip = L["scenecancel_tooltip"]
         sceneActionButton:Show()
     elseif option == "scene playpackage" then
         sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
@@ -739,11 +740,11 @@ function UpdateSceneUI(option)
         sceneInput2:SetAutoFocus(false)
         sceneInput2:SetText("Playback Flags")
         sceneActionButton:SetText("Play Package")
-        sceneActionButton.tooltip = "Plays scene with package id and playback flags for targeted player."
+        sceneActionButton.tooltip = L["sceneplaypackage_tooltip"]
         sceneActionButton:Show()
     else
         sceneActionButton:SetText("Choose")
-        sceneActionButton.tooltip = "Choose an action"
+        sceneActionButton.tooltip = L["choose_action_tooltip"]
         sceneActionButton:Hide()  -- On cache le bouton si l'option est "Choose"
     end
 end
@@ -755,42 +756,42 @@ sceneActionButton:SetScript("OnClick", function()
         if sceneInput1 then
             local sceneId = sceneInput1:GetText()
             if sceneId == "" or sceneId == "Scene Id" then
-                print("Erreur: veuillez renseigner un Scene Id.")
+                print(L["enter_scene_id_error"])
                 return
             end
             local cmd = ".scene play " .. sceneId
             SendChatMessage(cmd, "SAY")
-            print("[DEBUG] Commande envoyée: " .. cmd)
+            -- print("[DEBUG] Commande envoyée: " .. cmd)
         end
     elseif option == "scene cancel" then
         if sceneInput1 then
             local scenePackageId = sceneInput1:GetText()
             if scenePackageId == "" or scenePackageId == "Scene Package Id" then
-                print("Erreur: veuillez renseigner un Scene Package Id.")
+                print(L["enter_scene_package_id_error"])
                 return
             end
             local cmd = ".scene cancel " .. scenePackageId
             SendChatMessage(cmd, "SAY")
-            print("[DEBUG] Commande envoyée: " .. cmd)
+            -- print("[DEBUG] Commande envoyée: " .. cmd)
         end
     elseif option == "scene playpackage" then
         if sceneInput1 and sceneInput2 then
             local scenePackageId = sceneInput1:GetText()
             local playbackFlags = sceneInput2:GetText()
             if scenePackageId == "" or scenePackageId == "Scene Package Id" then
-                print("Erreur: veuillez renseigner un Scene Package Id.")
+                print(L["enter_scene_package_id_error"])
                 return
             end
             if playbackFlags == "" or playbackFlags == "Playback Flags" then
-                print("Erreur: veuillez renseigner les Playback Flags.")
+                print(L["enter_playback_flags_error"])
                 return
             end
             local cmd = ".scene playpackage " .. scenePackageId .. " " .. playbackFlags
             SendChatMessage(cmd, "SAY")
-            print("[DEBUG] Commande envoyée: " .. cmd)
+            -- print("[DEBUG] Commande envoyée: " .. cmd)
         end
     else
-        print("Veuillez sélectionner une action dans le dropdown.")
+        print(L["select_action_dropdown_error"])
     end
 end)
 

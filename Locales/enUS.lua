@@ -1138,9 +1138,37 @@ if not L then return end
 	L["Game Objects Advanced Add"] = "Game Objects Advanced Add"
 	L["min_search_length_error"] = "Please enter at least 3 characters for the search."
 	
-	
-	
-	
+	-- Fichier debug.lua
+	L["debug_boundary_tooltip"] = "Flood fills the targeted unit's movement boundary and marks the edge of said boundary with debug creatures.\nSpecify 'fill' as first parameter to fill the entire area with debug creatures."
+	L["debug_conversation_tooltip"] = "Play given conversation."
+	L["debug_guidlimits_tooltip"] = "Shows the current Creature and GameObject highest Guid for the specified map id or for all maps if none is specified"
+	L["debug_instancespawn_tooltip"] = "Displays information about the spawn groups being managed by the current instance script. If groupID is specified, additionally explains why that spawn group is in the listed state. If 'explain' is specified, explains all spawn groups."
+	L["debug_loadcells_tooltip"] = "Loads all cells for debugging purposes"
+	L["debug_moveflags_tooltip"] = "No params given will output the current moveflags of the target"
+	L["debug_neargraveyard_tooltip"] = "Find the nearest graveyard from dbc or db (if linked)"
+	L["debug_objectcount_tooltip"] = "Shows the number of Creatures and GameObjects for the specified map id or for all maps if none is specified"
+	L["debugplaycinematic_tooltip"] = "Play cinematic #cinematicid for you. You stay at place while your mind fly."
+	L["debugplaymovie_tooltip"] = "Play movie #movieid for you."
+	L["debugplaymusic_tooltip"] = "Play music with #musicId.\nMusic will be played only for you. Other players will not hear this."
+	L["debugobjectsound_tooltip"] = "Play object sound with #soundKitId [and #broadcastTextId].\nSound will be played only for you. Other players will not hear this."
+	L["debugplaysound_tooltip"] = "Play sound with #soundid.\r\nSound will be play only for you. Other players do not hear this.\r\nWarning: client may have more 5000 sounds..."
+	L["debugquestreset_tooltip"] = "Performs quest reset procedure for the specified type (or all types).\nQuest pools will be re-generated, and quest completion status will be reset."
+	L["debugraidreset_tooltip"] = "Forces a global reset of the specified map on all difficulties (or only the specific difficulty if specified). Effectively the same as setting the specified map's reset timer to now."
+	L["debugsendplayerchoice_tooltip"] = "Send given choice to player."
+	L["debugtransport_tooltip"] = "Allows to stop the current transport at its nearest wait point and start movement of a stopped one. Not all transports can be started or stopped."
+	L["debugwardenforce_tooltip"] = "Forces the warden to perform its action."
+	L["debugworldstate_tooltip"] = "Sends a world state update for the specified state to your client."
+	L["debugdummy_tooltip"] = "A dummy debug command."
+	L["field_required_error"] = "Error: the field '%s' is required!"
+	L["scene_debug_tooltip"] = "Toggle debug mode for scenes. In debug mode GM will be notified in chat when scenes start/stop/trigger event"
+	L["sceneplay_tooltip"] = "Plays scene with id for targeted player."
+	L["choose_action_tooltip"] = "Choose an action"
+	L["scenecancel_tooltip"] = "Cancels scene with package id for targeted player."
+	L["sceneplaypackage_tooltip"] = "Plays scene with package id and playback flags for targeted player."
+	L["enter_scene_id_error"] = "Error: Please enter a Scene ID."
+	L["enter_scene_package_id_error"] = "Error: Please enter a Scene Package ID."
+	L["enter_playback_flags_error"] = "Error: Please enter the Playback Flags."
+	L["select_action_dropdown_error"] = "Please select an action from the dropdown."
 	
 	
 -- Titres
