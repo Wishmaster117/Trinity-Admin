@@ -1175,7 +1175,11 @@ if not L then return end
 	L["Database Part 2"] = "Database Part 2"
 	L["Database Part 3"] = "Database Part 3"
 	
+	-- Fichier AhBot.lua
 	L["Reveal"] = "Reveal"
+	L["ahbot_items_syntax_tooltip"] = "Syntax: .ahbot items %s $%sItems\r\n\r\nSet amount of %s color items to be sold on auction."
+	L["ahbot_ratio_syntax_tooltip"] = "Syntax: .ahbot ratio %s $%sratio\r\n\r\nSet ratio of items in %s auction house."
+	
 	
 	
 	

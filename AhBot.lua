@@ -171,7 +171,8 @@ function AhBot:CreateAhBotPanel()
                 btn:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
                 btn:SetText(L["Add color"] .. color.name)
                 
-                local tooltipText = "Syntax: .ahbot items " .. color.cmd .. " $" .. color.name .. "Items\r\n\r\nSet amount of " .. color.name .. " color items be selled on auction."
+                -- local tooltipText = "Syntax: .ahbot items " .. color.cmd .. " $" .. color.name .. "Items\r\n\r\nSet amount of " .. color.name .. " color items be selled on auction."
+				local tooltipText = string.format(L["ahbot_items_syntax_tooltip"], color.cmd, color.name, color.name)
                 btn:SetScript("OnEnter", function(self)
                     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                     GameTooltip:SetText(tooltipText, 1, 1, 1, 1, true)
@@ -272,7 +273,8 @@ function AhBot:CreateAhBotPanel()
             btn:SetSize(120, 22)
             btn:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
             btn:SetText("Set Ratio " .. factionName)
-            local tooltipText = "Syntax: .ahbot ratio " .. factionName .. " $" .. factionName .. "ratio\r\n\r\nSet ratio of items in " .. factionName .. " auction house."
+            -- local tooltipText = "Syntax: .ahbot ratio " .. factionName .. " $" .. factionName .. "ratio\r\n\r\nSet ratio of items in " .. factionName .. " auction house."
+			local tooltipText = string.format(L["ahbot_ratio_syntax_tooltip"], factionName, factionName, factionName)
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 GameTooltip:SetText(tooltipText, 1, 1, 1, 1, true)
