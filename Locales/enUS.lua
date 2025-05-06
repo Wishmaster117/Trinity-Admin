@@ -1015,7 +1015,7 @@ L["UninviteG_tooltip"] = "Remove player <PlayerName> from the guild."
 
 	
 	-- Fichiers GMPanel
-	L["Adm Enter Value"] = "Enter Value"
+L["Adm Enter Value"] = "Enter Value"
 	
 -- File: Gmfunctionspanel.lua
 L["btnFly tooltip"] = "Enables or disables GM fly mode."
