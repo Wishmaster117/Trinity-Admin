@@ -789,7 +789,7 @@ function NPCModule:CreateNPCPanel()
             local ccmd = singleFrame.selectedCommand or singleInputCommands[1]
             local value = singleEditBox:GetText()
             if not value or value == "" or value == "Enter Value" then
-                print(L["pleaseentervalidvalue"] = "Veuillez entrer une valeur valide.")
+                print(L["pleaseentervalidvalue"])
                 return
             end
             local fullCommand = ccmd.command .. " " .. value

@@ -957,7 +957,7 @@ btnChangefaction:SetText(L["Change Faction"])
 btnChangefaction:SetPoint("LEFT", changefactionNameInput, "RIGHT", 10, 0)
 btnChangefaction:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText(L["Change Faction Tooltip"]), 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Change Faction Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnChangefaction:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1367,7 +1367,7 @@ end)
 
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
 btnResetInputs:SetSize(100, 22)
-btnResetInputs:SetText(L["Reset"]")
+btnResetInputs:SetText(L["Reset"])
 btnResetInputs:SetPoint("TOPRIGHT", restoreNewAccountInput, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1420,7 +1420,7 @@ end
 ----------------------------
 -- Fonction Pet Create
 ----------------------------
-local btnPetCreate = CreateServerButtonPage5("PetCreateButton", L["Create Pet"], L["Create Pet Tooltip"] = "Creates a pet of the selected creature.", ".pet create")
+local btnPetCreate = CreateServerButtonPage5("PetCreateButton", L["Create Pet"], L["Create Pet Tooltip"], ".pet create")
 btnPetCreate:SetPoint("TOPLEFT", page5Title, "BOTTOMLEFT", 0, -15)
 
 ----------------------------
@@ -1679,7 +1679,7 @@ btnDumpCopy:SetText(L["Dump70"])
 btnDumpCopy:SetPoint("LEFT", newguidInput, "RIGHT", 10, 0)
 btnDumpCopy:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:SetText(L["Dump70 Tooltip"] = "Syntax: .pdump copy $playerNameOrGUID $account [$newname] [$newguid]\nCopy character with name/guid $playerNameOrGUID into character list of $account with $newname, with first free or $newguid guid.", 1, 1, 1, 1, true)
+    GameTooltip:SetText(L["Dump70 Tooltip"], 1, 1, 1, 1, true)
     GameTooltip:Show()
 end)
 btnDumpCopy:SetScript("OnLeave", function() GameTooltip:Hide() end)

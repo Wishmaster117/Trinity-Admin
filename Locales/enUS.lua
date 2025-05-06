@@ -994,7 +994,8 @@ L["Guild ID Info"] = "Guild ID"
 L["Guild ID Info_tooltip"] = "Displays information about the entered guild ID."
 L["enter_valid_guild_id_info_error"] = "Please specify a valid guild ID for information!"
 L["InfoG2"] = "Info"
-L["Invite_guild"] = L["Invite_guild_tooltip"] = "Add player <PlayerName> or the targeted player to the guild <Guild Name>."
+L["Invite_guild"] = "Invite Guild"
+L["Invite_guild_tooltip"] = "Add player <PlayerName> or the targeted player to the guild <Guild Name>."
 L["enter_valid_guild_name_invite_error"] = "Please specify a valid guild name for the invite!"
 L["no_valid_player_or_target_error"] = "No valid player name or target selected!"
 L["GRank"] = "Rank"
@@ -1297,7 +1298,7 @@ L["Triggers a memory leak.\nUse only when testing dynamic analysis tools."] = "T
 L["Debug asan outofbounds"] = "Debug asan out of bounds"
 L["Triggers a stack out of bounds read.\nUse only when testing dynamic analysis tools."] = "Triggers a stack out of bounds read.\nUse only when testing dynamic analysis tools."
 L["Debug Functions Page 2"] = "Debug Functions Page 2"
-L["Start"]
+L["Start"] = "Start"
 
 
 	-- Titres

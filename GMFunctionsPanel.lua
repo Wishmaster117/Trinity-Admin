@@ -1135,7 +1135,7 @@ end
             end)
             btnGmNotify:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(L["GM Notify Tooltip"] = "Send a global message to all players online in screen.")
+                GameTooltip:SetText(L["GM Notify Tooltip"])
                 GameTooltip:Show()
             end)
             btnGmNotify:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -1361,7 +1361,7 @@ end
 
         btnShowArea:SetScript("OnClick", function()
             local val = editAreaShow:GetText()
-            if not val or val == "" or val == (L["Area ID"] then
+            if not val or val == "" or val == L["Area ID"] then
                 -- print("Erreur: veuillez saisir un Area ID pour .showarea.")
                 return
             end

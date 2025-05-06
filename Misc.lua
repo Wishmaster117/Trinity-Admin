@@ -2458,9 +2458,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             btnAddHonor:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-                GameTooltip:SetText(L["Add Honor tooltip"]",
-                    1,1,1,1,true
-                )
+                GameTooltip:SetText(L["Add Honor tooltip"], 1,1,1,1,true)
             end)
             btnAddHonor:SetScript("OnLeave", function() GameTooltip:Hide() end)
 

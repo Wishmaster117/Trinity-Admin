@@ -283,7 +283,7 @@ function Guild:CreateGuildPanel()
     guildCreateLeaderEB:SetSize(120, 20)
     guildCreateLeaderEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildCreateLeaderEB:SetAutoFocus(false)
-    guildCreateLeaderEB:SetText([L["Guild Leader Name"])
+    guildCreateLeaderEB:SetText(L["Guild Leader Name"])
 
     local guildCreateNameEB = CreateFrame("EditBox", "$parentGuildCreateNameEB", panel, "InputBoxTemplate")
     guildCreateNameEB:SetSize(120, 20)
@@ -370,17 +370,17 @@ function Guild:CreateGuildPanel()
     infoButton:SetText(L["InfoG2"])
     infoButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(L["Guild ID Info_tooltip"]")
+        GameTooltip:SetText(L["Guild ID Info_tooltip"])
     end)
     infoButton:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
     infoButton:SetScript("OnClick", function()
-        local gName = guildInfoNameEB:GetText()
-        if (not gName or gName == "" or gName == L["Guild ID Info") then
-            TrinityAdmin:Print(L["enter_valid_guild_id_info_error"])
-            return
-        end
+		local gName = guildInfoNameEB:GetText()
+		if (not gName or gName == "" or gName == L["Guild ID Info"]) then
+			TrinityAdmin:Print(L["enter_valid_guild_id_info_error"])
+			return
+		end
 
         -- 1) On efface l'ancien texte et vide la table
         guildInfoCollected = {}
@@ -472,7 +472,7 @@ function Guild:CreateGuildPanel()
     rankButton:SetText(L["Set"])
     rankButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText(L["Set_Rank_tooltip"]")
+        GameTooltip:SetText(L["Set_Rank_tooltip"])
     end)
     rankButton:SetScript("OnLeave", function()
         GameTooltip:Hide()

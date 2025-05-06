@@ -409,7 +409,7 @@ function ServerAdmin:CreateServerAdminPanel()
 
     local ServerShutdownForceReason = CreateFrame("EditBox", "ServerShutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
     ServerShutdownForceReason:SetSize(120, 22)
-    ServerShutdownForceReason:SetText("Reason1"])
+    ServerShutdownForceReason:SetText(L["Reason1"])
     ServerShutdownForceReason:SetPoint("TOPRIGHT", ServerShutdownForceDelay, "TOPRIGHT", 130, 0)
 
     btnServerShutdownForce:SetScript("OnClick", function(self)
@@ -628,7 +628,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	-- Zone de saisie pour le nom ($name)
 	local editName = CreateFrame("EditBox", "ServerSetLoglevelName", loglevelFrame, "InputBoxTemplate")
 	editName:SetSize(100, 22)
-	editName:SetText(L"NameLogs"])
+	editName:SetText(L["NameLogs"])
 	editName:SetPoint("LEFT", editFacility, "RIGHT", 5, 0)
 	
 	-- Zone de saisie pour le niveau de log ($loglevel)
