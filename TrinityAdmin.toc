@@ -1,4 +1,4 @@
-## Interface: 111000
+## Interface: 111500
 ## Title: TrinityAdmin
 ## Notes: Note this is the first release
 ## Author: TheWarlock

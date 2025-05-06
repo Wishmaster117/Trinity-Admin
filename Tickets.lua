@@ -250,10 +250,10 @@ function Tickets:CreateTicketsPanel()
     titleComplaint2:SetText(L["Complaint Tickets (2/2)"])
     frameComplaint2.rowOffset = frameComplaint2.rowOffset + 35
 
-    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint Delete"], ["TicketID"], ".ticket complaint delete")
+    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint Delete"], L["TicketID"], ".ticket complaint delete")
     AddNoParamCommandRow(frameComplaint2, L["Ticket Complaint List"], ".ticket complaint list")
-    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint Unassign"], ["TicketID"], ".ticket complaint unassign")
-    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint View"], ["TicketID"], ".ticket complaint view")
+    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint Unassign"], L["TicketID"], ".ticket complaint unassign")
+    AddOneParamCommandRow(frameComplaint2, L["Ticket Complaint View"], L["TicketID"], ".ticket complaint view")
 
     -------------------------------------------------------------
     -- PAGE 5 : Suggestion Tickets (1/2)
@@ -288,10 +288,10 @@ function Tickets:CreateTicketsPanel()
     titleSuggestion2:SetText(L["Suggestion Tickets (2/2)"])
     frameSuggestion2.rowOffset = frameSuggestion2.rowOffset + 35
 
-    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion Delete"], ["TicketID"], ".ticket suggestion delete")
+    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion Delete"], L["TicketID"], ".ticket suggestion delete")
     AddNoParamCommandRow(frameSuggestion2, L["Ticket Suggestion List"], ".ticket suggestion list")
-    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion Unassign"], ["TicketID"], ".ticket suggestion unassign")
-    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion View"], ["TicketID"], ".ticket suggestion view")
+    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion Unassign"], L["TicketID"], ".ticket suggestion unassign")
+    AddOneParamCommandRow(frameSuggestion2, L["Ticket Suggestion View"], L["TicketID"], ".ticket suggestion view")
 
     -------------------------------------------------------------
     -- PAGE 7 : Ticket Reset
