@@ -215,13 +215,8 @@ L["deserter instance add"] = "deserter instance add"
 L["deserter instance remove"] = "deserter instance remove"
 L["deserter_instance_add_desc"] = "Applies the instance deserter debuff to the target for a duration of $time."
 L["deserter_instance_remove_desc"] = "Removes the instance deserter debuff from the target."
-
-	--- A continuer misc
-
-
-
-
 		---- End Misc Module
+		
 L["GM Functions Panel"]     = "GM Functions Panel"
 L["TrinityAdmin Main Menu"] = "TrinityCore GM Tools by TheWarlock"
 L["Teleport Panel"]         = "Teleport Panel"
@@ -1014,7 +1009,7 @@ L["UninviteG"] = "Uninvite"
 L["UninviteG_tooltip"] = "Remove player <PlayerName> from the guild."
 
 	
-	-- Fichiers GMPanel
+-- Fichiers GMPanel
 L["Adm Enter Value"] = "Enter Value"
 	
 -- File: Gmfunctionspanel.lua
