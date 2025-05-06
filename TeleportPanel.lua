@@ -57,30 +57,67 @@ function TeleportModule:CreateTeleportPanel()
     -- ======================================================================
     -- 1) Déclarer la fonction ShowPage (qui utilise navPageLabel)
     -- ======================================================================
-    local totalPages = 3
+    -- local totalPages = 3
+    -- local currentPage = 1
+    -- 
+    -- local function ShowPage(pageIndex)
+    --     page1:Hide()
+    --     page2:Hide()
+    --     page3:Hide()
+	-- 
+    --     if pageIndex == 1 then
+    --         page1:Show()
+    --         navPageLabel:SetText("Page 1 / 3")
+    --     elseif pageIndex == 2 then
+    --         page2:Show()
+    --         navPageLabel:SetText("Page 2 / 3")
+    --     elseif pageIndex == 3 then
+    --         page3:Show()
+    --         navPageLabel:SetText("Page 3 / 3")
+    --     end
+    -- end
+	
+	local totalPages = 3
     local currentPage = 1
-    
-    local function ShowPage(pageIndex)
-        page1:Hide()
-        page2:Hide()
-        page3:Hide()
+	local btnPrev, btnNext
+	local function ShowPage(pageIndex)
+    page1:Hide()
+    page2:Hide()
+    page3:Hide()
 
-        if pageIndex == 1 then
-            page1:Show()
-            navPageLabel:SetText("Page 1 / 3")
-        elseif pageIndex == 2 then
-            page2:Show()
-            navPageLabel:SetText("Page 2 / 3")
-        elseif pageIndex == 3 then
-            page3:Show()
-            navPageLabel:SetText("Page 3 / 3")
+    if pageIndex == 1 then
+        page1:Show()
+        navPageLabel:SetText("Page 1 / 3")
+    elseif pageIndex == 2 then
+        page2:Show()
+        navPageLabel:SetText("Page 2 / 3")
+    elseif pageIndex == 3 then
+        page3:Show()
+        navPageLabel:SetText("Page 3 / 3")
+    end
+
+    -- Activer ou désactiver les boutons
+    if btnPrev then
+        if pageIndex <= 1 then
+            btnPrev:Disable()
+        else
+            btnPrev:Enable()
         end
     end
 
+    if btnNext then
+        if pageIndex >= totalPages then
+            btnNext:Disable()
+        else
+            btnNext:Enable()
+        end
+    end
+end
     -- ======================================================================
     -- 2) On crée les boutons de navigation APRÈS ShowPage
     -- ======================================================================
-    local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    -- local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
@@ -91,7 +128,8 @@ function TeleportModule:CreateTeleportPanel()
         end
     end)
 
-    local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    -- local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
@@ -102,6 +140,8 @@ function TeleportModule:CreateTeleportPanel()
         end
     end)
 
+	-- Puis initialise l'état correctement
+	ShowPage(currentPage)
     ----------------------------------------------------------------------------
     -- PAGE 1 : World Teleport + Special
     ----------------------------------------------------------------------------
