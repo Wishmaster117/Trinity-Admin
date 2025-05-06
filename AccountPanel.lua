@@ -40,6 +40,10 @@ function AccountModule:CreateAccountPanel()
     pageLabel:SetText("Page 1 / " .. totalPages)
 
     local currentPage = 1
+	
+	-- 1) forward-declare navigation buttons
+    local btnPrev, btnNext
+	
     local function ShowPage(pageIndex)
         for i = 1, totalPages do
             if i == pageIndex then
@@ -49,9 +53,23 @@ function AccountModule:CreateAccountPanel()
             end
         end
         pageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+		
+		-- 3) activer ou désactiver les boutons
+        if pageIndex <= 1 then
+            btnPrev:Disable()
+        else
+            btnPrev:Enable()
+        end
+ 
+        if pageIndex >= totalPages then
+            btnNext:Disable()
+        else
+            btnNext:Enable()
+        end
     end
 
-    local btnPrev = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+    --local btnPrev = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+	btnPrev = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", account, "BOTTOMLEFT", 10, 10)
@@ -62,7 +80,8 @@ function AccountModule:CreateAccountPanel()
         end
     end)
 
-    local btnNext = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+    --local btnNext = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
+	btnNext = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", account, "BOTTOMRIGHT", -10, 10)
@@ -73,7 +92,9 @@ function AccountModule:CreateAccountPanel()
         end
     end)
 
-    ShowPage(1)
+    --ShowPage(1)
+	-- 4) initialiser l'état des boutons
+    ShowPage(currentPage)
 
     ------------------------------------------------------------------------------
     -- PAGE 1 : Fonctionnalités existantes

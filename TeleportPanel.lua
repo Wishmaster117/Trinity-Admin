@@ -263,7 +263,7 @@ end
 
         local specialEdit = CreateFrame("EditBox", "TrinityAdminSpecialEditBox", page1, "InputBoxTemplate")
         specialEdit:SetAutoFocus(false)
-        specialEdit:SetSize(150, 22)
+        specialEdit:SetSize(250, 22)
         specialEdit:SetPoint("TOPLEFT", specialTitle, "BOTTOMLEFT", 0, -10)
         specialEdit:SetText(L["Enter_Value"])
         specialEdit:SetScript("OnEnter", function(self)
@@ -397,12 +397,12 @@ end
             local xOffset = 0
             for i = 1, 4 do
                 local edit = CreateFrame("EditBox", nil, row_offset, "InputBoxTemplate")
-                edit:SetSize(60, 22)
+                edit:SetSize(80, 22)
                 edit:SetPoint("TOPLEFT", row_offset, "TOPLEFT", xOffset, -20)
                 edit:SetAutoFocus(false)
                 edit:SetText(fields_offset[i])
                 edits_offset[i] = edit
-                xOffset = xOffset + 65
+                xOffset = xOffset + 85
             end
 
             local btn_offset = CreateFrame("Button", nil, row_offset, "UIPanelButtonTemplate")
@@ -560,7 +560,7 @@ end
         local label_page3 = page3:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         -- label_page3:SetPoint("TOPLEFT", 10, -10)
 		label_page3:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, -5)
-        label_page3:SetText(L["Extra Teleports"])
+        label_page3:SetText(L["Extra Teleports 3"])
 
         local goOptions = {
             { text = "go areatrigger", command = ".go areatrigger", defaultText = "AreatriggerID", tooltip = "Syntax: .go areatrigger <areatriggerId>" },

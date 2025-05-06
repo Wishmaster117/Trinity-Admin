@@ -269,6 +269,10 @@ function NPCModule:CreateNPCPanel()
     navPageLabel:SetText("Page 1 / " .. totalPages)
 
     local currentPage = 1
+	
+	-- forward-declare so ShowPage can see them
+    local btnPrev, btnNext
+
     local function ShowPage(pageIndex)
         for i = 1, totalPages do
             if i == pageIndex then
@@ -278,9 +282,23 @@ function NPCModule:CreateNPCPanel()
             end
         end
         navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+	
+      -- **ajouté :** activer/désactiver les boutons
+        if pageIndex <= 1 then
+            btnPrev:Disable()
+        else
+            btnPrev:Enable()
+        end
+ 
+        if pageIndex >= totalPages then
+            btnNext:Disable()
+        else
+            btnNext:Enable()
+        end
     end
 
-    local btnPrev = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
+    -- local btnPrev = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
+	btnPrev = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
     btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Preview"])
     btnPrev:SetPoint("BOTTOMLEFT", npc, "BOTTOMLEFT", 10, 10)
@@ -291,7 +309,8 @@ function NPCModule:CreateNPCPanel()
         end
     end)
 
-    local btnNext = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
+    --local btnNext = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
+	btnNext = CreateFrame("Button", nil, npc, "UIPanelButtonTemplate")
     btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
     btnNext:SetPoint("BOTTOMRIGHT", npc, "BOTTOMRIGHT", -10, 10)
@@ -302,6 +321,8 @@ function NPCModule:CreateNPCPanel()
         end
     end)
 
+    -- initialisation de l'état (grisé sur page 1)
+    ShowPage(currentPage)
     -------------------------------------------------------------------------
     -- Données de base
     -------------------------------------------------------------------------

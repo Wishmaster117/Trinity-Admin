@@ -25,7 +25,7 @@ function GMModule:CreateGMPanel()
 
     -- Champ de saisie
     local modifyInput = CreateFrame("EditBox", "TrinityAdminModifyInput", panel, "InputBoxTemplate")
-    modifyInput:SetSize(80, 22)
+    modifyInput:SetSize(120, 22)
     modifyInput:SetPoint("TOPLEFT", panel, "TOPLEFT", 10, -50)
     modifyInput:SetAutoFocus(false)
     modifyInput:SetText(L["Adm Enter Value"])
