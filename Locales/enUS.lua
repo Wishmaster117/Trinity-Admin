@@ -3006,3 +3006,8 @@ L["Start"] = "Start"
 	L["Legion Jewelcrafting"] = "Legion Jewelcrafting"
 	L["Stygia Crafting"] = "Stygia Crafting"
 -- Fin Skill
+
+-- Missin variables:
+L["Comment"] = "Comment"
+L["GM Notify"] = "GM Notify"
+L["GM Notify"] = "Notification MJ"

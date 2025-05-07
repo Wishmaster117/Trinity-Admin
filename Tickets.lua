@@ -47,6 +47,9 @@ function Tickets:CreateTicketsPanel()
     navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
     navPageLabel:SetText("Page 1 / " .. totalPages)
 
+	-- 1) forward-déclarez les boutons pour qu’ils soient visibles dans ShowPage
+	local btnPrev, btnNext
+
     local function ShowPage(pageIndex)
         currentPage = pageIndex
         for i = 1, totalPages do
@@ -57,12 +60,29 @@ function Tickets:CreateTicketsPanel()
             end
         end
         navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
+		
+		-- 2) active/désactive les boutons selon la page
+		if pageIndex <= 1 then
+			btnPrev:Disable()
+		else
+			btnPrev:Enable()
+		end
+		
+		if pageIndex >= totalPages then
+			btnNext:Disable()
+		else
+			btnNext:Enable()
+		end
+
     end
 
     -- Bouton Précédent
-    local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
+    -- local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    -- btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Preview"])
+	btnPrev:SetWidth(btnPrev:GetTextWidth() + 20)
+	btnPrev:SetHeight(22)
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -71,15 +91,21 @@ function Tickets:CreateTicketsPanel()
     end)
 
     -- Bouton Suivant
-    local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
+    -- local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
+	btnNext:SetWidth(btnNext:GetTextWidth() + 20)
+	btnNext:SetHeight(22)
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
             ShowPage(currentPage + 1)
         end
     end)
+	
+	-- 4) enfin, initialisez bien l’état des boutons
+    ShowPage(currentPage)
 
     ----------------------------------------------------------------------------
     -- Fonctions utilitaires pour ajouter des lignes de commande
@@ -107,9 +133,11 @@ function Tickets:CreateTicketsPanel()
         edit2:SetText(defaultParam2)
 
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btn:SetSize(60, 22)
+        -- btn:SetSize(60, 22) -- Enlevé pour resize auto
         btn:SetPoint("LEFT", edit2, "RIGHT", 10, 0)
         btn:SetText(L["Send"])
+		btn:SetWidth(btn:GetTextWidth() + 20) -- resize auto
+		btn:SetHeight(22)
         btn:SetScript("OnClick", function()
             local param1 = edit1:GetText()
             local param2 = edit2:GetText()
@@ -144,9 +172,11 @@ function Tickets:CreateTicketsPanel()
         edit:SetText(defaultParam)
 
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btn:SetSize(60, 22)
+        -- btn:SetSize(60, 22)
         btn:SetPoint("LEFT", edit, "RIGHT", 10, 0)
         btn:SetText(L["Send"])
+		btn:SetWidth(btn:GetTextWidth() + 20)
+		btn:SetHeight(22)
         btn:SetScript("OnClick", function()
             local param = edit:GetText()
             if not param or param == "" or param == defaultParam then
@@ -170,9 +200,11 @@ function Tickets:CreateTicketsPanel()
         label:SetText(commandLabel)
 
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btn:SetSize(60, 22)
+        -- btn:SetSize(60, 22)
         btn:SetPoint("LEFT", label, "RIGHT", 10, 0)
         btn:SetText(L["Send"])
+		btn:SetWidth(btn:GetTextWidth() + 20)
+		btn:SetHeight(22)
         btn:SetScript("OnClick", function()
             SendChatMessage(commandPrefix, "SAY")
             -- print("[DEBUG] Commande envoyée: " .. commandPrefix)

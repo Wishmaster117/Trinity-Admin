@@ -629,8 +629,10 @@ function module:CreateGMFunctionsPanel()
     end
 
     btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
+    -- btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Preview"])
+	btnPrev:SetWidth(btnPrev:GetTextWidth() + 20)
+	btnPrev:SetHeight(22)
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
         if currentPage > 1 then
@@ -640,8 +642,10 @@ function module:CreateGMFunctionsPanel()
     end)
 
     btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
+    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
+	btnNext:SetWidth(btnNext:GetTextWidth() + 20)
+	btnNext:SetHeight(22)
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
     btnNext:SetScript("OnClick", function()
         if currentPage < totalPages then
@@ -707,7 +711,7 @@ end
 
             local appearEdit = CreateFrame("EditBox", "TrinityAdminAppearEditBox", page, "InputBoxTemplate")
             appearEdit:SetAutoFocus(false)
-            appearEdit:SetSize(120, 22)
+            appearEdit:SetSize(140, 22)
             appearEdit:SetPoint("TOPLEFT", appearLabel, "BOTTOMLEFT", 0, -5)
             appearEdit:SetText(L["Character Name_appear"])
             appearEdit:SetScript("OnEnter", function(self)
@@ -723,8 +727,10 @@ end
             end)
 
             local btnAppearGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-            btnAppearGo:SetSize(40, 22)
+            -- btnAppearGo:SetSize(40, 22)
             btnAppearGo:SetText("Go")
+			btnAppearGo:SetWidth(btnAppearGo:GetTextWidth() + 20)
+			btnAppearGo:SetHeight(22)
             btnAppearGo:SetPoint("LEFT", appearEdit, "RIGHT", 10, 0)
             btnAppearGo:SetScript("OnClick", function()
                 local playerName = appearEdit:GetText()
@@ -744,7 +750,7 @@ end
         local anchor2 = buttonRefs["btnMailbox"]
         if anchor2 then
             local morphLabel = page:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-            morphLabel:SetPoint("TOPLEFT", anchor2, "BOTTOMLEFT", 180, -20)
+            morphLabel:SetPoint("TOPLEFT", anchor2, "BOTTOMLEFT", 210, -20)
             morphLabel:SetText(L["Morph Function"])
 
             local morphEdit = CreateFrame("EditBox", "TrinityAdminMorphEditBox", page, "InputBoxTemplate")
@@ -771,8 +777,10 @@ end
             morphEdit:SetScript("OnEnterPressed", function(self) self:ClearFocus() end)
 
             local btnMorphGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-            btnMorphGo:SetSize(40, 22)
+            -- btnMorphGo:SetSize(40, 22)
             btnMorphGo:SetText("Go")
+			btnMorphGo:SetWidth(btnMorphGo:GetTextWidth() + 20)
+			btnMorphGo:SetHeight(22)
             btnMorphGo:SetPoint("LEFT", morphEdit, "RIGHT", 10, 0)
             btnMorphGo:SetScript("OnClick", function()
                 local displayId = morphEdit:GetText()
@@ -884,8 +892,10 @@ end
 			-- 5) Bouton "Go"
 			------------------------------------------------------------------
 			local btnMuteGo = CreateFrame("Button", nil, page, "UIPanelButtonTemplate")
-			btnMuteGo:SetSize(40, 22)
+			-- btnMuteGo:SetSize(40, 22)
 			btnMuteGo:SetText("Go")
+			btnMuteGo:SetWidth(btnMuteGo:GetTextWidth() + 20)
+			btnMuteGo:SetHeight(22)
 			btnMuteGo:SetPoint("LEFT", reasonEdit, "RIGHT", 10, 0)
 		
 			btnMuteGo:SetScript("OnClick", function()
@@ -996,8 +1006,10 @@ end
 			end)
 
             local btnDevSet = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            btnDevSet:SetSize(40, 22)
+            --btnDevSet:SetSize(40, 22)
             btnDevSet:SetText("SET")
+			btnDevSet:SetWidth(btnDevSet:GetTextWidth() + 20)
+			btnDevSet:SetHeight(22)
             btnDevSet:SetPoint("LEFT", radioOff, "RIGHT", 20, 0)
             btnDevSet:SetScript("OnClick", function()
                 SendChatMessage(".dev " .. devStatusValue, "SAY")
@@ -1017,8 +1029,10 @@ end
             announceEdit:SetAutoFocus(false)
             announceEdit:SetText(L["Global_Message"])
             local btnAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            btnAnnounce:SetSize(60, 22)
+            --btnAnnounce:SetSize(60, 22)
             btnAnnounce:SetText("Send")
+			btnAnnounce:SetWidth(btnAnnounce:GetTextWidth() + 20)
+			btnAnnounce:SetHeight(22)
             btnAnnounce:SetPoint("LEFT", announceEdit, "RIGHT", 10, 0)
             btnAnnounce:SetScript("OnClick", function()
                 local text = announceEdit:GetText()
@@ -1043,8 +1057,10 @@ end
             gmMessageEdit:SetAutoFocus(false)
             gmMessageEdit:SetText(L["GM Message 2"])
             local btnGmMessage = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            btnGmMessage:SetSize(60, 22)
+            -- btnGmMessage:SetSize(60, 22)
             btnGmMessage:SetText("Send")
+			btnGmMessage:SetWidth(btnGmMessage:GetTextWidth() + 20)
+			btnGmMessage:SetHeight(22)
             btnGmMessage:SetPoint("LEFT", gmMessageEdit, "RIGHT", 10, 0)
             btnGmMessage:SetScript("OnClick", function()
                 local text = gmMessageEdit:GetText()
@@ -1069,8 +1085,10 @@ end
             gmNotifyEdit:SetAutoFocus(false)
             gmNotifyEdit:SetText(L["GM Notification"])
             local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            btnGmNotify:SetSize(60, 22)
+            --btnGmNotify:SetSize(60, 22)
             btnGmNotify:SetText("Send")
+			btnGmNotify:SetWidth(btnGmNotify:GetTextWidth() + 20)
+			btnGmNotify:SetHeight(22)
             btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
@@ -1095,8 +1113,10 @@ end
             gmAnnounceEdit:SetAutoFocus(false)
             gmAnnounceEdit:SetText(L["GM Announcement"])
             local btnGmAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            btnGmAnnounce:SetSize(60, 22)
+            -- btnGmAnnounce:SetSize(60, 22)
             btnGmAnnounce:SetText("Send")
+			btnGmAnnounce:SetWidth(btnGmAnnounce:GetTextWidth() + 20)
+			btnGmAnnounce:SetHeight(22)
             btnGmAnnounce:SetPoint("LEFT", gmAnnounceEdit, "RIGHT", 10, 0)
             btnGmAnnounce:SetScript("OnClick", function()
                 local text = gmAnnounceEdit:GetText()
@@ -1122,8 +1142,10 @@ end
             gmNotifyEdit:SetAutoFocus(false)
             gmNotifyEdit:SetText(L["GM Notify"])
             local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            btnGmNotify:SetSize(60, 22)
+            -- btnGmNotify:SetSize(60, 22)
             btnGmNotify:SetText("Send")
+			btnGmNotify:SetWidth(btnGmNotify:GetTextWidth() + 20)
+			btnGmNotify:SetHeight(22)
             btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
             btnGmNotify:SetScript("OnClick", function()
                 local text = gmNotifyEdit:GetText()
@@ -1241,8 +1263,10 @@ end
 		maxEdit:SetText("Max")
 		
 		local btnSetSkill = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-		btnSetSkill:SetSize(60, 22)
+		--btnSetSkill:SetSize(60, 22)
 		btnSetSkill:SetText("Set")
+		btnSetSkill:SetWidth(btnSetSkill:GetTextWidth() + 20)
+		btnSetSkill:SetHeight(22)
 		btnSetSkill:SetPoint("LEFT", maxEdit, "RIGHT", 10, 0)
 		btnSetSkill:SetScript("OnClick", function()
 			local selectedSkill = displayButton.selectedSkill
@@ -1283,9 +1307,11 @@ end
         -----------------------------------------------------------
 		row = CreateRow(page, 30)  -- create a row 30px high
         local btnDistance = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnDistance:SetSize(80, 22)
+        --btnDistance:SetSize(80, 22)
         btnDistance:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
         btnDistance:SetText(L["Distance71"])
+		btnDistance:SetWidth(btnDistance:GetTextWidth() + 20)
+		btnDistance:SetHeight(22)
 
         -- Tooltip
         btnDistance:SetScript("OnEnter", function(self)
@@ -1310,15 +1336,17 @@ end
         -- 2) EditBox "Area ID" + Button "Hide Area"
         -----------------------------------------------------------
         local editAreaHide = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        editAreaHide:SetSize(60, 22)
+        editAreaHide:SetSize(90, 22)
         editAreaHide:SetPoint("LEFT", btnDistance, "RIGHT", 30, 0)
         editAreaHide:SetAutoFocus(false)
         editAreaHide:SetText(L["Area ID"])
 
         local btnHideArea = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnHideArea:SetSize(80, 22)
+        -- btnHideArea:SetSize(80, 22)
         btnHideArea:SetPoint("LEFT", editAreaHide, "RIGHT", 5, 0)
         btnHideArea:SetText(L["Hide Area"])
+		btnHideArea:SetWidth(btnHideArea:GetTextWidth() + 20)
+		btnHideArea:SetHeight(22)
 
         btnHideArea:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1344,14 +1372,16 @@ end
         -----------------------------------------------------------
         local editAreaShow = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
         editAreaShow:SetSize(60, 22)
-        editAreaShow:SetPoint("LEFT", btnHideArea, "RIGHT", 10, 0)
+        editAreaShow:SetPoint("LEFT", btnHideArea, "RIGHT", 30, 0)
         editAreaShow:SetAutoFocus(false)
         editAreaShow:SetText("Area ID")
 
         local btnShowArea = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnShowArea:SetSize(80, 22)
+        --btnShowArea:SetSize(80, 22)
         btnShowArea:SetPoint("LEFT", editAreaShow, "RIGHT", 5, 0)
         btnShowArea:SetText(L["Show Area"])
+		btnShowArea:SetWidth(btnShowArea:GetTextWidth() + 20)
+		btnShowArea:SetHeight(22)
 
         btnShowArea:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1381,15 +1411,17 @@ end
         -- 1) Summon
         -----------------------------------------------------------
         local editSummon = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        editSummon:SetSize(100, 22)
+        editSummon:SetSize(120, 22)
         editSummon:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
         editSummon:SetAutoFocus(false)
         editSummon:SetText(L["Player Name"])
 
         local btnSummon = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnSummon:SetSize(80, 22)
+        -- btnSummon:SetSize(80, 22)
         btnSummon:SetPoint("LEFT", editSummon, "RIGHT", 5, 0)
         btnSummon:SetText(L["SummonP"])
+		btnSummon:SetWidth(btnSummon:GetTextWidth() + 20)
+		btnSummon:SetHeight(22)
 
         btnSummon:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1412,15 +1444,17 @@ end
         -- 2) Recall
         -----------------------------------------------------------
         local editRecall = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        editRecall:SetSize(100, 22)
+        editRecall:SetSize(120, 22)
         editRecall:SetPoint("LEFT", btnSummon, "RIGHT", 20, 0)
         editRecall:SetAutoFocus(false)
         editRecall:SetText(L["Player Name"])
 
         local btnRecall = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnRecall:SetSize(80, 22)
+        -- btnRecall:SetSize(80, 22)
         btnRecall:SetPoint("LEFT", editRecall, "RIGHT", 5, 0)
         btnRecall:SetText(L["RecallP"])
+		btnRecall:SetWidth(btnRecall:GetTextWidth() + 20)
+		btnRecall:SetHeight(22)
 
         btnRecall:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1457,9 +1491,11 @@ end
 
         -- 1) Bindsight
         local btnBindsight = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnBindsight:SetSize(80, 22)
+        -- btnBindsight:SetSize(80, 22)
         btnBindsight:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -40)
         btnBindsight:SetText(L["Bindsight"])
+		btnBindsight:SetWidth(btnBindsight:GetTextWidth() + 20)
+		btnBindsight:SetHeight(22)
 
         btnBindsight:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1480,9 +1516,11 @@ end
 
         -- 2) Unbindsight
         local btnUnbindsight = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnUnbindsight:SetSize(100, 22)
+        -- btnUnbindsight:SetSize(100, 22)
         btnUnbindsight:SetPoint("LEFT", btnBindsight, "RIGHT", 20, 0)
         btnUnbindsight:SetText(L["Unbindsight"])
+		btnUnbindsight:SetWidth(btnUnbindsight:GetTextWidth() + 20)
+		btnUnbindsight:SetHeight(22)
 
         btnUnbindsight:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1503,9 +1541,11 @@ end
 
         -- 3) Honor Update
         local btnHonorUpdate = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnHonorUpdate:SetSize(100, 22)
+        -- btnHonorUpdate:SetSize(100, 22)
         btnHonorUpdate:SetPoint("LEFT", btnUnbindsight, "RIGHT", 20, 0)
         btnHonorUpdate:SetText(L["Honor Update"])
+		btnHonorUpdate:SetWidth(btnHonorUpdate:GetTextWidth() + 20)
+		btnUnbindsight:SetHeight(22)
 
         btnHonorUpdate:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1580,9 +1620,11 @@ end
 
         -- Button "Set Ownership"
         local btnSetOwner = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnSetOwner:SetSize(120, 22)
+        --btnSetOwner:SetSize(120, 22)
         btnSetOwner:SetPoint("LEFT", radioOff, "RIGHT", 40, 0)
         btnSetOwner:SetText(L["Set Ownership"])
+		btnSetOwner:SetWidth(btnSetOwner:GetTextWidth() + 20)
+		btnSetOwner:SetHeight(22)
 
         btnSetOwner:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1675,8 +1717,10 @@ end
         -- Button "Set Weather"
         local btnWeather = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         btnWeather:SetPoint("LEFT", statusDropdown, "RIGHT", 20, 0)
-        btnWeather:SetSize(100, 22)
+        -- btnWeather:SetSize(100, 22)
         btnWeather:SetText(L["Set Weather"])
+		btnWeather:SetWidth(btnWeather:GetTextWidth() + 20)
+		btnWeather:SetHeight(22)
 
         btnWeather:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1750,9 +1794,11 @@ end
         end)
 
         local btnShowGrave = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        btnShowGrave:SetSize(100, 22)
+        -- btnShowGrave:SetSize(100, 22)
         btnShowGrave:SetPoint("LEFT", chkHorde, "RIGHT", 60, 0)
         btnShowGrave:SetText(L["Show Grave"])
+		btnShowGrave:SetWidth(btnShowGrave:GetTextWidth() + 20)
+		btnShowGrave:SetHeight(22)
 
         btnShowGrave:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1816,9 +1862,11 @@ end
 	
 	-- Bouton "Link Grave"
 	local btnLinkGrave = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-	btnLinkGrave:SetSize(100, 22)
+	-- btnLinkGrave:SetSize(100, 22)
 	btnLinkGrave:SetPoint("LEFT", chkGraveAlliance, "RIGHT", 60, 0)
 	btnLinkGrave:SetText(L["Link Grave"])
+	btnLinkGrave:SetWidth(btnLinkGrave:GetTextWidth() + 20)
+	btnLinkGrave:SetHeight(22)
 	btnLinkGrave:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetText(L["Link_Grave_tooltip"], 1, 1, 1, 1, true)

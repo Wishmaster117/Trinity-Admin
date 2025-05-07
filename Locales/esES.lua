@@ -2935,4 +2935,7 @@ L["Northrend Enchanting"] = "Encantamiento de Northrend"
 L["Legion Jewelcrafting"] = "Joyería de la Legión"
 L["Stygia Crafting"] = "Fabricación de Estigia"
 
+-- Missing Variables
 
+L["Comment"] = "Comentario"
+L["GM Notify"] = "Notificación GM"

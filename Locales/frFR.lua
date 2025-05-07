@@ -3125,3 +3125,6 @@ L["Start"] = "Démarrer"
 	L["Legion Jewelcrafting"] = "Joaillerie de Legion"
 	L["Stygia Crafting"] = "Travail des stygies"
 -- Fin Skill
+
+-- Missin variables:
+L["Comment"] = "Commentaire"
