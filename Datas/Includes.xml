@@ -1,0 +1,21 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="EventsData.lua"/>
+    <Script file="GameObjectsData.lua"/>
+    <Script file="ItemsDataPart1.lua"/>
+    <Script file="ItemsDataPart2.lua"/>
+    <Script file="ItemsDataPart3.lua"/>
+    <Script file="ItemSetData.lua"/>
+    <Script file="NpcDataPart1.lua"/>
+    <Script file="NpcDataPart2.lua"/>
+    <Script file="NpcDataPart3.lua"/>
+    <Script file="NpcDataPart4.lua"/>
+    <Script file="NpcDataPart5.lua"/>
+    <Script file="NpcDataPart6.lua"/>
+    <Script file="NpcDataPart7.lua"/>
+    <Script file="SkillsData.lua"/>
+    <Script file="TeleportTable.lua"/>
+    <Script file="TitlesData.lua"/>
+
+</Ui>

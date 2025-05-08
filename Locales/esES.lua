@@ -29,10 +29,10 @@ L["Other Stuffs"] = "Otras Funciones"
 L["Tickets Management"] = "Gestión de Tickets"
 
 ---- Global Variables
-L["Preview"] = "Anterior"
+L["Pagination_Preview"] = "Anterior"
 L["Next"] = "Siguiente"
 L["Search..."] = "Buscar..."
-L["Set"] = "Establecer"
+L["Set"] = "Configurar"
 L["Reset"] = "Restablecer"
 L["Player Name"] = "Nombre del Jugador"
 L["Line"] = "Línea"
@@ -115,6 +115,38 @@ L["deserter instance remove"] = "deserter instance remove"
 L["deserter_instance_add_desc"] = "Aplica el debuff de desertor de instancia al objetivo durante una duración de $time."
 L["deserter_instance_remove_desc"] = "Elimina el debuff de desertor de instancia del objetivo."
 
+---- Fin del Módulo Misceláneo
+
+L["GM Functions Panel"]     = "Panel de Funciones GM"
+L["TrinityAdmin Main Menu"] = "Herramientas GM de TrinityCore por TheWarlock"
+L["Teleport Panel"]         = "Panel de Teletransporte"
+L["No_Teleport_Data_Found"] = "¡No se encontró ningún continente en TeleportData!"
+L["Select_Zone"]            = "Seleccionar Zona"
+L["Select_Continent"]       = "Seleccionar Continente"
+L["Select_Location"]        = "Seleccionar Ubicación"
+
+L["Modify_Panel"]           = "Panel de Modificaciones"
+L["Speed"]                  = "Velocidad"
+L["Money"]                  = "Dinero"
+L["Hp"]                     = "HP"
+L["Xp"]                     = "XP"
+L["Scale"]                  = "Escala"
+L["Currency"]               = "Moneda"
+
+L["Add_Money"]              = "Agrega la cantidad especificada de moneda (emblemas, etc.) usando la ID. Si no se selecciona un jugador, se agrega a ti.\nSintaxis: ID + espacio + cantidad"
+L["Modify_Speed"]           = "Modifica la velocidad de movimiento del jugador seleccionado al valor ingresado (velocidad normal = 1).\n\n$speedtypes: fly, all, walk, backwalk, swim\n#rate: rango de 0.1 a 50\nSi no se selecciona un jugador, modifica tu propia velocidad."
+L["Modify_Money"]           = "Modifica el dinero del jugador seleccionado. Si no se selecciona ninguno, modifica el tuyo (valor en cobre: 10000 cobre = 1 oro).\n\nEl valor puede ser negativo para quitar dinero."
+L["Modify_HP"]              = "Modifica los HP del jugador seleccionado. Si no se selecciona ninguno, modifica tus propios HP (Puntos de Salud)."
+L["Modify_XP"]              = "Modifica la experiencia del jugador seleccionado. Si no se selecciona ninguno, modifica tu propia experiencia."
+L["Modify_Scale"]           = "Modifica el tamaño del jugador o criatura seleccionado. Si no se selecciona ninguno, modifica tu propio tamaño (rango: 0.1 a 10)."
+
+L["Faction"] = "Facción"
+L["Gender"] = "Género"
+
+L["Modify_Faction"] = "Modifica la facción y los flags de la criatura seleccionada. Sin argumentos, muestra la facción y los flags de la criatura seleccionada."
+
+L["Modify_Gender"] = "Modifica el género del jugador. Valores posibles: male / female."
+
 -- Main Frame buttons
 L["Teleport"] = "Teletransportar"
 L["Modify Funcs"] = "Funciones de Modificación"
@@ -138,24 +170,6 @@ L["Cheat"] = "Trucos"
 L["Debug Functions"] = "Funciones de depuración"
 L["Other Stuffs"] = "Otras funciones"
 L["Tickets Management"] = "Gestión de tickets"
-
--- Global Variables
-L["Preview"] = "Vista previa"
-L["Next"] = "Siguiente"
-L["Search..."] = "Buscar..."
-L["Set"] = "Establecer"
-L["Reset"] = "Restablecer"
-L["Player Name"] = "Nombre del jugador"
-L["Line"] = "Línea"
-L["Close"] = "Cerrar"
-L["Type"] = "Tipo"
-L["Back"] = "Atrás"
-L["Get"] = "Obtener"
-
--- Global Errors
-L["Please Select a Character!"] = "¡Por favor, selecciona un personaje!"
-L["Please enter at least 3 characters for the search."] = "Por favor, ingresa al menos 3 caracteres para la búsqueda."
-L["nothing_found"] = "Nada encontrado"
 
 -- Misc Module
 L["Information from .lookup"] = "Información de .lookup"
@@ -2939,3 +2953,8 @@ L["Stygia Crafting"] = "Fabricación de Estigia"
 
 L["Comment"] = "Comentario"
 L["GM Notify"] = "Notificación GM"
+L["Enter_Valid_Value"] = "Ingrese un valor válido"
+L["Enter_Valid_Currency"] = "Por favor, ingrese un ID y una cantidad separados por un espacio para la moneda."
+L["Page"] = "Pagina "
+L["Duration_Mute"] = "Duración del silencio"
+L["Level"] = "Nivel"

@@ -7,7 +7,6 @@
 ## IconTexture: Interface\AddOns\TrinityAdmin\Medias\icon
 
 # Librairies Ace3
-
 Libs\LibStub\LibStub.lua
 Libs\AceDB-3.0\AceDB-3.0.lua
 Libs\AceLocale-3.0\AceLocale-3.0.lua
@@ -40,61 +39,14 @@ Libs\AceGUI-3.0\widgets\AceGUIWidget-MultiLineEditBox.lua
 Libs\AceGUI-3.0\widgets\AceGUIWidget-Slider.lua
 
 # Translations
-Locales\frFR.lua
-Locales\deDE.lua
-Locales\enUS.lua
-Locales\esES.lua
-Locales\esMX.lua
-Locales\itIT.lua
-Locales\koKR.lua
-Locales\ptBR.lua
-Locales\ruRU.lua
-Locales\zhCN.lua
-Locales\zhTW.lua
+Locales\Includes.xml
 
-
-Datas\GameObjectsData.lua
-Datas\ItemSetData.lua
-Datas\ItemsDataPart1.lua
-Datas\ItemsDataPart2.lua
-Datas\ItemsDataPart3.lua
-# NpcData
-Datas\NpcDataPart1.lua
-Datas\NpcDataPart2.lua
-Datas\NpcDataPart3.lua
-Datas\NpcDataPart4.lua
-Datas\NpcDataPart5.lua
-Datas\NpcDataPart6.lua
-Datas\NpcDataPart7.lua
-# TeleportData
-Datas\TeleportTable.lua
-Datas\SkillsData.lua
-Datas\TitlesData.lua
-Datas\EventsData.lua
-
+# Datas
+Datas\Includes.xml
 
 TrinityAdmin.lua
 TrinityAdmin.xml
+Functions\Utils.lua
 
-TeleportPanel.lua
-GMPanel.lua
-NPCPanel.lua
-AccountPanel.lua
-GMFunctionsPAnel.lua
-DatabasePanel.lua
-ServerAdmin.lua
-GameObjects.lua
-AddItem.lua
-AdvancedItems.lua
-ModuleCharacters.lua
-Waypoints.lua
-AhBot.lua
-Guild.lua
-LearnDamage.lua
-AdvancedGob.lua
-AdvancedNpc.lua
-Misc.lua
-cheat.lua
-Debug.lua
-Others.lua
-Tickets.lua
+# Modules
+Modules\Includes.xml

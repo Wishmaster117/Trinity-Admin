@@ -27,7 +27,7 @@ L["Tickets Management"] = "Gestion des tickets"
 	---- End main frame buttons
 
 	---- Variables globales
-L["Preview"] = "Précédent"
+L["Pagination_Preview"] = "Précédent"
 L["Next"] = "Suivant"
 L["Search..."] = "Rechercher..."
 L["Set"] = "Définir"
@@ -3128,3 +3128,7 @@ L["Start"] = "Démarrer"
 
 -- Missin variables:
 L["Comment"] = "Commentaire"
+L["GM Notify"] = "Notification MJ"
+L["Page"] = "Page "
+L["Duration_Mute"] = "Durée du Mute"
+L["Level"] = "Niveau"

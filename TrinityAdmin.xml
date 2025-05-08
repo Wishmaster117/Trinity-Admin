@@ -5,7 +5,7 @@
     <!-- Fenêtre principale -->
     <Frame name="TrinityAdminMainFrame" parent="UIParent" toplevel="true" enableMouse="true" hidden="true">
         <Size>
-            <AbsDimension x="750" y="400"/>
+            <AbsDimension x="750" y="415"/>
         </Size>
         <Anchors>
             <Anchor point="CENTER"/>
@@ -25,7 +25,7 @@
             <Layer level="ARTWORK">
                 <FontString name="$parentTitle" inherits="GameFontNormalLarge" text="TrinityAdmin Main Menu">
                     <Size>
-                        <AbsDimension x="400" y="20"/>
+                        <AbsDimension x="415" y="20"/>
                     </Size>
                     <Anchors>
                         <Anchor point="TOP">

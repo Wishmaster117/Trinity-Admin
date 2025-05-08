@@ -7,7 +7,7 @@ TrinityAdmin:Print(L["detected_language"] .. GetLocale())
 local LDB = LibStub("LibDataBroker-1.1"):NewDataObject("TrinityAdmin", {
     type = "launcher",
     text = "TrinityAdmin",
-    icon = "Interface\\Icons\\Inv_7xp_inscription_talenttome01",  -- Remplacez par l'icône souhaitée
+    icon = "Interface\\Icons\\Inv_7xp_inscription_talenttome01",  -- icône souhaitée
     OnClick = function(self, button)
         if button == "LeftButton" then
             TrinityAdmin:ToggleUI()  -- Ouvre/ferme votre interface
@@ -73,11 +73,6 @@ local cheatModule = TrinityAdmin:NewModule("cheat")
 local DebugModule = TrinityAdmin:NewModule("Debug")
 local OthersModule = TrinityAdmin:NewModule("Others")
 local TicketsModule = TrinityAdmin:NewModule("Tickets")
-
-
-
-
-
 
 ------------------------------------------------------------
 -- Fonctions globales appelées depuis l'interface XML

@@ -1,0 +1,27 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="AccountPanel.lua"/>
+    <Script file="AddItem.lua"/>
+    <Script file="AdvancedGob.lua"/>
+    <Script file="AdvancedItems.lua"/>
+    <Script file="AdvancedNpc.lua"/>
+    <Script file="AhBot.lua"/>
+    <Script file="cheat.lua"/>
+    <Script file="DatabasePanel.lua"/>
+    <Script file="Debug.lua"/>
+    <Script file="GameObjects.lua"/>
+    <Script file="GMFunctionsPanel.lua"/>
+    <Script file="GMPanel.lua"/>
+    <Script file="Guild.lua"/>
+    <Script file="LearnDamage.lua"/>
+    <Script file="Misc.lua"/>
+	<Script file="ModuleCharacters.lua"/>
+	<Script file="NPCPanel.lua"/>
+	<Script file="Others.lua"/>
+	<Script file="ServerAdmin.lua"/>
+	<Script file="TeleportPanel.lua"/>
+	<Script file="Tickets.lua"/>
+	<Script file="Waypoints.lua"/>
+
+</Ui>

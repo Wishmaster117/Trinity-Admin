@@ -28,7 +28,7 @@ L["Tickets Management"] = "Ticket Management"
 
 
 ---- Global Variables
-L["Preview"] = "Previous"
+L["Pagination_Preview"] = "Previous"
 L["Next"] = "Next"
 L["Search..."] = "Search..."
 L["Set"] = "Set"
@@ -3010,4 +3010,6 @@ L["Start"] = "Start"
 -- Missin variables:
 L["Comment"] = "Comment"
 L["GM Notify"] = "GM Notify"
-L["GM Notify"] = "Notification MJ"
+L["Page"] = "Page "
+L["Duration_Mute"] = "Mute Duration"
+L["Level"] = "Level"
