@@ -56,19 +56,22 @@ function AddItem:CreateAddItemPanel()
     -- Création des trois champs de saisie
     --------------------------------------------------------------------------------
     local input1 = CreateFrame("EditBox", "TrinityAdminAddLearnInput1", panel, "InputBoxTemplate")
-    input1:SetSize(150, 22)
+    -- input1:SetSize(150, 22)
     input1:SetPoint("TOPLEFT", toolsTitle, "BOTTOMLEFT", 10, -20)
     input1:SetText(L["Choose a action"])  -- Valeur par défaut générale
+	TrinityAdmin.AutoSize(input1, 20, 13)
 
     local input2 = CreateFrame("EditBox", "TrinityAdminAddLearnInput2", panel, "InputBoxTemplate")
-    input2:SetSize(150, 22)
+    -- input2:SetSize(150, 22)
     input2:SetPoint("TOPLEFT", input1, "BOTTOMLEFT", 0, -10)
     input2:SetText(L["Choose a action"])
+	TrinityAdmin.AutoSize(input2, 20, 13)
 
     local input3 = CreateFrame("EditBox", "TrinityAdminAddLearnInput3", panel, "InputBoxTemplate")
-    input3:SetSize(150, 22)
+    -- input3:SetSize(150, 22)
     input3:SetPoint("TOPLEFT", input2, "BOTTOMLEFT", 0, -10)
     input3:SetText(L["Choose a action"])
+	TrinityAdmin.AutoSize(input3, 20, 13)
 
     --------------------------------------------------------------------------------
     -- Création du menu déroulant
@@ -113,40 +116,6 @@ function AddItem:CreateAddItemPanel()
     }
     local selectedOption = ddOptions[1]  -- Option par défaut
 
-    -- UIDropDownMenu_Initialize(dropdown, function(self, level, menuList)
-    --     local info = UIDropDownMenu_CreateInfo()
-    --     for i, option in ipairs(ddOptions) do
-    --         info.text = option.text
-    --         info.value = option.command
-    --         -- info.checked = (i == 1)
-	-- 		info.checked = (UIDropDownMenu_GetSelectedID(dropdown) == i)
-    --         info.func = function(button)
-    --             UIDropDownMenu_SetSelectedID(dropdown, i)
-    --             UIDropDownMenu_SetText(dropdown, option.text)
-    --             selectedOption = option
-    --             -- Met à jour les zones de saisie selon l'option sélectionnée
-    --             input1:SetText(option.defaults[1])
-    --             input2:SetText(option.defaults[2])
-    --             input3:SetText(option.defaults[3])
-    --             -- Masquer les champs inutiles
-    --             if option.defaults[2] == "Don't use" or option.defaults[2] == "" then
-    --                 input2:Hide()
-    --             else
-    --                 input2:Show()
-    --             end
-    --             if option.defaults[3] == "Don't use" or option.defaults[3] == "" then
-    --                 input3:Hide()
-    --             else
-    --                 input3:Show()
-    --             end
-    --         end
-    --         UIDropDownMenu_AddButton(info, level)
-    --     end
-    -- end)
-	-- -- Partie des textes par defaut quand on ouvre la frame
-	-- UIDropDownMenu_SetText(dropdown, "Choose")
-    -- -- UIDropDownMenu_SetSelectedID(dropdown, 1)
-    -- -- UIDropDownMenu_SetText(dropdown, ddOptions[1].text)
 	UIDropDownMenu_Initialize(dropdown, function(self, level, menuList)
 		local info = UIDropDownMenu_CreateInfo()
 		for i, option in ipairs(ddOptions) do
@@ -179,7 +148,6 @@ function AddItem:CreateAddItemPanel()
 						local itemID = tonumber(text)
 						if itemID then
 							-- Créez un lien formaté pour Wowhead ; si l'addon Wowhead Tooltips est installé,
-							-- il devrait reconnaître ce format et afficher le tooltip approprié.
 							local link = "|cffffffff|Hwowhead:item:" .. itemID .. "|h[Item " .. itemID .. "]|h|r"
 							GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 							GameTooltip:SetHyperlink(link)
@@ -196,10 +164,7 @@ function AddItem:CreateAddItemPanel()
 		end
 	end)
 	UIDropDownMenu_SetText(dropdown, L["Choose"])
-	-- UIDropDownMenu_SetSelectedID(dropdown, 1)
-	-- UIDropDownMenu_SetText(dropdown, ddOptions[1].text)
-
-
+	
     -- Affichage du tooltip sur le menu déroulant
     dropdown:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -212,9 +177,10 @@ function AddItem:CreateAddItemPanel()
     -- Bouton "Go"
     --------------------------------------------------------------------------------
     local btnGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnGo:SetSize(60, 22)
+    -- btnGo:SetSize(60, 22)
     btnGo:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 35, -10)
     btnGo:SetText(L["Go"])
+	TrinityAdmin.AutoSize(btnGo, 20, 16)
     btnGo:SetScript("OnClick", function()
         local v1 = input1:GetText()
         local v2 = input2:IsShown() and input2:GetText() or ""
@@ -223,13 +189,13 @@ function AddItem:CreateAddItemPanel()
         -- Pour lookup, seule la première zone est utilisée
         if selectedOption.text == "lookup item" or selectedOption.text == "lookup item id" or selectedOption.text == "lookup item set" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print(L["Please fill in the required field."])
+                TrinityAdmin:Print(L["Please fill in the required field."])
                 return
             end
             args = { v1 }
         elseif selectedOption.text == "additem" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print(L["The 'ID or Name' field is required."])
+                TrinityAdmin:Print(L["The 'ID or Name' field is required."])
                 return
             end
             table.insert(args, v1)
@@ -241,7 +207,7 @@ function AddItem:CreateAddItemPanel()
             end
         elseif selectedOption.text == "additem set" then
             if v1 == "" or v1 == selectedOption.defaults[1] then
-                print(L["The 'ItemSet ID' field is required."])
+                TrinityAdmin:Print(L["The 'ItemSet ID' field is required."])
                 return
             end
             table.insert(args, v1)
@@ -258,9 +224,10 @@ function AddItem:CreateAddItemPanel()
     -- Bouton "Clean" à côté de "Go" qui réinitialise les champs de saisie
     ------------------------------------------------------------------------------
     local btnClean = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnClean:SetSize(60, 22)
+    -- btnClean:SetSize(60, 22)
     btnClean:SetPoint("TOPLEFT", btnGo, "TOPRIGHT", 10, 0)
     btnClean:SetText(L["Clean"])
+	TrinityAdmin.AutoSize(btnClean, 20, 16)
     btnClean:SetScript("OnClick", function()
         -- Réinitialiser les champs aux valeurs par défaut de l'option sélectionnée
         input1:SetText(selectedOption.defaults[1])
@@ -293,8 +260,9 @@ function AddItem:CreateAddItemPanel()
     -- Bouton "Retour" (pour revenir au menu principal)
     ------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetText(L["Back"])
+	TrinityAdmin.AutoSize(btnBack, 20, 16)
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
@@ -305,16 +273,17 @@ function AddItem:CreateAddItemPanel()
     -- Label "Game Objects Tools Advanced"
     ------------------------------------------------------------
     local advancedLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -10, -20)
+    advancedLabel:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -40, -20)
     advancedLabel:SetText(L["Item Set Easy Add"])
 
     ------------------------------------------------------------
     -- Champ de saisie pour filtrer la liste
     ------------------------------------------------------------
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
-    filterEditBox:SetSize(150, 22)
+    -- filterEditBox:SetSize(150, 22)
     filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
     filterEditBox:SetText(L["Search..."])
+	TrinityAdmin.AutoSize(filterEditBox, 20, 13, nil, 150)
 
     ------------------------------------------------------------
     -- ScrollFrame + scrollChild
@@ -333,111 +302,23 @@ function AddItem:CreateAddItemPanel()
     -- Boutons de pagination : Précédent, Suivant, et label Page
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
-    btnPrev:SetText(L["Preview"])
+    -- btnPrev:SetSize(80, 22)
+    btnPrev:SetText(L["Pagination_Preview"])
+	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
+    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
+	TrinityAdmin.AutoSize(btnNext, 20, 16)
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPage:SetSize(90, 22)
+    -- btnPage:SetSize(90, 22)
     btnPage:SetPoint("BOTTOM", panel, "BOTTOM", 200, 10)
     btnPage:SetText("Page 1 / 1")
+	TrinityAdmin.AutoSize(btnPage, 20, 16)
 
-    ------------------------------------------------------------
-    -- Fonction PopulateGOScroll(options)
-    ------------------------------------------------------------
-    -- local function PopulateGOScroll(options)
-    --     -- On mémorise la liste courante
-    --     currentOptions = options
-	-- 
-    --     -- Calcule nombre total d'entrées et de pages
-    --     local totalEntries = #options
-    --     local totalPages = math.ceil(totalEntries / entriesPerPage)
-    --     if totalPages < 1 then totalPages = 1 end
-	-- 
-    --     -- Ajuste currentPage si hors bornes
-    --     if currentPage > totalPages then currentPage = totalPages end
-    --     if currentPage < 1 then currentPage = 1 end
-	-- 
-    --     -- Efface d'éventuels anciens boutons
-    --     if scrollChild.buttons then
-    --         for _, btn in ipairs(scrollChild.buttons) do
-    --             btn:Hide()
-    --         end
-    --     else
-    --         scrollChild.buttons = {}
-    --     end
-	-- 
-    --     -- Indices de début/fin pour la page courante
-    --     local startIdx = (currentPage - 1) * entriesPerPage + 1
-    --     local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
-	-- 
-    --     -- Création des boutons
-	-- 	local maxTextLength = 20 -- ?? Changez ce nombre pour ajuster la taille max
-	-- 	local lastButton = nil
-	-- 	for i = startIdx, endIdx do
-	-- 		local option = options[i]
-	-- 		local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
-	-- 		btn:SetSize(200, 20)
-	-- 	
-	-- 		if not lastButton then
-	-- 			btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
-	-- 		else
-	-- 			btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
-	-- 		end
-	-- 	
-	-- 		-- Tronquer le texte s'il est trop long
-	-- 		-- local fullText = option.name or ("Item "..i)
-	-- 		local fullText = L[option.name] or option.name or ("Item "..i) -- Modification pour traduction
-	-- 		local truncatedText = fullText
-	-- 		if #fullText > maxTextLength then
-	-- 			truncatedText = fullText:sub(1, maxTextLength) .. "..."
-	-- 		end
-	-- 	
-	-- 		btn:SetText(truncatedText)
-	-- 	
-	-- 		-- Ajouter un tooltip pour afficher le texte complet au survol
-	-- 		btn:SetScript("OnEnter", function(self)
-	-- 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	-- 			GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
-	-- 			GameTooltip:Show()
-	-- 		end)
-	-- 		btn:SetScript("OnLeave", function(self)
-	-- 			GameTooltip:Hide()
-	-- 		end)
-	-- 				
-	-- 		btn:SetScript("OnLeave", function(self)
-	-- 			GameTooltip:Hide()
-	-- 			if self.wowheadTooltip then
-	-- 				self.wowheadTooltip:Hide()
-	-- 			end
-	-- 		end)
-	-- 
-	-- 		btn:SetScript("OnClick", function()
-	-- 			print("Option cliquée :", fullText, "Entry:", option.entry) -- Pour debug
-	-- 			SendChatMessage(".additem set " .. option.entry, "SAY")
-	-- 		end)
-	-- 	
-	-- 		lastButton = btn
-	-- 		table.insert(scrollChild.buttons, btn)
-	-- 	end
-	-- 
-    --     -- Ajuster la hauteur du scrollChild
-    --     local visibleCount = endIdx - startIdx + 1
-    --     local contentHeight = (visibleCount * 25) + 10
-    --     scrollChild:SetHeight(contentHeight)
-	-- 
-    --     -- Mettre à jour le label de page
-    --     btnPage:SetText(currentPage.." / "..totalPages)
-	-- 
-    --     -- Activer/désactiver Précédent/Suivant
-    --     btnPrev:SetEnabled(currentPage > 1)
-    --     btnNext:SetEnabled(currentPage < totalPages)
-    -- end
 ------------------------------------------------------------
 -- Fonction pour chopper les cles manquantes de traduction
 ------------------------------------------------------------
@@ -462,107 +343,6 @@ local function SafeL(key)
     return val
 end
 
-------------------------------------------------------------
--- Fonction PopulateGOScroll(options) - version corrigée
-------------------------------------------------------------
--- local function PopulateGOScroll(options)
---     -- On mémorise la liste courante
---     currentOptions = options
--- 
---     -- Calcule nombre total d'entrées et de pages
---     local totalEntries = #options
---     local totalPages = math.ceil(totalEntries / entriesPerPage)
---     if totalPages < 1 then totalPages = 1 end
--- 
---     -- Ajuste currentPage si hors bornes
---     if currentPage > totalPages then currentPage = totalPages end
---     if currentPage < 1 then currentPage = 1 end
--- 
---     -- Efface d'éventuels anciens boutons
---     if scrollChild.buttons then
---         for _, btn in ipairs(scrollChild.buttons) do
---             btn:Hide()
---         end
---     else
---         scrollChild.buttons = {}
---     end
--- 
---     -- Indices de début/fin pour la page courante
---     local startIdx = (currentPage - 1) * entriesPerPage + 1
---     local endIdx   = math.min(currentPage * entriesPerPage, totalEntries)
--- 
---     -- Création des boutons
---     local maxTextLength = 20 -- Ajustez cette valeur selon vos besoins
---     local lastButton = nil
---     
---     for i = startIdx, endIdx do
---         local option = options[i]
---         local btn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
---         btn:SetSize(200, 20)
---     
---         if not lastButton then
---             btn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 10, -10)
---         else
---             btn:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -5)
---         end
--- 
---         ----------------------------------------------------------------
---         -- Au lieu de faire  local fullText = L[option.name] or ...
---         -- on fait une vérification pour éviter l'erreur AceLocale
---         ----------------------------------------------------------------
---         local rawText = option.name
---         local textToShow
--- 
---         -- Si option.name est présent et existe dans L, on l'utilise
---         if rawText and L[rawText] then
---             textToShow = L[rawText]
---         else
---             -- Sinon, on affiche soit le nom brut, soit "Item .. i" si rien
---             textToShow = rawText or ("Item "..i)
---         end
---         
---         -- Tronquer le texte s'il est trop long
---         local truncatedText = textToShow
---         if #textToShow > maxTextLength then
---             truncatedText = textToShow:sub(1, maxTextLength) .. "..."
---         end
--- 
---         btn:SetText(truncatedText)
--- 
---         -- Ajouter un tooltip pour afficher le texte complet au survol
---         btn:SetScript("OnEnter", function(self)
---             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
---             GameTooltip:SetText(textToShow, 1, 1, 1, 1, true)
---             GameTooltip:Show()
---         end)
---         btn:SetScript("OnLeave", function(self)
---             GameTooltip:Hide()
---             if self.wowheadTooltip then
---                 self.wowheadTooltip:Hide()
---             end
---         end)
--- 
---         btn:SetScript("OnClick", function()
---             print("Option cliquée :", textToShow, "Entry:", option.entry) -- Pour debug
---             SendChatMessage(".additem set " .. option.entry, "SAY")
---         end)
--- 
---         lastButton = btn
---         table.insert(scrollChild.buttons, btn)
---     end
--- 
---     -- Ajuster la hauteur du scrollChild
---     local visibleCount = endIdx - startIdx + 1
---     local contentHeight = (visibleCount * 25) + 10
---     scrollChild:SetHeight(contentHeight)
--- 
---     -- Mettre à jour le label de page
---     btnPage:SetText(currentPage .. " / " .. totalPages)
--- 
---     -- Activer/désactiver Précédent/Suivant
---     btnPrev:SetEnabled(currentPage > 1)
---     btnNext:SetEnabled(currentPage < totalPages)
--- end
 ------------------------------------------------------------
 -- Fonction PopulateGOScroll(options) - modifiée pour chopper les cles manquantes de traduction
 ------------------------------------------------------------
@@ -702,7 +482,7 @@ end
 	
 		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
 		if #searchText < 3 then
-			print(L["Please enter at least 3 characters for the search."])
+			TrinityAdmin:Print(L["Please enter at least 3 characters for the search."])
 			return
 		end
 	
@@ -751,8 +531,9 @@ end
 	-- Bouton "Reset" pour revenir à la liste complète
 	------------------------------------------------------------
 	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnReset:SetSize(80, 22)
+	-- btnReset:SetSize(80, 22)
 	btnReset:SetText(L["Reset"])
+	TrinityAdmin.AutoSize(btnReset, 20, 16)
 	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnClick", function()
 		filterEditBox:SetText("")  -- Efface le champ de recherche
@@ -765,23 +546,19 @@ end
 		end
 	end)
 
--- 3) Commande ajoutée pour voir si il manque des clés de traduction :
-SLASH_TRINITYADMIN_MISSINGKEYS1 = "/tamissingkeys"
-SlashCmdList["TRINITYADMIN_MISSINGKEYS"] = function(msg)
-    if not next(MissingKeys) then
-        print("Aucune clé manquante n'a été détectée pour le moment.")
-        return
-    end
-
-    print("=== Clés de traduction manquantes ===")
-    for missingKey, _ in pairs(MissingKeys) do
-        print("- " .. missingKey)
-    end
-end
-
-    ------------------------------------------------------------
-    -- Enfin, on mémorise ce panel dans self.panel
-    ------------------------------------------------------------
+	-- 3) Commande ajoutée pour voir si il manque des clés de traduction :
+	SLASH_TRINITYADMIN_MISSINGKEYS1 = "/tamissingkeys"
+	SlashCmdList["TRINITYADMIN_MISSINGKEYS"] = function(msg)
+		if not next(MissingKeys) then
+			TrinityAdmin:Print("Aucune clé manquante n'a été détectée pour le moment.")
+			return
+		end
+	
+		TrinityAdmin:Print("=== Clés de traduction manquantes ===")
+		for missingKey, _ in pairs(MissingKeys) do
+			TrinityAdmin:Print("- " .. missingKey)
+		end
+	end
 	
     self.panel = panel
 end

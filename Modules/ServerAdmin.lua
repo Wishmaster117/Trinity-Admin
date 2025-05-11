@@ -163,30 +163,32 @@ function ServerAdmin:CreateServerAdminPanel()
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages
     -------------------------------------------------------------------------------
-    local totalPages = 2
-    local pages = {}
-    for i = 1, totalPages do
-        pages[i] = CreateFrame("Frame", nil, panel)
-        pages[i]:SetAllPoints(panel)
-        pages[i]:Hide()
-    end
-
-    local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-    navPageLabel:SetText("Page 1 / " .. totalPages)
-
-    local function ShowPage(pageIndex)
-        for i = 1, totalPages do
-            if i == pageIndex then
-                pages[i]:Show()
-            else
-                pages[i]:Hide()
-            end
-        end
-        navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-    end
-
-    ShowPage(1)
+	local btnPrev, btnNext
+	local totalPages  = 2
+	local currentPage = 1
+	local pages       = {}
+		
+		-- 1) Crée les pages
+		for i = 1, totalPages do
+			pages[i] = CreateFrame("Frame", nil, panel)
+			pages[i]:SetAllPoints(panel)
+			pages[i]:Hide()
+		end
+		
+		-- 2) Label de pagination
+		local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+		navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 45, 12)
+	
+	local function ShowPage(pageIndex)
+		currentPage = pageIndex
+		for i = 1, totalPages do
+			pages[i][i == pageIndex and "Show" or "Hide"](pages[i])
+		end
+		navPageLabel:SetText(L["Page"] .. " " .. pageIndex .. " / " .. totalPages)
+	
+		if pageIndex > 1        then btnPrev:Enable() else btnPrev:Disable() end
+		if pageIndex < totalPages then btnNext:Enable() else btnNext:Disable() end
+	end
 
     -------------------------------------------------------------------------------
     -- PAGE 1
@@ -208,8 +210,9 @@ function ServerAdmin:CreateServerAdminPanel()
 	
     local function CreateServerButtonPage1(name, text, tooltip, cmd)
         local btn = CreateFrame("Button", name, commandsFramePage1, "UIPanelButtonTemplate")
-        btn:SetSize(150, 22)
+        -- btn:SetSize(150, 22)
         btn:SetText(text)
+		TrinityAdmin.AutoSize(btn, 20, 16)
         btn:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
             GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
@@ -220,7 +223,7 @@ function ServerAdmin:CreateServerAdminPanel()
         end)
         btn:SetScript("OnClick", function(self)
             SendChatMessage(cmd, "SAY")
-            print("Commande envoyée: " .. cmd)
+            -- print("Commande envoyée: " .. cmd)
         end)
         return btn
     end
@@ -237,8 +240,9 @@ function ServerAdmin:CreateServerAdminPanel()
 
     -- Bouton server info => active la capture
     local btnServerInfo = CreateFrame("Button", "ServerInfoButton", panel, "UIPanelButtonTemplate")
-    btnServerInfo:SetSize(150, 22)
+    -- btnServerInfo:SetSize(150, 22)
     btnServerInfo:SetText(L["server info"])
+	TrinityAdmin.AutoSize(btnServerInfo, 20, 16)
     btnServerInfo:SetPoint("TOPLEFT", btnServerMotd, "TOPRIGHT", 10, 0)
     btnServerInfo:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -260,25 +264,28 @@ function ServerAdmin:CreateServerAdminPanel()
     end)
 
     local btnServerIdleRestart = CreateFrame("Button", "ServerIdleRestartButton", commandsFramePage1, "UIPanelButtonTemplate")
-    btnServerIdleRestart:SetSize(150, 22)
+    -- btnServerIdleRestart:SetSize(150, 22)
     btnServerIdleRestart:SetText(L["server idlerestart"])
+	TrinityAdmin.AutoSize(btnServerIdleRestart, 20, 16)
     btnServerIdleRestart:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(L["serveridlerestarttooltip"], 1, 1, 1, 1, true)
         GameTooltip:Show()
     end)
     btnServerIdleRestart:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
-    btnServerIdleRestart:SetPoint("TOPRIGHT", btnServerCorpses, "BOTTOMRIGHT", 0, -10)
+    btnServerIdleRestart:SetPoint("TOPRIGHT", btnServerCorpses, "BOTTOMRIGHT", 80, -10)
 
     local idlerestartDelay = CreateFrame("EditBox", "IdlerestartDelayBox", commandsFramePage1, "InputBoxTemplate")
-    idlerestartDelay:SetSize(80, 22)
+    -- idlerestartDelay:SetSize(80, 22)
     idlerestartDelay:SetText(L["Delay in s"])
-    idlerestartDelay:SetPoint("TOPRIGHT", btnServerIdleRestart, "TOPRIGHT", 90, 0)
+	TrinityAdmin.AutoSize(idlerestartDelay, 20, 13)
+    idlerestartDelay:SetPoint("TOPRIGHT", btnServerIdleRestart, "TOPRIGHT", 165, 0)
 
     local idlerestartReason = CreateFrame("EditBox", "IdlerestartReasonBox", commandsFramePage1, "InputBoxTemplate")
-    idlerestartReason:SetSize(120, 22)
+    -- idlerestartReason:SetSize(120, 22)
     idlerestartReason:SetText(L["Reason1"])
-    idlerestartReason:SetPoint("TOPRIGHT", idlerestartDelay, "TOPRIGHT", 130, 0)
+	TrinityAdmin.AutoSize(idlerestartReason, 20, 13)
+    idlerestartReason:SetPoint("TOPRIGHT", idlerestartDelay, "TOPRIGHT", 65, 0)
 
     btnServerIdleRestart:SetScript("OnClick", function(self)
         local delay = idlerestartDelay:GetText()
@@ -295,14 +302,16 @@ function ServerAdmin:CreateServerAdminPanel()
     btnServerIdleShutdown:SetPoint("TOPLEFT", btnServerIdleRestart, "BOTTOMLEFT", 0, -10)
 
     local idleshutdownDelay = CreateFrame("EditBox", "IdleshutdownDelayBox", commandsFramePage1, "InputBoxTemplate")
-    idleshutdownDelay:SetSize(80, 22)
+    -- idleshutdownDelay:SetSize(80, 22)
     idleshutdownDelay:SetText(L["Delay in s"])
-    idleshutdownDelay:SetPoint("TOPRIGHT", btnServerIdleShutdown, "TOPRIGHT", 90, 0)
+	TrinityAdmin.AutoSize(idleshutdownDelay, 20, 13)
+    idleshutdownDelay:SetPoint("TOPRIGHT", btnServerIdleShutdown, "TOPRIGHT", 165, 0)
 
     local idleshutdownReason = CreateFrame("EditBox", "IdleshutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
-    idleshutdownReason:SetSize(120, 22)
+    -- idleshutdownReason:SetSize(120, 22)
     idleshutdownReason:SetText(L["Reason1"])
-    idleshutdownReason:SetPoint("TOPRIGHT", idleshutdownDelay, "TOPRIGHT", 130, 0)
+	TrinityAdmin.AutoSize(idleshutdownReason, 20, 13)
+    idleshutdownReason:SetPoint("TOPRIGHT", idleshutdownDelay, "TOPRIGHT", 65, 0)
 
     btnServerIdleShutdown:SetScript("OnClick", function(self)
         local delay = idleshutdownDelay:GetText()
@@ -313,7 +322,7 @@ function ServerAdmin:CreateServerAdminPanel()
     end)
 	
     local btnServerIdleShutdownCancel = CreateServerButtonPage1("ServerIdleShutdownCancelButton", L["idleshutdown cancel"], L["idleshutdowncanceltooltip"], ".server idleshutdown cancel")
-    btnServerIdleShutdownCancel:SetPoint("TOPLEFT", idleshutdownReason, "TOPRIGHT", 10, 0)
+    btnServerIdleShutdownCancel:SetPoint("TOPLEFT", idleshutdownReason, "TOPRIGHT", 1, 0)
 	
 	-------------------------------------------------------------------------------
 	-- Server Restart Button
@@ -322,14 +331,16 @@ function ServerAdmin:CreateServerAdminPanel()
     btnServerRestart:SetPoint("TOPLEFT", btnServerIdleShutdown, "BOTTOMLEFT", 0, -10)
 
     local ServerRestartDelay = CreateFrame("EditBox", "ServerRestartDelayBox", commandsFramePage1, "InputBoxTemplate")
-    ServerRestartDelay:SetSize(80, 22)
+    -- ServerRestartDelay:SetSize(80, 22)
     ServerRestartDelay:SetText(L["Delay in s"])
-    ServerRestartDelay:SetPoint("TOPRIGHT", btnServerRestart, "TOPRIGHT", 90, 0)
+	TrinityAdmin.AutoSize(ServerRestartDelay, 20, 13)
+    ServerRestartDelay:SetPoint("TOPRIGHT", btnServerRestart, "TOPRIGHT", 165, 0)
 
     local ServerRestartReason = CreateFrame("EditBox", "IdleshutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
-    ServerRestartReason:SetSize(120, 22)
+    -- ServerRestartReason:SetSize(120, 22)
     ServerRestartReason:SetText(L["Reason1"])
-    ServerRestartReason:SetPoint("TOPRIGHT", ServerRestartDelay, "TOPRIGHT", 130, 0)
+	TrinityAdmin.AutoSize(ServerRestartReason, 20, 13)
+    ServerRestartReason:SetPoint("TOPRIGHT", ServerRestartDelay, "TOPRIGHT", 65, 0)
 
     btnServerRestart:SetScript("OnClick", function(self)
         local delay = ServerRestartDelay:GetText()
@@ -352,14 +363,16 @@ function ServerAdmin:CreateServerAdminPanel()
     btnServerRestartForce:SetPoint("TOPLEFT", btnServerRestart, "BOTTOMLEFT", 0, -10)
 	
 	local ServerRestartForceDelay = CreateFrame("EditBox", "ServerRestartForceDelayBox", commandsFramePage1, "InputBoxTemplate")
-    ServerRestartForceDelay:SetSize(80, 22)
+    -- ServerRestartForceDelay:SetSize(80, 22)
     ServerRestartForceDelay:SetText(L["Delay in s"])
-    ServerRestartForceDelay:SetPoint("TOPRIGHT", btnServerRestartForce, "TOPRIGHT", 90, 0)
+	TrinityAdmin.AutoSize(ServerRestartForceDelay, 20, 13)
+    ServerRestartForceDelay:SetPoint("TOPRIGHT", btnServerRestartForce, "TOPRIGHT", 165, 0)
 
     local ServerRestartForceReason = CreateFrame("EditBox", "IdleshutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
-    ServerRestartForceReason:SetSize(120, 22)
+    -- ServerRestartForceReason:SetSize(120, 22)
     ServerRestartForceReason:SetText(L["Reason1"])
-    ServerRestartForceReason:SetPoint("TOPRIGHT", ServerRestartForceDelay, "TOPRIGHT", 130, 0)
+	TrinityAdmin.AutoSize(ServerRestartForceReason, 20, 13)
+    ServerRestartForceReason:SetPoint("TOPRIGHT", ServerRestartForceDelay, "TOPRIGHT", 65, 0)
 
     btnServerRestartForce:SetScript("OnClick", function(self)
         local delay = ServerRestartForceDelay:GetText()
@@ -376,14 +389,16 @@ function ServerAdmin:CreateServerAdminPanel()
     btnServerShutdown:SetPoint("TOPLEFT", btnServerRestartForce, "BOTTOMLEFT", 0, -10)
 
     local ServerShutdownDelay = CreateFrame("EditBox", "ServerShutdownDelayBox", commandsFramePage1, "InputBoxTemplate")
-    ServerShutdownDelay:SetSize(80, 22)
+    -- ServerShutdownDelay:SetSize(80, 22)
     ServerShutdownDelay:SetText(L["Delay in s"])
-    ServerShutdownDelay:SetPoint("TOPRIGHT", btnServerShutdown, "TOPRIGHT", 90, 0)
+	TrinityAdmin.AutoSize(ServerShutdownDelay, 20, 13)
+    ServerShutdownDelay:SetPoint("TOPRIGHT", btnServerShutdown, "TOPRIGHT", 165, 0)
 
     local ServerShutdownReason = CreateFrame("EditBox", "ServerShutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
-    ServerShutdownReason:SetSize(120, 22)
+    -- ServerShutdownReason:SetSize(120, 22)
     ServerShutdownReason:SetText(L["Reason1"])
-    ServerShutdownReason:SetPoint("TOPRIGHT", ServerShutdownDelay, "TOPRIGHT", 130, 0)
+	TrinityAdmin.AutoSize(ServerShutdownReason, 20, 13)
+    ServerShutdownReason:SetPoint("TOPRIGHT", ServerShutdownDelay, "TOPRIGHT", 65, 0)
 
     btnServerShutdown:SetScript("OnClick", function(self)
         local delay = ServerShutdownDelay:GetText()
@@ -403,14 +418,16 @@ function ServerAdmin:CreateServerAdminPanel()
     btnServerShutdownForce:SetPoint("TOPLEFT", btnServerShutdown, "BOTTOMLEFT", 0, -10)
 	
     local ServerShutdownForceDelay = CreateFrame("EditBox", "ServerShutdownForceDelayBox", commandsFramePage1, "InputBoxTemplate")
-    ServerShutdownForceDelay:SetSize(80, 22)
+    -- ServerShutdownForceDelay:SetSize(80, 22)
     ServerShutdownForceDelay:SetText(L["Delay in s"])
-    ServerShutdownForceDelay:SetPoint("TOPRIGHT", btnServerShutdownForce, "TOPRIGHT", 90, 0)
+	TrinityAdmin.AutoSize(ServerShutdownForceDelay, 20, 13)
+    ServerShutdownForceDelay:SetPoint("TOPRIGHT", btnServerShutdownForce, "TOPRIGHT", 165, 0)
 
     local ServerShutdownForceReason = CreateFrame("EditBox", "ServerShutdownReasonBox", commandsFramePage1, "InputBoxTemplate")
-    ServerShutdownForceReason:SetSize(120, 22)
+    -- ServerShutdownForceReason:SetSize(120, 22)
     ServerShutdownForceReason:SetText(L["Reason1"])
-    ServerShutdownForceReason:SetPoint("TOPRIGHT", ServerShutdownForceDelay, "TOPRIGHT", 130, 0)
+	TrinityAdmin.AutoSize(ServerShutdownForceReason, 20, 13)
+    ServerShutdownForceReason:SetPoint("TOPRIGHT", ServerShutdownForceDelay, "TOPRIGHT", 65, 0)
 
     btnServerShutdownForce:SetScript("OnClick", function(self)
         local delay = ServerShutdownForceDelay:GetText()
@@ -440,8 +457,9 @@ function ServerAdmin:CreateServerAdminPanel()
 
     local function CreateServerButtonPage2(name, text, tooltip, cmd)
         local btn = CreateFrame("Button", name, commandsFramePage2, "UIPanelButtonTemplate")
-        btn:SetSize(150, 22)
+        -- btn:SetSize(150, 22)
         btn:SetText(text)
+		TrinityAdmin.AutoSize(btn, 20, 16)
         btn:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
             GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
@@ -461,9 +479,10 @@ function ServerAdmin:CreateServerAdminPanel()
 	
 	-- Créez ensuite l'EditBox pour saisir le message MOTD
 	local editServerMotd = CreateFrame("EditBox", "ServerSetMotdMessageBox", commandsFramePage2, "InputBoxTemplate")
-	editServerMotd:SetSize(350, 22)
+	-- editServerMotd:SetSize(350, 22)
 	editServerMotd:SetText(L["Set Message Of The Day"])
-	editServerMotd:SetPoint("TOPRIGHT", btnServerSetMotd, "TOPRIGHT", 360, 0)
+	TrinityAdmin.AutoSize(editServerMotd, 20, 14)
+	editServerMotd:SetPoint("TOPRIGHT", btnServerSetMotd, "TOPRIGHT", 200, 0)
 	
 	-- Ajoutez le script OnClick au bouton pour récupérer le texte de l'editbox et envoyer la commande
 	btnServerSetMotd:SetScript("OnClick", function(self)
@@ -525,8 +544,9 @@ function ServerAdmin:CreateServerAdminPanel()
 	
 	-- Création du bouton "Set" qui lance la commande .server set closed
 	local btnServerSetClosed = CreateFrame("Button", "ServerSetClosedButton", closedFrame, "UIPanelButtonTemplate")
-	btnServerSetClosed:SetSize(80, 22)
-	btnServerSetClosed:SetText("Set")
+	-- btnServerSetClosed:SetSize(80, 22)
+	btnServerSetClosed:SetText(L["Set"])
+	TrinityAdmin.AutoSize(btnServerSetClosed, 20, 16)
 	btnServerSetClosed:SetPoint("LEFT", radioOff, "RIGHT", 50, 0)
 	btnServerSetClosed:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -558,14 +578,16 @@ function ServerAdmin:CreateServerAdminPanel()
 	
 	-- Champ de saisie pour l'argument (par défaut "Arg")
 	local plimitInput = CreateFrame("EditBox", "ServerPlimitInputBox", plimitFrame, "InputBoxTemplate")
-	plimitInput:SetSize(100, 22)
+	-- plimitInput:SetSize(100, 22)
 	plimitInput:SetText("Arg. or Number")
+	TrinityAdmin.AutoSize(plimitInput, 20, 13)
 	plimitInput:SetPoint("LEFT", plimitLabel, "RIGHT", 5, 0)
 	
 	-- Bouton "Set" qui envoie la commande .server plimit [argument]
 	local btnServerPlimit = CreateFrame("Button", "ServerPlimitButton", plimitFrame, "UIPanelButtonTemplate")
-	btnServerPlimit:SetSize(80, 22)
-	btnServerPlimit:SetText("Set")
+	-- btnServerPlimit:SetSize(80, 22)
+	btnServerPlimit:SetText(L["Set"])
+	TrinityAdmin.AutoSize(btnServerPlimit, 20, 16)
 	btnServerPlimit:SetPoint("LEFT", plimitInput, "RIGHT", 10, 0)
 	btnServerPlimit:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -589,8 +611,9 @@ function ServerAdmin:CreateServerAdminPanel()
 	
 	-- Bouton "Reset" placé à droite du bouton "Set"
 	local btnServerPlimitReset = CreateFrame("Button", "ServerPlimitResetButton", plimitFrame, "UIPanelButtonTemplate")
-	btnServerPlimitReset:SetSize(80, 22)
+	-- btnServerPlimitReset:SetSize(80, 22)
 	btnServerPlimitReset:SetText(L["Reset"])
+	TrinityAdmin.AutoSize(btnServerPlimitReset, 20, 16)
 	btnServerPlimitReset:SetPoint("LEFT", btnServerPlimit, "RIGHT", 10, 0)
 	btnServerPlimitReset:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -621,26 +644,30 @@ function ServerAdmin:CreateServerAdminPanel()
 	
 	-- Zone de saisie pour le facility ($facility)
 	local editFacility = CreateFrame("EditBox", "ServerSetLoglevelFacility", loglevelFrame, "InputBoxTemplate")
-	editFacility:SetSize(50, 22)
+	-- editFacility:SetSize(50, 22)
 	editFacility:SetText("a")  -- Valeur par défaut : "a" pour appender (vous pouvez modifier)
+	TrinityAdmin.AutoSize(editFacility, 20, 13)
 	editFacility:SetPoint("LEFT", loglevelLabel, "RIGHT", 5, 0)
 	
 	-- Zone de saisie pour le nom ($name)
 	local editName = CreateFrame("EditBox", "ServerSetLoglevelName", loglevelFrame, "InputBoxTemplate")
-	editName:SetSize(100, 22)
+	-- editName:SetSize(100, 22)
 	editName:SetText(L["NameLogs"])
+	TrinityAdmin.AutoSize(editName, 20, 13)
 	editName:SetPoint("LEFT", editFacility, "RIGHT", 5, 0)
 	
 	-- Zone de saisie pour le niveau de log ($loglevel)
 	local editLevel = CreateFrame("EditBox", "ServerSetLoglevelLevel", loglevelFrame, "InputBoxTemplate")
-	editLevel:SetSize(50, 22)
-	editLevel:SetText("3")  -- Par défaut "3" (info) ; vous pouvez adapter
+	-- editLevel:SetSize(50, 22)
+	editLevel:SetText("3")  -- Par défaut "3" (info)
+	TrinityAdmin.AutoSize(editLevel, 20, 13)
 	editLevel:SetPoint("LEFT", editName, "RIGHT", 5, 0)
 	
 	-- Bouton "Set Loglevel" qui envoie la commande
 	local btnSetLoglevel = CreateFrame("Button", "ServerSetLoglevelButton", loglevelFrame, "UIPanelButtonTemplate")
-	btnSetLoglevel:SetSize(100, 22)
+	-- btnSetLoglevel:SetSize(100, 22)
 	btnSetLoglevel:SetText("Set Loglevel")
+	TrinityAdmin.AutoSize(btnSetLoglevel, 20, 16)
 	btnSetLoglevel:SetPoint("LEFT", editLevel, "RIGHT", 10, 0)
 	btnSetLoglevel:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -664,55 +691,36 @@ function ServerAdmin:CreateServerAdminPanel()
     ------------------------------------------------------------------------------
     -- Boutons de navigation (Précédent / Suivant)
     ------------------------------------------------------------------------------
-    local currentPage = 1
+	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnPrev:SetText(L["Pagination_Preview"])
+	TrinityAdmin.AutoSize(btnPrev, 20, 16)
+	btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
+	btnPrev:SetScript("OnClick", function()
+		if currentPage > 1 then ShowPage(currentPage - 1) end
+	end)
+	
+	btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
+	btnNext:SetText(L["Next"])
+	TrinityAdmin.AutoSize(btnNext, 20, 16)
+	btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
+	btnNext:SetScript("OnClick", function()
+		if currentPage < totalPages then ShowPage(currentPage + 1) end
+	end)
 
-    local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
-    btnPrev:SetText(L["Preview"])
-    btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
-    btnPrev:SetScript("OnClick", function()
-        if currentPage > 1 then
-            currentPage = currentPage - 1
-            ShowPage(currentPage)
-        end
-    end)
-
-    local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
-    btnNext:SetText(L["Next"])
-    btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
-    btnNext:SetScript("OnClick", function()
-        if currentPage < totalPages then
-            currentPage = currentPage + 1
-            ShowPage(currentPage)
-        end
-    end)
-
-    -- local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    -- navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-    -- navPageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
-	-- 
-    -- local function ShowPage(pageIndex)
-    --     for i = 1, totalPages do
-    --         if i == pageIndex then
-    --             pages[i]:Show()
-    --         else
-    --             pages[i]:Hide()
-    --         end
-    --     end
-    --     navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-    -- end
-	-- 
-    -- ShowPage(1)
-
+	--------------------------------------------------------------------
+	-- Affichage initial
+	--------------------------------------------------------------------
+	ShowPage(1)
+	
     ------------------------------------------------------------------------------
     -- Bouton Back final
     ------------------------------------------------------------------------------
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBackFinal:SetPoint("TOPRIGHT", navPageLabel, "TOPRIGHT", 0, 30)
+    btnBackFinal:SetPoint("TOPRIGHT", navPageLabel, "TOPRIGHT", -10, 40)
     btnBackFinal:SetText(L["Back"])
-    btnBackFinal:SetHeight(22)
-    btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
+	TrinityAdmin.AutoSize(btnBackFinal, 20, 16)
+   --  btnBackFinal:SetHeight(22)
+    -- btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
     btnBackFinal:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()

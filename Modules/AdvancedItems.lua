@@ -97,24 +97,25 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     advancedLabel:SetText(L["Add Items Advanced"])
 
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
-    filterEditBox:SetSize(150, 22)
-    -- filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
+    -- filterEditBox:SetSize(150, 22)
 	filterEditBox:SetPoint("TOP", advancedLabel, "BOTTOM", 0, -5)
     filterEditBox:SetText(L["Search..."])
+	TrinityAdmin.AutoSize(filterEditBox, 20, 13, nil, 200)
 	
 	-- Nouvelle EditBox pour le nom du joueur, placée à droite de filterEditBox
 	local playerNameEditBox = CreateFrame("EditBox", "TrinityAdminPlayerNameEditBox", panel, "InputBoxTemplate")
-	playerNameEditBox:SetSize(120, 22)
-	-- Placez-la à droite de la box de recherche. Vous pouvez ajuster les offsets si nécessaire :
+	-- playerNameEditBox:SetSize(120, 22)
 	playerNameEditBox:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
 	playerNameEditBox:SetText(L["Player Name"])
+	TrinityAdmin.AutoSize(playerNameEditBox, 20, 13)
 
 
 	-- Nouvelle EditBox pour le montant ("HowMuch?"), placée à droite de la zone "Nom du Joueur"
 	local howMuchEditBox = CreateFrame("EditBox", "TrinityAdminHowMuchEditBox", panel, "InputBoxTemplate")
-	howMuchEditBox:SetSize(100, 22)
+	-- howMuchEditBox:SetSize(100, 22)
 	howMuchEditBox:SetPoint("LEFT", playerNameEditBox, "RIGHT", 10, 0)
 	howMuchEditBox:SetText(L["HowMuch"])
+	TrinityAdmin.AutoSize(howMuchEditBox, 20, 13)
     ------------------------------------------------------------
     -- ScrollFrame et scrollChild
     ------------------------------------------------------------
@@ -131,19 +132,22 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     -- Boutons de pagination
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
+    -- btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Preview"])
+	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", -120, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
+    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
+	TrinityAdmin.AutoSize(btnNext, 20, 16)
     btnNext:SetPoint("BOTTOM", panel, "BOTTOM", 60, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPage:SetSize(90, 22)
+    -- btnPage:SetSize(90, 22)
     btnPage:SetPoint("BOTTOM", panel, "BOTTOM", -30, 10)
     btnPage:SetText("Page 1 / 1")
+	TrinityAdmin.AutoSize(btnPage, 20, 16)
 
     ------------------------------------------------------------
     -- Fonction PopulateGOScroll (affichage du chunk actuel)
@@ -173,12 +177,12 @@ function AdvancedItems:CreateAdvancedItemsPanel()
         end
 
         local optionsChunk = {}
-        print("isFiltered:", isFiltered, "totalEntriesLocal:", totalEntriesLocal, "currentPage:", currentPage)
+        -- print("isFiltered:", isFiltered, "totalEntriesLocal:", totalEntriesLocal, "currentPage:", currentPage)
 
         if isFiltered then
             local startIdx = (currentPage - 1) * entriesPerPage + 1
             local endIdx = math.min(currentPage * entriesPerPage, totalEntriesLocal)
-            print("Mode filtré: startIdx:", startIdx, "endIdx:", endIdx)
+            -- print("Mode filtré: startIdx:", startIdx, "endIdx:", endIdx)
             for i = startIdx, endIdx do
                 if sourceData[i] then
                     table.insert(optionsChunk, sourceData[i])
@@ -186,7 +190,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
             end
         else
             optionsChunk = sourceData
-            print("OptionsChunk size:", #optionsChunk)
+            -- print("OptionsChunk size:", #optionsChunk)
         end
 
         if #optionsChunk == 0 then
@@ -237,9 +241,6 @@ function AdvancedItems:CreateAdvancedItemsPanel()
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
                 -- GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
 			if option.entry then
-			-- Avec traduction
-		    -- local translatedName = L[option.name] or option.name
-            -- local link = "|cffffffff|Hitem:" .. option.entry .. "|h[" .. translatedName .. "]|h|r"
 				local link = "|cffffffff|Hitem:" .. option.entry .. "|h[" .. (option.name or "Item") .. "]|h|r"
 				GameTooltip:SetHyperlink(link)
 			else
@@ -251,10 +252,6 @@ function AdvancedItems:CreateAdvancedItemsPanel()
             btn:SetScript("OnLeave", function(self)
                 GameTooltip:Hide()
             end)
-            -- btn:SetScript("OnClick", function()
-            --     print("Option cliquée :", fullText, "Entry:", option.entry)
-            --     SendChatMessage(".additem set " .. option.entry, "SAY")
-            -- end)
 			
 			btn:SetScript("OnClick", function()
 			local playerName = playerNameEditBox:GetText()
@@ -350,7 +347,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
         local searchText = self:GetText():lower()
 
         if searchText == L["Search..."] or #searchText < 3 then
-            print(L["Please enter at least 3 characters for the search."])
+            TrinityAdmin:Print(L["Please enter at least 3 characters for the search."])
             return
         end
 
@@ -363,9 +360,10 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     -- Bouton "Reset" pour revenir à la liste complète
     ------------------------------------------------------------
     local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnReset:SetSize(80, 22)
+    -- btnReset:SetSize(80, 22)
     btnReset:SetText(L["Reset"])
-    btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
+	TrinityAdmin.AutoSize(btnReset, 20, 16)
+    btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -210, 0)
     btnReset:SetScript("OnClick", function()
         filterEditBox:SetText("")
         currentPage = 1
@@ -382,8 +380,9 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     ------------------------------------------------------------
 
 	local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetText(L["Back"])
+	TrinityAdmin.AutoSize(btnBack, 20, 16)
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()

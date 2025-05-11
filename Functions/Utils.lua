@@ -6,7 +6,8 @@ local C_Timer = _G.C_Timer
 local measuringFS = UIParent:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 measuringFS:Hide()
 
-local function AutoSize(frame, hPadding, vPadding, fontObject)
+-- local function AutoSize(frame, hPadding, vPadding, fontObject)
+local function AutoSize(frame, hPadding, vPadding, fontObject, minWidth)
     hPadding = hPadding or 20
     vPadding = vPadding or 6
 
@@ -23,7 +24,13 @@ local function AutoSize(frame, hPadding, vPadding, fontObject)
     measuringFS:SetText(text)
 
     local w = measuringFS:GetStringWidth() + hPadding
-    local h = measuringFS:GetStringHeight() + vPadding
+    -- local h = measuringFS:GetStringHeight() + vPadding
+	local h = measuringFS:GetStringHeight() + vPadding
+
+    -- si un minWidth est passé et que w est plus petit, on lève w
+    if minWidth and w < minWidth then
+        w = minWidth
+    end
 
     frame:SetWidth(w)
     if frame.SetHeight then

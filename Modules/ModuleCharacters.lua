@@ -28,34 +28,6 @@ function ModuleCharacter:CreateModuleCharacterPanel()
     -------------------------------------------------------------------------------
     -- Création de plusieurs pages dans le panneau
     -------------------------------------------------------------------------------
-	-- local totalPages = 8  -- nombre de pages
-	-- local pages = {}
-	-- for i = 1, totalPages do
-	-- 	pages[i] = CreateFrame("Frame", nil, panel)
-	-- 	pages[i]:SetAllPoints(panel)
-	-- 	pages[i]:Hide()  -- on cache toutes les pages au départ
-	-- end
-	-- 
-	-- -- Label de navigation unique (affiché en bas du panneau)
-	-- local navPageLabel = panel:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-	-- navPageLabel:SetPoint("BOTTOM", panel, "BOTTOM", 0, 12)
-	-- navPageLabel:SetText("Page 1 / " .. totalPages)
-	-- 
-	-- -- Fonction de changement de page
-	-- local function ShowPage(pageIndex)
-	-- 	for i = 1, totalPages do
-	-- 		if i == pageIndex then
-	-- 			pages[i]:Show()
-	-- 		else
-	-- 			pages[i]:Hide()
-	-- 		end
-	-- 	end
-	-- 	navPageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
-	-- end
-	-- 
-	-- ShowPage(1)
-	-- 
-	-- local inputFields = {}  -- table pour stocker tous les champs et leur texte par défaut
 local totalPages = 8
 local currentPage = 1
 local pages = {}
@@ -94,8 +66,9 @@ end
 
 -- Création des boutons AVANT le premier appel à ShowPage(1)
 btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-btnPrev:SetSize(80, 22)
-btnPrev:SetText(L["Preview"])
+-- btnPrev:SetSize(80, 22)
+btnPrev:SetText(L["Pagination_Preview"])
+TrinityAdmin.AutoSize(btnPrev, 20, 16)
 btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
 btnPrev:SetScript("OnClick", function()
     if currentPage > 1 then
@@ -104,8 +77,9 @@ btnPrev:SetScript("OnClick", function()
 end)
 
 btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-btnNext:SetSize(80, 22)
+-- btnNext:SetSize(80, 22)
 btnNext:SetText(L["Next"])
+TrinityAdmin.AutoSize(btnNext, 20, 16)
 btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 btnNext:SetScript("OnClick", function()
     if currentPage < totalPages then
@@ -132,8 +106,9 @@ page1Title:SetText(L["Player Functions Part 1"])
 -- Scripte pour actions des boutons simples:
 local function CreateServerButtonPage1(name, text, tooltip, cmd)
     local btn = CreateFrame("Button", name, commandsFramePage1, "UIPanelButtonTemplate")
-    btn:SetSize(150, 22)
+    -- btn:SetSize(150, 22)
     btn:SetText(text)
+	TrinityAdmin.AutoSize(btn, 20, 16)
     btn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
@@ -142,17 +117,18 @@ local function CreateServerButtonPage1(name, text, tooltip, cmd)
     btn:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
     btn:SetScript("OnClick", function(self)
         SendChatMessage(cmd, "SAY")
-        -- print("Commande envoyée: " .. cmd)
+        -- TrinityAdmin:Print("Commande envoyée: " .. cmd)
     end)
     return btn
 end
 	
 -- Ajout du champ de saisie et bouton Add Aura
 local spellIdInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-spellIdInput:SetSize(150, 22)
+-- spellIdInput:SetSize(150, 22)
 spellIdInput:SetPoint("TOPLEFT", page1Title, "BOTTOMLEFT", 0, -15)
 spellIdInput:SetAutoFocus(false)
 spellIdInput.defaultText = L["Enter SpellId"]
+TrinityAdmin.AutoSize(spellIdInput, 20, 24, nil, 180)
 spellIdInput:SetText(spellIdInput.defaultText)
 spellIdInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -166,8 +142,9 @@ table.insert(inputFields, spellIdInput)
 
 
 local btnAddAura = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnAddAura:SetSize(100, 22)
+-- btnAddAura:SetSize(100, 22)
 btnAddAura:SetText(L["Add Aura"])
+TrinityAdmin.AutoSize(btnAddAura, 20, 16)
 btnAddAura:SetPoint("LEFT", spellIdInput, "RIGHT", 10, 0)
 btnAddAura:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -178,20 +155,21 @@ btnAddAura:SetScript("OnLeave", function() GameTooltip:Hide() end)
 btnAddAura:SetScript("OnClick", function()
     local spellId = spellIdInput:GetText()
     if spellId == "" or spellId == L["Enter SpellId"] then
-        print(L["addauraerror"])
+        TrinityAdmin:Print(L["addauraerror"])
         return
     end
     local cmd = ".aura " .. spellId
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 -- Ajout du champ de saisie et bouton Remove Aura
 local spellIdInputRemove = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-spellIdInputRemove:SetSize(150, 22)
+-- spellIdInputRemove:SetSize(150, 22)
 spellIdInputRemove:SetPoint("TOPLEFT", spellIdInput, "BOTTOMLEFT", 0, -15)
 spellIdInputRemove:SetAutoFocus(false)
 spellIdInputRemove.defaultText = L["Enter SpellId"] -- Ajout nécessaire
+TrinityAdmin.AutoSize(spellIdInputRemove, 20, 24, nil, 180)
 spellIdInputRemove:SetText(spellIdInputRemove.defaultText)
 spellIdInputRemove:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -204,8 +182,9 @@ end)
 table.insert(inputFields, spellIdInputRemove)
 
 local btnAddAuraRemove = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnAddAuraRemove:SetSize(100, 22)
+-- btnAddAuraRemove:SetSize(100, 22)
 btnAddAuraRemove:SetText(L["Remove Aura"])
+TrinityAdmin.AutoSize(btnAddAuraRemove, 20, 16)
 btnAddAuraRemove:SetPoint("LEFT", spellIdInputRemove, "RIGHT", 10, 0)
 btnAddAuraRemove:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -216,20 +195,21 @@ btnAddAuraRemove:SetScript("OnLeave", function() GameTooltip:Hide() end)
 btnAddAuraRemove:SetScript("OnClick", function()
     local spellId = spellIdInputRemove:GetText()
     if spellId == "" or spellId == spellIdInputRemove.defaultText then
-        print(L["addauraerror"])
+        TrinityAdmin:Print(L["addauraerror"])
         return
     end
     local cmd = ".unaura " .. spellId
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 -- Champ de saisie "Player Name"
 local playerNameInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-playerNameInput:SetSize(150, 22)
+-- playerNameInput:SetSize(150, 22)
 playerNameInput:SetPoint("TOPLEFT", spellIdInputRemove, "BOTTOMLEFT", 0, -15)
 playerNameInput:SetAutoFocus(false)
 playerNameInput.defaultText = L["Player Name"]
+TrinityAdmin.AutoSize(playerNameInput, 20, 24, nil, 180)
 playerNameInput:SetText(playerNameInput.defaultText)
 playerNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -243,10 +223,11 @@ table.insert(inputFields, playerNameInput)
 
 -- Champ de saisie "Duration (s)"
 local durationInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-durationInput:SetSize(150, 22)
+-- durationInput:SetSize(150, 22)
 durationInput:SetPoint("LEFT", playerNameInput, "RIGHT", 10, 0)
 durationInput:SetAutoFocus(false)
 durationInput.defaultText = L["Duration (s)"]
+TrinityAdmin.AutoSize(durationInput, 20, 24, nil, 130)
 durationInput:SetText(durationInput.defaultText)
 durationInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -260,8 +241,9 @@ table.insert(inputFields, durationInput)
 
 -- Bouton "Freeze"
 local btnFreeze = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnFreeze:SetSize(100, 22)
+-- btnFreeze:SetSize(100, 22)
 btnFreeze:SetText(L["Freeze"])
+TrinityAdmin.AutoSize(btnFreeze, 20, 16)
 btnFreeze:SetPoint("LEFT", durationInput, "RIGHT", 10, 0)
 btnFreeze:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -277,9 +259,9 @@ btnFreeze:SetScript("OnClick", function()
     if playerName == "" or playerName == playerNameInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            -- print("La Cible est : " .. playerName) -- Pour debug
+            -- TrinityAdmin:Print("La Cible est : " .. playerName) -- Pour debug
         else
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -291,15 +273,16 @@ btnFreeze:SetScript("OnClick", function()
 
     local cmd = ".freeze " .. playerName .. " " .. duration
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 -- Champ de saisie "Player Name" pour UnFreeze
 local playerNameUnfreezeInput = CreateFrame("EditBox", nil, commandsFramePage1, "InputBoxTemplate")
-playerNameUnfreezeInput:SetSize(150, 22)
+-- playerNameUnfreezeInput:SetSize(150, 22)
 playerNameUnfreezeInput:SetPoint("TOPLEFT", playerNameInput, "BOTTOMLEFT", 0, -15)
 playerNameUnfreezeInput:SetAutoFocus(false)
 playerNameUnfreezeInput.defaultText = L["Player Name unfreez"]
+TrinityAdmin.AutoSize(playerNameUnfreezeInput, 20, 24, nil, 180)
 playerNameUnfreezeInput:SetText(playerNameUnfreezeInput.defaultText)
 playerNameUnfreezeInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -313,8 +296,9 @@ table.insert(inputFields, playerNameUnfreezeInput)
 
 -- Bouton "UnFreeze"
 local btnUnfreeze = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnUnfreeze:SetSize(100, 22)
+-- btnUnfreeze:SetSize(100, 22)
 btnUnfreeze:SetText(L["UnFreeze"])
+TrinityAdmin.AutoSize(btnUnfreeze, 20, 16)
 btnUnfreeze:SetPoint("LEFT", playerNameUnfreezeInput, "RIGHT", 10, 0)
 btnUnfreeze:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -329,16 +313,16 @@ btnUnfreeze:SetScript("OnClick", function()
     if playerName == "" or playerName == playerNameUnfreezeInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            -- print("La Cible est : " .. playerName) -- Pour debug
+            -- TrinityAdmin:Print("La Cible est : " .. playerName) -- Pour debug
         else
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
 	
     local cmd = ".unfreeze " .. playerName
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 
@@ -359,8 +343,9 @@ end
 
 -- Bouton Reset Inputs
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
-btnResetInputs:SetSize(100, 22)
+-- btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText(L["Reset"])
+TrinityAdmin.AutoSize(btnResetInputs, 20, 16)
 btnResetInputs:SetPoint("TOPLEFT", playerNameUnfreezeInput, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)
 
@@ -378,8 +363,9 @@ page2Title:SetText(L["Player Functions Part 2"])
 -- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
 local function CreateServerButtonPage2(name, text, tooltip, cmd)
     local btn = CreateFrame("Button", name, commandsFramePage2, "UIPanelButtonTemplate")
-    btn:SetSize(150, 22)
+    -- btn:SetSize(150, 22)
     btn:SetText(text)
+	TrinityAdmin.AutoSize(btn, 20, 16)
     btn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
@@ -397,7 +383,7 @@ local function CreateServerButtonPage2(name, text, tooltip, cmd)
         end
 
         SendChatMessage(finalCmd, "SAY")
-        -- print("Commande envoyée: " .. finalCmd)
+        -- TrinityAdmin:Print("Commande envoyée: " .. finalCmd)
     end)
     return btn
 end
@@ -424,10 +410,11 @@ btnUnpossess:SetPoint("TOPLEFT", btnRepairItems, "TOPRIGHT", 10, 0)
 ----------------------------	
 -- Champ de saisie "Player Name" pour unstuck
 local playerNameunstuckInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
-playerNameunstuckInput:SetSize(150, 22)
+-- playerNameunstuckInput:SetSize(150, 22)
 playerNameunstuckInput:SetPoint("TOPLEFT", btnRepairItems, "BOTTOMLEFT", 0, -15)
 playerNameunstuckInput:SetAutoFocus(false)
 playerNameunstuckInput.defaultText = L["Player Name"]
+TrinityAdmin.AutoSize(playerNameunstuckInput, 20, 24, nil, 180)
 playerNameunstuckInput:SetText(playerNameunstuckInput.defaultText)
 playerNameunstuckInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -471,8 +458,9 @@ end)
 
 -- Bouton "Unstuck"
 local btnUnstuck = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
-btnUnstuck:SetSize(100, 22)
+-- btnUnstuck:SetSize(100, 22)
 btnUnstuck:SetText(L["UnStucke"])
+TrinityAdmin.AutoSize(btnUnstuck, 20, 16)
 btnUnstuck:SetPoint("LEFT", unstuckLocationDropdown, "RIGHT", 10, 0)
 btnUnstuck:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -487,16 +475,16 @@ btnUnstuck:SetScript("OnClick", function()
     if playerName == "" or playerName == playerNameunstuckInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            -- print("La Cible est : " .. playerName) -- Pour debug
+            -- TrinityAdmin:Print("La Cible est : " .. playerName) -- Pour debug
         else
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
 	
     local cmd = ".unstuck " .. playerName .. " " .. selectedLocation
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -504,10 +492,11 @@ end)
 ----------------------------
 -- Champ de saisie "Player Name"
 local kickNameInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
-kickNameInput:SetSize(150, 22)
+-- kickNameInput:SetSize(150, 22)
 kickNameInput:SetPoint("TOPLEFT", playerNameunstuckInput, "BOTTOMLEFT", 0, -15)
 kickNameInput:SetAutoFocus(false)
 kickNameInput.defaultText = L["Player Name"]
+TrinityAdmin.AutoSize(kickNameInput, 20, 24, nil, 180)
 kickNameInput:SetText(kickNameInput.defaultText)
 kickNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -521,10 +510,11 @@ table.insert(inputFields, kickNameInput)
 
 -- Champ de saisie "Raison"
 local reasonInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
-reasonInput:SetSize(150, 22)
+-- reasonInput:SetSize(150, 22)
 reasonInput:SetPoint("LEFT", kickNameInput, "RIGHT", 10, 0)
 reasonInput:SetAutoFocus(false)
 reasonInput.defaultText = L["Reason3"]
+TrinityAdmin.AutoSize(reasonInput, 20, 24, nil, 180)
 reasonInput:SetText(reasonInput.defaultText)
 reasonInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -538,8 +528,9 @@ table.insert(inputFields, reasonInput)
 
 -- Bouton "Kick"
 local btnKick = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
-btnKick:SetSize(100, 22)
+-- btnKick:SetSize(100, 22)
 btnKick:SetText(L["Kick"])
+TrinityAdmin.AutoSize(btnKick, 20, 16)
 btnKick:SetPoint("LEFT", reasonInput, "RIGHT", 10, 0)
 btnKick:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -555,9 +546,9 @@ btnKick:SetScript("OnClick", function()
     if playerName == "" or playerName == kickNameInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            -- print("La Cible est : " .. playerName) -- Pour debug
+            -- TrinityAdmin:Print("La Cible est : " .. playerName) -- Pour debug
         else
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -569,7 +560,7 @@ btnKick:SetScript("OnClick", function()
 
     local cmd = ".kick " .. playerName .. " " .. reason
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -578,10 +569,11 @@ end)
 
 -- Champ de saisie "Player Name"
 local levelupNameInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
-levelupNameInput:SetSize(150, 22)
+-- levelupNameInput:SetSize(150, 22)
 levelupNameInput:SetPoint("TOPLEFT", kickNameInput, "BOTTOMLEFT", 0, -15)
 levelupNameInput:SetAutoFocus(false)
 levelupNameInput.defaultText = L["Player Name"]
+TrinityAdmin.AutoSize(levelupNameInput, 20, 24, nil, 180)
 levelupNameInput:SetText(levelupNameInput.defaultText)
 levelupNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -595,10 +587,11 @@ table.insert(inputFields, levelupNameInput)
 
 -- Champ de saisie "Levels"
 local levelsInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
-levelsInput:SetSize(150, 22)
+-- levelsInput:SetSize(150, 22)
 levelsInput:SetPoint("LEFT", levelupNameInput, "RIGHT", 10, 0)
 levelsInput:SetAutoFocus(false)
 levelsInput.defaultText = L["Levels ?"]
+TrinityAdmin.AutoSize(levelsInput, 20, 24, nil, 180)
 levelsInput:SetText(levelsInput.defaultText)
 levelsInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -612,8 +605,9 @@ table.insert(inputFields, levelsInput)
 
 -- Bouton "Levelup"
 local btnLevelup = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
-btnLevelup:SetSize(100, 22)
+-- btnLevelup:SetSize(100, 22)
 btnLevelup:SetText(L["LevelUp"])
+TrinityAdmin.AutoSize(btnLevelup, 20, 16)
 btnLevelup:SetPoint("LEFT", levelsInput, "RIGHT", 10, 0)
 btnLevelup:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -629,9 +623,9 @@ btnLevelup:SetScript("OnClick", function()
     if playerName == "" or playerName == levelupNameInput.defaultText then
         playerName = UnitName("target")
         if playerName then
-            -- print("La Cible est : " .. playerName)
+            -- TrinityAdmin:Print("La Cible est : " .. playerName)
         else
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -643,7 +637,7 @@ btnLevelup:SetScript("OnClick", function()
 
     local cmd = ".levelup " .. playerName .. " " .. level
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -652,10 +646,11 @@ end)
 
 -- Champ de saisie "Spell ID" pour Remove Cooldownd
 local spellIdInput = CreateFrame("EditBox", nil, commandsFramePage2, "InputBoxTemplate")
-spellIdInput:SetSize(150, 22)
+-- spellIdInput:SetSize(150, 22)
 spellIdInput:SetPoint("TOPLEFT", levelupNameInput, "BOTTOMLEFT", 0, -15)
 spellIdInput:SetAutoFocus(false)
 spellIdInput.defaultText = L["Spell ID"]
+TrinityAdmin.AutoSize(spellIdInput, 20, 24, nil, 180)
 spellIdInput:SetText(spellIdInput.defaultText)
 spellIdInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -667,8 +662,9 @@ table.insert(inputFields, spellIdInput)
 
 -- Bouton "Remove Cooldownd"
 local btnRemoveCooldown = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
-btnRemoveCooldown:SetSize(150, 22)
+-- btnRemoveCooldown:SetSize(150, 22)
 btnRemoveCooldown:SetText(L["Remove Cooldownd"])
+TrinityAdmin.AutoSize(btnRemoveCooldown, 20, 16)
 btnRemoveCooldown:SetPoint("LEFT", spellIdInput, "RIGHT", 10, 0)
 btnRemoveCooldown:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -685,14 +681,15 @@ btnRemoveCooldown:SetScript("OnClick", function()
         cmd = ".cooldown " .. spellId
     end
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 ----------------------------
 -- Bouton Reset Inputs
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage2, "UIPanelButtonTemplate")
-btnResetInputs:SetSize(100, 22)
+-- btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText(L["Reset"])
+TrinityAdmin.AutoSize(btnResetInputs, 20, 16)
 btnResetInputs:SetPoint("TOPRIGHT", page2Title, "TOPRIGHT", 270, 0)
 btnResetInputs:SetScript("OnClick", ResetInputs)
 
@@ -721,10 +718,11 @@ end
 ----------------------------
 -- Champ de saisie "Name"
 local renameNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-renameNameInput:SetSize(150, 22)
+-- renameNameInput:SetSize(150, 22)
 renameNameInput:SetPoint("TOPLEFT", page3Title, "BOTTOMLEFT", 0, -20)
 renameNameInput:SetAutoFocus(false)
 renameNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(renameNameInput, 20, 24, nil, 180)
 renameNameInput:SetText(renameNameInput.defaultText)
 renameNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -737,10 +735,11 @@ table.insert(inputFields, renameNameInput)
 
 -- Champ de saisie "New Name"
 local renameNewNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-renameNewNameInput:SetSize(150, 22)
+-- renameNewNameInput:SetSize(150, 22)
 renameNewNameInput:SetPoint("LEFT", renameNameInput, "RIGHT", 10, 0)
 renameNewNameInput:SetAutoFocus(false)
 renameNewNameInput.defaultText = L["New Name"]
+TrinityAdmin.AutoSize(renameNewNameInput, 20, 24, nil, 180)
 renameNewNameInput:SetText(renameNewNameInput.defaultText)
 renameNewNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -753,8 +752,9 @@ table.insert(inputFields, renameNewNameInput)
 
 -- Bouton "Rename"
 local btnRename = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnRename:SetSize(100, 22)
+-- btnRename:SetSize(100, 22)
 btnRename:SetText(L["Rename"])
+TrinityAdmin.AutoSize(btnRename, 20, 16)
 btnRename:SetPoint("LEFT", renameNewNameInput, "RIGHT", 10, 0)
 btnRename:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -770,7 +770,7 @@ btnRename:SetScript("OnClick", function()
     if nameValue == "" or nameValue == renameNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue then
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -783,7 +783,7 @@ btnRename:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -792,10 +792,11 @@ end)
 
 -- Champ de saisie "Name"
 local reputationNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-reputationNameInput:SetSize(150, 22)
+-- reputationNameInput:SetSize(150, 22)
 reputationNameInput:SetPoint("TOPLEFT", renameNameInput, "BOTTOMLEFT", 0, -10)
 reputationNameInput:SetAutoFocus(false)
 reputationNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(reputationNameInput, 20, 24, nil, 180)
 reputationNameInput:SetText(reputationNameInput.defaultText)
 reputationNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -808,8 +809,9 @@ table.insert(inputFields, reputationNameInput)
 
 -- Bouton "Rename"
 local btnReputation = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnReputation:SetSize(130, 22)
+-- btnReputation:SetSize(130, 22)
 btnReputation:SetText(L["Show Reputation"])
+TrinityAdmin.AutoSize(btnReputation, 20, 16)
 btnReputation:SetPoint("LEFT", reputationNameInput, "RIGHT", 10, 0)
 btnReputation:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -824,7 +826,7 @@ btnReputation:SetScript("OnClick", function()
     if nameValue == "" or nameValue == reputationNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue then
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -832,7 +834,7 @@ btnReputation:SetScript("OnClick", function()
     local cmd = ".character reputation " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -841,10 +843,11 @@ end)
 
 -- Champ de saisie "Name"
 local titlesNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-titlesNameInput:SetSize(150, 22)
+-- titlesNameInput:SetSize(150, 22)
 titlesNameInput:SetPoint("TOPLEFT", reputationNameInput, "BOTTOMLEFT", 0, -10)
 titlesNameInput:SetAutoFocus(false)
 titlesNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(titlesNameInput, 20, 24, nil, 180)
 titlesNameInput:SetText(titlesNameInput.defaultText)
 titlesNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -857,8 +860,9 @@ table.insert(inputFields, titlesNameInput)
 
 -- Bouton "Titles"
 local btnTitles = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnTitles:SetSize(110, 22)
+-- btnTitles:SetSize(110, 22)
 btnTitles:SetText(L["Show Titles"])
+TrinityAdmin.AutoSize(btnTitles, 20, 16)
 btnTitles:SetPoint("LEFT", titlesNameInput, "RIGHT", 10, 0)
 btnTitles:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -873,7 +877,7 @@ btnTitles:SetScript("OnClick", function()
     if nameValue == "" or nameValue == titlesNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue then
-            print(L["please_enter_valid_pname_or_target"])
+            TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
             return
         end
     end
@@ -881,7 +885,7 @@ btnTitles:SetScript("OnClick", function()
     local cmd = ".character titles " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -890,10 +894,11 @@ end)
 
 -- Champ de saisie "Name"
 local changeraceNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-changeraceNameInput:SetSize(150, 22)
+-- changeraceNameInput:SetSize(150, 22)
 changeraceNameInput:SetPoint("TOPLEFT", titlesNameInput, "BOTTOMLEFT", 0, -10)
 changeraceNameInput:SetAutoFocus(false)
 changeraceNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(changeraceNameInput, 20, 24, nil, 180)
 changeraceNameInput:SetText(changeraceNameInput.defaultText)
 changeraceNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -906,8 +911,9 @@ table.insert(inputFields, changeraceNameInput)
 
 -- Bouton "ChangeRace"
 local btnChangeRace = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnChangeRace:SetSize(120, 22)
+-- btnChangeRace:SetSize(120, 22)
 btnChangeRace:SetText(L["Change Race"])
+TrinityAdmin.AutoSize(btnChangeRace, 20, 16)
 btnChangeRace:SetPoint("LEFT", changeraceNameInput, "RIGHT", 10, 0)
 btnChangeRace:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -920,14 +926,14 @@ btnChangeRace:SetScript("OnClick", function()
 
     -- Si "Name" est vide, utilise automatiquement la cible actuelle
     if nameValue == "" or nameValue == changeraceNameInput.defaultText or not nameValue then
-        print(L["please_enter_valid_pname_or_target"])
+        TrinityAdmin:Print(L["please_enter_valid_pname_or_target"])
         return
     end
 
     local cmd = ".character changerace " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -936,10 +942,11 @@ end)
 
 -- Champ de saisie "Name"
 local changefactionNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-changefactionNameInput:SetSize(150, 22)
+-- changefactionNameInput:SetSize(150, 22)
 changefactionNameInput:SetPoint("TOPLEFT", changeraceNameInput, "BOTTOMLEFT", 0, -10)
 changefactionNameInput:SetAutoFocus(false)
 changefactionNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(changefactionNameInput, 20, 24, nil, 180)
 changefactionNameInput:SetText(changefactionNameInput.defaultText)
 changefactionNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -952,8 +959,9 @@ table.insert(inputFields, changefactionNameInput)
 
 -- Bouton "ChangeRace"
 local btnChangefaction = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnChangefaction:SetSize(120, 22)
+-- btnChangefaction:SetSize(120, 22)
 btnChangefaction:SetText(L["Change Faction"])
+TrinityAdmin.AutoSize(btnChangefaction, 20, 16)
 btnChangefaction:SetPoint("LEFT", changefactionNameInput, "RIGHT", 10, 0)
 btnChangefaction:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -966,14 +974,14 @@ btnChangefaction:SetScript("OnClick", function()
 
     -- Si "Name" est vide, utilise automatiquement la cible actuelle
     if nameValue == "" or nameValue == changefactionNameInput.defaultText or not nameValue then
-        print(L["please_enter_value_or_select_player"])
+        TrinityAdmin:Print(L["please_enter_value_or_select_player"])
         return
     end
 
     local cmd = ".character changefaction " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -982,10 +990,11 @@ end)
 	
 -- Champ de saisie "Name"
 local customizeNameInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-customizeNameInput:SetSize(150, 22)
+-- customizeNameInput:SetSize(150, 22)
 customizeNameInput:SetPoint("TOPLEFT", changefactionNameInput, "BOTTOMLEFT", 0, -10)
 customizeNameInput:SetAutoFocus(false)
 customizeNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(customizeNameInput, 20, 24, nil, 180)
 customizeNameInput:SetText(customizeNameInput.defaultText)
 customizeNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -998,8 +1007,9 @@ table.insert(inputFields, customizeNameInput)
 
 -- Bouton "ChangeRace"
 local btnCustomize = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnCustomize:SetSize(140, 22)
+-- btnCustomize:SetSize(140, 22)
 btnCustomize:SetText(L["Character Customize"])
+TrinityAdmin.AutoSize(btnCustomize, 20, 16)
 btnCustomize:SetPoint("LEFT", customizeNameInput, "RIGHT", 10, 0)
 btnCustomize:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1012,14 +1022,14 @@ btnCustomize:SetScript("OnClick", function()
 
     -- Si "Name" est vide, utilise automatiquement la cible actuelle
     if nameValue == "" or nameValue == customizeNameInput.defaultText or not nameValue then
-        print(L["please_enter_value_or_select_player"])
+        TrinityAdmin:Print(L["please_enter_value_or_select_player"])
         return
     end
 
     local cmd = ".character customize " .. nameValue
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1027,10 +1037,11 @@ end)
 ----------------------------
 -- Champ de saisie "Character Name"
 local charNameLevelInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-charNameLevelInput:SetSize(150, 22)
+-- charNameLevelInput:SetSize(150, 22)
 charNameLevelInput:SetPoint("TOPLEFT", customizeNameInput, "BOTTOMLEFT", 0, -10)
 charNameLevelInput:SetAutoFocus(false)
 charNameLevelInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(charNameLevelInput, 20, 24, nil, 180)
 charNameLevelInput:SetText(charNameLevelInput.defaultText)
 charNameLevelInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1043,10 +1054,11 @@ table.insert(inputFields, charNameLevelInput)
 
 -- Champ de saisie "Level"
 local levelValueInput = CreateFrame("EditBox", nil, commandsFramePage3, "InputBoxTemplate")
-levelValueInput:SetSize(100, 22)
+-- levelValueInput:SetSize(100, 22)
 levelValueInput:SetPoint("LEFT", charNameLevelInput, "RIGHT", 10, 0)
 levelValueInput:SetAutoFocus(false)
 levelValueInput.defaultText = L["Level5"]
+TrinityAdmin.AutoSize(levelValueInput, 20, 24, nil, 100)
 levelValueInput:SetText(levelValueInput.defaultText)
 levelValueInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1059,8 +1071,9 @@ table.insert(inputFields, levelValueInput)
 
 -- Bouton "Set Level"
 local btnSetLevel = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnSetLevel:SetSize(100, 22)
+-- btnSetLevel:SetSize(100, 22)
 btnSetLevel:SetText(L["Set"])
+TrinityAdmin.AutoSize(btnSetLevel, 20, 16)
 btnSetLevel:SetPoint("LEFT", levelValueInput, "RIGHT", 10, 0)
 btnSetLevel:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1077,7 +1090,7 @@ btnSetLevel:SetScript("OnClick", function()
     if charName == "" or charName == charNameLevelInput.defaultText then
         charName = UnitName("target")
         if not charName then
-            print(L["please_enter_value_or_select_player"])
+            TrinityAdmin:Print(L["please_enter_value_or_select_player"])
             return
         end
     end
@@ -1090,14 +1103,15 @@ btnSetLevel:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 ----------------------------
 -- Bouton Reset Inputs
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage3, "UIPanelButtonTemplate")
-btnResetInputs:SetSize(100, 22)
+-- btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText(L["Reset"])
+TrinityAdmin.AutoSize(btnResetInputs, 20, 16)
 btnResetInputs:SetPoint("TOPRIGHT", page3Title, "TOPRIGHT", 420, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1125,10 +1139,11 @@ end
 ----------------------------
 -- Champ de saisie "Name"
 local characterchangeaccountNameInput = CreateFrame("EditBox", nil, commandsFramePage4, "InputBoxTemplate")
-characterchangeaccountNameInput:SetSize(150, 22)
+-- characterchangeaccountNameInput:SetSize(150, 22)
 characterchangeaccountNameInput:SetPoint("TOPLEFT", page3Title, "BOTTOMLEFT", 0, -20)
 characterchangeaccountNameInput:SetAutoFocus(false)
 characterchangeaccountNameInput.defaultText = L["Character Name Rename"]
+TrinityAdmin.AutoSize(characterchangeaccountNameInput, 20, 24, nil, 150)
 characterchangeaccountNameInput:SetText(characterchangeaccountNameInput.defaultText)
 characterchangeaccountNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1141,10 +1156,11 @@ table.insert(inputFields, characterchangeaccountNameInput)
 
 -- Champ de saisie "New Name"
 local accountNewAccountInput = CreateFrame("EditBox", nil, commandsFramePage4, "InputBoxTemplate")
-accountNewAccountInput:SetSize(150, 22)
+-- accountNewAccountInput:SetSize(150, 22)
 accountNewAccountInput:SetPoint("LEFT", characterchangeaccountNameInput, "RIGHT", 10, 0)
 accountNewAccountInput:SetAutoFocus(false)
 accountNewAccountInput.defaultText = L["Account6"]
+TrinityAdmin.AutoSize(accountNewAccountInput, 20, 24, nil, 150)
 accountNewAccountInput:SetText(accountNewAccountInput.defaultText)
 accountNewAccountInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1157,8 +1173,9 @@ table.insert(inputFields, accountNewAccountInput)
 
 -- Bouton "Rename"
 local btnRename = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
-btnRename:SetSize(120, 22)
+-- btnRename:SetSize(120, 22)
 btnRename:SetText(L["Change Account"])
+TrinityAdmin.AutoSize(btnRename, 20, 16)
 btnRename:SetPoint("LEFT", accountNewAccountInput, "RIGHT", 10, 0)
 btnRename:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1174,7 +1191,7 @@ btnRename:SetScript("OnClick", function()
     if nameValue == "" or nameValue == characterchangeaccountNameInput.defaultText then
         nameValue = UnitName("target")
         if not nameValue or newAccountValue == "" or newAccountValue == accountNewAccountInput.defaultText then
-            print(L["change account error"])
+            TrinityAdmin:Print(L["change account error"])
             return
         end
     end
@@ -1182,7 +1199,7 @@ btnRename:SetScript("OnClick", function()
     local cmd = ".character changeaccount " .. nameValue .. " " ..newAccountValue
 	
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1203,11 +1220,12 @@ local selectedOption = dropdownOptions[1] -- Option par défaut initiale
 
 -- Création du champ de saisie dynamique
 local dynamicInput = CreateFrame("EditBox", nil, commandsFramePage4, "InputBoxTemplate")
-dynamicInput:SetSize(150, 22)
+-- dynamicInput:SetSize(150, 22)
 dynamicInput:SetPoint("TOPLEFT", characterchangeaccountNameInput, "BOTTOMLEFT", 0, -20)
 dynamicInput:SetAutoFocus(false)
 dynamicInput.defaultText = selectedOption.defaultText
 dynamicInput:SetText(dynamicInput.defaultText)
+TrinityAdmin.AutoSize(dynamicInput, 20, 12, nil, 150)
 
 dynamicInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1245,8 +1263,9 @@ end)
 
 -- Bouton "Execute"
 local btnExecute = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
-btnExecute:SetSize(100, 22)
+-- btnExecute:SetSize(100, 22)
 btnExecute:SetText(L["Execute3"])
+TrinityAdmin.AutoSize(btnExecute, 20, 16)
 btnExecute:SetPoint("LEFT", dynamicDropdown, "RIGHT", -5, 2)
 
 btnExecute:SetScript("OnEnter", function(self)
@@ -1261,14 +1280,14 @@ btnExecute:SetScript("OnClick", function()
 
     -- Vérification rigoureuse du contenu du champ de saisie
     if inputValue == "" or inputValue == dynamicInput.defaultText then
-        print(L["Please enter a valid value in the input field."])
+        TrinityAdmin:Print(L["Please enter a valid value in the input field."])
         return
     end
 
     local finalCmd = selectedOption.command .. " " .. inputValue
 
     SendChatMessage(finalCmd, "SAY")
-    -- print("Commande envoyée : " .. finalCmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. finalCmd)
 end)
 
 
@@ -1278,10 +1297,11 @@ end)
 
 -- Champ obligatoire "Enter Char Name or Guid"
 local restoreCharGuidInput = CreateFrame("EditBox", nil, commandsFramePage4, "InputBoxTemplate")
-restoreCharGuidInput:SetSize(170, 22)
+-- restoreCharGuidInput:SetSize(170, 22)
 restoreCharGuidInput:SetPoint("TOPLEFT", dynamicInput, "TOPLEFT", 0, -40)
 restoreCharGuidInput:SetAutoFocus(false)
 restoreCharGuidInput.defaultText = L["Enter Char Name or Guid"]
+TrinityAdmin.AutoSize(restoreCharGuidInput, 20, 24, nil, 240)
 restoreCharGuidInput:SetText(restoreCharGuidInput.defaultText)
 restoreCharGuidInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1294,10 +1314,11 @@ table.insert(inputFields, restoreCharGuidInput)
 
 -- Champ optionnel "New Name"
 local restoreNewNameInput = CreateFrame("EditBox", nil, commandsFramePage4, "InputBoxTemplate")
-restoreNewNameInput:SetSize(150, 22)
+-- restoreNewNameInput:SetSize(150, 22)
 restoreNewNameInput:SetPoint("LEFT", restoreCharGuidInput, "RIGHT", 10, 0)
 restoreNewNameInput:SetAutoFocus(false)
 restoreNewNameInput.defaultText = L["New Name7"]
+TrinityAdmin.AutoSize(restoreNewNameInput, 20, 24, nil, 150)
 restoreNewNameInput:SetText(restoreNewNameInput.defaultText)
 restoreNewNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1310,10 +1331,11 @@ table.insert(inputFields, restoreNewNameInput)
 
 -- Champ optionnel "New Account"
 local restoreNewAccountInput = CreateFrame("EditBox", nil, commandsFramePage4, "InputBoxTemplate")
-restoreNewAccountInput:SetSize(150, 22)
+-- restoreNewAccountInput:SetSize(150, 22)
 restoreNewAccountInput:SetPoint("LEFT", restoreNewNameInput, "RIGHT", 10, 0)
 restoreNewAccountInput:SetAutoFocus(false)
 restoreNewAccountInput.defaultText = L["New Account7"]
+TrinityAdmin.AutoSize(restoreNewAccountInput, 20, 24, nil, 150)
 restoreNewAccountInput:SetText(restoreNewAccountInput.defaultText)
 restoreNewAccountInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1326,8 +1348,9 @@ table.insert(inputFields, restoreNewAccountInput)
 
 -- Bouton "Restore"
 local btnRestore = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
-btnRestore:SetSize(100, 22)
+-- btnRestore:SetSize(100, 22)
 btnRestore:SetText(L["Restore7"])
+TrinityAdmin.AutoSize(btnRestore, 20, 16)
 btnRestore:SetPoint("LEFT", restoreNewAccountInput, "RIGHT", 10, 0)
 
 btnRestore:SetScript("OnEnter", function(self)
@@ -1344,7 +1367,7 @@ btnRestore:SetScript("OnClick", function()
 
     -- Vérifie si le premier champ est renseigné
     if guidOrName == "" or guidOrName == restoreCharGuidInput.defaultText then
-        print(L["error restore"])
+        TrinityAdmin:Print(L["error restore"])
         return
     end
 
@@ -1361,13 +1384,14 @@ btnRestore:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-    -- print("Commande envoyée : " .. cmd)
+    -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage4, "UIPanelButtonTemplate")
-btnResetInputs:SetSize(100, 22)
+-- btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText(L["Reset"])
+TrinityAdmin.AutoSize(btnResetInputs, 20, 16)
 btnResetInputs:SetPoint("TOPRIGHT", restoreNewAccountInput, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1384,8 +1408,9 @@ page5Title:SetText(L["Pets Functions"])
 -- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
 local function CreateServerButtonPage5(name, text, tooltip, cmd)
     local btn = CreateFrame("Button", name, commandsFramePage5, "UIPanelButtonTemplate")
-    btn:SetSize(150, 22)
+    -- btn:SetSize(150, 22)
     btn:SetText(text)
+	TrinityAdmin.AutoSize(btn, 20, 16)
     btn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
@@ -1403,7 +1428,7 @@ local function CreateServerButtonPage5(name, text, tooltip, cmd)
         end
 
         SendChatMessage(finalCmd, "SAY")
-        -- print("Commande envoyée: " .. finalCmd)
+        -- TrinityAdmin:Print("Commande envoyée: " .. finalCmd)
     end)
     return btn
 end
@@ -1428,10 +1453,11 @@ btnPetCreate:SetPoint("TOPLEFT", page5Title, "BOTTOMLEFT", 0, -15)
 ----------------------------
 -- Champ de saisie "Enterspell"
 local petlearnInput = CreateFrame("EditBox", nil, commandsFramePage5, "InputBoxTemplate")
-petlearnInput:SetSize(90, 22)
+-- petlearnInput:SetSize(90, 22)
 petlearnInput:SetPoint("TOPLEFT", btnPetCreate, "BOTTOMLEFT", 0, -10)
 petlearnInput:SetAutoFocus(false)
 petlearnInput.defaultText = L["Spell ID"]
+TrinityAdmin.AutoSize(petlearnInput, 20, 24, nil, 110)
 petlearnInput:SetText(petlearnInput.defaultText)
 petlearnInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1444,8 +1470,9 @@ table.insert(inputFields, petlearnInput)
 
 -- Bouton "Learn Pet"
 local btnLearnPet = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
-btnLearnPet:SetSize(120, 22)
+-- btnLearnPet:SetSize(120, 22)
 btnLearnPet:SetText(L["Learn to Pet"])
+TrinityAdmin.AutoSize(btnLearnPet, 20, 16)
 btnLearnPet:SetPoint("LEFT", petlearnInput, "RIGHT", 10, 0)
 btnLearnPet:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1458,12 +1485,12 @@ btnLearnPet:SetScript("OnClick", function()
     local petName = petlearnInput:GetText()
 	-- Si "petName" vide, on envoi erreur
         if not petName or petName == "" or petName == petlearnInput.defaultText then
-            print(L["pet learn error"])
+            TrinityAdmin:Print(L["pet learn error"])
             return
 		end
     local cmd = ".pet learn " .. petName
     SendChatMessage(cmd, "SAY")
-   --  print("Commande envoyée : " .. cmd)
+   --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1471,10 +1498,11 @@ end)
 ----------------------------
 -- Champ de saisie "Level"
 local petlevelInput = CreateFrame("EditBox", nil, commandsFramePage5, "InputBoxTemplate")
-petlevelInput:SetSize(90, 22)
+-- petlevelInput:SetSize(90, 22)
 petlevelInput:SetPoint("TOPLEFT", petlearnInput, "BOTTOMLEFT", 0, -10)
 petlevelInput:SetAutoFocus(false)
 petlevelInput.defaultText = L["Level69"]
+TrinityAdmin.AutoSize(petlevelInput, 20, 24, nil, 70)
 petlevelInput:SetText(petlevelInput.defaultText)
 petlevelInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1487,8 +1515,9 @@ table.insert(inputFields, petlevelInput)
 
 -- Bouton "level"
 local btnPetlevel = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
-btnPetlevel:SetSize(120, 22)
+-- btnPetlevel:SetSize(120, 22)
 btnPetlevel:SetText(L["Set Level69"])
+TrinityAdmin.AutoSize(btnPetlevel, 20, 16)
 btnPetlevel:SetPoint("LEFT", petlevelInput, "RIGHT", 10, 0)
 btnPetlevel:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1501,12 +1530,12 @@ btnPetlevel:SetScript("OnClick", function()
     local petLevel = petlevelInput:GetText()
 	 -- Si "level" vide, on envoi erreur
         if not petLevel or petLevel == "" or petLevel == petlevelInput.defaultText then
-            print(L["Set Level69 error"])
+            TrinityAdmin:Print(L["Set Level69 error"])
             return
 		end
     local cmd = ".pet level " .. petLevel
     SendChatMessage(cmd, "SAY")
-   --  print("Commande envoyée : " .. cmd)
+   --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1514,10 +1543,11 @@ end)
 ----------------------------
 -- Champ de spellid "Level"
 local spellidInput = CreateFrame("EditBox", nil, commandsFramePage5, "InputBoxTemplate")
-spellidInput:SetSize(90, 22)
+-- spellidInput:SetSize(90, 22)
 spellidInput:SetPoint("TOPLEFT", petlevelInput, "BOTTOMLEFT", 0, -10)
 spellidInput:SetAutoFocus(false)
 spellidInput.defaultText = L["Level69"]
+TrinityAdmin.AutoSize(spellidInput, 20, 24, nil, 70)
 spellidInput:SetText(spellidInput.defaultText)
 spellidInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1530,8 +1560,9 @@ table.insert(inputFields, spellidInput)
 
 -- Bouton "unlearn"
 local btnPetUnlearn = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
-btnPetUnlearn:SetSize(120, 22)
+-- btnPetUnlearn:SetSize(120, 22)
 btnPetUnlearn:SetText(L["Unlearn69"])
+TrinityAdmin.AutoSize(btnPetUnlearn, 20, 16)
 btnPetUnlearn:SetPoint("LEFT", spellidInput, "RIGHT", 10, 0)
 btnPetUnlearn:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1544,18 +1575,19 @@ btnPetUnlearn:SetScript("OnClick", function()
     local petSpell = spellidInput:GetText()
     -- Si "level" vide, on envoi erreur
         if not petSpell or petSpell == "" or petSpell == spellidInput.defaultText then
-            print(L["Unlearn69 error"])
+            TrinityAdmin:Print(L["Unlearn69 error"])
             return
 		end
 	
     local cmd = ".pet unleran " .. petSpell
     SendChatMessage(cmd, "SAY")
-   --  print("Commande envoyée : " .. cmd)
+   --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 	
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage5, "UIPanelButtonTemplate")
-btnResetInputs:SetSize(100, 22)
+-- btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText(L["Reset"])
+TrinityAdmin.AutoSize(btnResetInputs, 20, 16)
 btnResetInputs:SetPoint("TOPRIGHT", btnPetUnlearn, "BOTTOMLEFT", 0, -15)
 btnResetInputs:SetScript("OnClick", ResetInputs)	
 ---------------------------------------------------------------
@@ -1572,8 +1604,9 @@ page6Title:SetText(L["Player Dumps"])
 -- Fonction améliorée pour les boutons simples appliquant la commande à la cible ou au GM par défaut
 local function CreateServerButtonPage5(name, text, tooltip, cmd)
     local btn = CreateFrame("Button", name, commandsFramePage6, "UIPanelButtonTemplate")
-    btn:SetSize(150, 22)
+    -- btn:SetSize(150, 22)
     btn:SetText(text)
+	TrinityAdmin.AutoSize(btn, 20, 16)
     btn:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(tooltip, 1, 1, 1, 1, true)
@@ -1591,7 +1624,7 @@ local function CreateServerButtonPage5(name, text, tooltip, cmd)
         end
 
         SendChatMessage(finalCmd, "SAY")
-       --  print("Commande envoyée: " .. finalCmd)
+       --  TrinityAdmin:Print("Commande envoyée: " .. finalCmd)
     end)
     return btn
 end
@@ -1610,10 +1643,11 @@ end
 ----------------------------
 -- Champ de saisie "Name"
 local pdumpcopyNameInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-pdumpcopyNameInput:SetSize(150, 22)
+-- pdumpcopyNameInput:SetSize(150, 22)
 pdumpcopyNameInput:SetPoint("TOPLEFT", page6Title, "BOTTOMLEFT", 0, -20)
 pdumpcopyNameInput:SetAutoFocus(false)
 pdumpcopyNameInput.defaultText = L["Player NameOrGUID"]
+TrinityAdmin.AutoSize(pdumpcopyNameInput, 20, 24, nil, 150)
 pdumpcopyNameInput:SetText(pdumpcopyNameInput.defaultText)
 pdumpcopyNameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1626,10 +1660,11 @@ table.insert(inputFields, pdumpcopyNameInput)
 
 -- Champ de saisie "Account"
 local accountInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-accountInput:SetSize(70, 22)
+-- accountInput:SetSize(70, 22)
 accountInput:SetPoint("LEFT", pdumpcopyNameInput, "RIGHT", 10, 0)
 accountInput:SetAutoFocus(false)
 accountInput.defaultText = L["Account69"]
+TrinityAdmin.AutoSize(accountInput, 20, 24, nil, 150)
 accountInput:SetText(accountInput.defaultText)
 accountInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1642,10 +1677,11 @@ table.insert(inputFields, accountInput)
 
 -- Champ de saisie "newname"
 local newnameInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-newnameInput:SetSize(120, 22)
+-- newnameInput:SetSize(120, 22)
 newnameInput:SetPoint("LEFT", accountInput, "RIGHT", 10, 0)
 newnameInput:SetAutoFocus(false)
 newnameInput.defaultText = L["New Name70"]
+TrinityAdmin.AutoSize(newnameInput, 20, 24, nil, 150)
 newnameInput:SetText(newnameInput.defaultText)
 newnameInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1658,10 +1694,11 @@ table.insert(inputFields, newnameInput)
 
 -- Champ de saisie "newguid"
 local newguidInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-newguidInput:SetSize(70, 22)
+-- newguidInput:SetSize(70, 22)
 newguidInput:SetPoint("LEFT", newnameInput, "RIGHT", 10, 0)
 newguidInput:SetAutoFocus(false)
 newguidInput.defaultText = L["New Guid70"]
+TrinityAdmin.AutoSize(newguidInput, 20, 24, nil, 150)
 newguidInput:SetText(newguidInput.defaultText)
 newguidInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1674,8 +1711,9 @@ table.insert(inputFields, newguidInput)
 
 -- Bouton "Rename"
 local btnDumpCopy = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
-btnDumpCopy:SetSize(70, 22)
+-- btnDumpCopy:SetSize(70, 22)
 btnDumpCopy:SetText(L["Dump70"])
+TrinityAdmin.AutoSize(btnDumpCopy, 20, 16)
 btnDumpCopy:SetPoint("LEFT", newguidInput, "RIGHT", 10, 0)
 btnDumpCopy:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1693,7 +1731,7 @@ btnDumpCopy:SetScript("OnClick", function()
     if nameValue == "" or nameValue == pdumpcopyNameInput.defaultText or
        accountValue == "" or accountValue == accountInput.defaultText or
        newNameValue == "" or newNameValue == newnameInput.defaultText then
-        print(L["pdump_error"])
+        TrinityAdmin:Print(L["pdump_error"])
         return
     end
 
@@ -1705,7 +1743,7 @@ btnDumpCopy:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-   --  print("Commande envoyée : " .. cmd)
+   --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1713,10 +1751,11 @@ end)
 ----------------------------
 -- Champ de saisie "Filename"
 local pdumploadFileInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-pdumploadFileInput:SetSize(150, 22)
+-- pdumploadFileInput:SetSize(150, 22)
 pdumploadFileInput:SetPoint("TOPLEFT", pdumpcopyNameInput, "BOTTOMLEFT", 0, -20)
 pdumploadFileInput:SetAutoFocus(false)
 pdumploadFileInput.defaultText = L["Enter Filename"]
+TrinityAdmin.AutoSize(pdumploadFileInput, 20, 24, nil, 150)
 pdumploadFileInput:SetText(pdumploadFileInput.defaultText)
 pdumploadFileInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1729,10 +1768,11 @@ table.insert(inputFields, pdumploadFileInput)
 
 -- Champ de saisie "Account"
 local accountLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-accountLoadInput:SetSize(70, 22)
+-- accountLoadInput:SetSize(70, 22)
 accountLoadInput:SetPoint("LEFT", pdumploadFileInput, "RIGHT", 10, 0)
 accountLoadInput:SetAutoFocus(false)
 accountLoadInput.defaultText = L["Account69"]
+TrinityAdmin.AutoSize(accountLoadInput, 20, 24, nil, 150)
 accountLoadInput:SetText(accountLoadInput.defaultText)
 accountLoadInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1745,10 +1785,11 @@ table.insert(inputFields, accountLoadInput)
 
 -- Champ de saisie "newname"
 local newnameLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-newnameLoadInput:SetSize(120, 22)
+-- newnameLoadInput:SetSize(120, 22)
 newnameLoadInput:SetPoint("LEFT", accountLoadInput, "RIGHT", 10, 0)
 newnameLoadInput:SetAutoFocus(false)
 newnameLoadInput.defaultText = L["New Name70"]
+TrinityAdmin.AutoSize(newnameLoadInput, 20, 24, nil, 150)
 newnameLoadInput:SetText(newnameLoadInput.defaultText)
 newnameLoadInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1761,10 +1802,11 @@ table.insert(inputFields, newnameLoadInput)
 
 -- Champ de saisie "newguid"
 local newguidLoadInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-newguidLoadInput:SetSize(70, 22)
+-- newguidLoadInput:SetSize(70, 22)
 newguidLoadInput:SetPoint("LEFT", newnameLoadInput, "RIGHT", 10, 0)
 newguidLoadInput:SetAutoFocus(false)
 newguidLoadInput.defaultText = L["New Guid70"]
+TrinityAdmin.AutoSize(newguidLoadInput, 20, 24, nil, 150)
 newguidLoadInput:SetText(newguidLoadInput.defaultText)
 newguidLoadInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1777,8 +1819,9 @@ table.insert(inputFields, newguidLoadInput)
 
 -- Bouton "Load"
 local btnDumpLoad = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
-btnDumpLoad:SetSize(70, 22)
+-- btnDumpLoad:SetSize(70, 22)
 btnDumpLoad:SetText(L["Load70"])
+TrinityAdmin.AutoSize(btnDumpLoad, 20, 16)
 btnDumpLoad:SetPoint("LEFT", newguidLoadInput, "RIGHT", 10, 0)
 btnDumpLoad:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1796,7 +1839,7 @@ btnDumpLoad:SetScript("OnClick", function()
     if nameValue == "" or nameValue == pdumploadFileInput.defaultText or
        accountValue == "" or accountValue == accountLoadInput.defaultText or
        newNameValue == "" or newNameValue == newnameLoadInput.defaultText then
-        print(L["Load70 error"])
+        TrinityAdmin:Print(L["Load70 error"])
         return
     end
 
@@ -1808,7 +1851,7 @@ btnDumpLoad:SetScript("OnClick", function()
     end
 
     SendChatMessage(cmd, "SAY")
-   --  print("Commande envoyée : " .. cmd)
+   --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
 ----------------------------
@@ -1816,10 +1859,11 @@ end)
 ----------------------------
 -- Champ de saisie "Filename"
 local pdumpwriteFileInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-pdumpwriteFileInput:SetSize(120, 22)
+-- pdumpwriteFileInput:SetSize(120, 22)
 pdumpwriteFileInput:SetPoint("TOPLEFT", pdumploadFileInput, "BOTTOMLEFT", 0, -20)
 pdumpwriteFileInput:SetAutoFocus(false)
 pdumpwriteFileInput.defaultText = L["Enter Filename"]
+TrinityAdmin.AutoSize(pdumpwriteFileInput, 20, 24, nil, 150)
 pdumpwriteFileInput:SetText(pdumpwriteFileInput.defaultText)
 pdumpwriteFileInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1832,10 +1876,11 @@ table.insert(inputFields, pdumpwriteFileInput)
 
 -- Champ de saisie "Name"
 local playerNameWriteInput = CreateFrame("EditBox", nil, commandsFramePage6, "InputBoxTemplate")
-playerNameWriteInput:SetSize(150, 22)
+-- playerNameWriteInput:SetSize(150, 22)
 playerNameWriteInput:SetPoint("LEFT", pdumpwriteFileInput, "RIGHT", 10, 0)
 playerNameWriteInput:SetAutoFocus(false)
 playerNameWriteInput.defaultText = L["Player NameOrGUID"]
+TrinityAdmin.AutoSize(playerNameWriteInput, 20, 24, nil, 150)
 playerNameWriteInput:SetText(playerNameWriteInput.defaultText)
 playerNameWriteInput:SetScript("OnEditFocusGained", function(self)
     if self:GetText() == self.defaultText then self:SetText("") end
@@ -1848,8 +1893,9 @@ table.insert(inputFields, playerNameWriteInput)
 
 -- Bouton "Write"
 local btnDumpWrite = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
-btnDumpWrite:SetSize(70, 22)
+-- btnDumpWrite:SetSize(70, 22)
 btnDumpWrite:SetText(L["Write"])
+TrinityAdmin.AutoSize(btnDumpWrite, 20, 16)
 btnDumpWrite:SetPoint("LEFT", playerNameWriteInput, "RIGHT", 10, 0)
 btnDumpWrite:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1864,7 +1910,7 @@ btnDumpWrite:SetScript("OnClick", function()
     -- Vérification des champs obligatoires
     if nameValueWrite == "" or nameValueWrite == pdumpwriteFileInput.defaultText or
        accountValueWrite == "" or accountValueWrite == playerNameWriteInput.defaultText then
-        print(L["write error"])
+        TrinityAdmin:Print(L["write error"])
         return
     end
 
@@ -1872,131 +1918,18 @@ btnDumpWrite:SetScript("OnClick", function()
     local cmd = ".pdump write " .. nameValueWrite .. " " .. accountValueWrite
 
     SendChatMessage(cmd, "SAY")
-   --  print("Commande envoyée : " .. cmd)
+   --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 	
 -----------------------------
 -- Bouton reset
 ----------------------------
 local btnResetInputs = CreateFrame("Button", nil, commandsFramePage6, "UIPanelButtonTemplate")
-btnResetInputs:SetSize(100, 22)
+-- btnResetInputs:SetSize(100, 22)
 btnResetInputs:SetText(L["Reset"])
+TrinityAdmin.AutoSize(btnResetInputs, 20, 16)
 btnResetInputs:SetPoint("TOPRIGHT", btnDumpWrite, "BOTTOMLEFT", 0, -15)
-btnResetInputs:SetScript("OnClick", ResetInputs)	
----------------------------------------------------------------
--- Page 7 : Player Info Capture (.pinfo) [DEBUG MODE]
----------------------------------------------------------------
-
--- local commandsFramePage7 = CreateFrame("Frame", nil, pages[7])
--- commandsFramePage7:SetPoint("TOPLEFT", pages[7], "TOPLEFT", 20, -40)
--- commandsFramePage7:SetSize(500, 350)
--- 
--- local page7Title = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
--- page7Title:SetPoint("TOPLEFT", commandsFramePage7, "TOPLEFT", 0, 0)
--- page7Title:SetText("Player Info Capture")
--- 
--- -- Création d'un ScrollFrame pour afficher les informations
--- local scrollFrame = CreateFrame("ScrollFrame", "MyInfoScrollFrame", commandsFramePage7, "UIPanelScrollFrameTemplate")
--- scrollFrame:SetPoint("TOPLEFT", page7Title, "TOPRIGHT", 100, 30)
--- scrollFrame:SetSize(300, 300)
--- 
--- -- Conteneur dans lequel on mettra le FontString
--- local content = CreateFrame("Frame", nil, scrollFrame)
--- content:SetSize(300, 300)  -- Taille initiale, pourra être ajustée dynamiquement
--- scrollFrame:SetScrollChild(content)
--- 
--- -- FontString qui contiendra les infos
--- local infoText = content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
--- infoText:SetPoint("TOPLEFT")
--- infoText:SetWidth(300)        -- Largeur du texte (ou un peu moins pour la marge)
--- infoText:SetJustifyH("LEFT")
--- infoText:SetJustifyV("TOP")
--- infoText:SetText("")          -- Initialement vide
--- 
--- -- Variables pour la capture des messages
--- local capturingPinfo = false
--- local collectedInfo = {}
--- local captureTimer = nil
--- 
--- local function FinishCapture()
---     capturingPinfo = false
---     if #collectedInfo > 0 then
---         local fullText = table.concat(collectedInfo, "\n")
---         infoText:SetText(fullText)
---         
---         -- Ajuste dynamiquement la hauteur de 'content' en fonction du texte
---         local textHeight = infoText:GetStringHeight()
---         content:SetHeight(textHeight + 5)  -- +5 px de marge, ajustez selon besoin
--- 
---         -- Remet le scroll en haut
---         scrollFrame:SetVerticalScroll(0)
--- 
---         print("[DEBUG] Capture terminée. Affichage dans la page.")
---     else
---         print("[DEBUG] Fin de capture mais aucune info capturée.")
---     end
--- end
--- 
--- -- Bouton cumulé : envoie la commande .pinfo et déclenche la capture
--- local btnCapturePinfo = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
--- btnCapturePinfo:SetSize(180, 24)
--- btnCapturePinfo:SetPoint("TOPLEFT", page7Title, "TOPLEFT", 0, -30)
--- btnCapturePinfo:SetText("Advanced .Pinfo")
--- btnCapturePinfo:SetScript("OnClick", function()
---     SendChatMessage(".pinfo", "SAY")
---     capturingPinfo = true
---     collectedInfo = {}  -- réinitialise la capture
---     if captureTimer then captureTimer:Cancel() end
---     captureTimer = C_Timer.NewTimer(1, FinishCapture)
---     print("[DEBUG] .pinfo envoyé, capture activée")
--- end)
--- 
--- -- Frame pour capturer les événements CHAT_MSG_SYSTEM
--- local captureFrame = CreateFrame("Frame")
--- captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
--- captureFrame:SetScript("OnEvent", function(self, event, msg)
---     if not capturingPinfo then return end
---     
---     print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
---     
--- local function DebugStringBytes(str)
---     print("=== Début DebugStringBytes ===")
---     for i = 1, #str do
---         local c = str:sub(i, i)
---         print(i, c, string.byte(c))
---     end
---     print("=== Fin DebugStringBytes ===")
--- end
--- 
--- DebugStringBytes(msg)
--- 
--- -- Exemple de nettoyage
--- local cleanMsg = msg
--- -- Retire les codes couleur, liens, textures, etc. (optionnel)
--- cleanMsg = cleanMsg:gsub("|c%x%x%x%x%x%x%x%x", "")
--- cleanMsg = cleanMsg:gsub("|r", "")
--- cleanMsg = cleanMsg:gsub("|H.-|h(.-)|h", "%1")
--- cleanMsg = cleanMsg:gsub("|T.-|t", "")
--- 
--- -- Retire spécifiquement le caractère U+2502 (box drawing vertical)
--- --cleanMsg = cleanMsg:gsub("\226\148\130", "")
--- cleanMsg = cleanMsg:gsub("\226[\148-\149][\128-\191]", "")
--- 
---     -- Détection du début de la capture (pinfo) s'il y a "Player" et "guid"
---     if cleanMsg:find("Player") and cleanMsg:find("guid") then
---         collectedInfo = {}  -- démarre une nouvelle capture
---         table.insert(collectedInfo, cleanMsg)
---         print("[DEBUG] Début de capture détecté.")
---         if captureTimer then captureTimer:Cancel() end
---         captureTimer = C_Timer.NewTimer(1, FinishCapture)
---         return
---     end
--- 
---     table.insert(collectedInfo, cleanMsg)
---     print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
---     if captureTimer then captureTimer:Cancel() end
---     captureTimer = C_Timer.NewTimer(1, FinishCapture)
--- end)
+btnResetInputs:SetScript("OnClick", ResetInputs)
 
 ---------------------------------------------------------------
 -- Page 7 : Player Info Capture (.pinfo)
@@ -2378,9 +2311,9 @@ local function FinishCapture()
     if #collectedInfo > 0 then
         local infoTable = ParseCapturedPinfo(collectedInfo)
         ShowPlayerInfoAceGUI(infoTable)
-        -- print("[DEBUG] Capture terminée. Affichage AceGUI.")
+        -- TrinityAdmin:Print("[DEBUG] Capture terminée. Affichage AceGUI.")
     else
-        -- print("[DEBUG] Fin de capture mais aucune info capturée.")
+        -- TrinityAdmin:Print("[DEBUG] Fin de capture mais aucune info capturée.")
     end
 end
 
@@ -2390,15 +2323,16 @@ end
 local btnCapturePinfo = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
 btnCapturePinfo:SetPoint("TOPLEFT", page7Title, "TOPLEFT", 0, -20)
 btnCapturePinfo:SetText(L["Advanced .Pinfo"])
-btnCapturePinfo:SetHeight(22)
-btnCapturePinfo:SetWidth(btnCapturePinfo:GetTextWidth() + 20)
+TrinityAdmin.AutoSize(btnCapturePinfo, 20, 16)
+-- btnCapturePinfo:SetHeight(22)
+-- btnCapturePinfo:SetWidth(btnCapturePinfo:GetTextWidth() + 20)
 btnCapturePinfo:SetScript("OnClick", function()
     SendChatMessage(".pinfo", "SAY")
     capturingPinfo = true
     collectedInfo = {}
     if captureTimer then captureTimer:Cancel() end
     captureTimer = C_Timer.NewTimer(1, FinishCapture)
-    -- print("[DEBUG] .pinfo envoyé, capture activée")
+    -- TrinityAdmin:Print("[DEBUG] .pinfo envoyé, capture activée")
 end)
 
 local mailSubtitle = commandsFramePage7:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -2407,29 +2341,32 @@ mailSubtitle:SetText(L["Send Items by Mail to Player"])
 
 -- Création des champs de saisie Player Name, Subject, Email Text
 local playerNameEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
-playerNameEditBox:SetSize(150, 22)
+-- playerNameEditBox:SetSize(150, 22)
 playerNameEditBox:SetPoint("TOPLEFT", mailSubtitle, "BOTTOMLEFT", 0, -10)
 playerNameEditBox:SetAutoFocus(false)
 playerNameEditBox:SetText(L["Player Name"])
+TrinityAdmin.AutoSize(playerNameEditBox, 20, 13, nil, 150)
 
 local subjectEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
-subjectEditBox:SetSize(150, 22)
+-- subjectEditBox:SetSize(150, 22)
 subjectEditBox:SetPoint("LEFT", playerNameEditBox, "RIGHT", 10, 0)
 subjectEditBox:SetAutoFocus(false)
 subjectEditBox:SetText(L["Subject"])
+TrinityAdmin.AutoSize(subjectEditBox, 20, 13, nil, 150)
 
 local emailTextEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
-emailTextEditBox:SetSize(150, 22)
+-- emailTextEditBox:SetSize(150, 22)
 emailTextEditBox:SetPoint("LEFT", subjectEditBox, "RIGHT", 10, 0)
 emailTextEditBox:SetAutoFocus(false)
 emailTextEditBox:SetText(L["Email Text"])
+TrinityAdmin.AutoSize(emailTextEditBox, 20, 13, nil, 150)
 
 -- Création des 24 champs de saisie pour les Items et Counts, alignés précisément 3 paires par ligne
 local itemEditBoxes = {}
 local startX = 0
-local startY = -20
+local startY = -25
 local xSpacing = 220 -- espacement horizontal entre chaque paire Item-Count
-local ySpacing = -20 -- espacement vertical entre chaque ligne
+local ySpacing = -25 -- espacement vertical entre chaque ligne
 local pairsPerLine = 3
 
 local currentXOffset = startX
@@ -2446,7 +2383,7 @@ for i = 1, 12 do
     -- Item ID ensuite
     local itemIdEditBox = CreateFrame("EditBox", nil, commandsFramePage7, "InputBoxTemplate")
     itemIdEditBox:SetSize(100, 22)
-    itemIdEditBox:SetPoint("LEFT", itemCountEditBox, "RIGHT", 5, 0) -- ajustement mineur (5 pixels)
+    itemIdEditBox:SetPoint("LEFT", itemCountEditBox, "RIGHT", 10, 0) -- ajustement mineur (5 pixels)
     itemIdEditBox:SetAutoFocus(false)
     itemIdEditBox:SetText("Item " .. i)
 
@@ -2464,10 +2401,11 @@ end
 
 -- Positionnement correct du bouton en dessous des champs
 local btnSendItems = CreateFrame("Button", nil, commandsFramePage7, "UIPanelButtonTemplate")
-btnSendItems:SetPoint("TOPLEFT", playerNameEditBox, "BOTTOMLEFT", 0, currentYOffset - 30)
-btnSendItems:SetText("Send Items")
-btnSendItems:SetHeight(22)
-btnSendItems:SetWidth(btnSendItems:GetTextWidth() + 20)
+btnSendItems:SetPoint("TOPLEFT", playerNameEditBox, "BOTTOMLEFT", 0, currentYOffset)
+btnSendItems:SetText(L["Send_Items"])
+TrinityAdmin.AutoSize(btnSendItems, 20, 16)
+-- btnSendItems:SetHeight(22)
+-- btnSendItems:SetWidth(btnSendItems:GetTextWidth() + 20)
 
 
 local tooltipSendItems = L["tooltipSendItems tooltip"]
@@ -2500,7 +2438,7 @@ btnSendItems:SetScript("OnClick", function()
     end
 
     SendChatMessage(command, "SAY")
-    -- print("[DEBUG] Commande envoyée: " .. command)
+    -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. command)
 end)
 
 ---------------------------------------------------------------
@@ -2517,28 +2455,32 @@ page8Title:SetText(L["Send Mails Funcs"])
 
 -- Send Mail Section
 local mailPlayerName = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-mailPlayerName:SetSize(150, 22)
+-- mailPlayerName:SetSize(150, 22)
 mailPlayerName:SetPoint("TOPLEFT", page8Title, "BOTTOMLEFT", 0, -15)
 mailPlayerName:SetAutoFocus(false)
 mailPlayerName:SetText(L["Player Name"])
+TrinityAdmin.AutoSize(mailPlayerName, 20, 13, nil, 150)
 
 local mailSubject = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-mailSubject:SetSize(150, 22)
+-- mailSubject:SetSize(150, 22)
 mailSubject:SetPoint("LEFT", mailPlayerName, "RIGHT", 10, 0)
 mailSubject:SetAutoFocus(false)
 mailSubject:SetText(L["Subject"])
+TrinityAdmin.AutoSize(mailSubject, 20, 13, nil, 150)
 
 local mailText = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-mailText:SetSize(150, 22)
+-- mailText:SetSize(150, 22)
 mailText:SetPoint("LEFT", mailSubject, "RIGHT", 10, 0)
 mailText:SetAutoFocus(false)
 mailText:SetText("Text")
+TrinityAdmin.AutoSize(mailText, 20, 13, nil, 150)
 
 local btnSendMail = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnSendMail:SetPoint("LEFT", mailText, "RIGHT", 10, 0)
 btnSendMail:SetText(L["Email Text"])
-btnSendMail:SetHeight(22)
-btnSendMail:SetWidth(btnSendMail:GetTextWidth() + 20)
+TrinityAdmin.AutoSize(btnSendMail, 20, 16)
+-- btnSendMail:SetHeight(22)
+-- btnSendMail:SetWidth(btnSendMail:GetTextWidth() + 20)
 btnSendMail:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["sendemail tooltip"], 1, 1, 1, 1, true)
@@ -2550,7 +2492,7 @@ btnSendMail:SetScript("OnClick", function()
     local subject = mailSubject:GetText()
     local text = mailText:GetText()
     if playerName == "" or subject == "" or text == "" then
-        print(L["sendmail error"])
+        TrinityAdmin:Print(L["sendmail error"])
         return
     end
     local cmd = '.send mail ' .. playerName .. ' "' .. subject .. '" "' .. text .. '"'
@@ -2559,22 +2501,25 @@ end)
 
 -- Send Message Section
 local msgPlayerName = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-msgPlayerName:SetSize(150, 22)
+-- msgPlayerName:SetSize(150, 22)
 msgPlayerName:SetPoint("TOPLEFT", mailPlayerName, "BOTTOMLEFT", 0, -30)
 msgPlayerName:SetAutoFocus(false)
 msgPlayerName:SetText(L["Player Name"])
+TrinityAdmin.AutoSize(msgPlayerName, 20, 13, nil, 150)
 
 local msgText = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-msgText:SetSize(310, 22)
+-- msgText:SetSize(310, 22)
 msgText:SetPoint("LEFT", msgPlayerName, "RIGHT", 10, 0)
 msgText:SetAutoFocus(false)
 msgText:SetText(L["PMessage"])
+TrinityAdmin.AutoSize(msgText, 20, 13, nil, 310)
 
 local btnSendMessage = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnSendMessage:SetPoint("LEFT", msgText, "RIGHT", 10, 0)
 btnSendMessage:SetText(L["Send Message"])
-btnSendMessage:SetHeight(22)
-btnSendMessage:SetWidth(btnSendMessage:GetTextWidth() + 20)
+TrinityAdmin.AutoSize(btnSendMessage, 20, 16)
+-- btnSendMessage:SetHeight(22)
+-- btnSendMessage:SetWidth(btnSendMessage:GetTextWidth() + 20)
 btnSendMessage:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["Send Message tooltip"], 1, 1, 1, 1, true)
@@ -2585,7 +2530,7 @@ btnSendMessage:SetScript("OnClick", function()
     local playerName = msgPlayerName:GetText()
     local message = msgText:GetText()
     if playerName == "" or message == "" then
-        print(L["sendmail error"])
+        TrinityAdmin:Print(L["sendmail error"])
         return
     end
     local cmd = '.send message ' .. playerName .. ' ' .. message
@@ -2594,34 +2539,39 @@ end)
 
 -- Send Money Section
 local moneyPlayerName = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-moneyPlayerName:SetSize(120, 22)
+-- moneyPlayerName:SetSize(120, 22)
 moneyPlayerName:SetPoint("TOPLEFT", msgPlayerName, "BOTTOMLEFT", 0, -30)
 moneyPlayerName:SetAutoFocus(false)
 moneyPlayerName:SetText(L["Player Name"])
+TrinityAdmin.AutoSize(moneyPlayerName, 20, 13, nil, 150)
 
 local moneySubject = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-moneySubject:SetSize(120, 22)
+-- moneySubject:SetSize(120, 22)
 moneySubject:SetPoint("LEFT", moneyPlayerName, "RIGHT", 10, 0)
 moneySubject:SetAutoFocus(false)
 moneySubject:SetText(L["Subject"])
+TrinityAdmin.AutoSize(moneySubject, 20, 13, nil, 120)
 
 local moneyText = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-moneyText:SetSize(120, 22)
+-- moneyText:SetSize(120, 22)
 moneyText:SetPoint("LEFT", moneySubject, "RIGHT", 10, 0)
 moneyText:SetAutoFocus(false)
 moneyText:SetText(L["Money_Text"])
+TrinityAdmin.AutoSize(moneyText, 20, 13, nil, 120)
 
 local moneyAmount = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-moneyAmount:SetSize(80, 22)
+-- moneyAmount:SetSize(80, 22)
 moneyAmount:SetPoint("LEFT", moneyText, "RIGHT", 10, 0)
 moneyAmount:SetAutoFocus(false)
 moneyAmount:SetText(L["V_Money"])
+TrinityAdmin.AutoSize(moneyAmount, 20, 13, nil, 90)
 
 local btnSendMoney = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnSendMoney:SetPoint("LEFT", moneyAmount, "RIGHT", 10, 0)
 btnSendMoney:SetText(L["Send Money"])
-btnSendMoney:SetHeight(22)
-btnSendMoney:SetWidth(btnSendMoney:GetTextWidth() + 20)
+-- btnSendMoney:SetHeight(22)
+TrinityAdmin.AutoSize(btnSendMoney, 20, 16)
+-- btnSendMoney:SetWidth(btnSendMoney:GetTextWidth() + 20)
 btnSendMoney:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["Send Money tooltip"], 1, 1, 1, 1, true)
@@ -2634,7 +2584,7 @@ btnSendMoney:SetScript("OnClick", function()
     local text = moneyText:GetText()
     local money = moneyAmount:GetText()
     if playerName == "" or subject == "" or text == "" or money == "" then
-        print(L["sendmail error"])
+        TrinityAdmin:Print(L["sendmail error"])
         return
     end
     local cmd = '.send money ' .. playerName .. ' "' .. subject .. '" "' .. text .. '" ' .. money
@@ -2646,36 +2596,41 @@ convertSubtitle:SetPoint("TOPLEFT", moneyPlayerName, "BOTTOMLEFT", 0, -20)
 convertSubtitle:SetText(L["To copper converter"])
 -- Champs Gold, Silver, Copper
 local goldInput = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-goldInput:SetSize(80, 22)
+-- goldInput:SetSize(80, 22)
 goldInput:SetPoint("TOPLEFT", convertSubtitle, "BOTTOMLEFT", 0, -10)
 goldInput:SetAutoFocus(false)
 goldInput:SetText("Gold")
+TrinityAdmin.AutoSize(goldInput, 20, 13, nil, 80)
 
 local silverInput = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-silverInput:SetSize(80, 22)
+-- silverInput:SetSize(80, 22)
 silverInput:SetPoint("LEFT", goldInput, "RIGHT", 10, 0)
 silverInput:SetAutoFocus(false)
 silverInput:SetText("Silver")
+TrinityAdmin.AutoSize(silverInput, 20, 13, nil, 80)
 
 local copperInput = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-copperInput:SetSize(80, 22)
+-- copperInput:SetSize(80, 22)
 copperInput:SetPoint("LEFT", silverInput, "RIGHT", 10, 0)
 copperInput:SetAutoFocus(false)
 copperInput:SetText("Copper")
+TrinityAdmin.AutoSize(copperInput, 20, 13, nil, 80)
 
 -- Bouton Convert
 local btnConvert = CreateFrame("Button", nil, commandsFramePage8, "UIPanelButtonTemplate")
 btnConvert:SetPoint("LEFT", copperInput, "RIGHT", 10, 0)
 btnConvert:SetText("Convert")
-btnConvert:SetHeight(22)
-btnConvert:SetWidth(btnConvert:GetTextWidth() + 20)
+-- btnConvert:SetHeight(22)
+-- btnConvert:SetWidth(btnConvert:GetTextWidth() + 20)
+TrinityAdmin.AutoSize(btnConvert, 20, 16)
 
 -- Champ résultat vide
 local resultInput = CreateFrame("EditBox", nil, commandsFramePage8, "InputBoxTemplate")
-resultInput:SetSize(100, 22)
+-- resultInput:SetSize(100, 22)
 resultInput:SetPoint("LEFT", btnConvert, "RIGHT", 10, 0)
 resultInput:SetAutoFocus(false)
-resultInput:SetText("")
+resultInput:SetText("Push Convert")
+TrinityAdmin.AutoSize(resultInput, 20, 13, nil, 120)
 
 -- Fonction de conversion
 btnConvert:SetScript("OnClick", function()
@@ -2697,7 +2652,7 @@ captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
 captureFrame:SetScript("OnEvent", function(self, event, msg)
     if not capturingPinfo then return end
 
-    -- print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
+    -- TrinityAdmin:Print("[DEBUG] Message CHAT_MSG_SYSTEM reçu : " .. msg)
 
     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
                        :gsub("|r", "")
@@ -2705,38 +2660,10 @@ captureFrame:SetScript("OnEvent", function(self, event, msg)
                        :gsub("|T.-|t", "")
                        :gsub("\226[\148-\149][\128-\191]", "")
     table.insert(collectedInfo, cleanMsg)
-    -- print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
+    -- TrinityAdmin:Print("[DEBUG] Ajouté à la capture : " .. cleanMsg)
     if captureTimer then captureTimer:Cancel() end
     captureTimer = C_Timer.NewTimer(1, FinishCapture)
 end)
-
-     ------------------------------------------------------------------------------
-    -- Boutons de navigation (précédent / suivant)
-    ------------------------------------------------------------------------------
-    -- local currentPage = 1
-	-- 
-    -- local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    -- btnPrev:SetSize(80, 22)
-    -- btnPrev:SetText("Précédent")
-    -- btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
-    -- btnPrev:SetScript("OnClick", function()
-    --     if currentPage > 1 then
-    --         currentPage = currentPage - 1
-    --         ShowPage(currentPage)
-    --     end
-    -- end)
-	-- 
-    -- local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    -- btnNext:SetSize(80, 22)
-    -- btnNext:SetText("Suivant")
-    -- btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
-    -- btnNext:SetScript("OnClick", function()
-    --     if currentPage < totalPages then
-    --         currentPage = currentPage + 1
-    --         ShowPage(currentPage)
-    --     end
-    -- end)
-
 
     ------------------------------------------------------------------------------
     -- Bouton Back final (commun aux pages)
@@ -2744,8 +2671,9 @@ end)
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("CENTER", navPageLabel, "CENTER", 0, 20)
     btnBackFinal:SetText(L["Back"])
-    btnBackFinal:SetHeight(22)
-    btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
+	TrinityAdmin.AutoSize(btnBackFinal, 20, 16)
+    -- btnBackFinal:SetHeight(22)
+    -- btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
     -- On augmente le niveau pour qu'il apparaisse au-dessus des pages
     btnBackFinal:SetFrameLevel(panel:GetFrameLevel() + 10)
     -- ou alternativement : btnBackFinal:SetFrameStrata("HIGH")

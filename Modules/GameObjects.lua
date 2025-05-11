@@ -33,10 +33,11 @@ toolsTitle:SetText(L["Game Objects Tools"])
 -- Champ de saisie pour la commande spéciale
 local specialInput = CreateFrame("EditBox", "TrinityAdminSpecialInput", panel, "InputBoxTemplate")
 specialInput:SetAutoFocus(false)
-specialInput:SetSize(150, 22)
+-- specialInput:SetSize(150, 22)
 specialInput:SetPoint("TOPLEFT", toolsTitle, "BOTTOMLEFT", 0, -5)
 -- On lui affecte une valeur par défaut (celle de la première option)
 specialInput:SetText(L["Enter Guid"])
+TrinityAdmin.AutoSize(specialInput, 20, 13, nil, 200)
 
 -- Table des options du menu déroulant
 local specialOptions = {
@@ -56,9 +57,9 @@ local specialOptions = {
 
 	-- Création du menu déroulant pour les options
 	local specialDropdown = CreateFrame("Frame", "TrinityAdminSpecialDropdown", panel, "UIDropDownMenuTemplate")
-	specialDropdown:SetPoint("LEFT", specialInput, "RIGHT", 10, 0)
+	specialDropdown:SetPoint("LEFT", specialInput, "RIGHT", 0, -1)
 	UIDropDownMenu_SetWidth(specialDropdown, 140)
-	UIDropDownMenu_SetButtonWidth(specialDropdown, 240)
+	UIDropDownMenu_SetButtonWidth(specialDropdown, 220)
 	-- Initialisation de la sélection (par défaut, la première option)
 	specialDropdown.selectedID = 1
 	UIDropDownMenu_Initialize(specialDropdown, function(dropdownFrame, level, menuList)
@@ -91,8 +92,9 @@ local specialOptions = {
 	
 	-- Bouton "Execute" pour lancer la commande
 	local btnSpecialExecute = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnSpecialExecute:SetSize(60, 22)
-	btnSpecialExecute:SetText("Execute")
+	-- btnSpecialExecute:SetSize(60, 22)
+	btnSpecialExecute:SetText(L["Execute"])
+	TrinityAdmin.AutoSize(btnSpecialExecute, 20, 16)
 	btnSpecialExecute:SetPoint("TOPLEFT", specialInput, "BOTTOMLEFT", 0, -10)
 	btnSpecialExecute:SetScript("OnClick", function()
 		local inputValue = specialInput:GetText()
@@ -104,7 +106,7 @@ local specialOptions = {
 			if targetName then
 				finalCommand = command .. " " .. targetName
 			else
-				print(L["enter_value_or_target_error"])
+				TrinityAdmin:Print(L["enter_value_or_target_error"])
 				return
 			end
 		end
@@ -130,31 +132,35 @@ local specialOptions = {
     
     -- Champ de saisie pour le GUID
     local advGuidEdit = CreateFrame("EditBox", "TrinityAdminAdvGuidEditBox", panel, "InputBoxTemplate")
-    advGuidEdit:SetSize(150, 22)
+    -- advGuidEdit:SetSize(150, 22)
     advGuidEdit:SetPoint("TOPLEFT", advLabel, "BOTTOMLEFT", 0, -5)
     advGuidEdit:SetText(L["EnterGuid_69"])
+	TrinityAdmin.AutoSize(advGuidEdit, 20, 13)
     
     -- Champ de saisie pour X
     local advXEdit = CreateFrame("EditBox", "TrinityAdminAdvXEditBox", panel, "InputBoxTemplate")
-    advXEdit:SetSize(80, 22)
+    -- advXEdit:SetSize(80, 22)
     advXEdit:SetPoint("TOPLEFT", advGuidEdit, "TOPRIGHT", 10, 0)
     advXEdit:SetText(L["Enter X"])
+	TrinityAdmin.AutoSize(advXEdit, 20, 13)
     
     -- Champ de saisie pour Y
     local advYEdit = CreateFrame("EditBox", "TrinityAdminAdvYEditBox", panel, "InputBoxTemplate")
-    advYEdit:SetSize(80, 22)
+    -- advYEdit:SetSize(80, 22)
     advYEdit:SetPoint("TOPLEFT", advXEdit, "TOPRIGHT", 10, 0)
     advYEdit:SetText(L["Enter Y"])
+	TrinityAdmin.AutoSize(advYEdit, 20, 13)
     
     -- Champ de saisie pour Z
     local advZEdit = CreateFrame("EditBox", "TrinityAdminAdvZEditBox", panel, "InputBoxTemplate")
-    advZEdit:SetSize(80, 22)
+    -- advZEdit:SetSize(80, 22)
     advZEdit:SetPoint("TOPLEFT", advYEdit, "TOPRIGHT", 10, 0)
     advZEdit:SetText(L["Enter Z"])
+	TrinityAdmin.AutoSize(advZEdit, 20, 13)
     
     -- Dropdown pour choisir l'action ("gobject move" ou "gobject turn")
     local advDropdown = CreateFrame("Frame", "TrinityAdminAdvDropdown", panel, "UIDropDownMenuTemplate")
-    advDropdown:SetPoint("TOPLEFT", advGuidEdit, "BOTTOMLEFT", 0, -5)
+    advDropdown:SetPoint("TOPLEFT", advGuidEdit, "BOTTOMLEFT", 0, -9)
     UIDropDownMenu_SetWidth(advDropdown, 150)
     UIDropDownMenu_SetButtonWidth(advDropdown, 170)
     local advOptions = {
@@ -191,9 +197,10 @@ local specialOptions = {
     
     -- Bouton "Move"
     local advButton = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    advButton:SetSize(60, 22)
+    -- advButton:SetSize(60, 22)
     advButton:SetText(L["Movegob"])
-    advButton:SetPoint("LEFT", advDropdown, "RIGHT", 10, 0)
+	TrinityAdmin.AutoSize(advButton, 20, 16)
+    advButton:SetPoint("LEFT", advDropdown, "RIGHT", -5, 0)
     advButton:SetScript("OnClick", function()
         local guid = advGuidEdit:GetText()
         local x = advXEdit:GetText()
@@ -202,7 +209,7 @@ local specialOptions = {
         local option = advDropdown.selectedOption
         local command = option.command
         if guid == "" or guid == option.defaultText then
-            print(L["enter_valid_guid_error"])
+            TrinityAdmin:Print(L["enter_valid_guid_error"])
             return
         end
         local finalCommand = command .. " " .. guid .. " " .. x .. " " .. y .. " " .. z
@@ -233,8 +240,9 @@ local specialOptions = {
     -- Bouton "Retour" (pour revenir au menu principal)
     ------------------------------------------------------------
     local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
+    -- btnBack:SetSize(80, 22)
     btnBack:SetText(L["Back"])
+	TrinityAdmin.AutoSize(btnBack, 20, 16)
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
@@ -252,9 +260,10 @@ local specialOptions = {
     -- Champ de saisie pour filtrer la liste
     ------------------------------------------------------------
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
-    filterEditBox:SetSize(150, 22)
+    -- filterEditBox:SetSize(150, 22)
     filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
-    filterEditBox:SetText("Search...")
+    filterEditBox:SetText(L["Search..."])
+	TrinityAdmin.AutoSize(filterEditBox, 20, 13, nil, 150)
 
     ------------------------------------------------------------
     -- ScrollFrame + scrollChild
@@ -273,19 +282,22 @@ local specialOptions = {
     -- Boutons de pagination : Précédent, Suivant, et label Page
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
-    btnPrev:SetText(L["Preview"])
+    -- btnPrev:SetSize(80, 22)
+    btnPrev:SetText(L["Pagination_Preview"])
+	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", 110, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
+    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
+	TrinityAdmin.AutoSize(btnNext, 20, 16)
     btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPage:SetSize(90, 22)
+    -- btnPage:SetSize(90, 22)
     btnPage:SetPoint("BOTTOM", panel, "BOTTOM", 200, 10)
     btnPage:SetText("Page 1 / 1")
+	TrinityAdmin.AutoSize(btnPage, 20, 16)
 
     ------------------------------------------------------------
     -- Fonction PopulateGOScroll(options)
@@ -407,53 +419,6 @@ local specialOptions = {
 
     currentPage = 1
     PopulateGOScroll(defaultOptions)
-
-    ------------------------------------------------------------
-    -- Script du filtre (EnterPressed)
-    ------------------------------------------------------------
-	-- Recherche uniquement avec name
-    -- filterEditBox:SetScript("OnEnterPressed", function(self)
-    --     self:ClearFocus()
-    --     local searchText = self:GetText():lower()
-    --     if #searchText < 3 then
-    --         print("Veuillez entrer au moins 3 caractères pour la recherche.")
-    --         return
-    --     end
-	-- 
-    --     local filteredOptions = {}
-    --     for _, option in ipairs(GameObjectsData) do
-    --         if option.name and option.name:lower():find(searchText) then
-    --             table.insert(filteredOptions, option)
-    --         end
-    --     end
-	-- 
-    --     currentPage = 1
-    --     PopulateGOScroll(filteredOptions)
-    -- end)
-	
-	-- Recheche avec name ou entry
-	-- filterEditBox:SetScript("OnEnterPressed", function(self)
-	-- 	self:ClearFocus()
-	-- 	local searchText = self:GetText():lower()
-	-- 
-	-- 	-- Vérifie que l'utilisateur a saisi au moins 3 caractères
-	-- 	if #searchText < 3 then
-	-- 		print("Veuillez entrer au moins 3 caractères pour la recherche.")
-	-- 		return
-	-- 	end
-	-- 
-	-- 	local filteredOptions = {}
-	-- 	for _, option in ipairs(GameObjectsData) do
-	-- 		-- Vérifie si le texte est dans le "name" ou correspond à l'"entry"
-	-- 		if (option.name and option.name:lower():find(searchText)) or
-	-- 		(tostring(option.entry) == searchText) then
-	-- 			table.insert(filteredOptions, option)
-	-- 		end
-	-- 	end
-	-- 
-	-- 	currentPage = 1
-	-- 	PopulateGOScroll(filteredOptions)
-	-- end)
 	
 	-- Recheche avec text Nothing found
 	filterEditBox:SetScript("OnEnterPressed", function(self)
@@ -462,7 +427,7 @@ local specialOptions = {
 	
 		-- Vérifie que l'utilisateur a saisi au moins 3 caractères
 		if #searchText < 3 then
-			print(L["min_search_length_error"])
+			TrinityAdmin:Print(L["min_search_length_error"])
 			return
 		end
 	
@@ -511,8 +476,9 @@ local specialOptions = {
 	-- Bouton "Reset" pour revenir à la liste complète
 	------------------------------------------------------------
 	local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnReset:SetSize(80, 22)
+	-- btnReset:SetSize(80, 22)
 	btnReset:SetText(L["Reset"])
+	TrinityAdmin.AutoSize(btnReset, 20, 16)
 	btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnClick", function()
 		filterEditBox:SetText("")  -- Efface le champ de recherche

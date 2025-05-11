@@ -172,8 +172,9 @@ UIDropDownMenu_SetText(dropdown, options[1].text)
     -- Bouton Reload pour ce groupe
     local btnReload = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
     btnReload:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
-    btnReload:SetSize(80, 22)
+    -- btnReload:SetSize(80, 22)
     btnReload:SetText(L["Reload"])
+	TrinityAdmin.AutoSize(btnReload, 20, 16)
     btnReload:SetScript("OnClick", function()
    if dropdown.selectedOption then
       SendChatMessage(dropdown.selectedOption.command, "SAY")

@@ -163,7 +163,7 @@
 				</Anchors>
 				<Scripts>
 				    <OnLoad>
-						self:SetText(L["Database/Saves"]);
+						self:SetText(L["Database_Reload"]);
 						self:SetWidth(self:GetTextWidth() + 20);
 					</OnLoad>				
 					<OnClick>
@@ -339,7 +339,7 @@
 			</Anchors>
 			<Scripts>
 			    <OnLoad>
-					self:SetText(L["Guild's Module"]);
+					self:SetText(L["Guilds_Module_gestion"]);
 					self:SetWidth(self:GetTextWidth() + 20);
 				</OnLoad>			
 				<OnClick>
