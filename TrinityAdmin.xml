@@ -37,12 +37,13 @@
                 </FontString>
             </Layer>
         </Layers>
-
+		<!-- Nouvelle ligne -->
         <!-- Boutons Teleport, GM, Npc, Close -->
         <Frames>
+			<!-- Teleport Button -->
             <Button name="$parentTeleportButton" inherits="UIPanelButtonTemplate" text="Teleport">
                 <Size>
-                    <AbsDimension x="80" y="30"/>
+                    <!-- <AbsDimension x="80" y="30"/> -->
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT">
@@ -61,10 +62,10 @@
                     </OnClick>
                 </Scripts>
             </Button>
-
+			<!-- GM Panel Button -->
             <Button name="$parentGMButton" inherits="UIPanelButtonTemplate" text="Modify Funcs">
                 <Size>
-                    <AbsDimension x="100" y="30"/>
+                    <!--<AbsDimension x="100" y="30"/> -->
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="RIGHT">
@@ -83,10 +84,10 @@
                     </OnClick>
                 </Scripts>
             </Button>
-
+			<!-- NPC Panel Button -->
             <Button name="$parentNPCButton" inherits="UIPanelButtonTemplate" text="Npc">
                 <Size>
-                    <AbsDimension x="80" y="30"/>
+                    <!--<AbsDimension x="80" y="30"/> -->
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentGMButton" relativePoint="RIGHT">
@@ -105,10 +106,10 @@
                     </OnClick>
                 </Scripts>
             </Button>
-             <!-- Nouveau bouton GM Functions -->
+            <!-- GM Functions Panel Button -->
 			<Button name="$parentGMFunctionsButton" inherits="UIPanelButtonTemplate" text="GM Funcs">
 				<Size>
-					<AbsDimension x="100" y="30"/>
+					<!--<AbsDimension x="100" y="30"/> -->
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentNPCButton" relativePoint="RIGHT">
@@ -127,10 +128,10 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton Account Ici, $parent prend la valeur "TrinityAdminMainFrame", donc le nom final du bouton sera : TrinityAdminMainFrameAccountButton-->
+			<!-- Accounts Panel Button -->
 			<Button name="$parentAccountButton" inherits="UIPanelButtonTemplate" text="Accounts">
 				<Size>
-					<AbsDimension x="100" y="30"/>
+					<!--<AbsDimension x="100" y="30"/> -->
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentGMFunctionsButton" relativePoint="RIGHT">
@@ -149,15 +150,16 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Panneau de gestion des bdd -->
+			<!-- Nouvelle ligne -->
+			<!-- Database Panel Button -->
 			<Button name="$parentDatabaseButton" inherits="UIPanelButtonTemplate" text="Database/Saves">
 				<Size>
-					<AbsDimension x="115" y="30"/>
+					<!--<AbsDimension x="115" y="30"/> -->
 				</Size>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parentAccountButton" relativePoint="RIGHT">
+					<Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="10" y="0"/>
+							<AbsDimension x="0" y="-45"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -171,15 +173,15 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton Server Admin -->
+			<!-- Server Admin Panel Button -->
 			<Button name="$parentServerAdminButton" inherits="UIPanelButtonTemplate" text="Server Admin">
 				<Size>
-					<AbsDimension x="105" y="30"/>
+					<!--<AbsDimension x="115" y="30"/> -->
 				</Size>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parentTeleportButton" relativePoint="BOTTOMLEFT">
+					<Anchor point="LEFT" relativeTo="$parentDatabaseButton" relativePoint="RIGHT">
 						<Offset>
-							<AbsDimension x="0" y="-45"/>
+							<AbsDimension x="10" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -193,10 +195,10 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton GameObjects -->
+			<!-- GameObjects Panel Button -->
 			<Button name="$parentGameObjectsButton" inherits="UIPanelButtonTemplate" text="GameObjects">
 				<Size>
-					<AbsDimension x="105" y="30"/>
+					<!--<AbsDimension x="105" y="30"/> -->
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentServerAdminButton" relativePoint="RIGHT">
@@ -215,10 +217,10 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton AddItem -->
+			<!-- Add Item Panel Button -->
 			<Button name="$parentAddItemButton" inherits="UIPanelButtonTemplate" text="Add Item">
 				<Size>
-					<AbsDimension x="105" y="30"/>
+					<!--<AbsDimension x="105" y="30"/> -->
 				</Size>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentGameObjectsButton" relativePoint="RIGHT">
@@ -237,15 +239,16 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton AdvancedItems -->
+			<!-- Nouvelle ligne -->
+			<!-- Advanced Items Panel Button -->
 			<Button name="$parentAdvancedItemsButton" inherits="UIPanelButtonTemplate" text="Advanced Items">
 				<Size>
-					<AbsDimension x="120" y="30"/>
+					<!--<AbsDimension x="120" y="30"/> -->
 				</Size>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parentAddItemButton" relativePoint="RIGHT">
+					<Anchor point="LEFT" relativeTo="$parentDatabaseButton" relativePoint="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="10" y="0"/>
+							<AbsDimension x="0" y="-45"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -259,10 +262,10 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<!-- Bouton Module Characters -->
+			<!-- Bouton ModuleCharacter (ModuleCharacters.lua) -->
 			<Button name="$parentModuleCharacterButton" inherits="UIPanelButtonTemplate" text="Characters Module">
 			<Size>
-				<AbsDimension x="135" y="30"/>
+				<!--<AbsDimension x="135" y="30"/> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentAdvancedItemsButton" relativePoint="RIGHT">
@@ -281,15 +284,15 @@
 				</OnClick>
 			</Scripts>
 			</Button>
-			<!-- Bouton Module Waypoints -->
+			<!-- Bouton Waypoints (Waypoints.lua) -->
 			<Button name="$parentWaypointsButton" inherits="UIPanelButtonTemplate" text="Waypoints Module">
 			<Size>
-				<AbsDimension x="135" y="30"/>
+				<!--<AbsDimension x="135" y="30"/> -->
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentServerAdminButton" relativePoint="BOTTOMLEFT">
+				<Anchor point="LEFT" relativeTo="$parentModuleCharacterButton" relativePoint="RIGHT">
 				<Offset>
-					<AbsDimension x="0" y="-45"/>
+					<AbsDimension x="10" y="0"/>
 				</Offset>
 				</Anchor>
 			</Anchors>
@@ -306,7 +309,7 @@
 			<!-- Bouton Module AhBot -->
 			<Button name="$parentAhBotButton" inherits="UIPanelButtonTemplate" text="AH Bot Module">
 			<Size>
-				<AbsDimension x="135" y="30"/>
+				<!--<AbsDimension x="135" y="30"/> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentWaypointsButton" relativePoint="RIGHT">
@@ -325,15 +328,16 @@
 				</OnClick>
 			</Scripts>
 			</Button>
+			<!-- Nouvelle ligne -->
 			<!-- Bouton Module Guild -->
 			<Button name="$parentGuildButton" inherits="UIPanelButtonTemplate" text="Guild's Module">
 			<Size>
-				<AbsDimension x="135" y="30"/>
+				<!--<AbsDimension x="135" y="30"/> -->
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentAhBotButton" relativePoint="RIGHT">
+				<Anchor point="LEFT" relativeTo="$parentAdvancedItemsButton" relativePoint="BOTTOMLEFT">
 				<Offset>
-					<AbsDimension x="10" y="0"/>
+					<AbsDimension x="0" y="-45"/>
 				</Offset>
 				</Anchor>
 			</Anchors>
@@ -350,7 +354,7 @@
 			<!-- Bouton Module LearnDamage -->
 			<Button name="$parentLearnDamageButton" inherits="UIPanelButtonTemplate" text="Learn And Damages">
 			<Size>
-				<AbsDimension x="135" y="30"/>
+				<!--<AbsDimension x="135" y="30"/> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentGuildButton" relativePoint="RIGHT">
@@ -372,12 +376,12 @@
 			<!-- Bouton Module AdvancedGob -->
 			<Button name="$parentAdvancedGobButton" inherits="UIPanelButtonTemplate" text="Advanced GameObjects">
 			<Size>
-				<AbsDimension x="170" y="30"/>
+				<!--<AbsDimension x="170" y="30"/> -->
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentWaypointsButton" relativePoint="BOTTOMLEFT">
+				<Anchor point="LEFT" relativeTo="$parentLearnDamageButton" relativePoint="RIGHT">
 				<Offset>
-					<AbsDimension x="0" y="-45"/>
+					<AbsDimension x="10" y="0"/>
 				</Offset>
 				</Anchor>
 			</Anchors>
@@ -394,7 +398,7 @@
 			<!-- Bouton Module AdvancedNpc -->
 			<Button name="$parentAdvancedNpcButton" inherits="UIPanelButtonTemplate" text="Advanced NPC Add">
 			<Size>
-				<AbsDimension x="170" y="30"/>
+				<!--<AbsDimension x="170" y="30"/> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentAdvancedGobButton" relativePoint="RIGHT">
@@ -416,7 +420,7 @@
 			<!-- Bouton Module Misc -->
 			<Button name="$parentMiscButton" inherits="UIPanelButtonTemplate" text="Misc">
 			<Size>
-				<AbsDimension x="100" y="30"/>
+				<!--<AbsDimension x="100" y="30"/> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentAdvancedNpcButton" relativePoint="RIGHT">
@@ -435,15 +439,16 @@
 				</OnClick>
 			</Scripts>
 			</Button>
+			<!-- Nouvelle ligne -->
 			<!-- Bouton Module Cheat -->
 			<Button name="$parentcheatButton" inherits="UIPanelButtonTemplate" text="Cheat">
 			<Size>
-				<AbsDimension x="100" y="30"/>
+				<!--<AbsDimension x="100" y="30"/> -->
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentMiscButton" relativePoint="RIGHT">
+				<Anchor point="LEFT" relativeTo="$parentGuildButton" relativePoint="BOTTOMLEFT">
 				<Offset>
-					<AbsDimension x="10" y="0"/>
+					<AbsDimension x="0" y="-45"/>
 				</Offset>
 				</Anchor>
 			</Anchors>
@@ -460,12 +465,12 @@
 			<!-- Bouton Module Debug -->
 			<Button name="$parentDebugButton" inherits="UIPanelButtonTemplate" text="Debug Functions">
 			<Size>
-				<AbsDimension x="150" y="30"/>
+				<!--<AbsDimension x="150" y="30"/> -->
 			</Size>
 			<Anchors>
-				<Anchor point="LEFT" relativeTo="$parentAdvancedGobButton" relativePoint="LEFT">
+				<Anchor point="LEFT" relativeTo="$parentcheatButton" relativePoint="RIGHT">
 				<Offset>
-					<AbsDimension x="0" y="-55"/>
+					<AbsDimension x="10" y="0"/>
 				</Offset>
 				</Anchor>
 			</Anchors>
@@ -482,7 +487,7 @@
 			<!-- Bouton Module Others -->
 			<Button name="$parentOthersButton" inherits="UIPanelButtonTemplate" text="Other Stuffs">
 			<Size>
-				<AbsDimension x="150" y="30"/>
+				<!--<AbsDimension x="150" y="30"/> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentDebugButton" relativePoint="RIGHT">
@@ -504,7 +509,7 @@
 			<!-- Bouton Module Tickets -->
 			<Button name="$parentTicketsButton" inherits="UIPanelButtonTemplate" text="Tickets Management">
 			<Size>
-				<AbsDimension x="150" y="30"/>
+				<!-- <AbsDimension x="150" y="30"/> --> -->
 			</Size>
 			<Anchors>
 				<Anchor point="LEFT" relativeTo="$parentOthersButton" relativePoint="RIGHT">
@@ -544,31 +549,44 @@
     <!-- Nouveau template pour nos dropdowns : TrinityAdminDropdownTemplate -->
     <Frame name="TrinityAdminDropdownTemplate" virtual="true" inherits="UIDropDownMenuTemplate">
         <Scripts>
-            <OnLoad>
-                -- Largeur
-                UIDropDownMenu_SetWidth(self, 110)
-                UIDropDownMenu_SetDisplayMode(self, "MENU_WITH_BORDERS")
-                UIDropDownMenu_JustifyText(self, "LEFT")
-            
-                -- On récupère le bouton en s'assurant que le nom n'est pas nil
-                local name = self:GetName() or ""
-                local btn = _G[name.."Button"]
-                if btn then
-                    local fs = btn:GetFontString()
-                    if fs then
-                        fs:SetFontObject("GameFontHighlightSmall")
-                        fs:SetTextColor(1,1,1,1)
-                    end
-                end
-            
-                -- (Optionnel) Masquer Left, Middle, Right
-                local left  = _G[name.."Left"]
-                local mid   = _G[name.."Middle"]
-                local right = _G[name.."Right"]
-                if left  then left:Hide()  end
-                if mid   then mid:Hide()   end
-                if right then right:Hide() end
-            </OnLoad>
-    </Scripts>
+			<OnLoad>
+				-- Padding horizontal et vertical
+				local paddingX, paddingY = 20, 8
+		
+				-- Mode d’affichage et alignement
+				UIDropDownMenu_SetDisplayMode(self, "MENU_WITH_BORDERS")
+				UIDropDownMenu_JustifyText(self, "LEFT")
+		
+				-- Récupère le bouton (celui qui affiche le texte courant)
+				local name = self:GetName() or ""
+				local btn = _G[name.."Button"]
+				if btn then
+					local fs = btn:GetFontString()
+					if fs then
+						-- Applique le style
+						fs:SetFontObject("GameFontHighlightSmall")
+						fs:SetTextColor(1,1,1,1)
+		
+						-- Auto-taille : largeur = texte + paddingX
+						local textWidth = fs:GetStringWidth()
+						UIDropDownMenu_SetWidth(self, textWidth + paddingX)
+		
+						-- Si vous voulez aussi ajuster la hauteur :
+						local textHeight = fs:GetHeight()
+						local totalHeight = textHeight + paddingY
+						-- Forcer le bouton
+						btn:SetHeight(totalHeight)
+					end
+				end
+		
+				-- (Optionnel) Masquer Left, Middle, Right
+				local left  = _G[name.."Left"]
+				local mid   = _G[name.."Middle"]
+				local right = _G[name.."Right"]
+				if left  then left:Hide()  end
+				if mid   then mid:Hide()   end
+				if right then right:Hide() end
+			</OnLoad>
+		</Scripts>
 	</Frame>
 </Ui>

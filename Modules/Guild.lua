@@ -1,9 +1,11 @@
 --------------------------------------------------------------
 -- TrinityAdmin Guild Module (Guild.lua)
 --------------------------------------------------------------
-
-local Guild = TrinityAdmin:GetModule("Guild")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local Guild = TrinityAdmin:GetModule("Guild")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
+
 -------------------------------------------------------------
 -- 1) Variables pour la capture du .guild info
 -------------------------------------------------------------
@@ -405,31 +407,31 @@ guildCaptureFrame:SetScript("OnEvent", function(_, _, msg)
 -------------------------------------------------------------
 -- 1) Définir la fonction SendCommand pour exécuter une cmd via la fenêtre de chat (ChatFrame1EditBox).
 -------------------------------------------------------------
-function TrinityAdmin:SendCommand(cmd)
-    if not cmd or cmd == "" then
-        return
-    end
-    -- On s'assure que la commande commence par un point (.)
-    if not string.match(cmd, "^%.") then
-        cmd = "." .. cmd
-    end
-
-    -- Envoi via la fenêtre de chat
-    local editBox = ChatFrame1EditBox
-    if not editBox then
-        self:Print("Impossible de trouver ChatFrame1EditBox pour exécuter la commande.")
-        return
-    end
-
-    if not editBox:IsShown() then
-        -- Ouvre la fenêtre de chat et pré-remplit avec la commande
-        ChatFrame_OpenChat(cmd, DEFAULT_CHAT_FRAME)
-    else
-        -- Si l'editBox est déjà ouvert
-        editBox:SetText(cmd)
-        ChatEdit_SendText(editBox, 0)
-    end
-end
+-- function TrinityAdmin:SendCommand(cmd)
+--     if not cmd or cmd == "" then
+--         return
+--     end
+--     -- On s'assure que la commande commence par un point (.)
+--     if not string.match(cmd, "^%.") then
+--         cmd = "." .. cmd
+--     end
+-- 
+--     -- Envoi via la fenêtre de chat
+--     local editBox = ChatFrame1EditBox
+--     if not editBox then
+--         self:Print("Impossible de trouver ChatFrame1EditBox pour exécuter la commande.")
+--         return
+--     end
+-- 
+--     if not editBox:IsShown() then
+--         -- Ouvre la fenêtre de chat et pré-remplit avec la commande
+--         ChatFrame_OpenChat(cmd, DEFAULT_CHAT_FRAME)
+--     else
+--         -- Si l'editBox est déjà ouvert
+--         editBox:SetText(cmd)
+--         ChatEdit_SendText(editBox, 0)
+--     end
+-- end
 
 --------------------------------------------------------------
 -- 2) Fonction pour afficher le panneau Guild
@@ -466,8 +468,6 @@ function Guild:CreateGuildPanel()
     btnBack:SetPoint("BOTTOM", 0, 10)
     btnBack:SetText(L["Back"])
 	TrinityAdmin.AutoSize(btnBack, 20, 16)
-    -- btnBack:SetHeight(22)
-    -- btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()

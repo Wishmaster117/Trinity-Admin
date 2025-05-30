@@ -1,5 +1,7 @@
-local Misc = TrinityAdmin:GetModule("Misc")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local Misc = TrinityAdmin:GetModule("Misc")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -------------------------------------------------------------------------------
 -- Variables de capture "lookup"
@@ -120,78 +122,67 @@ function Misc:AddManagementButtons(panel)
     local btnTitles = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnTitles:SetPoint("TOPLEFT", panel, "TOPLEFT", 100, -80)
     btnTitles:SetText(L["Titles Management"])
-	btnTitles:SetWidth(btnTitles:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	btnTitles:SetHeight(22)	
+    TrinityAdmin.AutoSize(btnTitles, 20, 16)
     btnTitles:SetScript("OnClick", function() self:OpenTitlesManagement() end)
     
     local btnResets = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnResets:SetPoint("LEFT", btnTitles, "RIGHT", 10, 0)
     btnResets:SetText(L["Resets Management"])
-	btnResets:SetWidth(btnResets:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	btnResets:SetHeight(22)	
+	TrinityAdmin.AutoSize(btnResets, 20, 16)
     btnResets:SetScript("OnClick", function() self:OpenResetsManagement() end)
     
     local btnArena = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnArena:SetPoint("LEFT", btnResets, "RIGHT", 10, 0)
     btnArena:SetText(L["Arena Management"])
-	btnArena:SetWidth(btnArena:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	btnArena:SetHeight(22)	
+	TrinityAdmin.AutoSize(btnArena, 20, 16)	
     btnArena:SetScript("OnClick", function() self:OpenArenaManagement() end)
     
     local btnLookup = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnLookup:SetPoint("TOPLEFT", btnTitles, "BOTTOMLEFT", 0, -10)
     btnLookup:SetText(L["Lookup Functions"])
-	btnLookup:SetWidth(btnLookup:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	btnLookup:SetHeight(22)	
+	TrinityAdmin.AutoSize(btnLookup, 20, 16)	
     btnLookup:SetScript("OnClick", function() self:OpenLookupFunctions() end)
     
     local btnGroups = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnGroups:SetPoint("LEFT", btnLookup, "RIGHT", 10, 0)
     btnGroups:SetText(L["Groups Management"])
-	btnGroups:SetWidth(btnGroups:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	btnGroups:SetHeight(22)	
+	TrinityAdmin.AutoSize(btnGroups, 20, 16)	
     btnGroups:SetScript("OnClick", function() self:OpenGroupsManagement() end)
     
     local btnQuests = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnQuests:SetPoint("LEFT", btnGroups, "RIGHT", 10, 0)
     btnQuests:SetText(L["Quests Management"])
-	btnQuests:SetWidth(btnQuests:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	btnQuests:SetHeight(22)	
+	TrinityAdmin.AutoSize(btnQuests, 20, 16)	
     btnQuests:SetScript("OnClick", function() self:OpenQuestsManagement() end)
 	
 	local BattlefieldAndPvp = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     BattlefieldAndPvp:SetPoint("TOPLEFT", btnLookup, "BOTTOMLEFT", 0, -10)
     BattlefieldAndPvp:SetText(L["Battlefield And Pvp"])
-	BattlefieldAndPvp:SetWidth(BattlefieldAndPvp:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	BattlefieldAndPvp:SetHeight(22)	
+	TrinityAdmin.AutoSize(BattlefieldAndPvp, 20, 16)	
     BattlefieldAndPvp:SetScript("OnClick", function() self:OpenBattlefieldAndPvpManagement() end)
 	
 	local DunjonsFunc = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     DunjonsFunc:SetPoint("LEFT", BattlefieldAndPvp, "RIGHT", 10, 0)
     DunjonsFunc:SetText(L["Dungeons Funcs"])
-	DunjonsFunc:SetWidth(DunjonsFunc:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	DunjonsFunc:SetHeight(22)		
+	TrinityAdmin.AutoSize(DunjonsFunc, 20, 16)		
     DunjonsFunc:SetScript("OnClick", function() self:OpenDunjonsFuncManagement() end)
 	
 	local LfgManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     LfgManage:SetPoint("LEFT", DunjonsFunc, "RIGHT", 10, 0)
     LfgManage:SetText(L["LFG Management"])
-	LfgManage:SetWidth(LfgManage:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	LfgManage:SetHeight(22)	
+	TrinityAdmin.AutoSize(LfgManage, 20, 16)
     LfgManage:SetScript("OnClick", function() self:OpenLfgManageManagement() end)
 	
 	local EventsManage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     EventsManage:SetPoint("TOPLEFT", BattlefieldAndPvp, "BOTTOMLEFT", 0, -10)
     EventsManage:SetText(L["Events Manager"])
-	EventsManage:SetWidth(EventsManage:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	EventsManage:SetHeight(22)	
+	TrinityAdmin.AutoSize(EventsManage, 20, 16)	
     EventsManage:SetScript("OnClick", function() self:OpenEventsManageManagement() end)
 	
 	local AurasList = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     AurasList:SetPoint("LEFT", EventsManage, "RIGHT", 10, 0)
     AurasList:SetText(L["Auras and Lists Management"])
-	AurasList:SetWidth(AurasList:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-	AurasList:SetHeight(22)
+	TrinityAdmin.AutoSize(AurasList, 20, 16)	
     AurasList:SetScript("OnClick", function() self:OpenAurasListManagement() end)
 	
 end
@@ -219,8 +210,7 @@ function Misc:CreateMiscPanel()
     local btnBack = CreateFrame("Button", "TrinityAdminMiscBackButton", panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
     btnBack:SetText(L["Back"])
-    btnBack:SetHeight(22)
-    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+    TrinityAdmin.AutoSize(btnBack, 20, 16)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()
@@ -303,13 +293,13 @@ function Misc:OpenTitlesManagement()
         btnPage:SetText("Page 1 / 1")
 
         btnPrev = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
-        btnPrev:SetSize(80, 22)
-        btnPrev:SetText(L["Preview"])
+        btnPrev:SetText(L["Pagination_Preview"])
+		TrinityAdmin.AutoSize(btnPrev, 20, 16)
         btnPrev:SetPoint("RIGHT", btnPage, "LEFT", -5, 0)
 
         btnNext = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
-        btnNext:SetSize(80, 22)
         btnNext:SetText(L["Next"])
+		TrinityAdmin.AutoSize(btnNext, 20, 16)
         btnNext:SetPoint("LEFT", btnPage, "RIGHT", 5, 0)
 
         ------------------------------------------------------------
@@ -341,14 +331,15 @@ function Misc:OpenTitlesManagement()
 
         -- EDItBOX & BOUTON "SET" : titles set mask
         editMask = CreateFrame("EditBox", nil, optionsFrame, "InputBoxTemplate")
-        editMask:SetSize(100, 22)
         editMask:SetPoint("TOPLEFT", chkCurrent, "BOTTOMLEFT", 0, -10)
         editMask:SetText(L["Set titles mask"])
+		TrinityAdmin.AutoSize(editMask, 20, 13, nil, 100)
 
         btnSetMask = CreateFrame("Button", nil, optionsFrame, "UIPanelButtonTemplate")
         btnSetMask:SetSize(80, 22)
         btnSetMask:SetPoint("LEFT", editMask, "RIGHT", 5, 0)
         btnSetMask:SetText(L["Set"])
+		TrinityAdmin.AutoSize(btnSetMask, 20, 16)
 
         ------------------------------------------------------------
         -- FORCER LA SELECTION EXCLUSIVE DES CHECKBOXES
@@ -375,12 +366,12 @@ function Misc:OpenTitlesManagement()
         btnSetMask:SetScript("OnClick", function()
             local targetName = UnitName("target")
             if not targetName then
-                print(L["Please Select a Character!"])
+                TrinityAdmin:Print(L["Please Select a Character!"])
                 return
             end
             local maskValue = editMask:GetText()
             if maskValue == "" or maskValue == "Set titles mask" then
-                print(L["Please enter a value for mask."])
+                TrinityAdmin:Print(L["Please enter a value for mask."])
                 return
             end
             -- Envoie la commande
@@ -456,7 +447,7 @@ function Misc:OpenTitlesManagement()
                 btn:SetScript("OnClick", function()
                     local targ = UnitName("target")
                     if not targ then
-                        print(L["Please Select a Character!"])
+                        TrinityAdmin:Print(L["Please Select a Character!"])
                         return
                     end
                     if chkAdd:GetChecked() then
@@ -466,7 +457,7 @@ function Misc:OpenTitlesManagement()
                     elseif chkCurrent:GetChecked() then
                         SendChatMessage(".titles current " .. option.entry, "SAY")
                     else
-                        print(L["Please secte add/remove/current, or use Set for mask."])
+                        TrinityAdmin:Print(L["Please secte add/remove/current, or use Set for mask."])
                     end
                 end)
 
@@ -531,7 +522,7 @@ function Misc:OpenTitlesManagement()
             self:ClearFocus()
             local searchText = self:GetText():lower()
             if #searchText < 3 then
-                print(L["Please enter at least 3 characters for the search."])
+                TrinityAdmin:Print(L["Please enter at least 3 characters for the search."])
                 return
             end
 
@@ -570,8 +561,7 @@ function Misc:OpenTitlesManagement()
         -- Bouton Reset
         local btnReset = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnReset:SetText(L["Reset"])
-		btnReset:SetWidth(btnReset:GetTextWidth() + 20)  -- Ajoute une marge de 20 pixels
-		btnReset:SetHeight(22)	
+		TrinityAdmin.AutoSize(btnReset, 20, 16)
         btnReset:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
         btnReset:SetScript("OnClick", function()
             filterEditBox:SetText("")
@@ -588,8 +578,7 @@ function Misc:OpenTitlesManagement()
         local btnBack = CreateFrame("Button", nil, self.titlesPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.titlesPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.titlesPanel:Hide()
             self.panel:Show()
@@ -645,15 +634,15 @@ function Misc:OpenResetsManagement()
         ------------------------------------------------------------
         do
             local editBox = CreateFrame("EditBox", nil, self.resetsPanel, "InputBoxTemplate")
-            editBox:SetSize(120, 22)
             editBox:SetPoint("TOPLEFT", self.resetsPanel, "TOPLEFT", 10, yOffset)
             editBox:SetText(L["Player Name"])
+			TrinityAdmin.AutoSize(editBox, 20, 13, nil, 120)
             editBox:SetAutoFocus(false)
             
             local btn = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
-            btn:SetSize(140, 22)
             btn:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
             btn:SetText(L["Reset Achievements"])
+			TrinityAdmin.AutoSize(btn, 20, 16)
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -710,9 +699,9 @@ function Misc:OpenResetsManagement()
             end)
             
             local btn = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
-            btn:SetSize(80, 22)
-            btn:SetPoint("LEFT", chkTalents, "RIGHT", 120, 20)
+            btn:SetPoint("LEFT", chkTalents, "RIGHT", 180, 20)
             btn:SetText(L["Reset"])
+			TrinityAdmin.AutoSize(btn, 20, 16)
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -726,7 +715,7 @@ function Misc:OpenResetsManagement()
                 elseif chkTalents:GetChecked() then
                     SendChatMessage(".reset all talents", "SAY")
                 else
-                    print(L["Please check 'Reset All Spells' or 'Reset All Talents' before clicking Reset."])
+                    TrinityAdmin:Print(L["Please check 'Reset All Spells' or 'Reset All Talents' before clicking Reset."])
                 end
             end)
             
@@ -738,15 +727,15 @@ function Misc:OpenResetsManagement()
         ------------------------------------------------------------
         local function CreateResetRow(labelText, tooltipText, command)
             local editBox = CreateFrame("EditBox", nil, self.resetsPanel, "InputBoxTemplate")
-            editBox:SetSize(120, 22)
             editBox:SetPoint("TOPLEFT", self.resetsPanel, "TOPLEFT", 10, yOffset)
             editBox:SetText(L["Player Name"])
+			TrinityAdmin.AutoSize(editBox, 20, 13, nil, 120)
             editBox:SetAutoFocus(false)
             
             local btn = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
-            btn:SetSize(100, 22)
             btn:SetPoint("LEFT", editBox, "RIGHT", 10, 0)
             btn:SetText(labelText)
+			TrinityAdmin.AutoSize(btn, 20, 16)
             
             btn:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -766,7 +755,7 @@ function Misc:OpenResetsManagement()
                 elseif targetName then
                     finalName = targetName
                 end
-                -- print("[DEBUG] Commande envoyée: " .. command .. " " .. finalName)
+                -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. command .. " " .. finalName)
                 SendChatMessage(command .. " " .. finalName, "SAY")
             end)
             
@@ -824,8 +813,7 @@ function Misc:OpenResetsManagement()
         local btnBack = CreateFrame("Button", nil, self.resetsPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.resetsPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.resetsPanel:Hide()
             self.panel:Show()
@@ -878,27 +866,26 @@ function Misc:OpenArenaManagement()
         ------------------------------------------------------------
         do
             local editLeader = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editLeader:SetSize(100, 22)
             editLeader:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
             editLeader:SetText(L["Leader Name"])
+			TrinityAdmin.AutoSize(editLeader, 20, 13, nil, 100)
             editLeader:SetAutoFocus(false)
             
             local editTeam  = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editTeam:SetSize(100, 22)
             editTeam:SetPoint("LEFT", editLeader, "RIGHT", 10, 0)
             editTeam:SetText(L["Team Name"])
+			TrinityAdmin.AutoSize(editTeam, 20, 13, nil, 100)
             editTeam:SetAutoFocus(false)
             
             local editType  = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editType:SetSize(40, 22)
             editType:SetPoint("LEFT", editTeam, "RIGHT", 10, 0)
             editType:SetText(L["Type"])
+			TrinityAdmin.AutoSize(editType, 20, 13, nil, 40)
             editType:SetAutoFocus(false)
             
             local btnCreate = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnCreate:SetText(L["Create Arena Team"])
-            -- Ajuste automatiquement la largeur du bouton en fonction du texte
-            btnCreate:SetSize(btnCreate:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnCreate, 20, 16)
             btnCreate:SetPoint("LEFT", editType, "RIGHT", 10, 0)
             
             -- Tooltip
@@ -917,21 +904,21 @@ function Misc:OpenArenaManagement()
                 local typeVal   = editType:GetText()
 
                 if not leaderVal or leaderVal == "" or leaderVal == "Leader Name" then
-                    print(L["Please enter a valid Leader Name!"])
+                    TrinityAdmin:Print(L["Please enter a valid Leader Name!"])
                     return
                 end
                 if not teamVal or teamVal == "" or teamVal == "Team Name" then
-                    print(L["Please enter a valid Team Name!"])
+                    TrinityAdmin:Print(L["Please enter a valid Team Name!"])
                     return
                 end
                 if not typeVal or typeVal == "" or typeVal == "Type" then
-                    print(L["Please select Type (2, 3 or 5)!"])
+                    TrinityAdmin:Print(L["Please select Type (2, 3 or 5)!"])
                     return
                 end
 
                 local typeNum = tonumber(typeVal)
                 if not typeNum or (typeNum ~= 2 and typeNum ~= 3 and typeNum ~= 5) then
-                    print(L["Type must be 2, 3 or 5."])
+                    TrinityAdmin:Print(L["Type must be 2, 3 or 5."])
                     return
                 end
 
@@ -952,21 +939,21 @@ function Misc:OpenArenaManagement()
         ------------------------------------------------------------
         do
             local editOld = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editOld:SetSize(100, 22)
             editOld:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editOld:SetText("Old Name")
+            editOld:SetText(L["G_OLDNAME"])
+			TrinityAdmin.AutoSize(editOld, 20, 13, nil, 100)
             editOld:SetAutoFocus(false)
             
             local editNew = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editNew:SetSize(100, 22)
             editNew:SetPoint("LEFT", editOld, "RIGHT", 10, 0)
-            editNew:SetText("New Name")
+            editNew:SetText(L["G_NEWNAME"])
+			TrinityAdmin.AutoSize(editNew, 20, 13, nil, 100)
             editNew:SetAutoFocus(false)
 
             local btnRename = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnRename:SetText(L["Change Arena Team Name"])
-            btnRename:SetSize(btnRename:GetTextWidth() + 20, 22)
-            btnRename:SetPoint("LEFT", editNew, "RIGHT", 10, 0)
+            TrinityAdmin.AutoSize(btnRename, 20, 16)
+			btnRename:SetPoint("LEFT", editNew, "RIGHT", 10, 0)
 
             -- Tooltip
             btnRename:SetScript("OnEnter", function(self)
@@ -982,12 +969,12 @@ function Misc:OpenArenaManagement()
                 local oldVal = editOld:GetText()
                 local newVal = editNew:GetText()
 
-                if not oldVal or oldVal == "" or oldVal == "Old Name" then
-                    print(L["Please enter a validOld Name."])
+                if not oldVal or oldVal == "" or oldVal == L["G_OLDNAME"] then
+                    TrinityAdmin:Print(L["Please enter a validOld Name."])
                     return
                 end
-                if not newVal or newVal == "" or newVal == "New Name" then
-                    print(L["Please enter a valid New Name."])
+                if not newVal or newVal == "" or newVal == L["G_NEWNAME"] then
+                    TrinityAdmin:Print(L["Please enter a valid New Name."])
                     return
                 end
 
@@ -995,8 +982,8 @@ function Misc:OpenArenaManagement()
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                ResetEditBox(editOld, "Old Name")
-                ResetEditBox(editNew, "New Name")
+                ResetEditBox(editOld, L["G_OLDNAME"])
+                ResetEditBox(editNew, L["G_NEWNAME"])
             end)
 
             yOffset = yOffset - 40
@@ -1007,21 +994,21 @@ function Misc:OpenArenaManagement()
         ------------------------------------------------------------
         do
             local editTeamID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editTeamID:SetSize(60, 22)
             editTeamID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editTeamID:SetText("Team ID")
+            editTeamID:SetText(L["G_TEAMID"])
+			TrinityAdmin.AutoSize(editTeamID, 20, 13, nil, 60)
             editTeamID:SetAutoFocus(false)
             
             local editLeaderName = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editLeaderName:SetSize(120, 22)
             editLeaderName:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
-            editLeaderName:SetText("New Leader Name")
+            editLeaderName:SetText(L["G_NEWLEADER"])
+			TrinityAdmin.AutoSize(editLeaderName, 20, 13, nil, 120)
             editLeaderName:SetAutoFocus(false)
 
             local btnCaptain = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnCaptain:SetText(L["Assign Leadership"])
-            btnCaptain:SetSize(btnCaptain:GetTextWidth() + 20, 22)
-            btnCaptain:SetPoint("LEFT", editLeaderName, "RIGHT", 10, 0)
+            TrinityAdmin.AutoSize(btnCaptain, 20, 16)
+			btnCaptain:SetPoint("LEFT", editLeaderName, "RIGHT", 10, 0)
 
             -- Tooltip
             btnCaptain:SetScript("OnEnter", function(self)
@@ -1037,18 +1024,18 @@ function Misc:OpenArenaManagement()
 				local teamID   = editTeamID:GetText()
 				local leaderNm = editLeaderName:GetText()
 			
-				if not teamID or teamID == "" or teamID == "Team ID" then
-					print(L["Please enter a valid Team ID."])
+				if not teamID or teamID == "" or teamID == L["G_TEAMID"] then
+					TrinityAdmin:Print(L["Please enter a valid Team ID."])
 					return
 				end
-				if not leaderNm or leaderNm == "" or leaderNm == "New Leader Name" then
-					print(L["Please enter a valid New Leader Name."])
+				if not leaderNm or leaderNm == "" or leaderNm == L["G_NEWLEADER"] then
+					TrinityAdmin:Print(L["Please enter a valid New Leader Name."])
 					return
 				end
 			
 				-- Vérifie que le nom ne comporte pas d'espaces
 				if leaderNm:find("%s") then
-					print(L["Leader name doesn't support spaces."])
+					TrinityAdmin:Print(L["Leader name doesn't support spaces."])
 					return
 				end
 			
@@ -1057,8 +1044,8 @@ function Misc:OpenArenaManagement()
 				SendChatMessage(cmd, "SAY")
 			
 				-- Réinitialise les champs
-				ResetEditBox(editTeamID,     "Team ID")
-				ResetEditBox(editLeaderName, "New Leader Name")
+				ResetEditBox(editTeamID,     L["G_TEAMID"])
+				ResetEditBox(editLeaderName, L["G_NEWLEADER"])
 			end)
 
             yOffset = yOffset - 40
@@ -1069,15 +1056,15 @@ function Misc:OpenArenaManagement()
         ------------------------------------------------------------
         do
             local editTeamID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editTeamID:SetSize(60, 22)
             editTeamID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editTeamID:SetText("Team ID")
+            editTeamID:SetText(L["G_TEAMID"])
+			TrinityAdmin.AutoSize(editTeamID, 20, 13, nil, 60)
             editTeamID:SetAutoFocus(false)
             
             local btnInfo = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnInfo:SetText(L["Get Team Info"])
-            btnInfo:SetSize(btnInfo:GetTextWidth() + 20, 22)
-            btnInfo:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
+            TrinityAdmin.AutoSize(btnInfo, 20, 16)
+			btnInfo:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
 
             -- Tooltip
             btnInfo:SetScript("OnEnter", function(self)
@@ -1091,15 +1078,15 @@ function Misc:OpenArenaManagement()
             -- OnClick
             btnInfo:SetScript("OnClick", function()
                 local teamID = editTeamID:GetText()
-                if not teamID or teamID == "" or teamID == "Team ID" then
-                    print(L["Please enter a valid Team ID."])
+                if not teamID or teamID == "" or teamID == L["G_TEAMID"] then
+                    TrinityAdmin:Print(L["Please enter a valid Team ID."])
                     return
                 end
 
                 local cmd = ".arena info " .. teamID
                 SendChatMessage(cmd, "SAY")
 
-                ResetEditBox(editTeamID, "Team ID")
+                ResetEditBox(editTeamID, L["G_TEAMID"])
             end)
 
             yOffset = yOffset - 40
@@ -1110,15 +1097,15 @@ function Misc:OpenArenaManagement()
         ------------------------------------------------------------
         do
             local editTeamName = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editTeamName:SetSize(120, 22)
             editTeamName:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editTeamName:SetText("Team Name")
+            editTeamName:SetText(L["G_TEAMNAME"])
+			TrinityAdmin.AutoSize(editTeamName, 20, 13, nil, 120)
             editTeamName:SetAutoFocus(false)
             
             local btnLookup = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnLookup:SetText(L["Lookup Teams"])
-            btnLookup:SetSize(btnLookup:GetTextWidth() + 20, 22)
-            btnLookup:SetPoint("LEFT", editTeamName, "RIGHT", 10, 0)
+            TrinityAdmin.AutoSize(btnLookup, 20, 16)
+			btnLookup:SetPoint("LEFT", editTeamName, "RIGHT", 10, 0)
 
             -- Tooltip
             btnLookup:SetScript("OnEnter", function(self)
@@ -1132,15 +1119,15 @@ function Misc:OpenArenaManagement()
             -- OnClick
             btnLookup:SetScript("OnClick", function()
                 local tName = editTeamName:GetText()
-                if not tName or tName == "" or tName == "Team Name" then
-                    print(L["Please enter a valid Team Name."])
+                if not tName or tName == "" or tName == L["G_TEAMNAME"] then
+                    TrinityAdmin:Print(L["Please enter a valid Team Name."])
                     return
                 end
 
                 local cmd = ".arena lookup " .. tName
                 SendChatMessage(cmd, "SAY")
 
-                ResetEditBox(editTeamName, "Team Name")
+                ResetEditBox(editTeamName, L["G_TEAMNAME"])
             end)
 
             yOffset = yOffset - 40
@@ -1151,15 +1138,15 @@ function Misc:OpenArenaManagement()
         ------------------------------------------------------------
         do
             local editTeamID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editTeamID:SetSize(60, 22)
             editTeamID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editTeamID:SetText("Team ID")
+            editTeamID:SetText(L["G_TEAMID"])
+			TrinityAdmin.AutoSize(editTeamID, 20, 13, nil, 60)
             editTeamID:SetAutoFocus(false)
             
             local btnDisband = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnDisband:SetText(L["Disband Teams"])
-            btnDisband:SetSize(btnDisband:GetTextWidth() + 20, 22)
-            btnDisband:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
+            TrinityAdmin.AutoSize(btnDisband, 20, 16)
+			btnDisband:SetPoint("LEFT", editTeamID, "RIGHT", 10, 0)
 
             -- Tooltip
             btnDisband:SetScript("OnEnter", function(self)
@@ -1173,15 +1160,15 @@ function Misc:OpenArenaManagement()
             -- OnClick
             btnDisband:SetScript("OnClick", function()
                 local teamID = editTeamID:GetText()
-                if not teamID or teamID == "" or teamID == "Team ID" then
-                    print(L["Please enter a valid Team ID."])
+                if not teamID or teamID == "" or teamID == L["G_TEAMID"] then
+                    TrinityAdmin:Print(L["Please enter a valid Team ID."])
                     return
                 end
 
                 local cmd = ".arena disband " .. teamID
                 SendChatMessage(cmd, "SAY")
 
-                ResetEditBox(editTeamID, "Team ID")
+                ResetEditBox(editTeamID, L["G_TEAMID"])
             end)
 
             yOffset = yOffset - 40
@@ -1191,9 +1178,9 @@ function Misc:OpenArenaManagement()
         -- Bouton Retour commun
         ------------------------------------------------------------
         local btnBack = CreateFrame("Button", nil, self.arenaPanel, "UIPanelButtonTemplate")
+		btnBack:SetPoint("BOTTOM", self.arenaPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
-        btnBack:SetPoint("BOTTOM", self.arenaPanel, "BOTTOM", 0, 10)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.arenaPanel:Hide()
             self.panel:Show()
@@ -1251,91 +1238,91 @@ function Misc:OpenLookupFunctions()
         local singleOptions = {
             {
                 text       = L["lookup area"],
-                defaultEB  = "Enter Area Name part",
+                defaultEB  = L["Enter Area Name part"],
                 command    = ".lookup area",
                 tooltip    = L["Lookup_area_desc"]
             },
             {
                 text       = L["lookup creature"],
-                defaultEB  = "Enter Creature Name part",
+                defaultEB  = L["Enter Creature Name part"],
                 command    = ".lookup creature",
                 tooltip    = L["lookup_creature_desc"]
             },
             {
                 text       = L["lookup event"],
-                defaultEB  = "Enter Event Neme",  -- y a-t-il un correctif => "Enter Event Name" ?
+                defaultEB  = L["Enter Event Name"],
                 command    = ".lookup event",
                 tooltip    = L["lookup_event_desc"]
             },
             {
                 text       = L["lookup faction"],
-                defaultEB  = "Enter Faction Name",
+                defaultEB  = L["Enter Faction Name"],
                 command    = ".lookup faction",
                 tooltip    = L["lookup_faction_desc"]
             },
             {
                 text       = L["lookup item"],
-                defaultEB  = "Enter Item Name",
+                defaultEB  = L["Enter Item Name"],
                 command    = ".lookup item",
                 tooltip    = L["lookup_item_desc"]
             },
             {
                 text       = L["lookup item set"],
-                defaultEB  = "Enter ItemSet Name",
+                defaultEB  = L["Enter ItemSet Name"],
                 command    = ".lookup item set",
                 tooltip    = L["lookup_item_set_desc"]
             },
             {
                 text       = L["lookup map"],
-                defaultEB  = "Enter Map Name Part",
+                defaultEB  = L["Enter Map Name Part"],
                 command    = ".lookup map",
                 tooltip    = L["lookup_map_desc"]
             },
             {
                 text       = L["lookup object"],
-                defaultEB  = "Enter Object Name",
+                defaultEB  = L["Enter Object Name"],
                 command    = ".lookup object",
                 tooltip    = L["lookup_object_dec"]
             },
             {
                 text       = L["lookup quest"],
-                defaultEB  = "Enter Quest Name Part",
+                defaultEB  = L["Enter Quest Name Part"],
                 command    = ".lookup quest",
                 tooltip    = L["lookup_quest_desc"]
             },
             {
                 text       = L["lookup skill"],
-                defaultEB  = "Enter Skill Name Part",
+                defaultEB  = L["Enter Skill Name Part"],
                 command    = ".lookup skill",
                 tooltip    = L["lookup_skill_desc"]
             },
             {
                 text       = L["lookup spell"],
-                defaultEB  = "Enter Spell Name Part",
+                defaultEB  = L["Enter Spell Name Part"],
                 command    = ".lookup spell",
                 tooltip    = L["lookup_spell_desc"]
             },
             {
                 text       = L["lookup spell id"],
-                defaultEB  = "Enter Spell ID",
+                defaultEB  = L["Enter Spell ID"],
                 command    = ".lookup spell id",
                 tooltip    = L["lookup_spell_id_desc"]
             },
             {
                 text       = L["lookup taxinode"],
-                defaultEB  = "Enter Taxinode Substring",
+                defaultEB  = L["Enter Taxinode Substring"],
                 command    = ".lookup taxinode",
                 tooltip    = L["lookup_taxinode_desc"]
             },
             {
                 text       = L["lookup tele"],
-                defaultEB  = "Enter Teleport Substring",
+                defaultEB  = L["Enter Teleport Substring"],
                 command    = ".lookup tele",
                 tooltip    = L["lookup_tele_desc"]
             },
             {
                 text       = L["lookup title"],
-                defaultEB  = "Enter Title Name Part",
+                defaultEB  = L["Enter Title Name Part"],
                 command    = ".lookup title",
                 tooltip    = L["lookup_title_desc"]
             },
@@ -1347,22 +1334,22 @@ function Misc:OpenLookupFunctions()
         local doubleOptions = {
             {
                 text            = L["lookup player ip"],
-                defaultEB1      = "Enter IP",
-                defaultEB2      = "Limit",
+                defaultEB1      = L["Enter IP"],
+                defaultEB2      = L["Limit"],
                 command         = ".lookup player ip",
                 tooltip         = L["lookup_player_ip_desc"]
             },
             {
                 text            = L["lookup player email"],
-                defaultEB1      = "Enter Email",
-                defaultEB2      = "Limit",
+                defaultEB1      = L["Enter Email"],
+                defaultEB2      = L["Limit"],
                 command         = ".lookup player email",
                 tooltip         = L["lookup_player_email_desc"]
             },
             {
                 text            = L["lookup player account"],
-                defaultEB1      = "Enter a Username",
-                defaultEB2      = "Limit",
+                defaultEB1      = L["Enter a Username"],
+                defaultEB2      = L["Limit"],
                 command         = ".lookup player account",
                 tooltip         = L["lookup_player_account_desc"]
             },
@@ -1384,9 +1371,15 @@ function Misc:OpenLookupFunctions()
         -------------------------------------------------------------------------
         -- EditBox
         local editSingle = CreateFrame("EditBox", nil, block1, "InputBoxTemplate")
-        editSingle:SetSize(200, 22)
         editSingle:SetPoint("TOPLEFT", block1, "TOPLEFT", 0, 0)
         editSingle:SetAutoFocus(false)
+		editSingle:SetText(singleOptions[1].defaultEB)
+		TrinityAdmin.AutoSize(editSingle, 20, 13, nil, 200)
+		
+		-- À chaque fois que le texte change, on réajuste sa taille
+		editSingle:HookScript("OnTextChanged", function(self)
+		TrinityAdmin.AutoSize(self, 20, 13, nil, 200)
+		end)
         
         -- Dropdown
         local singleDropdown = CreateFrame("Frame", "TrinityAdminSingleDropdown", block1, "UIDropDownMenuTemplate")
@@ -1402,8 +1395,8 @@ function Misc:OpenLookupFunctions()
         -- Bouton "Lookup"
         local btnSingleLookup = CreateFrame("Button", nil, block1, "UIPanelButtonTemplate")
         btnSingleLookup:SetText(L["Lookup"])
-        btnSingleLookup:SetSize(btnSingleLookup:GetTextWidth() + 20, 22)
-        btnSingleLookup:SetPoint("LEFT", singleDropdown, "RIGHT", 10, 0)
+        TrinityAdmin.AutoSize(btnSingleLookup, 20, 16)
+		btnSingleLookup:SetPoint("LEFT", singleDropdown, "RIGHT", 10, 0)
 
         -- Fonction pour changer dynamiquement le placeholder et le tooltip
         local function SingleDropdown_OnClick(option)
@@ -1443,7 +1436,7 @@ function Misc:OpenLookupFunctions()
 		
 			local textValue = editSingle:GetText()
 			if not textValue or textValue == "" or textValue == opt.defaultEB then
-				print(L["Please provide a value for:"] .. " " .. opt.text)
+				TrinityAdmin:Print(L["Please provide a value for:"] .. " " .. opt.text)
 				return
 			end
 		
@@ -1467,13 +1460,11 @@ function Misc:OpenLookupFunctions()
 
         -- EditBox 1
         local editFirst = CreateFrame("EditBox", nil, block2, "InputBoxTemplate")
-        editFirst:SetSize(120, 22)
         editFirst:SetPoint("TOPLEFT", block2, "TOPLEFT", 0, 0)
         editFirst:SetAutoFocus(false)
 
         -- EditBox 2
         local editSecond = CreateFrame("EditBox", nil, block2, "InputBoxTemplate")
-        editSecond:SetSize(60, 22)
         editSecond:SetPoint("LEFT", editFirst, "RIGHT", 10, 0)
         editSecond:SetAutoFocus(false)
 
@@ -1488,10 +1479,16 @@ function Misc:OpenLookupFunctions()
         editFirst:SetText(doubleDropdown.selectedOption.defaultEB1)
         editSecond:SetText(doubleDropdown.selectedOption.defaultEB2)
 
+        local initialOpt = doubleDropdown.selectedOption
+		editFirst:SetText(initialOpt.defaultEB1)
+        TrinityAdmin.AutoSize(editFirst, 20, 13, nil, 120)
+        editSecond:SetText(initialOpt.defaultEB2)
+        TrinityAdmin.AutoSize(editSecond, 20, 13, nil,  60)
+
         -- Bouton "Lookup"
         local btnDoubleLookup = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
         btnDoubleLookup:SetText(L["Lookup"])
-        btnDoubleLookup:SetSize(btnDoubleLookup:GetTextWidth() + 20, 22)
+        TrinityAdmin.AutoSize(btnDoubleLookup, 20, 16)
         btnDoubleLookup:SetPoint("LEFT", doubleDropdown, "RIGHT", 10, 0)
 
         -- Fonctions de selection
@@ -1534,11 +1531,11 @@ function Misc:OpenLookupFunctions()
 			local val1 = editFirst:GetText()
 			local val2 = editSecond:GetText()
 			if not val1 or val1 == "" or val1 == opt.defaultEB1 then
-				print(L["Please provide a value for:"] .. " " .. opt.defaultEB1)
+				TrinityAdmin:Print(L["Please provide a value for:"] .. " " .. opt.defaultEB1)
 				return
 			end
 			if not val2 or val2 == "" or val2 == opt.defaultEB2 then
-				print(L["Please provide a value for:"] .. " " .. opt.defaultEB2)
+				TrinityAdmin:Print(L["Please provide a value for:"] .. " " .. opt.defaultEB2)
 				return
 			end
 		
@@ -1560,7 +1557,7 @@ function Misc:OpenLookupFunctions()
         local btnBack = CreateFrame("Button", nil, self.lookupPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.lookupPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.lookupPanel:Hide()
             self.panel:Show()
@@ -1622,22 +1619,22 @@ function Misc:OpenGroupsManagement()
         do
             -- 1) "Player Name From Group"
             local editFrom = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editFrom:SetSize(140, 22)
             editFrom:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
             editFrom:SetAutoFocus(false)
-            editFrom:SetText("Player Name From Group")
+            editFrom:SetText(L["PLAYERNAME_GROUP"])
+			TrinityAdmin.AutoSize(editFrom, 20, 13, nil, 140)
 
             -- 2) "Player Name to Add"
             local editTo = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editTo:SetSize(140, 22)
             editTo:SetPoint("LEFT", editFrom, "RIGHT", 10, 0)
             editTo:SetAutoFocus(false)
-            editTo:SetText("Player Name to Add")
+            editTo:SetText(L["PLAYERNAME_GROUP-TOADD"])
+			TrinityAdmin.AutoSize(editTo, 20, 13, nil, 140)
 
             -- 3) "Join" button
             local btnJoin = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnJoin:SetText(L["Join"])
-            btnJoin:SetSize(btnJoin:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnJoin, 20, 16)
             btnJoin:SetPoint("LEFT", editTo, "RIGHT", 10, 0)
 
             -- Tooltip
@@ -1655,21 +1652,21 @@ function Misc:OpenGroupsManagement()
                 local toValue   = editTo:GetText()
 
                 -- 'fromValue' doit être non vide
-                if (not fromValue or fromValue == "" or fromValue == "Player Name From Group") then
-                    print(L["Please provide a valid valuer for 'Player Name From Group'."])
+                if (not fromValue or fromValue == "" or fromValue == L["PLAYERNAME_GROUP-TOADD"]) then
+                    TrinityAdmin:Print(L["Please provide a valid valuer for 'Player Name From Group'."])
                     return
                 end
 
                 -- 'toValue' peut être vide => on prend la cible
                 -- ou "$playername" si pas de cible
-                local finalTo   = GetNameOrTarget(toValue, "Player Name to Add")
+                local finalTo   = GetNameOrTarget(toValue, L["PLAYERNAME_GROUP-TOADD"])
 
                 local cmd = ".group join " .. fromValue .. " " .. finalTo
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                editFrom:SetText("Player Name From Group")
-                editTo:SetText("Player Name to Add")
+                editFrom:SetText(L["PLAYERNAME_GROUP"])
+                editTo:SetText(L["PLAYERNAME_GROUP-TOADD"])
             end)
 
             yOffset = yOffset - 40
@@ -1682,73 +1679,73 @@ function Misc:OpenGroupsManagement()
             {
                 text        = L["group leader"],
                 command     = ".group leader",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_leader_desc"]
             },
             {
                 text        = L["group level"],
                 command     = ".group level",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_level_desc"]
             },
             {
                 text        = L["group list"],
                 command     = ".group list",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_list_desc"]
             },
             {
                 text        = L["group repair"],
                 command     = ".group repair",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_repair_desc"]
             },
             {
                 text        = L["group revive"],
                 command     = ".group revive",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_revive_desc"]
             },
             {
                 text        = L["group set assistant"],
                 command     = ".group set assistant",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_set_assistant_desc"]
             },
             {
                 text        = L["group set leader"],
                 command     = ".group set leader",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_set_leader_desc"]
             },
             {
                 text        = L["group set mainassist"],
                 command     = ".group set mainassist",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_set_mainassist_desc"]
             },
             {
                 text        = L["group set maintank"],
                 command     = ".group set maintank",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_set_maintank_desc"]
             },
             {
                 text        = L["group summon"],
                 command     = ".group summon",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_summon_desc"]
             },
             {
                 text        = L["group remove"],
                 command     = ".group remove",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_remove_desc"]
             },
             {
                 text        = L["group disband"],
                 command     = ".group disband",
-                defaultEB   = "Enter Player Name",
+                defaultEB   = L["ENTER_P_NAME"],
                 tooltip     = L["group_disband_desc"]
             },
         }
@@ -1774,9 +1771,13 @@ function Misc:OpenGroupsManagement()
             UIDropDownMenu_SetText(dropdown, groupOptions[1].text)
             editName:SetText(dropdown.selectedOption.defaultEB)
 
+			local initialOpt = dropdown.selectedOption
+			editName:SetText(initialOpt.defaultEB)
+			TrinityAdmin.AutoSize(editName, 20, 13, nil, 120)
+
             local btnExecute = CreateFrame("Button", nil, block2, "UIPanelButtonTemplate")
             btnExecute:SetText(L["Execute"])
-            btnExecute:SetSize(btnExecute:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnExecute, 20, 16)
             btnExecute:SetPoint("LEFT", dropdown, "RIGHT", 10, 0)
 
             -- Fonction OnClick pour l'option du menu
@@ -1895,14 +1896,14 @@ function Misc:OpenQuestsManagement()
         ------------------------------------------------------------
         do
             local editQuestID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editQuestID:SetSize(100, 22)
             editQuestID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editQuestID:SetText("Quest ID")
+            editQuestID:SetText(L["QUEST_ID"])
+			TrinityAdmin.AutoSize(editQuestID, 20, 13, nil, 100)
             editQuestID:SetAutoFocus(false)
 
             local btnAdd = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnAdd:SetText(L["Add Quest"])
-            btnAdd:SetSize(btnAdd:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnAdd, 20, 16)
             btnAdd:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnAdd:SetScript("OnEnter", function(self)
@@ -1916,7 +1917,7 @@ function Misc:OpenQuestsManagement()
             btnAdd:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
                 if not questID or questID == "" or questID == "Quest ID" then
-                    print(L["Please provide a valid Quest ID."])
+                    TrinityAdmin:Print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -1924,7 +1925,7 @@ function Misc:OpenQuestsManagement()
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                ResetEditBox(editQuestID, "Quest ID")
+                ResetEditBox(editQuestID, L["QUEST_ID"])
             end)
 
             yOffset = yOffset - 40
@@ -1935,14 +1936,14 @@ function Misc:OpenQuestsManagement()
         ------------------------------------------------------------
         do
             local editQuestID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editQuestID:SetSize(100, 22)
             editQuestID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editQuestID:SetText("Quest ID")
+            editQuestID:SetText(L["QUEST_ID"])
+			TrinityAdmin.AutoSize(editQuestID, 20, 13, nil, 100)
             editQuestID:SetAutoFocus(false)
 
             local btnComplete = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnComplete:SetText(L["Complete Quest"])
-            btnComplete:SetSize(btnComplete:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnComplete, 20, 16)
             btnComplete:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnComplete:SetScript("OnEnter", function(self)
@@ -1955,8 +1956,8 @@ function Misc:OpenQuestsManagement()
 
             btnComplete:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
-                if not questID or questID == "" or questID == "Quest ID" then
-                    print(L["Please provide a valid Quest ID."])
+                if not questID or questID == "" or questID == L["QUEST_ID"] then
+                    TrinityAdmin:Print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -1964,7 +1965,7 @@ function Misc:OpenQuestsManagement()
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                ResetEditBox(editQuestID, "Quest ID")
+                ResetEditBox(editQuestID, L["QUEST_ID"])
             end)
 
             yOffset = yOffset - 40
@@ -1975,14 +1976,14 @@ function Misc:OpenQuestsManagement()
         ------------------------------------------------------------
         do
             local editObjID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editObjID:SetSize(130, 22)
             editObjID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editObjID:SetText("Quest Objective ID")
+            editObjID:SetText(L["Quest_Objective_ID"])
+			TrinityAdmin.AutoSize(editObjID, 20, 13, nil, 120)
             editObjID:SetAutoFocus(false)
 
             local btnObjective = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnObjective:SetText(L["Complete Quest Objective"])
-            btnObjective:SetSize(btnObjective:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnObjective, 20, 16)
             btnObjective:SetPoint("LEFT", editObjID, "RIGHT", 10, 0)
 
             btnObjective:SetScript("OnEnter", function(self)
@@ -1995,8 +1996,8 @@ function Misc:OpenQuestsManagement()
 
             btnObjective:SetScript("OnClick", function()
                 local objID = editObjID:GetText()
-                if not objID or objID == "" or objID == "Quest Objective ID" then
-                    print(L["Please provide a valid Quest Objective ID."])
+                if not objID or objID == "" or objID == L["Quest_Objective_ID"] then
+                    TrinityAdmin:Print(L["Please provide a valid Quest Objective ID."])
                     return
                 end
 
@@ -2004,7 +2005,7 @@ function Misc:OpenQuestsManagement()
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                ResetEditBox(editObjID, "Quest Objective ID")
+                ResetEditBox(editObjID, L["Quest_Objective_ID"])
             end)
 
             yOffset = yOffset - 40
@@ -2015,14 +2016,14 @@ function Misc:OpenQuestsManagement()
         ------------------------------------------------------------
         do
             local editQuestID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editQuestID:SetSize(100, 22)
             editQuestID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editQuestID:SetText("Quest ID")
+            editQuestID:SetText(L["QUEST_ID"])
+			TrinityAdmin.AutoSize(editQuestID, 20, 13, nil, 100)
             editQuestID:SetAutoFocus(false)
 
             local btnRemove = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnRemove:SetText(L["Remove Quest"])
-            btnRemove:SetSize(btnRemove:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnRemove, 20, 16)
             btnRemove:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnRemove:SetScript("OnEnter", function(self)
@@ -2036,7 +2037,7 @@ function Misc:OpenQuestsManagement()
             btnRemove:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
                 if not questID or questID == "" or questID == "Quest ID" then
-                    print(L["Please provide a valid Quest ID."])
+                    TrinityAdmin:Print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -2044,7 +2045,7 @@ function Misc:OpenQuestsManagement()
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                ResetEditBox(editQuestID, "Quest ID")
+                ResetEditBox(editQuestID, L["QUEST_ID"])
             end)
 
             yOffset = yOffset - 40
@@ -2055,14 +2056,14 @@ function Misc:OpenQuestsManagement()
         ------------------------------------------------------------
         do
             local editQuestID = CreateFrame("EditBox", nil, container, "InputBoxTemplate")
-            editQuestID:SetSize(100, 22)
             editQuestID:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
-            editQuestID:SetText("Quest ID")
+            editQuestID:SetText(L["QUEST_ID"])
+			TrinityAdmin.AutoSize(editQuestID, 20, 13, nil, 100)
             editQuestID:SetAutoFocus(false)
 
             local btnReward = CreateFrame("Button", nil, container, "UIPanelButtonTemplate")
             btnReward:SetText(L["Reward Quest"])
-            btnReward:SetSize(btnReward:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnReward, 20, 16)
             btnReward:SetPoint("LEFT", editQuestID, "RIGHT", 10, 0)
 
             btnReward:SetScript("OnEnter", function(self)
@@ -2075,8 +2076,8 @@ function Misc:OpenQuestsManagement()
 
             btnReward:SetScript("OnClick", function()
                 local questID = editQuestID:GetText()
-                if not questID or questID == "" or questID == "Quest ID" then
-                    print(L["Please provide a valid Quest ID."])
+                if not questID or questID == "" or questID == L["QUEST_ID"] then
+                    TrinityAdmin:Print(L["Please provide a valid Quest ID."])
                     return
                 end
 
@@ -2084,7 +2085,7 @@ function Misc:OpenQuestsManagement()
                 SendChatMessage(cmd, "SAY")
 
                 -- Reset
-                ResetEditBox(editQuestID, "Quest ID")
+                ResetEditBox(editQuestID, L["QUEST_ID"])
             end)
 
             yOffset = yOffset - 40
@@ -2096,8 +2097,7 @@ function Misc:OpenQuestsManagement()
         local btnBack = CreateFrame("Button", nil, self.questsPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.questsPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.questsPanel:Hide()
             self.panel:Show()
@@ -2183,7 +2183,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
             {
                 text      = L["deserter bg add"],
                 cmd       = ".deserter bg add",
-                defaultEB = "Time",
+                defaultEB = L["Time"],
                 tooltip   = L["deserter_bg_add_desc"],
                 needValue = true,  -- champ obligatoire
             },
@@ -2202,7 +2202,6 @@ function Misc:OpenBattlefieldAndPvpManagement()
             block:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
 
             local editBox = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editBox:SetSize(100, 22)
             editBox:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editBox:SetAutoFocus(false)
 
@@ -2215,10 +2214,15 @@ function Misc:OpenBattlefieldAndPvpManagement()
             UIDropDownMenu_SetText(dropdown, dropdown.selectedOption.text)
             editBox:SetText(dropdown.selectedOption.defaultEB)
 
-            -- Bouton "Set"
+            -- Resize des box
+			local initialOpt = dropdown.selectedOption
+            TrinityAdmin.AutoSize(editBox, 20, 13, nil, 50)
+
+			
+			-- Bouton "Set"
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnSet:SetText(L["Set"])
-            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnSet, 20, 16)
             btnSet:SetPoint("LEFT", dropdown, "RIGHT", 5, 0)
 
             -- Dropdown init
@@ -2256,23 +2260,23 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
                 local target = UnitName("target")
                 if not target then
-                    print(L["Error: Please target a character."])
+                    TrinityAdmin:Print(L["Error: Please target a character."])
                     return
                 end
 
                 if opt.needValue then
                     local val = editBox:GetText()
                     if not val or val == "" or val == opt.defaultEB then
-						print(L["Please provide a value for:"] .. " " .. opt.text)
+						TrinityAdmin:Print(L["Please provide a value for:"] .. " " .. opt.text)
                         return
                     end
                     local cmd = opt.cmd .. " " .. val
                     SendChatMessage(cmd, "SAY")
-					-- print("[DEBUG] Commande envoyée : " .. cmd)
+					-- TrinityAdmin:Print("[DEBUG] Commande envoyée : " .. cmd)
                 else
                     local cmd = opt.cmd
                     SendChatMessage(cmd, "SAY")
-					-- print("[DEBUG] Commande envoyée : " .. cmd)
+					-- TrinityAdmin:Print("[DEBUG] Commande envoyée : " .. cmd)
                 end
             end)
 
@@ -2297,7 +2301,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
             {
                 text      = L["deserter instance add"],
                 cmd       = ".deserter instance add",
-                defaultEB = "Time",
+                defaultEB = L["Time"],
                 tooltip   = L["deserter_instance_add_desc"],
                 needValue = true,
             },
@@ -2316,7 +2320,6 @@ function Misc:OpenBattlefieldAndPvpManagement()
             block:SetPoint("TOPLEFT", leftContainer, "TOPLEFT", 0, yLeft)
 
             local editBox = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editBox:SetSize(100, 22)
             editBox:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editBox:SetAutoFocus(false)
 
@@ -2328,9 +2331,13 @@ function Misc:OpenBattlefieldAndPvpManagement()
             UIDropDownMenu_SetText(dropdown, dropdown.selectedOption.text)
             editBox:SetText(dropdown.selectedOption.defaultEB)
 
+            -- Resize des box
+			local initialOpt = dropdown.selectedOption
+            TrinityAdmin.AutoSize(editBox, 20, 13, nil, 50)
+			
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnSet:SetText(L["Set"])
-            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnSet, 20, 16)
             btnSet:SetPoint("LEFT", dropdown, "RIGHT", 5, 0)
 
             local function OnClickOption(opt)
@@ -2365,14 +2372,14 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
                 local target = UnitName("target")
                 if not target then
-                    print(L["Error: Please target a character."])
+                    TrinityAdmin:Print(L["Error: Please target a character."])
                     return
                 end
 
                 if opt.needValue then
                     local val = editBox:GetText()
                     if not val or val == "" or val == opt.defaultEB then
-                        print(L["Please provide a value for:"] .. " " .. opt.text)
+                        TrinityAdmin:Print(L["Please provide a value for:"] .. " " .. opt.text)
                         return
                     end
                     local cmd = opt.cmd .. " " .. val
@@ -2403,14 +2410,14 @@ function Misc:OpenBattlefieldAndPvpManagement()
             block:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
 
             local editName = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editName:SetSize(140, 22)
             editName:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editName:SetAutoFocus(false)
-            editName:SetText("Enter Player Name")
+            editName:SetText(L["ENTER_P_NAME"])
+			TrinityAdmin.AutoSize(editName, 20, 13, nil, 100)
 
             local btnStopCombat = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnStopCombat:SetText(L["Stop Combat"])
-            btnStopCombat:SetSize(btnStopCombat:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnStopCombat, 20, 16)
             btnStopCombat:SetPoint("LEFT", editName, "RIGHT", 10, 0)
 
             btnStopCombat:SetScript("OnEnter", function(self)
@@ -2423,17 +2430,17 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             btnStopCombat:SetScript("OnClick", function()
                 local val = editName:GetText()
-                if val and val ~= "" and val ~= "Enter Player Name" then
+                if val and val ~= "" and val ~= L["ENTER_P_NAME"] then
                     SendChatMessage(".combatstop " .. val, "SAY")
                 else
                     local target = UnitName("target")
                     if not target then
-                        print(L["target_or_name_error"])
+                        TrinityAdmin:Print(L["target_or_name_error"])
                         return
                     end
                     SendChatMessage(".combatstop " .. target, "SAY")
                 end
-                editName:SetText("Enter Player Name")
+                editName:SetText(L["ENTER_P_NAME"])
             end)
 
             yRight = yRight - 50
@@ -2446,15 +2453,15 @@ function Misc:OpenBattlefieldAndPvpManagement()
             block:SetPoint("TOPLEFT", rightContainer, "TOPLEFT", 0, yRight)
 
             local editAmount = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editAmount:SetSize(80, 22)
             editAmount:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editAmount:SetAutoFocus(false)
-            editAmount:SetText("Amount")
+            editAmount:SetText(L["AMOUNT"])
+			TrinityAdmin.AutoSize(editAmount, 20, 13, nil, 60)
 
             local btnAddHonor = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnAddHonor:SetText(L["Add Honor"])
-            btnAddHonor:SetSize(btnAddHonor:GetTextWidth() + 20, 22)
-            btnAddHonor:SetPoint("LEFT", editAmount, "RIGHT", 10, 0)
+            TrinityAdmin.AutoSize(btnAddHonor, 20, 16)
+            btnAddHonor:SetPoint("LEFT", editAmount, "RIGHT", 10, 13)
 
             btnAddHonor:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -2464,25 +2471,25 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             btnAddHonor:SetScript("OnClick", function()
                 local amountVal = editAmount:GetText()
-                if not amountVal or amountVal == "" or amountVal == "Amount" then
-                    print(L["honor_amount_error"])
+                if not amountVal or amountVal == "" or amountVal == L["AMOUNT"] then
+                    TrinityAdmin:Print(L["honor_amount_error"])
                     return
                 end
                 -- Vérifier la cible
                 local target = UnitName("target")
                 if not target then
-                    print(L["honor_target_error"])
+                    TrinityAdmin:Print(L["honor_target_error"])
                     return
                 end
 
                 SendChatMessage(".honor add " .. amountVal, "SAY")
-                editAmount:SetText("Amount")
+                editAmount:SetText(L["AMOUNT"])
             end)
 
             local btnAddHonorKill = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnAddHonorKill:SetText(L["Add Honor Kill"])
-            btnAddHonorKill:SetSize(btnAddHonorKill:GetTextWidth() + 20, 22)
-            btnAddHonorKill:SetPoint("LEFT", btnAddHonor, "RIGHT", 20, 0)
+            TrinityAdmin.AutoSize(btnAddHonorKill, 20, 16)
+            btnAddHonorKill:SetPoint("LEFT", btnAddHonor, "BOTTOMLEFT", 0, -15)
 
             btnAddHonorKill:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -2508,8 +2515,8 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             local btnPvPStats = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnPvPStats:SetText(L["PvP Stats"])
-            btnPvPStats:SetSize(btnPvPStats:GetTextWidth() + 20, 22)
-            btnPvPStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
+            TrinityAdmin.AutoSize(btnPvPStats, 20, 16)
+            btnPvPStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, -10)
 
             btnPvPStats:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -2562,17 +2569,17 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             local dropdown2 = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
             dropdown2:SetPoint("LEFT", dropdown1, "RIGHT", 10, 0)
-            UIDropDownMenu_SetWidth(dropdown2, 80)
+            UIDropDownMenu_SetWidth(dropdown2, 90)
 
             dropdown1.selectedOption = bfOptions1[1]
             UIDropDownMenu_SetText(dropdown1, bfOptions1[1].text)
 
             dropdown2.selectedOption = bfOptions2[1]
-            UIDropDownMenu_SetText(dropdown2, bfOptions2[1].text)
+            UIDropDownMenu_SetText(dropdown2, bfOptions2[1].text)		
 
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnSet:SetText(L["Set"])
-            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnSet, 20, 16)
             btnSet:SetPoint("LEFT", dropdown2, "RIGHT", 10, 0)
 
             local function OnClickOption1(opt)
@@ -2642,20 +2649,20 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             local dropdown3 = CreateFrame("Frame", nil, block, "UIDropDownMenuTemplate")
             dropdown3:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
-            UIDropDownMenu_SetWidth(dropdown3, 80)
+            UIDropDownMenu_SetWidth(dropdown3, 90)
 
             dropdown3.selectedOption = bfTimerOptions[1]
             UIDropDownMenu_SetText(dropdown3, bfTimerOptions[1].text)
 
             local editTimer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editTimer:SetSize(80, 22)
             editTimer:SetPoint("LEFT", dropdown3, "RIGHT", 10, 0)
             editTimer:SetAutoFocus(false)
-            editTimer:SetText("Timer")
+            editTimer:SetText(L["B_TIMER"])
+			TrinityAdmin.AutoSize(editTimer, 20, 13, nil, 70)
 
             local btnTimer = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnTimer:SetText(L["Set"])
-            btnTimer:SetSize(btnTimer:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnTimer, 20, 16)
             btnTimer:SetPoint("LEFT", editTimer, "RIGHT", 10, 0)
 
             local function OnClickOption3(opt)
@@ -2683,15 +2690,15 @@ function Misc:OpenBattlefieldAndPvpManagement()
             btnTimer:SetScript("OnClick", function()
                 local opt = dropdown3.selectedOption
                 local val = editTimer:GetText()
-                if not val or val == "" or val == "Timer" then
-                    print("Veuillez saisir une valeur de timer.")
+                if not val or val == "" or val == L["B_TIMER"] then
+                    TrinityAdmin:Print(L["ENTER_TIMER"])
                     return
                 end
                 local battleid = opt.id
                 local cmd = ".bf timer " .. tostring(battleid) .. " " .. val
                 SendChatMessage(cmd, "SAY")
 
-                editTimer:SetText("Timer")
+                editTimer:SetText(L["B_TIMER"])
             end)
 
             yLeft = yLeft - 50
@@ -2703,8 +2710,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
         local btnBack = CreateFrame("Button", nil, self.BattlefieldAndPvpPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.BattlefieldAndPvpPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.BattlefieldAndPvpPanel:Hide()
             self.panel:Show()
@@ -2750,20 +2756,20 @@ function Misc:OpenDunjonsFuncManagement()
             block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
 
             local editMapID = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editMapID:SetSize(120, 22)
             editMapID:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editMapID:SetAutoFocus(false)
-            editMapID:SetText("Enter MapID or all")
+            editMapID:SetText(L["MAPID_OR_ALL"])
+			TrinityAdmin.AutoSize(editMapID, 20, 13, nil, 120)
 
             local editDifficulty = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editDifficulty:SetSize(80, 22)
             editDifficulty:SetPoint("LEFT", editMapID, "RIGHT", 10, 0)
             editDifficulty:SetAutoFocus(false)
-            editDifficulty:SetText("Difficulty")
+            editDifficulty:SetText(L["DJ_DIFICULTY"])
+			TrinityAdmin.AutoSize(editDifficulty, 20, 13, nil, 120)
 
             local btnUnbind = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnUnbind:SetText(L["Unbind"])
-            btnUnbind:SetSize(btnUnbind:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnUnbind, 20, 16)
             btnUnbind:SetPoint("LEFT", editDifficulty, "RIGHT", 10, 0)
 
             btnUnbind:SetScript("OnEnter", function(self)
@@ -2776,25 +2782,25 @@ function Misc:OpenDunjonsFuncManagement()
                 -- On vérifie si on a une cible GM (obligatoire)
                 local target = UnitName("target")
                 if not target then
-                    print(L["target_player_error"])
+                    TrinityAdmin:Print(L["target_player_error"])
                     return
                 end
 
                 local valMapID = editMapID:GetText()
-                if not valMapID or valMapID == "" or valMapID == "Enter MapID or all" then
-                    print("Veuillez entrer un mapid ou 'all'.")
+                if not valMapID or valMapID == "" or valMapID == L["MAPID_OR_ALL"] then
+                    TrinityAdmin:Print(L["PLEASE_MAPID_OR_ALL"])
                     return
                 end
                 -- On peut vérifier que si ce n'est pas 'all', alors c'est un nombre ?
                 if (valMapID ~= "all") and (not tonumber(valMapID)) then
-                    print(L["invalid_mapid_error"])
+                    TrinityAdmin:Print(L["invalid_mapid_error"])
                     return
                 end
 
                 local valDiff = editDifficulty:GetText()
                 -- si c'est "Difficulty" ou "", on n'envoie pas
                 local cmd = ".instance unbind " .. valMapID
-                if valDiff and valDiff ~= "" and valDiff ~= "Difficulty" then
+                if valDiff and valDiff ~= "" and valDiff ~= L["DJ_DIFICULTY"] then
                     cmd = cmd .. " " .. valDiff
                 end
 
@@ -2814,7 +2820,7 @@ function Misc:OpenDunjonsFuncManagement()
 
             local btnList = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnList:SetText(L["List Binds"])
-            btnList:SetSize(btnList:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnList, 20, 16)
             btnList:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
 
             btnList:SetScript("OnEnter", function(self)
@@ -2826,7 +2832,7 @@ function Misc:OpenDunjonsFuncManagement()
 			btnList:SetScript("OnClick", function()
 				local target = UnitName("target")
 				if not target then
-					print(L["target_player_error"])
+					TrinityAdmin:Print(L["target_player_error"])
 					return
 				end
 				-- On n'inclut pas son nom dans la commande, mais la commande s’applique à la cible
@@ -2845,20 +2851,20 @@ function Misc:OpenDunjonsFuncManagement()
             block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
 
             local editBossID = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editBossID:SetSize(80, 22)
             editBossID:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editBossID:SetAutoFocus(false)
-            editBossID:SetText("Boss ID")
+            editBossID:SetText(L["BOSS_ID_U"])
+			TrinityAdmin.AutoSize(editBossID, 20, 13, nil, 80)
 
             local editPlayer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editPlayer:SetSize(120, 22)
             editPlayer:SetPoint("LEFT", editBossID, "RIGHT", 10, 0)
             editPlayer:SetAutoFocus(false)
-            editPlayer:SetText("Player Name")
+            editPlayer:SetText(L["Player Name"])
+			TrinityAdmin.AutoSize(editPlayer, 20, 13, nil, 120)
 
             local btnGet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnGet:SetText(L["Get"])
-            btnGet:SetSize(btnGet:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnGet, 20, 16)
             btnGet:SetPoint("LEFT", editPlayer, "RIGHT", 10, 0)
 
             btnGet:SetScript("OnEnter", function(self)
@@ -2869,15 +2875,15 @@ function Misc:OpenDunjonsFuncManagement()
 
             btnGet:SetScript("OnClick", function()
                 local bossIdVal = editBossID:GetText()
-                if not bossIdVal or bossIdVal == "" or bossIdVal == "Boss ID" then
-                    print(L["enter_boss_id_error"])
+                if not bossIdVal or bossIdVal == "" or bossIdVal == L["BOSS_ID_U"] then
+                    TrinityAdmin:Print(L["enter_boss_id_error"])
                     return
                 end
 
                 local playerVal = editPlayer:GetText()
                 local cmd = ".instance getbossstate " .. bossIdVal
 
-                if playerVal and playerVal ~= "" and playerVal ~= "Player Name" then
+                if playerVal and playerVal ~= "" and playerVal ~= L["Player Name"] then
                     cmd = cmd .. " " .. playerVal
                 end
 
@@ -2896,26 +2902,26 @@ function Misc:OpenDunjonsFuncManagement()
             block:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
 
             local editBossID = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editBossID:SetSize(80, 22)
             editBossID:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
             editBossID:SetAutoFocus(false)
-            editBossID:SetText("Boss ID")
+            editBossID:SetText(L["BOSS_ID_U"])
+			TrinityAdmin.AutoSize(editBossID, 20, 13, nil, 80)
 
             local editEncounter = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editEncounter:SetSize(120, 22)
             editEncounter:SetPoint("LEFT", editBossID, "RIGHT", 10, 0)
             editEncounter:SetAutoFocus(false)
             editEncounter:SetText(L["Encounter State"])
+			TrinityAdmin.AutoSize(editEncounter, 20, 13, nil, 120)
 
             local editPlayer = CreateFrame("EditBox", nil, block, "InputBoxTemplate")
-            editPlayer:SetSize(120, 22)
             editPlayer:SetPoint("LEFT", editEncounter, "RIGHT", 10, 0)
             editPlayer:SetAutoFocus(false)
-            editPlayer:SetText("Player Name")
+            editPlayer:SetText(L["Player Name"])
+			TrinityAdmin.AutoSize(editPlayer, 20, 13, nil, 120)
 
             local btnSet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
-            btnSet:SetText("Set")
-            btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+            btnSet:SetText(L["Set"])
+            TrinityAdmin.AutoSize(btnSet, 20, 16)
             btnSet:SetPoint("LEFT", editPlayer, "RIGHT", 10, 0)
 
             btnSet:SetScript("OnEnter", function(self)
@@ -2926,20 +2932,20 @@ function Misc:OpenDunjonsFuncManagement()
 
             btnSet:SetScript("OnClick", function()
                 local bossIdVal = editBossID:GetText()
-                if not bossIdVal or bossIdVal == "" or bossIdVal == "Boss ID" then
-                    print(L["enter_boss_id_error"])
+                if not bossIdVal or bossIdVal == "" or bossIdVal == L["BOSS_ID_U"] then
+                    TrinityAdmin:Print(L["enter_boss_id_error"])
                     return
                 end
 
                 local encVal = editEncounter:GetText()
-                if not encVal or encVal == "" or encVal == "Encounter State" then
-                    print(L["enter_encounter_state_error"])
+                if not encVal or encVal == "" or encVal == L["Encounter State"] then
+                    TrinityAdmin:Print(L["enter_encounter_state_error"])
                     return
                 end
 
                 local cmd = ".instance setbossstate " .. bossIdVal .. " " .. encVal
                 local playerVal = editPlayer:GetText()
-                if playerVal and playerVal ~= "" and playerVal ~= "Player Name" then
+                if playerVal and playerVal ~= "" and playerVal ~= L["Player Name"] then
                     cmd = cmd .. " " .. playerVal
                 end
 
@@ -2959,7 +2965,7 @@ function Misc:OpenDunjonsFuncManagement()
 
             local btnStats = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnStats:SetText(L["Show Instances Stats"])
-            btnStats:SetSize(btnStats:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnStats, 20, 16)
             btnStats:SetPoint("TOPLEFT", block, "TOPLEFT", 0, 0)
 
             btnStats:SetScript("OnEnter", function(self)
@@ -2981,8 +2987,7 @@ function Misc:OpenDunjonsFuncManagement()
         local btnBack = CreateFrame("Button", nil, self.DunjonsFuncPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.DunjonsFuncPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.DunjonsFuncPanel:Hide()
             self.panel:Show()
@@ -3138,7 +3143,7 @@ function Misc:OpenLfgManageManagement()
         -- 2) Lfg Group
         local btnGroup = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
         btnGroup:SetText(L["Lfg Group"])
-        btnGroup:SetSize(btnGroup:GetTextWidth() + 20, 22)
+        TrinityAdmin.AutoSize(btnGroup, 20, 16)
         btnGroup:SetPoint("TOPLEFT", blockButtons, "TOPLEFT", 10, 0)
 
         btnGroup:SetScript("OnEnter", function(self)
@@ -3155,7 +3160,7 @@ function Misc:OpenLfgManageManagement()
         -- 3) Lfg Player
         local btnPlayer = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
         btnPlayer:SetText(L["Lfg Player"])
-        btnPlayer:SetSize(btnPlayer:GetTextWidth() + 20, 22)
+        TrinityAdmin.AutoSize(btnPlayer, 20, 16)
         btnPlayer:SetPoint("LEFT", btnGroup, "RIGHT", 10, 0)
 
         btnPlayer:SetScript("OnEnter", function(self)
@@ -3172,7 +3177,7 @@ function Misc:OpenLfgManageManagement()
         -- 4) Lfg Queue
         local btnQueue = CreateFrame("Button", nil, blockButtons, "UIPanelButtonTemplate")
         btnQueue:SetText(L["Lfg Queue"])
-        btnQueue:SetSize(btnQueue:GetTextWidth() + 20, 22)
+        TrinityAdmin.AutoSize(btnQueue, 20, 16)
         btnQueue:SetPoint("LEFT", btnPlayer, "RIGHT", 10, 0)
 
         btnQueue:SetScript("OnEnter", function(self)
@@ -3196,14 +3201,14 @@ function Misc:OpenLfgManageManagement()
         blockOptions:SetPoint("TOPLEFT", container, "TOPLEFT", 0, yOffset)
 
         local editOptions = CreateFrame("EditBox", nil, blockOptions, "InputBoxTemplate")
-        editOptions:SetSize(120, 22)
         editOptions:SetPoint("TOPLEFT", blockOptions, "TOPLEFT", 0, 0)
         editOptions:SetAutoFocus(false)
-        editOptions:SetText("New Value")
+        editOptions:SetText(L["LFG_NEWVALUE"])
+		TrinityAdmin.AutoSize(editOptions, 20, 13, nil, 120)
 
         local btnSet = CreateFrame("Button", nil, blockOptions, "UIPanelButtonTemplate")
         btnSet:SetText(L["Show/Set Option"])
-        btnSet:SetSize(btnSet:GetTextWidth() + 20, 22)
+        TrinityAdmin.AutoSize(btnSet, 20, 16)
         btnSet:SetPoint("LEFT", editOptions, "RIGHT", 10, 0)
 
         btnSet:SetScript("OnEnter", function(self)
@@ -3214,21 +3219,20 @@ function Misc:OpenLfgManageManagement()
 
         btnSet:SetScript("OnClick", function()
             local val = editOptions:GetText()
-            if not val or val == "" or val == "New Value" then
+            if not val or val == "" or val == L["LFG_NEWVALUE"] then
                 -- On n'envoie pas la valeur
                 SendChatMessage(".lfg options", "SAY")
             else
                 SendChatMessage(".lfg options " .. val, "SAY")
             end
-            editOptions:SetText("New Value")
+            editOptions:SetText(L["LFG_NEWVALUE"])
         end)
 
         -- Bouton Retour
         local btnBack = CreateFrame("Button", nil, self.LfgManagePanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.LfgManagePanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.LfgManagePanel:Hide()
             self.panel:Show()
@@ -3334,17 +3338,27 @@ end
 ----------------------------------------------------------------------------
 -- 5) Création d'une "dropdown" défilante (scrollable) pour EventsData
 ----------------------------------------------------------------------------
+local MAX_LABEL = 35  -- nombre maximal de caractères affichés
+
+-- fonction de troncature
+local function Truncate(text, maxLen)
+    if #text > maxLen then
+        return text:sub(1, maxLen-3) .. "..."
+    end
+    return text
+end
+
 local function CreateScrollableEventsDropdown(parent)
     -- Bouton principal (comme un dropdown)
     local mainButton = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
-    mainButton:SetSize(180, 22)
     mainButton:SetText(L["Drop Select Event"])  -- texte par défaut
+	TrinityAdmin.AutoSize(mainButton, 20, 16)
 
     mainButton.selectedEventID = nil  -- contiendra l'ID sélectionné
 
     -- Frame qui contient la liste + scrollbar
     local menuFrame = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-    menuFrame:SetSize(220, 200)  -- Ajustez la taille à vos besoins
+    menuFrame:SetSize(300, 200)  -- Ajustez la taille à vos besoins
     menuFrame:SetPoint("TOPLEFT", mainButton, "BOTTOMLEFT", 0, -2)
     menuFrame:SetBackdrop({
         bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
@@ -3379,9 +3393,9 @@ local function CreateScrollableEventsDropdown(parent)
             local eventID   = data.eventEntry
 
             local itemBtn = CreateFrame("Button", nil, scrollChild, "UIPanelButtonTemplate")
-            itemBtn:SetSize(180, ITEM_HEIGHT)
+            itemBtn:SetSize(280, ITEM_HEIGHT)
             itemBtn:SetPoint("TOPLEFT", scrollChild, "TOPLEFT", 0, -currentY)
-            itemBtn:SetText(eventName)
+            itemBtn:SetText(Truncate(eventName, MAX_LABEL))
 
             itemBtn:SetScript("OnClick", function()
                 mainButton:SetText(eventName)
@@ -3439,7 +3453,7 @@ function Misc:OpenEventsManageManagement()
 		
 			local btnActiveList = CreateFrame("Button", nil, blockActiveList, "UIPanelButtonTemplate")
 			btnActiveList:SetText(L["Event Active List"])
-			btnActiveList:SetSize(btnActiveList:GetTextWidth() + 20, 22)
+			TrinityAdmin.AutoSize(btnActiveList, 20, 16)
 			btnActiveList:SetPoint("TOPLEFT", blockActiveList, "TOPLEFT", 0, 0)
 		
 			btnActiveList:SetScript("OnEnter", function(self)
@@ -3498,7 +3512,7 @@ function Misc:OpenEventsManageManagement()
             -- 3) Bouton "Info"
             local btnGet = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnGet:SetText(L["Info_Event"])
-            btnGet:SetSize(btnGet:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnGet, 20, 16)
             btnGet:SetPoint("LEFT", scrollableDropdown, "RIGHT", 10, 0)
             btnGet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3508,20 +3522,20 @@ function Misc:OpenEventsManageManagement()
             btnGet:SetScript("OnClick", function()
                 local selectedID = scrollableDropdown.selectedEventID
                 if not selectedID then
-                    print(L["select_event_error"])
+                    TrinityAdmin:Print(L["select_event_error"])
                     return
                 end
                 StartEventsCapture()
                 local cmd = ".event info " .. tostring(selectedID)
                 SendChatMessage(cmd, "SAY")
 				-- Réinitialiser après utilisation :
-				ResetDropdownSelection(scrollableDropdown, "Select Event")
+				ResetDropdownSelection(scrollableDropdown, L["Drop Select Event"])
             end)
 
             -- 4) Bouton "Start"
             local btnStart = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnStart:SetText(L["Start Event"])
-            btnStart:SetSize(btnStart:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnStart, 20, 16)
             btnStart:SetPoint("LEFT", btnGet, "RIGHT", 10, 0)
             btnStart:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3531,20 +3545,20 @@ function Misc:OpenEventsManageManagement()
             btnStart:SetScript("OnClick", function()
                 local selectedID = scrollableDropdown.selectedEventID
                 if not selectedID then
-                    print(L["select_event_error"])
+                    TrinityAdmin:Print(L["select_event_error"])
                     return
                 end
                 StartEventsCapture()
                 local cmd = ".event start " .. tostring(selectedID)
                 SendChatMessage(cmd, "SAY")
 				-- Réinitialiser après utilisation :
-				ResetDropdownSelection(scrollableDropdown, "Select Event")
+				ResetDropdownSelection(scrollableDropdown, L["Drop Select Event"])
             end)
 
             -- 5) Bouton "Stop"
             local btnStop = CreateFrame("Button", nil, block, "UIPanelButtonTemplate")
             btnStop:SetText(L["Stop Event"])
-            btnStop:SetSize(btnStop:GetTextWidth() + 20, 22)
+            TrinityAdmin.AutoSize(btnStop, 20, 16)
             btnStop:SetPoint("LEFT", btnStart, "RIGHT", 10, 0)
             btnStop:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3554,14 +3568,14 @@ function Misc:OpenEventsManageManagement()
             btnStop:SetScript("OnClick", function()
                 local selectedID = scrollableDropdown.selectedEventID
                 if not selectedID then
-                    print(L["select_event_error"])
+                    TrinityAdmin:Print(L["select_event_error"])
                     return
                 end
                 StartEventsCapture()
                 local cmd = ".event stop " .. tostring(selectedID)
                 SendChatMessage(cmd, "SAY")
 				-- Réinitialiser après utilisation :
-				ResetDropdownSelection(scrollableDropdown, "Select Event")
+				ResetDropdownSelection(scrollableDropdown, L["Drop Select Event"])
             end)
 
             yOffset = yOffset - 50
@@ -3573,8 +3587,7 @@ function Misc:OpenEventsManageManagement()
         local btnBack = CreateFrame("Button", nil, self.EventsManagePanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.EventsManagePanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.EventsManagePanel:Hide()
             self.panel:Show()
@@ -3674,21 +3687,35 @@ function ShowEventsAceGUI(lines)
     frame:AddChild(closeBtn)
 end
 
--- Affiche les messages capturés pour List spawns
 -- function ShowListSpawnsPopup(lines)
 --     local AceGUI = LibStub("AceGUI-3.0")
 --     local frame = AceGUI:Create("Frame")
---     frame:SetTitle("List Spawnpoints")
--- 	frame:SetStatusText("Information from .List Spawnpoints commands")
---     frame:SetLayout("Fill")
+--     frame:SetTitle(L["List Spawnpoints"])
+--     frame:SetStatusText(L["Information from .List Spawnpoints commands"])
+--     frame:SetLayout("List")
 --     frame:SetWidth(500)
 --     frame:SetHeight(400)
---   
+--     
+--     local pageSize = 40  -- Nombre de lignes par page
+--     local currentPage = 1
+--     local totalPages = math.ceil(#lines / pageSize)
+--     
+--     local function GetPageText(page)
+--         local startIndex = (page - 1) * pageSize + 1
+--         local endIndex = math.min(page * pageSize, #lines)
+--         local pageLines = {}
+--         for i = startIndex, endIndex do
+--             table.insert(pageLines, lines[i])
+--         end
+--         return table.concat(pageLines, "\n")
+--     end
+-- 
+--     -- Zone de texte avec hauteur fixe pour laisser de la place aux boutons
 --     local multiline = AceGUI:Create("MultiLineEditBox")
---     multiline:SetLabel("Spawnpoints")
+--     multiline:SetLabel(L["Spawnpoints"])
 --     multiline:SetFullWidth(true)
---     multiline:SetFullHeight(true)
---     multiline:SetText(table.concat(lines, "\n"))
+--     multiline:SetHeight(250)
+--     multiline:SetText(GetPageText(currentPage))
 --     if multiline.editBox then
 --         multiline.editBox:HookScript("OnEditFocusGained", function(self)
 --             self:ClearFocus()
@@ -3696,97 +3723,167 @@ end
 --     end
 --     frame:AddChild(multiline)
 --     
---     local closeBtn = AceGUI:Create("Button")
---     closeBtn:SetText("Close")
---     closeBtn:SetWidth(100)
---     closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
---     frame:AddChild(closeBtn)
+--     -- Groupe de pagination
+--     local paginationGroup = AceGUI:Create("SimpleGroup")
+--     paginationGroup:SetFullWidth(true)
+--     paginationGroup:SetLayout("Flow")
+--     paginationGroup:SetHeight(30)
+--     
+-- local btnPrev = AceGUI:Create("Button")
+-- btnPrev:SetText(L["Preview"])
+-- btnPrev:SetWidth(100)
+-- btnPrev:SetCallback("OnClick", function()
+--     if currentPage > 1 then
+--         currentPage = currentPage - 1
+--         multiline:SetText(GetPageText(currentPage))
+--         pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+--     end
+-- end)
+-- paginationGroup:AddChild(btnPrev)
+-- 
+-- -- Espaceur pour décaler le label de pagination
+-- local spacer = AceGUI:Create("Label")
+-- spacer:SetText("")
+-- spacer:SetWidth(40)  -- ajustez cette largeur selon vos besoins
+-- paginationGroup:AddChild(spacer)
+-- 
+-- local pageLabel = AceGUI:Create("Label")
+-- pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+-- pageLabel:SetWidth(150)
+-- paginationGroup:AddChild(pageLabel)
+-- 
+-- local btnNext = AceGUI:Create("Button")
+-- btnNext:SetText(L["Next"])
+-- btnNext:SetWidth(100)
+-- btnNext:SetCallback("OnClick", function()
+--     if currentPage < totalPages then
+--         currentPage = currentPage + 1
+--         multiline:SetText(GetPageText(currentPage))
+--         pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+--     end
+-- end)
+-- paginationGroup:AddChild(btnNext)
+--     
+--     frame:AddChild(paginationGroup)
+--     
+--     -- local closeBtn = AceGUI:Create("Button")
+--     -- closeBtn:SetText("Close")
+--     -- closeBtn:SetWidth(100)
+--     -- closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
+--     -- frame:AddChild(closeBtn)
 -- end
+
+-- Remplace la fonction existante par celle-ci
+-- Remplace complètement votre fonction
 function ShowListSpawnsPopup(lines)
     local AceGUI = LibStub("AceGUI-3.0")
-    local frame = AceGUI:Create("Frame")
-    frame:SetTitle(L["List Spawnpoints"])
-    frame:SetStatusText(L["Information from .List Spawnpoints commands"])
-    frame:SetLayout("List")
-    frame:SetWidth(500)
-    frame:SetHeight(400)
-    
-    local pageSize = 40  -- Nombre de lignes par page
-    local currentPage = 1
-    local totalPages = math.ceil(#lines / pageSize)
-    
-    local function GetPageText(page)
-        local startIndex = (page - 1) * pageSize + 1
-        local endIndex = math.min(page * pageSize, #lines)
-        local pageLines = {}
-        for i = startIndex, endIndex do
-            table.insert(pageLines, lines[i])
+
+    -- utilitaires ------------------------------------------------------------
+    local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
+    local function split(line)
+        local t = {}
+        for part in line:gmatch("[^|]+") do
+            t[#t+1] = trim(part:match(":%s*(.*)$") or part)
         end
-        return table.concat(pageLines, "\n")
+        return t
     end
 
-    -- Zone de texte avec hauteur fixe pour laisser de la place aux boutons
-    local multiline = AceGUI:Create("MultiLineEditBox")
-    multiline:SetLabel(L["Spawnpoints"])
-    multiline:SetFullWidth(true)
-    multiline:SetHeight(250)
-    multiline:SetText(GetPageText(currentPage))
-    if multiline.editBox then
-        multiline.editBox:HookScript("OnEditFocusGained", function(self)
-            self:ClearFocus()
-        end)
-    end
-    frame:AddChild(multiline)
-    
-    -- Groupe de pagination
-    local paginationGroup = AceGUI:Create("SimpleGroup")
-    paginationGroup:SetFullWidth(true)
-    paginationGroup:SetLayout("Flow")
-    paginationGroup:SetHeight(30)
-    
-local btnPrev = AceGUI:Create("Button")
-btnPrev:SetText(L["Preview"])
-btnPrev:SetWidth(100)
-btnPrev:SetCallback("OnClick", function()
-    if currentPage > 1 then
-        currentPage = currentPage - 1
-        multiline:SetText(GetPageText(currentPage))
-        pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
-    end
-end)
-paginationGroup:AddChild(btnPrev)
+    local headers = { "Type", "SpawnId", "Entry", "X", "Y", "Z" }
+    local w       = { 45, 85, 65, 75, 75, 75 }
 
--- Espaceur pour décaler le label de pagination
-local spacer = AceGUI:Create("Label")
-spacer:SetText("")
-spacer:SetWidth(40)  -- ajustez cette largeur selon vos besoins
-paginationGroup:AddChild(spacer)
+    -- parse une seule fois
+    local parsed = {}
+    for _, l in ipairs(lines) do parsed[#parsed+1] = split(l) end
 
-local pageLabel = AceGUI:Create("Label")
-pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
-pageLabel:SetWidth(150)
-paginationGroup:AddChild(pageLabel)
+    -- ───── fenêtre ----------------------------------------------------------
+    local f = AceGUI:Create("Frame")
+    f:SetTitle(L["List Spawnpoints"])
+    f:SetStatusText(L["Information from .List Spawnpoints commands"])
+    f:SetLayout("List")
+    f:SetWidth(560)
+    f:SetHeight(430)
 
-local btnNext = AceGUI:Create("Button")
-btnNext:SetText(L["Next"])
-btnNext:SetWidth(100)
-btnNext:SetCallback("OnClick", function()
-    if currentPage < totalPages then
-        currentPage = currentPage + 1
-        multiline:SetText(GetPageText(currentPage))
-        pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+    -- header (fixe) ----------------------------------------------------------
+    local head = AceGUI:Create("SimpleGroup"); head:SetLayout("Flow"); head:SetFullWidth(true)
+    for i, h in ipairs(headers) do
+        local lab = AceGUI:Create("Label")
+        lab:SetText("|cff00ff00"..h.."|r")
+        lab:SetWidth(w[i])
+        head:AddChild(lab)
     end
-end)
-paginationGroup:AddChild(btnNext)
-    
-    frame:AddChild(paginationGroup)
-    
-    -- local closeBtn = AceGUI:Create("Button")
-    -- closeBtn:SetText("Close")
-    -- closeBtn:SetWidth(100)
-    -- closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
-    -- frame:AddChild(closeBtn)
+    f:AddChild(head)
+
+    -- container qui accueillera la page courante ----------------------------
+    local rowsHolder = AceGUI:Create("ScrollFrame")
+    rowsHolder:SetLayout("List")
+    rowsHolder:SetFullWidth(true)
+    rowsHolder:SetFullHeight(true)
+    f:AddChild(rowsHolder)
+
+    -- pagination ------------------------------------------------------------
+    local pageSize    = 40
+    local currentPage = 1
+    local totalPages  = math.ceil(#parsed / pageSize)
+
+    local function renderPage(p)
+        rowsHolder:ReleaseChildren()
+
+        local first = (p-1)*pageSize + 1
+        local last  = math.min(p*pageSize, #parsed)
+
+        for idx = first, last do
+            local cols = parsed[idx]
+            local row  = AceGUI:Create("SimpleGroup")
+            row:SetFullWidth(true); row:SetLayout("Flow")
+
+            -- zébrage
+            if idx % 2 == 0 then
+                local bg = row.frame:CreateTexture(nil, "BACKGROUND", nil, -1)
+                bg:SetAllPoints(); bg:SetColorTexture(0,0,0,0.18)
+            end
+
+            for i = 1, #headers do
+                local lab = AceGUI:Create("Label")
+                local txt = cols[i] or ""
+                if i == 2 or i == 3 then txt = "|cffffff00"..txt.."|r" end
+                lab:SetText(txt); lab:SetWidth(w[i])
+                row:AddChild(lab)
+            end
+            rowsHolder:AddChild(row)
+        end
+    end
+    renderPage(currentPage)
+
+    -- barre de pagination + bouton Copy -------------------------------------
+    local bar = AceGUI:Create("SimpleGroup"); bar:SetLayout("Flow"); bar:SetFullWidth(true)
+
+    local prev = AceGUI:Create("Button"); prev:SetText(L["Preview"]); prev:SetWidth(100)
+    local pageLab = AceGUI:Create("Label"); pageLab:SetWidth(120)
+    local next = AceGUI:Create("Button"); next:SetText(L["Next"]); next:SetWidth(100)
+    local copy = AceGUI:Create("Button"); copy:SetText(L["Copy"]); copy:SetWidth(100)
+
+    local function updLabel() pageLab:SetText("Page "..currentPage.." / "..totalPages) end
+    updLabel()
+
+    prev:SetCallback("OnClick", function()
+        if currentPage > 1 then currentPage = currentPage - 1; renderPage(currentPage); updLabel() end
+    end)
+    next:SetCallback("OnClick", function()
+        if currentPage < totalPages then currentPage = currentPage + 1; renderPage(currentPage); updLabel() end
+    end)
+    copy:SetCallback("OnClick", function()
+        local pop = AceGUI:Create("Frame")
+        pop:SetTitle(L["Copy Spawnpoints"]); pop:SetLayout("Fill"); pop:SetWidth(640); pop:SetHeight(400)
+        local edit = AceGUI:Create("MultiLineEditBox"); edit:SetLabel(""); edit:SetFullWidth(true); edit:SetFullHeight(true)
+        local t = { table.concat(headers, "\t") }
+        for _, c in ipairs(parsed) do t[#t+1] = table.concat(c, "\t") end
+        edit:SetText(table.concat(t, "\n")); pop:AddChild(edit)
+    end)
+
+    bar:AddChild(prev); bar:AddChild(pageLab); bar:AddChild(next); bar:AddChild(copy)
+    f:AddChild(bar)
 end
+
 
 -----------------------------------------------------------
 -- Panneau AurasList Management
@@ -3814,8 +3911,7 @@ function Misc:OpenAurasListManagement()
         local btnListAuras = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListAuras:SetPoint("TOPLEFT", self.AurasListPanel, "TOPLEFT", 10, -40)
         btnListAuras:SetText(L["List Auras"])
-        btnListAuras:SetWidth(btnListAuras:GetTextWidth() + 20)
-        btnListAuras:SetHeight(22)
+        TrinityAdmin.AutoSize(btnListAuras, 20, 16)
         btnListAuras:SetScript("OnClick", function()
             StartEventsCapture()
             local command = ".list auras"
@@ -3831,8 +3927,7 @@ function Misc:OpenAurasListManagement()
         local btnListScenes = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListScenes:SetPoint("LEFT", btnListAuras, "RIGHT", 10, 0)
         btnListScenes:SetText(L["List Scenes"])
-        btnListScenes:SetWidth(btnListScenes:GetTextWidth() + 20)
-        btnListScenes:SetHeight(22)
+        TrinityAdmin.AutoSize(btnListScenes, 20, 16)
         btnListScenes:SetScript("OnClick", function()
             StartEventsCapture()
             local command = ".list scenes"
@@ -3848,14 +3943,13 @@ function Misc:OpenAurasListManagement()
         local btnListSpawnpoints = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListSpawnpoints:SetPoint("LEFT", btnListScenes, "RIGHT", 10, 0)
         btnListSpawnpoints:SetText(L["List Spawnpoints"])
-        btnListSpawnpoints:SetWidth(btnListSpawnpoints:GetTextWidth() + 20)
-        btnListSpawnpoints:SetHeight(22)
+        TrinityAdmin.AutoSize(btnListSpawnpoints, 20, 16)
         btnListSpawnpoints:SetScript("OnClick", function()
-    local command = ".list spawnpoints"
-    lastListCommand = command  -- sauvegarde de la commande
-    StartEventsCapture()
-    SendChatMessage(command, "SAY")
-end)
+		local command = ".list spawnpoints"
+		lastListCommand = command  -- sauvegarde de la commande
+		StartEventsCapture()
+		SendChatMessage(command, "SAY")
+		end)
         btnListSpawnpoints:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
             GameTooltip:SetText(L["List Spawnpoints tooltip"], 1, 1, 1, 1, true)
@@ -3867,37 +3961,36 @@ end)
         -- 2) Ligne "Creature ID", "Max Count" et bouton "Show Creatures List"
         ----------------------------------------------------------------------------
         local editCreatureID = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editCreatureID:SetSize(80, 22)
         editCreatureID:SetPoint("TOPLEFT", btnListAuras, "BOTTOMLEFT", 0, -20)
-        editCreatureID:SetText("Creature ID")
+        editCreatureID:SetText(L["CREATURE_ID"])
+		TrinityAdmin.AutoSize(editCreatureID, 20, 13, nil, 80)
         editCreatureID:SetAutoFocus(false)
         
         local editCreatureMax = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editCreatureMax:SetSize(80, 22)
         editCreatureMax:SetPoint("LEFT", editCreatureID, "RIGHT", 10, 0)
-        editCreatureMax:SetText("Max Count")
+        editCreatureMax:SetText(L["C_MAX_COUNT"])
+		TrinityAdmin.AutoSize(editCreatureMax, 20, 13, nil, 80)
         editCreatureMax:SetAutoFocus(false)
         
         local btnShowCreatures = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnShowCreatures:SetPoint("LEFT", editCreatureMax, "RIGHT", 10, 0)
         btnShowCreatures:SetText(L["Show Creatures List"])
-        btnShowCreatures:SetWidth(btnShowCreatures:GetTextWidth() + 20)
-        btnShowCreatures:SetHeight(22)
+        TrinityAdmin.AutoSize(btnShowCreatures, 20, 16)
         btnShowCreatures:SetScript("OnClick", function()
             local creatureID = editCreatureID:GetText()
             local maxCount = editCreatureMax:GetText()
-            if creatureID == "" or creatureID == "Creature ID" then
-                print(L["enter_valid_creature_id_error"])
+            if creatureID == "" or creatureID == L["CREATURE_ID"] then
+                TrinityAdmin:Print(L["enter_valid_creature_id_error"])
                 return
             end
             StartEventsCapture()
             local command = ".list creature " .. creatureID
-            if maxCount ~= "" and maxCount ~= "Max Count" then
+            if maxCount ~= "" and maxCount ~= L["C_MAX_COUNT"] then
                 command = command .. " " .. maxCount
             end
             SendChatMessage(command, "SAY")
-            editCreatureID:SetText("Creature ID")
-            editCreatureMax:SetText("Max Count")
+            editCreatureID:SetText(L["CREATURE_ID"])
+            editCreatureMax:SetText(L["C_MAX_COUNT"])
         end)
         btnShowCreatures:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3910,37 +4003,36 @@ end)
         -- 3) Ligne "Item ID", "Max Count" et bouton "Show Items List"
         ----------------------------------------------------------------------------
         local editItemID = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editItemID:SetSize(80, 22)
         editItemID:SetPoint("TOPLEFT", editCreatureID, "BOTTOMLEFT", 0, -20)
-        editItemID:SetText("Item ID")
+        editItemID:SetText(L["C_ITEMID"])
+		TrinityAdmin.AutoSize(editItemID, 20, 13, nil, 80)
         editItemID:SetAutoFocus(false)
         
         local editItemMax = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editItemMax:SetSize(80, 22)
         editItemMax:SetPoint("LEFT", editItemID, "RIGHT", 10, 0)
-        editItemMax:SetText("Max Count")
+        editItemMax:SetText(L["C_MAX_COUNT"])
+		TrinityAdmin.AutoSize(editItemMax, 20, 13, nil, 80)
         editItemMax:SetAutoFocus(false)
         
         local btnShowItems = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnShowItems:SetPoint("LEFT", editItemMax, "RIGHT", 10, 0)
         btnShowItems:SetText(L["Show Items List"])
-        btnShowItems:SetWidth(btnShowItems:GetTextWidth() + 20)
-        btnShowItems:SetHeight(22)
+        TrinityAdmin.AutoSize(btnShowItems, 20, 16)
         btnShowItems:SetScript("OnClick", function()
             local itemID = editItemID:GetText()
             local maxCount = editItemMax:GetText()
-            if itemID == "" or itemID == "Item ID" then
-               print(L["enter_valid_item_id_error"])
+            if itemID == "" or itemID == L["C_ITEMID"] then
+               TrinityAdmin:Print(L["enter_valid_item_id_error"])
                 return
             end
             StartEventsCapture()
             local command = ".list item " .. itemID
-            if maxCount ~= "" and maxCount ~= "Max Count" then
+            if maxCount ~= "" and maxCount ~= L["C_MAX_COUNT"] then
                 command = command .. " " .. maxCount
             end
             SendChatMessage(command, "SAY")
-            editItemID:SetText("Item ID")
-            editItemMax:SetText("Max Count")
+            editItemID:SetText(L["C_ITEMID"])
+            editItemMax:SetText(L["C_MAX_COUNT"])
         end)
         btnShowItems:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3953,26 +4045,26 @@ end)
         -- 4) Ligne "Character Name" et bouton "List Mails"
         ----------------------------------------------------------------------------
         local editCharacterName = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editCharacterName:SetSize(120, 22)
         editCharacterName:SetPoint("TOPLEFT", editItemID, "BOTTOMLEFT", 0, -20)
-        editCharacterName:SetText("Character Name")
+        editCharacterName:SetText(L["Character"])
+		TrinityAdmin.AutoSize(editCharacterName, 20, 13, nil, 120)
+		
         editCharacterName:SetAutoFocus(false)
         
         local btnListMails = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListMails:SetPoint("LEFT", editCharacterName, "RIGHT", 10, 0)
         btnListMails:SetText(L["List Mails"])
-        btnListMails:SetWidth(btnListMails:GetTextWidth() + 20)
-        btnListMails:SetHeight(22)
+        TrinityAdmin.AutoSize(btnListMails, 20, 16)
         btnListMails:SetScript("OnClick", function()
             local characterName = editCharacterName:GetText()
-            if characterName == "" or characterName == "Character Name" then
-                print(L["enter_valid_character_name_error"])
+            if characterName == "" or characterName == L["Character"] then
+                TrinityAdmin:Print(L["enter_valid_character_name_error"])
                 return
             end
             StartEventsCapture()
             local command = ".list mail " .. characterName
             SendChatMessage(command, "SAY")
-            editCharacterName:SetText("Character Name")
+            editCharacterName:SetText(L["Character"])
         end)
         btnListMails:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3985,37 +4077,36 @@ end)
         -- 5) Ligne "Gameobject ID", "Max Count" et bouton "Show Gamobjects List"
         ----------------------------------------------------------------------------
         local editGobjectID = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editGobjectID:SetSize(80, 22)
         editGobjectID:SetPoint("TOPLEFT", editCharacterName, "BOTTOMLEFT", 0, -20)
-        editGobjectID:SetText("Gameobject ID")
+        editGobjectID:SetText(L["F_GOBJECT_ID"])
+		TrinityAdmin.AutoSize(editGobjectID, 20, 13, nil, 80)
         editGobjectID:SetAutoFocus(false)
         
         local editGobjectMax = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editGobjectMax:SetSize(80, 22)
         editGobjectMax:SetPoint("LEFT", editGobjectID, "RIGHT", 10, 0)
-        editGobjectMax:SetText("Max Count")
+        editGobjectMax:SetText(L["C_MAX_COUNT"])
+		TrinityAdmin.AutoSize(editGobjectMax, 20, 13, nil, 80)
         editGobjectMax:SetAutoFocus(false)
         
         local btnShowGobjects = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnShowGobjects:SetPoint("LEFT", editGobjectMax, "RIGHT", 10, 0)
         btnShowGobjects:SetText(L["Show Gamobjects List"])
-        btnShowGobjects:SetWidth(btnShowGobjects:GetTextWidth() + 20)
-        btnShowGobjects:SetHeight(22)
+        TrinityAdmin.AutoSize(btnShowGobjects, 20, 16)
         btnShowGobjects:SetScript("OnClick", function()
             local gobjectID = editGobjectID:GetText()
             local maxCount = editGobjectMax:GetText()
-            if gobjectID == "" or gobjectID == "Gameobject ID" then
-                print(L["enter_valid_gameobject_id_error"])
+            if gobjectID == "" or gobjectID == L["F_GOBJECT_ID"] then
+                TrinityAdmin:Print(L["enter_valid_gameobject_id_error"])
                 return
             end
             StartEventsCapture()
             local command = ".list object " .. gobjectID
-            if maxCount ~= "" and maxCount ~= "Max Count" then
+            if maxCount ~= "" and maxCount ~= L["C_MAX_COUNT"] then
                 command = command .. " " .. maxCount
             end
             SendChatMessage(command, "SAY")
-            editGobjectID:SetText("Gameobject ID")
-            editGobjectMax:SetText("Max Count")
+            editGobjectID:SetText(L["F_GOBJECT_ID"])
+            editGobjectMax:SetText(L["C_MAX_COUNT"])
         end)
         btnShowGobjects:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -4028,25 +4119,24 @@ end)
         -- 6) Ligne "Distance" et bouton "List Respawns"
         ----------------------------------------------------------------------------
         local editDistance = CreateFrame("EditBox", nil, self.AurasListPanel, "InputBoxTemplate")
-        editDistance:SetSize(80, 22)
         editDistance:SetPoint("TOPLEFT", editGobjectID, "BOTTOMLEFT", 0, -20)
-        editDistance:SetText("Distance")
+        editDistance:SetText(L["G_DISTANCE"])
+		TrinityAdmin.AutoSize(editDistance, 20, 13, nil, 90)
         editDistance:SetAutoFocus(false)
         
         local btnListRespawns = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnListRespawns:SetPoint("LEFT", editDistance, "RIGHT", 10, 0)
         btnListRespawns:SetText(L["List Respawns"])
-        btnListRespawns:SetWidth(btnListRespawns:GetTextWidth() + 20)
-        btnListRespawns:SetHeight(22)
+        TrinityAdmin.AutoSize(btnListRespawns, 20, 16)
         btnListRespawns:SetScript("OnClick", function()
             local distance = editDistance:GetText()
             StartEventsCapture()
             local command = ".list respawns"
-            if distance ~= "" and distance ~= "Distance" then
+            if distance ~= "" and distance ~= L["G_DISTANCE"] then
                 command = command .. " " .. distance
             end
             SendChatMessage(command, "SAY")
-            editDistance:SetText("Distance")
+            editDistance:SetText(L["G_DISTANCE"])
         end)
         btnListRespawns:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -4061,8 +4151,7 @@ end)
         local btnBack = CreateFrame("Button", nil, self.AurasListPanel, "UIPanelButtonTemplate")
         btnBack:SetPoint("BOTTOM", self.AurasListPanel, "BOTTOM", 0, 10)
         btnBack:SetText(L["Back"])
-        btnBack:SetHeight(22)
-        btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+        TrinityAdmin.AutoSize(btnBack, 20, 16)
         btnBack:SetScript("OnClick", function()
             self.AurasListPanel:Hide()
             self.panel:Show()

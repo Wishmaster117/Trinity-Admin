@@ -47,15 +47,50 @@ local function AutoSize(frame, hPadding, vPadding, fontObject, minWidth)
 end
 
 -- Injection dans l’addon
+-- local function Inject()
+--     local ok, TrinityAdmin = pcall(function()
+--         return LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+--     end)
+--     if ok and TrinityAdmin then
+--         TrinityAdmin.AutoSize = AutoSize
+--     end
+-- end
+
+-- Injection dans l’addon principal
 local function Inject()
     local ok, TrinityAdmin = pcall(function()
         return LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
     end)
-    if ok and TrinityAdmin then
-        TrinityAdmin.AutoSize = AutoSize
+    if not ok or not TrinityAdmin then
+        return
+    end
+
+    -- 1) AutoSize pour tous les modules
+    TrinityAdmin.AutoSize = AutoSize
+
+    -- 2) SendCommand pour tous les modules
+    function TrinityAdmin:SendCommand(cmd)
+        if not cmd or cmd == "" then
+            return
+        end
+        if not string.match(cmd, "^%.") then
+            cmd = "." .. cmd
+        end
+
+        local editBox = ChatFrame1EditBox
+        if not editBox then
+            self:Print("Impossible to found ChatFrame1EditBox to execute command.")
+            return
+        end
+
+        if not editBox:IsShown() then
+            ChatFrame_OpenChat(cmd, DEFAULT_CHAT_FRAME)
+        else
+            editBox:SetText(cmd)
+            ChatEdit_SendText(editBox, 0)
+        end
     end
 end
 
 Inject()
 C_Timer.After(0.1, Inject)
-
