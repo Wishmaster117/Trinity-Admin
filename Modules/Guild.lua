@@ -1,5 +1,5 @@
 --------------------------------------------------------------
--- TrinityAdmin Guild Module (Guild.lua) - version ACEGUI
+-- TrinityAdmin Guild Module (Guild.lua)
 --------------------------------------------------------------
 
 local Guild = TrinityAdmin:GetModule("Guild")
@@ -117,9 +117,9 @@ local function ParseGuildInfo(fullText)
     return infoTable
 end
 
--------------------------------------------------------------
+---------------------------------------------------------------------
 -- ParseGuildList : transforme les lignes brutes en table structurée
--------------------------------------------------------------
+---------------------------------------------------------------------
 local function ParseGuildList(rawLines)
     local guilds = {}
 
@@ -145,10 +145,9 @@ local function ParseGuildList(rawLines)
     return guilds
 end
 
--------------------------------------------------------------
--- 3) Fonction ShowGuildInfoAceGUI : crée la fenêtre AceGUI
---    et y place des EditBox pour chaque info
--------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+-- 3) Fonction ShowGuildInfoAceGUI : crée la fenêtre AceGUI et y place des EditBox pour chaque info
+----------------------------------------------------------------------------------------------------
 local AceGUI = LibStub("AceGUI-3.0")
 
 local function ShowGuildInfoAceGUI(fullText)
@@ -174,7 +173,7 @@ local function ShowGuildInfoAceGUI(fullText)
     end)
     ]]
 
-    -- On peut mettre un ScrollFrame si on veut scroller verticalement
+    -- ScrollFrame pour scroller verticalement
     local scroll = AceGUI:Create("ScrollFrame")
     scroll:SetLayout("Flow")
     scroll:SetFullWidth(true)
@@ -195,7 +194,7 @@ local function ShowGuildInfoAceGUI(fullText)
         AddEditBox(row.label, row.value)
     end
 
-    -- Bouton Fermer (optionnel, la croix existe déjà)
+    -- Bouton Fermer
     local btnClose = AceGUI:Create("Button")
     btnClose:SetText("Close")
     btnClose:SetWidth(80)
@@ -246,13 +245,13 @@ local function ShowGuildCreateAceGUI(lines)
 end
 
 -------------------------------------------------------------
--- ShowGuildListAceGUI v2 : présentation façon « guild info »
+-- ShowGuildList : présentation façon « guild info »
 -------------------------------------------------------------
 local function ShowGuildListAceGUI(rawLines)
     local guilds  = ParseGuildList(rawLines)      -- même parseur qu’avant
     local AceGUI = LibStub("AceGUI-3.0")
 
-    -- ── Fenêtre principale ─────────────────────────────────
+    -- Fenêtre principale
     local frame = AceGUI:Create("Frame")
     frame:SetTitle(".guild list")
     frame:SetStatusText(("Total guilds: %d"):format(#guilds))
@@ -279,7 +278,7 @@ local function ShowGuildListAceGUI(rawLines)
         local eb = AceGUI:Create("EditBox")
         eb:SetText(value or "")
         eb:DisableButton(true)       -- enlève le OK
-        eb:SetDisabled(true)         -- non-éditable → grisé
+        eb:SetDisabled(true)         -- non-éditable = grisé
         eb:SetFullWidth(true)
 		eb.editbox:SetTextColor(1, 1, 1, 1)
         parent:AddChild(eb)
@@ -327,7 +326,6 @@ local guildCaptureFrame = CreateFrame("Frame")
 
 -- Événement(s) utilisés par TrinityCore pour les retours console
 guildCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
--- guildCaptureFrame:RegisterEvent("CHAT_MSG_SERVER_INFO") -- dé-commentez si votre noyau l’émet
 
 guildCaptureFrame:SetScript("OnEvent", function(_, _, msg)
     -- Si aucune capture n’est active, on ignore le message
@@ -361,52 +359,51 @@ guildCaptureFrame:SetScript("OnEvent", function(_, _, msg)
         end)
     end
 
-------------------------------------------------------------------
--- C)  Capture de ".guild list"
-------------------------------------------------------------------
-if capturingGuildList then
-    table.insert(guildListCollected, cleanMsg)
-
-    if guildListTimer then guildListTimer:Cancel() end
-    guildListTimer = C_Timer.NewTimer(0.8, function()
-        capturingGuildList = false
-        if #guildListCollected > 0 then
-            local lines = {}
-            for ln in table.concat(guildListCollected, "\n"):gmatch("[^\r\n]+") do
-                table.insert(lines, ln)
-            end
-            ShowGuildListAceGUI(lines)
-        else
-            TrinityAdmin:Print("No guild-list output was captured.")
-        end
-    end)
-end
-    ------------------------------------------------------------------
-    -- B)  Capture succincte : ".guild create"
-    ------------------------------------------------------------------
-    if capturingGuildCreate then
-        table.insert(guildCreateCollected, cleanMsg)
-
-        if guildCreateTimer then guildCreateTimer:Cancel() end
-        guildCreateTimer = C_Timer.NewTimer(0.8, function()
-            capturingGuildCreate = false
-            if #guildCreateCollected > 0 then
-                local lines = {}
-                for ln in table.concat(guildCreateCollected, "\n"):gmatch("[^\r\n]+") do
-                    table.insert(lines, ln)
-                end
-                ShowGuildCreateAceGUI(lines)
-            else
-                TrinityAdmin:Print("No guild-create output was captured.")
-            end
-        end)
-    end
-end)
+	------------------------------------------------------------------
+	-- C)  Capture de ".guild list"
+	------------------------------------------------------------------
+	if capturingGuildList then
+		table.insert(guildListCollected, cleanMsg)
+	
+		if guildListTimer then guildListTimer:Cancel() end
+		guildListTimer = C_Timer.NewTimer(0.8, function()
+			capturingGuildList = false
+			if #guildListCollected > 0 then
+				local lines = {}
+				for ln in table.concat(guildListCollected, "\n"):gmatch("[^\r\n]+") do
+					table.insert(lines, ln)
+				end
+				ShowGuildListAceGUI(lines)
+			else
+				TrinityAdmin:Print("No guild-list output was captured.")
+			end
+		end)
+	end
+		------------------------------------------------------------------
+		-- B)  Capture succincte : ".guild create"
+		------------------------------------------------------------------
+		if capturingGuildCreate then
+			table.insert(guildCreateCollected, cleanMsg)
+	
+			if guildCreateTimer then guildCreateTimer:Cancel() end
+			guildCreateTimer = C_Timer.NewTimer(0.8, function()
+				capturingGuildCreate = false
+				if #guildCreateCollected > 0 then
+					local lines = {}
+					for ln in table.concat(guildCreateCollected, "\n"):gmatch("[^\r\n]+") do
+						table.insert(lines, ln)
+					end
+					ShowGuildCreateAceGUI(lines)
+				else
+					TrinityAdmin:Print("No guild-create output was captured.")
+				end
+			end)
+		end
+	end)
 
 
 -------------------------------------------------------------
--- 1) Définir la fonction SendCommand pour exécuter une cmd --
---    via la fenêtre de chat (ChatFrame1EditBox).
+-- 1) Définir la fonction SendCommand pour exécuter une cmd via la fenêtre de chat (ChatFrame1EditBox).
 -------------------------------------------------------------
 function TrinityAdmin:SendCommand(cmd)
     if not cmd or cmd == "" then
@@ -485,21 +482,18 @@ function Guild:CreateGuildPanel()
     -- 1) GUILD CREATE
     ----------------------------------------------------------------
     local guildCreateLeaderEB = CreateFrame("EditBox", "$parentGuildCreateLeaderEB", panel, "InputBoxTemplate")
-    -- guildCreateLeaderEB:SetSize(120, 20)
     guildCreateLeaderEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildCreateLeaderEB:SetAutoFocus(false)
     guildCreateLeaderEB:SetText(L["GuildLeaderName_Name"])
 	TrinityAdmin.AutoSize(guildCreateLeaderEB, 20, 13)
 
     local guildCreateNameEB = CreateFrame("EditBox", "$parentGuildCreateNameEB", panel, "InputBoxTemplate")
-    -- guildCreateNameEB:SetSize(120, 20)
     guildCreateNameEB:SetPoint("LEFT", guildCreateLeaderEB, "RIGHT", 10, 0)
     guildCreateNameEB:SetAutoFocus(false)
     guildCreateNameEB:SetText(L["GuildName_Name"])
 	TrinityAdmin.AutoSize(guildCreateNameEB, 20, 13)
 
     local createButton = CreateFrame("Button", "$parentCreateButton", panel, "UIPanelButtonTemplate")
-    -- createButton:SetSize(80, 22)
     createButton:SetPoint("LEFT", guildCreateNameEB, "RIGHT", 10, 0)
     createButton:SetText(L["CreateG"])
 	TrinityAdmin.AutoSize(createButton, 20, 16)
@@ -547,25 +541,23 @@ function Guild:CreateGuildPanel()
 	
 		-- 4) Tous les champs OK → envoi de la commande
 		guildCreateCollected = {}
-capturingGuildCreate = true
-if guildCreateTimer then guildCreateTimer:Cancel() end
+		capturingGuildCreate = true
+		if guildCreateTimer then guildCreateTimer:Cancel() end
 		TrinityAdmin:SendCommand('.guild create ' .. leader .. ' "' .. gName .. '"')
 	end)
 
-    offsetY = offsetY - 40
+		offsetY = offsetY - 40
 
     ----------------------------------------------------------------
     -- 2) GUILD DELETE
     ----------------------------------------------------------------
     local guildDeleteNameEB = CreateFrame("EditBox", "$parentGuildDeleteNameEB", panel, "InputBoxTemplate")
-    -- guildDeleteNameEB:SetSize(120, 20)
     guildDeleteNameEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildDeleteNameEB:SetAutoFocus(false)
     guildDeleteNameEB:SetText(L["GuildName_Name"])
 	TrinityAdmin.AutoSize(guildDeleteNameEB, 20, 13)
 
     local deleteButton = CreateFrame("Button", "$parentDeleteButton", panel, "UIPanelButtonTemplate")
-    -- deleteButton:SetSize(80, 22)
     deleteButton:SetPoint("LEFT", guildDeleteNameEB, "RIGHT", 10, 0)
     deleteButton:SetText(L["DeleteG"])
 	TrinityAdmin.AutoSize(deleteButton, 20, 16)
@@ -593,7 +585,7 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
 	----------------------------------------------------------
 	-- Bouton "Guild List" complètement à droite
 	local listButton = CreateFrame("Button", "$parentGuildListButton", panel, "UIPanelButtonTemplate")
-	listButton:SetPoint("RIGHT", panel, "RIGHT", -30, 0)   -- même ligne, bord droit
+	listButton:SetPoint("RIGHT", panel, "RIGHT", -30, 0)
 	listButton:SetText(L["Guild_List"])
 	TrinityAdmin.AutoSize(listButton, 20, 16)
 	
@@ -614,14 +606,12 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
     -- 3) GUILD INFO
     ----------------------------------------------------------------
     local guildInfoNameEB = CreateFrame("EditBox", "$parentGuildInfoNameEB", panel, "InputBoxTemplate")
-    -- guildInfoNameEB:SetSize(120, 20)
     guildInfoNameEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildInfoNameEB:SetAutoFocus(false)
     guildInfoNameEB:SetText(L["Guild_ID_Info2"])
 	TrinityAdmin.AutoSize(guildInfoNameEB, 20, 13)
 
     local infoButton = CreateFrame("Button", "$parentInfoButton", panel, "UIPanelButtonTemplate")
-    -- infoButton:SetSize(80, 22)
     infoButton:SetPoint("LEFT", guildInfoNameEB, "RIGHT", 10, 0)
     infoButton:SetText(L["InfoG2"])
 	TrinityAdmin.AutoSize(infoButton, 20, 16)
@@ -661,21 +651,18 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
     -- 4) GUILD INVITE
     ----------------------------------------------------------------
     local guildInvitePlayerEB = CreateFrame("EditBox", "$parentGuildInvitePlayerEB", panel, "InputBoxTemplate")
-    -- guildInvitePlayerEB:SetSize(120, 20)
     guildInvitePlayerEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildInvitePlayerEB:SetAutoFocus(false)
     guildInvitePlayerEB:SetText(L["Player Name"])
 	TrinityAdmin.AutoSize(guildInvitePlayerEB, 20, 13)
 
     local guildInviteNameEB = CreateFrame("EditBox", "$parentGuildInviteNameEB", panel, "InputBoxTemplate")
-    -- guildInviteNameEB:SetSize(120, 20)
     guildInviteNameEB:SetPoint("LEFT", guildInvitePlayerEB, "RIGHT", 10, 0)
     guildInviteNameEB:SetAutoFocus(false)
     guildInviteNameEB:SetText(L["GuildName_Name"])
 	TrinityAdmin.AutoSize(guildInviteNameEB, 20, 13)
 
     local inviteButton = CreateFrame("Button", "$parentInviteButton", panel, "UIPanelButtonTemplate")
-    -- inviteButton:SetSize(80, 22)
     inviteButton:SetPoint("LEFT", guildInviteNameEB, "RIGHT", 10, 0)
     inviteButton:SetText(L["Invite_guild_trinity"])
 	TrinityAdmin.AutoSize(inviteButton, 20, 16)
@@ -715,21 +702,18 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
     -- 5) GUILD RANK
     ----------------------------------------------------------------
     local guildRankPlayerEB = CreateFrame("EditBox", "$parentGuildRankPlayerEB", panel, "InputBoxTemplate")
-    -- guildRankPlayerEB:SetSize(120, 20)
     guildRankPlayerEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildRankPlayerEB:SetAutoFocus(false)
     guildRankPlayerEB:SetText(L["Player Name"])
 	TrinityAdmin.AutoSize(guildRankPlayerEB, 20, 13)
 
     local guildRankValueEB = CreateFrame("EditBox", "$parentGuildRankValueEB", panel, "InputBoxTemplate")
-    -- guildRankValueEB:SetSize(120, 20)
     guildRankValueEB:SetPoint("LEFT", guildRankPlayerEB, "RIGHT", 10, 0)
     guildRankValueEB:SetAutoFocus(false)
     guildRankValueEB:SetText(L["GRank"])
 	TrinityAdmin.AutoSize(guildRankValueEB, 20, 13)
 
     local rankButton = CreateFrame("Button", "$parentRankButton", panel, "UIPanelButtonTemplate")
-    -- rankButton:SetSize(80, 22)
     rankButton:SetPoint("LEFT", guildRankValueEB, "RIGHT", 10, 0)
     rankButton:SetText(L["Set"])
 	TrinityAdmin.AutoSize(rankButton, 20, 16)
@@ -769,21 +753,18 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
     -- 6) GUILD RENAME
     ----------------------------------------------------------------
     local guildRenameOldEB = CreateFrame("EditBox", "$parentGuildRenameOldEB", panel, "InputBoxTemplate")
-    -- guildRenameOldEB:SetSize(120, 20)
     guildRenameOldEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildRenameOldEB:SetAutoFocus(false)
     guildRenameOldEB:SetText(L["GuildName_Name"])
 	TrinityAdmin.AutoSize(guildRenameOldEB, 20, 13)
 
     local guildRenameNewEB = CreateFrame("EditBox", "$parentGuildRenameNewEB", panel, "InputBoxTemplate")
-    -- guildRenameNewEB:SetSize(120, 20)
     guildRenameNewEB:SetPoint("LEFT", guildRenameOldEB, "RIGHT", 10, 0)
     guildRenameNewEB:SetAutoFocus(false)
     guildRenameNewEB:SetText(L["New_GuildName_Name"])
 	TrinityAdmin.AutoSize(guildRenameNewEB, 20, 13)
 
     local renameButton = CreateFrame("Button", "$parentRenameButton", panel, "UIPanelButtonTemplate")
-    -- renameButton:SetSize(80, 22)
     renameButton:SetPoint("LEFT", guildRenameNewEB, "RIGHT", 10, 0)
     renameButton:SetText(L["RenameG"])
 	TrinityAdmin.AutoSize(renameButton, 20, 16)
@@ -817,14 +798,12 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
     -- 7) GUILD UNINVITE
     ----------------------------------------------------------------
     local guildUninvitePlayerEB = CreateFrame("EditBox", "$parentGuildUninvitePlayerEB", panel, "InputBoxTemplate")
-    -- guildUninvitePlayerEB:SetSize(120, 20)
     guildUninvitePlayerEB:SetPoint("TOPLEFT", panel.title, "BOTTOMLEFT", 0, offsetY)
     guildUninvitePlayerEB:SetAutoFocus(false)
     guildUninvitePlayerEB:SetText(L["Player Name"])
 	TrinityAdmin.AutoSize(guildUninvitePlayerEB, 20, 13)
 
     local uninviteButton = CreateFrame("Button", "$parentUninviteButton", panel, "UIPanelButtonTemplate")
-    -- uninviteButton:SetSize(80, 22)
     uninviteButton:SetPoint("LEFT", guildUninvitePlayerEB, "RIGHT", 10, 0)
     uninviteButton:SetText(L["UninviteG"])
 	TrinityAdmin.AutoSize(uninviteButton, 20, 16)
@@ -852,8 +831,6 @@ if guildCreateTimer then guildCreateTimer:Cancel() end
         TrinityAdmin:SendCommand('.guild uninvite ' .. playerName)
     end)
 
-    ------------------------------------------------------
-    -- Enregistrer le panel dans le module
-    ------------------------------------------------------
+    -- Enregistrement du panel
     self.panel = panel
 end

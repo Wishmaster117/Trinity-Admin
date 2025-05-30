@@ -38,10 +38,9 @@ function AccountModule:CreateAccountPanel()
 
     local pageLabel = account:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     pageLabel:SetPoint("BOTTOM", account, "BOTTOM", 0, 10)
-    -- pageLabel:SetText("Page 1 / " .. totalPages)
 	pageLabel:SetText(L["Page"] .. " " .. currentPage .. " / " .. totalPages)
 	
-	-- 1) forward-declare navigation buttons
+	-- 1) On déclare les boutons de navigation
     local btnPrev, btnNext
 	
     local function ShowPage(pageIndex)
@@ -54,7 +53,7 @@ function AccountModule:CreateAccountPanel()
         end
         pageLabel:SetText("Page " .. pageIndex .. " / " .. totalPages)
 		
-		-- 3) activer ou désactiver les boutons
+		-- 2) activation ou désactivation des boutons
         if pageIndex <= 1 then
             btnPrev:Disable()
         else
@@ -68,9 +67,7 @@ function AccountModule:CreateAccountPanel()
         end
     end
 
-    --local btnPrev = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
 	btnPrev = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
-    -- btnPrev:SetSize(80, 22)
     btnPrev:SetText(L["Pagination_Preview"])
 	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOMLEFT", account, "BOTTOMLEFT", 10, 10)
@@ -81,9 +78,7 @@ function AccountModule:CreateAccountPanel()
         end
     end)
 
-    --local btnNext = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
 	btnNext = CreateFrame("Button", nil, account, "UIPanelButtonTemplate")
-    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
 	TrinityAdmin.AutoSize(btnNext, 20, 16)
     btnNext:SetPoint("BOTTOMRIGHT", account, "BOTTOMRIGHT", -10, 10)
@@ -94,12 +89,11 @@ function AccountModule:CreateAccountPanel()
         end
     end)
 
-    --ShowPage(1)
-	-- 4) initialiser l'état des boutons
+	-- 3) initialiser l'état des boutons
     ShowPage(currentPage)
 
     ------------------------------------------------------------------------------
-    -- PAGE 1 : Fonctionnalités existantes
+    -- PAGE 1
     ------------------------------------------------------------------------------
     local commandsFramePage1 = CreateFrame("Frame", nil, pages[1])
     commandsFramePage1:SetPoint("TOPLEFT", pages[1], "TOPLEFT", 10, -10)
@@ -118,7 +112,6 @@ function AccountModule:CreateAccountPanel()
 
     -- EditBox pour l'Account
     local accountEditBox = CreateFrame("EditBox", "TrinityAdminAccountEditBox", commandsFramePage1, "InputBoxTemplate")
-    -- accountEditBox:SetSize(200, 22)
     accountEditBox:SetPoint("TOPLEFT", commandsFramePage1, "TOPLEFT", 0, NextPosition1(20))
     accountEditBox:SetAutoFocus(false)
     accountEditBox:SetText(L["Username"])
@@ -138,7 +131,6 @@ function AccountModule:CreateAccountPanel()
 
     -- EditBox pour le Password
     local passwordEditBox = CreateFrame("EditBox", "TrinityAdminPasswordEditBox", commandsFramePage1, "InputBoxTemplate")
-    -- passwordEditBox:SetSize(200, 22)
     passwordEditBox:SetPoint("TOPLEFT", accountEditBox, "BOTTOMLEFT", 0, -5)
     passwordEditBox:SetAutoFocus(false)
     passwordEditBox:SetText(L["Password"])
@@ -161,8 +153,6 @@ function AccountModule:CreateAccountPanel()
     local btnCreate = CreateFrame("Button", nil, commandsFramePage1, "UIPanelButtonTemplate")
     btnCreate:SetPoint("TOPLEFT", passwordEditBox, "BOTTOMLEFT", 0, -5)
     btnCreate:SetText(L["Create"])
-    -- btnCreate:SetHeight(22)
-    -- btnCreate:SetWidth(btnCreate:GetTextWidth() + 20)
 	TrinityAdmin.AutoSize(btnCreate, 20, 16)
     btnCreate:SetScript("OnClick", function()
         local accountValue = accountEditBox:GetText()

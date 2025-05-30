@@ -46,7 +46,7 @@ local function AutoSize(frame, hPadding, vPadding, fontObject, minWidth)
     end
 end
 
--- Injection dans l’addon (inchangé)
+-- Injection dans l’addon
 local function Inject()
     local ok, TrinityAdmin = pcall(function()
         return LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
