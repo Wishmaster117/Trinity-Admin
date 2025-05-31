@@ -1,5 +1,7 @@
-local AddItem = TrinityAdmin:GetModule("AddItem")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local AddItem = TrinityAdmin:GetModule("AddItem")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 ---------------------------------------------------
 -- Ajout pour trouver ytraductions manquantes
@@ -217,7 +219,7 @@ function AddItem:CreateAddItemPanel()
         end
         local finalCommand = selectedOption.command .. " " .. table.concat(args, " ")
         -- print("Commande envoyée: " .. finalCommand)-- Pour debug
-        SendChatMessage(finalCommand, "SAY")
+        TrinityAdmin:SendCommand(finalCommand)
     end)
 
 	------------------------------------------------------------------------------
@@ -426,7 +428,8 @@ local function PopulateGOScroll(options)
         -- Lorsqu'on clique sur le bouton
         btn:SetScript("OnClick", function()
             -- print("Option cliquée :", textToShow, "Entry:", option.entry)
-            SendChatMessage(".additem set " .. option.entry, "SAY")
+            -- SendChatMessage(".additem set " .. option.entry, "SAY")
+			TrinityAdmin:SendCommand('..additem set  ' .. option.entry)
         end)
 
         lastButton = btn

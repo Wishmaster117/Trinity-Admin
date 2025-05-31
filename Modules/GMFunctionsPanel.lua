@@ -1,5 +1,7 @@
-local module = TrinityAdmin:GetModule("GMFunctionsPanel")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local module = TrinityAdmin:GetModule("GMFunctionsPanel")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 local gpsFrame
 local mapEdit, zoneEdit, areaEdit, xEdit, yEdit, zEdit, oEdit, GridEdit, CellEdit, InstanceIDEdit
@@ -528,11 +530,13 @@ local function CreateGMButton(panel, def, module, buttonRefs)
     if def.isToggle and def.stateVar then
         btn:SetScript("OnClick", function()
             if module[def.stateVar] then
-                SendChatMessage(def.commandOFF, "SAY")
+                -- SendChatMessage(def.commandOFF, "SAY")
+				TrinityAdmin:SendCommand(def.commandOFF)
                 btn:SetText(def.textOFF)
                 module[def.stateVar] = false
             else
-                SendChatMessage(def.commandON, "SAY")
+                -- SendChatMessage(def.commandON, "SAY")
+				TrinityAdmin:SendCommand(def.commandON)
                 btn:SetText(def.textON)
                 module[def.stateVar] = true
             end
@@ -540,7 +544,8 @@ local function CreateGMButton(panel, def, module, buttonRefs)
     else
         btn:SetScript("OnClick", function()
             -- print("Commande envoyée :" .. def.command)
-            SendChatMessage(def.command, "SAY")
+            -- SendChatMessage(def.command, "SAY")
+			TrinityAdmin:SendCommand(def.command)
         end)
     end
 
@@ -675,7 +680,9 @@ if buttonRefs["btnGPS"] then
             gpsInfoTimer:Cancel()
             gpsInfoTimer = nil
         end
-        SendChatMessage(".gps", "SAY")
+        -- SendChatMessage(".gps", "SAY")
+		TrinityAdmin:SendCommand(".gps")
+		
     end)
 end
         -- Ajout du comportement personnalisé pour le bouton "btnguid"
@@ -692,7 +699,8 @@ end
 					guidInfoTimer:Cancel()
 					guidInfoTimer = nil
 				end
-				SendChatMessage(".guid", "SAY")
+				-- SendChatMessage(".guid", "SAY")
+				TrinityAdmin:SendCommand(".guid")
 			end)
 		end
 
@@ -734,7 +742,8 @@ end
             btnAppearGo:SetScript("OnClick", function()
                 local playerName = appearEdit:GetText()
                 if playerName and playerName ~= "" then
-                    SendChatMessage(".appear " .. playerName, "SAY")
+                    -- SendChatMessage(".appear " .. playerName, "SAY")
+					TrinityAdmin:SendCommand('.appear ' .. playerName)
                 else
                     TrinityAdmin:Print(L["enter_player_name_appear_error"])
                 end
@@ -786,7 +795,8 @@ end
             btnMorphGo:SetScript("OnClick", function()
                 local displayId = morphEdit:GetText()
                 if displayId and displayId ~= "" and displayId ~= L["Display ID Morph"] then
-                    SendChatMessage(".morph " .. displayId, "SAY")
+                    -- SendChatMessage(".morph " .. displayId, "SAY")
+					TrinityAdmin:SendCommand('.morph ' .. displayId)
                 else
                    TrinityAdmin:Print(L["enter_display_id_morph_error"])
                 end
@@ -965,7 +975,7 @@ end
 				------------------------------------------------------------------
 				if finalCommand ~= "" then
 					-- print("Commande envoyée : " .. finalCommand)
-					SendChatMessage(finalCommand, "SAY")
+					TrinityAdmin:SendCommand(finalCommand)
 				end
 			end)
         else
@@ -1018,7 +1028,8 @@ end
 			TrinityAdmin.AutoSize(btnDevSet, 25, 16)
             btnDevSet:SetPoint("LEFT", radioOff, "RIGHT", 20, 0)
             btnDevSet:SetScript("OnClick", function()
-                SendChatMessage(".dev " .. devStatusValue, "SAY")
+                -- SendChatMessage(".dev " .. devStatusValue, "SAY")
+				TrinityAdmin:SendCommand('.dev ' .. devStatusValue)
             end)
             btnDevSet:SetScript("OnEnter", function(self)
                 GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1047,7 +1058,10 @@ end
                 if not text or text == "" or text == L["Global_Message"] then
                     TrinityAdmin:Print(L["Error : Please enter a message."])
                 else
-                    SendChatMessage('.announce "' .. text .. '"', "SAY")
+                    -- SendChatMessage('.announce "' .. text .. '"', "SAY")
+					-- TrinityAdmin:SendCommand('.announce "' .. text .. '"')
+					local msg = text or ""
+					TrinityAdmin:SendCommand(string.format('.announce "%s"', msg:gsub('"', '\\"')))
                 end
             end)
             btnAnnounce:SetScript("OnEnter", function(self)
@@ -1077,7 +1091,9 @@ end
                 if not text or text == "" or text == L["GM Message 2"] then
                     TrinityAdmin:Print(L["Error : Please enter a message."])
                 else
-                    SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
+                    -- SendChatMessage('.gmannounce "' .. text .. '"', "SAY")
+					local msg = text or ""
+					TrinityAdmin:SendCommand(string.format('.gmannounce "%s"', msg:gsub('"', '\\"')))
                 end
             end)
             btnGmMessage:SetScript("OnEnter", function(self)
@@ -1108,7 +1124,9 @@ end
                 if not text or text == "" or text == L["GM Notification"] then
                     TrinityAdmin:Print(L["Error : Please enter a message."])
                 else
-                    SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
+                    -- SendChatMessage('.gmnotify "' .. text .. '"', "SAY")
+					local msg = text or ""
+					TrinityAdmin:SendCommand(string.format('.gmnotify "%s"', msg:gsub('"', '\\"')))
                 end
             end)
             btnGmNotify:SetScript("OnEnter", function(self)
@@ -1121,17 +1139,13 @@ end
             -- Ligne 5 : Champ GM Announcement pour .nameannounce
             row = CreateRow(page, 30)
             local gmAnnounceEdit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-            -- gmAnnounceEdit:SetSize(150, 22)
             gmAnnounceEdit:SetPoint("LEFT", row, "LEFT", 0, -40)
             gmAnnounceEdit:SetAutoFocus(false)
             gmAnnounceEdit:SetText(L["GM Announcement"])
 			TrinityAdmin.AutoSize(gmAnnounceEdit, 20, 13)
             
 			local btnGmAnnounce = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            -- btnGmAnnounce:SetSize(60, 22)
             btnGmAnnounce:SetText(L["Send"])
-			-- btnGmAnnounce:SetWidth(btnGmAnnounce:GetTextWidth() + 20)
-			-- btnGmAnnounce:SetHeight(22)
 			TrinityAdmin.AutoSize(btnGmAnnounce, 20, 16)
             btnGmAnnounce:SetPoint("LEFT", gmAnnounceEdit, "RIGHT", 10, 0)
             btnGmAnnounce:SetScript("OnClick", function()
@@ -1139,7 +1153,9 @@ end
                 if not text or text == "" or text == L["GM Announcement"] then
                     TrinityAdmin:Print(L["Error : Please enter a message for nameannounce."])
                 else
-                    SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
+                    -- SendChatMessage('.nameannounce "' .. text .. '"', "SAY")
+					local msg = text or ""
+					TrinityAdmin:SendCommand(string.format('.nameannounce "%s"', msg:gsub('"', '\\"')))
                 end
             end)
             btnGmAnnounce:SetScript("OnEnter", function(self)
@@ -1160,10 +1176,7 @@ end
 			TrinityAdmin.AutoSize(gmNotifyEdit, 20, 13)
             
 			local btnGmNotify = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-            -- btnGmNotify:SetSize(60, 22)
             btnGmNotify:SetText(L["Send"])
-			-- btnGmNotify:SetWidth(btnGmNotify:GetTextWidth() + 20)
-			-- btnGmNotify:SetHeight(22)
 			TrinityAdmin.AutoSize(btnGmNotify, 20, 16)
             btnGmNotify:SetPoint("LEFT", gmNotifyEdit, "RIGHT", 10, 0)
             btnGmNotify:SetScript("OnClick", function()
@@ -1171,7 +1184,9 @@ end
                 if not text or text == "" or text == L["GM Notify"] then
                     TrinityAdmin:Print(L["Error : Please enter a message to Notify."])
                 else
-                    SendChatMessage('.notify "' .. text .. '"', "SAY")
+                    -- SendChatMessage('.notify "' .. text .. '"', "SAY")
+					local msg = text or ""
+					TrinityAdmin:SendCommand(string.format('.notify "%s"', msg:gsub('"', '\\"')))
                 end
             end)
             btnGmNotify:SetScript("OnEnter", function(self)
@@ -1307,7 +1322,8 @@ end
 			if max and max ~= "" and max ~= "Max" then
 				command = command .. " " .. max
 			end
-			SendChatMessage(command, "SAY")
+			-- SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
 		end)
 		btnSetSkill:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -1352,7 +1368,8 @@ end
                 return
             end
             local cmd = ".distance "
-            SendChatMessage(cmd, "SAY")
+            -- SendChatMessage(cmd, "SAY")
+			TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1389,7 +1406,8 @@ end
             local cmd = ".hidearea " .. val
             -- We do NOT actually add the target's name to the command,
             -- so if there's a target, it applies to them; if no target, applies to you.
-            SendChatMessage(cmd, "SAY")
+            -- SendChatMessage(cmd, "SAY")
+			TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1424,7 +1442,7 @@ end
                 return
             end
             local cmd = ".showarea " .. val
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1466,7 +1484,7 @@ end
                 return
             end
             local cmd = ".summon " .. val
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1504,11 +1522,11 @@ end
                     return
                 end
                 local cmd = ".recall " .. targetName
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
             else
                 -- Use the typed name
                 local cmd = ".recall " .. val
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 				-- print("[DEBUG] Commande envoyée: " ..cmd)
             end
         end)
@@ -1543,7 +1561,7 @@ end
                 return
             end
             local cmd = ".bindsight"
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1569,7 +1587,7 @@ end
                 return
             end
             local cmd = ".unbindsight"
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1590,7 +1608,7 @@ end
 
         btnHonorUpdate:SetScript("OnClick", function()
             local cmd = ".honor update"
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1690,7 +1708,7 @@ end
             end
 
             local cmd = ".channel set ownership " .. chanName .. " " .. state
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1788,7 +1806,7 @@ end
             -- The user specifically said "for example for snow we do .wchange 2 1" => that means "2 => snow, 1 => enable"
             -- so we'll just pass them directly:
             local cmd = ".wchange " .. wID .. " " .. sID
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)
         end)
 
@@ -1850,12 +1868,15 @@ end
             local hordeChecked    = chkHorde:GetChecked()
 
             if allianceChecked then
-                SendChatMessage(".neargrave alliance", "SAY")
+                -- SendChatMessage(".neargrave alliance", "SAY")
+				TrinityAdmin:SendCommand(".neargrave alliance")
             elseif hordeChecked then
-                SendChatMessage(".neargrave horde", "SAY")
+                -- SendChatMessage(".neargrave horde", "SAY")
+				TrinityAdmin:SendCommand(".neargrave horde")
             else
                 -- If neither checked, send ".neargrave"
-                SendChatMessage(".neargrave", "SAY")
+                -- SendChatMessage(".neargrave", "SAY")
+				TrinityAdmin:SendCommand(".neargrave")
             end
         end)
 
@@ -1922,11 +1943,11 @@ end
 		end
 		if chkGraveHorde:GetChecked() then
 			local cmd = ".linkgrave " .. graveID .. " horde"
-			SendChatMessage(cmd, "SAY")
+			TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " .. cmd)
 		elseif chkGraveAlliance:GetChecked() then
 			local cmd = ".linkgrave " .. graveID .. " alliance"
-			SendChatMessage(cmd, "SAY")
+			TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " .. cmd)
 		else
 			TrinityAdmin:Print(L["select_faction_linkgrave_error"])

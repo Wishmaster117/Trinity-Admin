@@ -115,6 +115,94 @@ function StartLookupCapture()
     end
 end
 
+-- Autre fonction de capture déplacée:
+-----------------------------------------------------------
+-- Partie capture des messages système
+-----------------------------------------------------------
+local capturingEvents = false
+local eventsInfoCollected = {}
+local eventsInfoTimer = nil
+local lastListCommand = nil
+
+-- Frame pour écouter les messages système (CHAT_MSG_SYSTEM)
+local eventsCaptureFrame = CreateFrame("Frame")
+eventsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+eventsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+    if not capturingEvents then return end
+
+    -- Nettoyage minimal du message
+    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+                       :gsub("|r", "")
+                       :gsub("|H.-|h(.-)|h", "%1")
+                       :gsub("|T.-|t", "")
+                       :gsub("\226[\148-\149][\128-\191]", "")
+    table.insert(eventsInfoCollected, cleanMsg)
+
+    -- Redémarrer un timer d'une seconde
+    if eventsInfoTimer then
+        eventsInfoTimer:Cancel()
+    end
+	eventsInfoTimer = C_Timer.NewTimer(1, function()
+		capturingEvents = false
+		local fullText = table.concat(eventsInfoCollected, "\n")
+		local lines = ProcessEventsCapturedText(fullText)
+		if lastListCommand and lastListCommand:find("%.list spawnpoints") then
+			ShowListSpawnsPopup(lines)
+		else
+			ShowEventsAceGUI(lines)
+		end
+		lastListCommand = nil  -- Réinitialisation après traitement
+	end)--Fin du callback du timer
+end)  -- Fin de la fonction OnEvent
+
+    -- Lance la capture
+    local function StartEventsCapture()
+        wipe(eventsInfoCollected)
+        capturingEvents = true
+        if eventsInfoTimer then
+            eventsInfoTimer:Cancel()
+            eventsInfoTimer = nil
+        end
+    end
+   
+    -- Fonction de parsing : sépare le texte en lignes
+    function ProcessEventsCapturedText(input)
+        local text = (type(input) == "table") and table.concat(input, "\n") or input
+        local processedLines = {}
+        for line in text:gmatch("[^\r\n]+") do
+            table.insert(processedLines, line)
+        end
+        return processedLines
+    end
+
+-- Affiche les messages capturés dans une popup AceGUI
+function ShowEventsAceGUI(lines)
+    local AceGUI = LibStub("AceGUI-3.0")
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle(L["Captured Events"])
+	frame:SetStatusText(L["Information from other commands"])
+    frame:SetLayout("Fill")
+    frame:SetWidth(400)
+    frame:SetHeight(300)
+    
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("Flow")
+    frame:AddChild(scroll)
+    
+    for i, line in ipairs(lines) do
+        local edit = AceGUI:Create("EditBox")
+        edit:SetLabel(L["Line "] .. i)
+        edit:SetText(line)
+        edit:SetFullWidth(true)
+        scroll:AddChild(edit)
+    end
+
+    local closeBtn = AceGUI:Create("Button")
+    closeBtn:SetText(L["Close"])
+    closeBtn:SetWidth(100)
+    closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
+    frame:AddChild(closeBtn)
+end
 ------------------------------------------------------------
 -- Méthode pour ajouter les boutons de gestion sur le panneau principal
 ------------------------------------------------------------
@@ -375,7 +463,8 @@ function Misc:OpenTitlesManagement()
                 return
             end
             -- Envoie la commande
-            SendChatMessage(".titles set mask " .. maskValue, "SAY")
+            --SendChatMessage(".titles set mask " .. maskValue, "SAY")
+			TrinityAdmin:SendCommand('.titles set mask ' .. maskValue)
             editMask:SetText(L["Set titles mask"])
         end)
 
@@ -451,11 +540,14 @@ function Misc:OpenTitlesManagement()
                         return
                     end
                     if chkAdd:GetChecked() then
-                        SendChatMessage(".titles add " .. option.entry, "SAY")
+                        -- SendChatMessage(".titles add " .. option.entry, "SAY")
+						TrinityAdmin:SendCommand('.titles add ' .. option.entry)
                     elseif chkRemove:GetChecked() then
-                        SendChatMessage(".titles remove " .. option.entry, "SAY")
+                        -- SendChatMessage(".titles remove " .. option.entry, "SAY")
+						TrinityAdmin:SendCommand('.titles remove ' .. option.entry)
                     elseif chkCurrent:GetChecked() then
-                        SendChatMessage(".titles current " .. option.entry, "SAY")
+                        -- SendChatMessage(".titles current " .. option.entry, "SAY")
+						TrinityAdmin:SendCommand('.titles current ' .. option.entry)
                     else
                         TrinityAdmin:Print(L["Please secte add/remove/current, or use Set for mask."])
                     end
@@ -652,7 +744,8 @@ function Misc:OpenResetsManagement()
             
             btn:SetScript("OnClick", function()
                 local nameToUse = GetPlayerNameOrTarget(editBox)
-                SendChatMessage(".reset achievements " .. nameToUse, "SAY")
+                -- SendChatMessage(".reset achievements " .. nameToUse, "SAY")
+				TrinityAdmin:SendCommand('.reset achievements ' .. nameToUse)
             end)
             
             yOffset = yOffset - 40
@@ -711,9 +804,11 @@ function Misc:OpenResetsManagement()
             
             btn:SetScript("OnClick", function()
                 if chkSpells:GetChecked() then
-                    SendChatMessage(".reset all spells", "SAY")
+                    -- SendChatMessage(".reset all spells", "SAY")
+					TrinityAdmin:SendCommand(".reset all spells")
                 elseif chkTalents:GetChecked() then
-                    SendChatMessage(".reset all talents", "SAY")
+                    -- SendChatMessage(".reset all talents", "SAY")
+					TrinityAdmin:SendCommand(".reset all talents")
                 else
                     TrinityAdmin:Print(L["Please check 'Reset All Spells' or 'Reset All Talents' before clicking Reset."])
                 end
@@ -756,7 +851,8 @@ function Misc:OpenResetsManagement()
                     finalName = targetName
                 end
                 -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. command .. " " .. finalName)
-                SendChatMessage(command .. " " .. finalName, "SAY")
+                -- SendChatMessage(command .. " " .. finalName, "SAY")
+				TrinityAdmin:SendCommand(command .. " " .. finalName)
             end)
             
             yOffset = yOffset - 40
@@ -923,7 +1019,8 @@ function Misc:OpenArenaManagement()
                 end
 
                 local cmd = ".arena create " .. leaderVal .. " \"" .. teamVal .. "\" " .. typeVal
-                SendChatMessage(cmd, "SAY")
+                -- TrinityAdmin:SendCommand(cmd)
+				TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editLeader, "Leader Name")
@@ -979,7 +1076,7 @@ function Misc:OpenArenaManagement()
                 end
 
                 local cmd = ".arena rename \"" .. oldVal .. "\" \"" .. newVal .. "\""
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editOld, L["G_OLDNAME"])
@@ -1041,7 +1138,7 @@ function Misc:OpenArenaManagement()
 			
 				-- Aucune guillemets autour de leaderNm
 				local cmd = ".arena captain " .. teamID .. " " .. leaderNm
-				SendChatMessage(cmd, "SAY")
+				TrinityAdmin:SendCommand(cmd)
 			
 				-- Réinitialise les champs
 				ResetEditBox(editTeamID,     L["G_TEAMID"])
@@ -1084,7 +1181,7 @@ function Misc:OpenArenaManagement()
                 end
 
                 local cmd = ".arena info " .. teamID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 ResetEditBox(editTeamID, L["G_TEAMID"])
             end)
@@ -1125,7 +1222,7 @@ function Misc:OpenArenaManagement()
                 end
 
                 local cmd = ".arena lookup " .. tName
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 ResetEditBox(editTeamName, L["G_TEAMNAME"])
             end)
@@ -1166,7 +1263,7 @@ function Misc:OpenArenaManagement()
                 end
 
                 local cmd = ".arena disband " .. teamID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 ResetEditBox(editTeamID, L["G_TEAMID"])
             end)
@@ -1445,7 +1542,7 @@ function Misc:OpenLookupFunctions()
 		
 			-- On envoie la commande
 			local cmd = opt.command .. " " .. textValue
-			SendChatMessage(cmd, "SAY")
+			TrinityAdmin:SendCommand(cmd)
 		
 			-- On reset le champ
 			editSingle:SetText(opt.defaultEB)
@@ -1544,7 +1641,7 @@ function Misc:OpenLookupFunctions()
 		
 			-- 2) Envoyer la commande
 			local cmd = opt.command .. " " .. val1 .. " " .. val2
-			SendChatMessage(cmd, "SAY")
+			TrinityAdmin:SendCommand(cmd)
 		
 			-- 3) Reset des champs
 			editFirst:SetText(opt.defaultEB1)
@@ -1662,7 +1759,7 @@ function Misc:OpenGroupsManagement()
                 local finalTo   = GetNameOrTarget(toValue, L["PLAYERNAME_GROUP-TOADD"])
 
                 local cmd = ".group join " .. fromValue .. " " .. finalTo
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 editFrom:SetText(L["PLAYERNAME_GROUP"])
@@ -1826,7 +1923,7 @@ function Misc:OpenGroupsManagement()
                 end
 
                 local cmd = opt.command .. " " .. textValue
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 editName:SetText(opt.defaultEB)
@@ -1922,7 +2019,7 @@ function Misc:OpenQuestsManagement()
                 end
 
                 local cmd = ".quest add " .. questID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editQuestID, L["QUEST_ID"])
@@ -1962,7 +2059,7 @@ function Misc:OpenQuestsManagement()
                 end
 
                 local cmd = ".quest complete " .. questID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editQuestID, L["QUEST_ID"])
@@ -2002,7 +2099,7 @@ function Misc:OpenQuestsManagement()
                 end
 
                 local cmd = ".quest objective complete " .. objID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editObjID, L["Quest_Objective_ID"])
@@ -2042,7 +2139,7 @@ function Misc:OpenQuestsManagement()
                 end
 
                 local cmd = ".quest remove " .. questID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editQuestID, L["QUEST_ID"])
@@ -2082,7 +2179,7 @@ function Misc:OpenQuestsManagement()
                 end
 
                 local cmd = ".quest reward " .. questID
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 -- Reset
                 ResetEditBox(editQuestID, L["QUEST_ID"])
@@ -2271,11 +2368,11 @@ function Misc:OpenBattlefieldAndPvpManagement()
                         return
                     end
                     local cmd = opt.cmd .. " " .. val
-                    SendChatMessage(cmd, "SAY")
+                    TrinityAdmin:SendCommand(cmd)
 					-- TrinityAdmin:Print("[DEBUG] Commande envoyée : " .. cmd)
                 else
                     local cmd = opt.cmd
-                    SendChatMessage(cmd, "SAY")
+                    TrinityAdmin:SendCommand(cmd)
 					-- TrinityAdmin:Print("[DEBUG] Commande envoyée : " .. cmd)
                 end
             end)
@@ -2383,9 +2480,10 @@ function Misc:OpenBattlefieldAndPvpManagement()
                         return
                     end
                     local cmd = opt.cmd .. " " .. val
-                    SendChatMessage(cmd, "SAY")
+                    TrinityAdmin:SendCommand(cmd)
                 else
-                    SendChatMessage(opt.cmd, "SAY")
+                    -- SendChatMessage(opt.cmd, "SAY")
+					TrinityAdmin:SendCommand(opt.cmd)
                 end
             end)
 
@@ -2431,14 +2529,16 @@ function Misc:OpenBattlefieldAndPvpManagement()
             btnStopCombat:SetScript("OnClick", function()
                 local val = editName:GetText()
                 if val and val ~= "" and val ~= L["ENTER_P_NAME"] then
-                    SendChatMessage(".combatstop " .. val, "SAY")
+                    -- SendChatMessage(".combatstop " .. val, "SAY")
+					TrinityAdmin:SendCommand('.combatstop ' .. val)
                 else
                     local target = UnitName("target")
                     if not target then
                         TrinityAdmin:Print(L["target_or_name_error"])
                         return
                     end
-                    SendChatMessage(".combatstop " .. target, "SAY")
+                    -- SendChatMessage(".combatstop " .. target, "SAY")
+					TrinityAdmin:SendCommand('.combatstop ' .. target)
                 end
                 editName:SetText(L["ENTER_P_NAME"])
             end)
@@ -2482,7 +2582,8 @@ function Misc:OpenBattlefieldAndPvpManagement()
                     return
                 end
 
-                SendChatMessage(".honor add " .. amountVal, "SAY")
+                -- SendChatMessage(".honor add " .. amountVal, "SAY")
+				TrinityAdmin:SendCommand('.honor add ' .. amountVal)
                 editAmount:SetText(L["AMOUNT"])
             end)
 
@@ -2501,7 +2602,8 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
             btnAddHonorKill:SetScript("OnClick", function()
                 -- S'applique directement au GM
-                SendChatMessage(".honor add kill", "SAY")
+                -- SendChatMessage(".honor add kill", "SAY")
+				TrinityAdmin:SendCommand(".honor add kill")
             end)
 
             yRight = yRight - 50
@@ -2525,7 +2627,8 @@ function Misc:OpenBattlefieldAndPvpManagement()
             btnPvPStats:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
             btnPvPStats:SetScript("OnClick", function()
-                SendChatMessage(".pvpstats", "SAY")
+                -- SendChatMessage(".pvpstats", "SAY")
+				TrinityAdmin:SendCommand(".pvpstats")
             end)
 
             yRight = yRight - 50
@@ -2628,7 +2731,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
 
                 local battleid = opt2.id
                 local cmd = opt1.cmd .. " " .. tostring(battleid)
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
             end)
 
             yLeft = yLeft - 60
@@ -2696,7 +2799,7 @@ function Misc:OpenBattlefieldAndPvpManagement()
                 end
                 local battleid = opt.id
                 local cmd = ".bf timer " .. tostring(battleid) .. " " .. val
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 
                 editTimer:SetText(L["B_TIMER"])
             end)
@@ -2804,7 +2907,7 @@ function Misc:OpenDunjonsFuncManagement()
                     cmd = cmd .. " " .. valDiff
                 end
 
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
             end)
 
             yOffset = yOffset - 50
@@ -2836,7 +2939,9 @@ function Misc:OpenDunjonsFuncManagement()
 					return
 				end
 				-- On n'inclut pas son nom dans la commande, mais la commande s’applique à la cible
-				SendChatMessage(".instance listbinds", "SAY")
+				local command = ".instance listbinds"
+				StartEventsCapture(command)
+				TrinityAdmin:SendCommand(command)
 			end)
 
             yOffset = yOffset - 50
@@ -2886,8 +2991,8 @@ function Misc:OpenDunjonsFuncManagement()
                 if playerVal and playerVal ~= "" and playerVal ~= L["Player Name"] then
                     cmd = cmd .. " " .. playerVal
                 end
-
-                SendChatMessage(cmd, "SAY")
+                StartEventsCapture(cmd)
+                TrinityAdmin:SendCommand(cmd)
             end)
 
             yOffset = yOffset - 50
@@ -2948,8 +3053,9 @@ function Misc:OpenDunjonsFuncManagement()
                 if playerVal and playerVal ~= "" and playerVal ~= L["Player Name"] then
                     cmd = cmd .. " " .. playerVal
                 end
-
-                SendChatMessage(cmd, "SAY")
+                
+				StartEventsCapture(cmd)
+                TrinityAdmin:SendCommand(cmd)
             end)
 
             yOffset = yOffset - 50
@@ -2975,7 +3081,10 @@ function Misc:OpenDunjonsFuncManagement()
             btnStats:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
             btnStats:SetScript("OnClick", function()
-                SendChatMessage(".instance stats", "SAY")
+			    local command = ".instance stats"
+				StartEventsCapture(command)
+				-- SendChatMessage(command, "SAY")
+				TrinityAdmin:SendCommand(command)
             end)
 
             yOffset = yOffset - 50
@@ -3154,7 +3263,8 @@ function Misc:OpenLfgManageManagement()
 
         btnGroup:SetScript("OnClick", function()
             StartLfgCapture()
-            SendChatMessage(".lfg group", "SAY")
+            -- SendChatMessage(".lfg group", "SAY")
+			TrinityAdmin:SendCommand(".lfg group")
         end)
 
         -- 3) Lfg Player
@@ -3171,7 +3281,8 @@ function Misc:OpenLfgManageManagement()
 
         btnPlayer:SetScript("OnClick", function()
             StartLfgCapture()
-            SendChatMessage(".lfg player", "SAY")
+            -- SendChatMessage(".lfg player", "SAY")
+			TrinityAdmin:SendCommand(".lfg player")
         end)
 
         -- 4) Lfg Queue
@@ -3188,7 +3299,8 @@ function Misc:OpenLfgManageManagement()
 
         btnQueue:SetScript("OnClick", function()
             StartLfgCapture()
-            SendChatMessage(".lfg queue", "SAY")
+            -- SendChatMessage(".lfg queue", "SAY")
+			TrinityAdmin:SendCommand(".lfg queue")
         end)
 
         yOffset = yOffset - 50
@@ -3221,9 +3333,11 @@ function Misc:OpenLfgManageManagement()
             local val = editOptions:GetText()
             if not val or val == "" or val == L["LFG_NEWVALUE"] then
                 -- On n'envoie pas la valeur
-                SendChatMessage(".lfg options", "SAY")
+                -- SendChatMessage(".lfg options", "SAY")
+				TrinityAdmin:SendCommand(".lfg options")
             else
-                SendChatMessage(".lfg options " .. val, "SAY")
+                -- SendChatMessage(".lfg options " .. val, "SAY")
+				TrinityAdmin:SendCommand('.lfg options ' .. val)
             end
             editOptions:SetText(L["LFG_NEWVALUE"])
         end)
@@ -3247,36 +3361,36 @@ end
 -----------------------------------------------------------
 -- 1) Variables de capture pour .event [commandes]
 -----------------------------------------------------------
-local capturingEvents = false
-local eventsInfoCollected = {}
-local eventsInfoTimer = nil
-
--- Frame pour écouter les messages système (CHAT_MSG_SYSTEM)
-local eventsCaptureFrame = CreateFrame("Frame")
-eventsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-eventsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
-    if not capturingEvents then return end
-
-    -- Nettoyage minimal
-    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
-                       :gsub("|r", "")
-                       :gsub("|H.-|h(.-)|h", "%1")
-                       :gsub("|T.-|t", "")
-                       :gsub("\226[\148-\149][\128-\191]", "")
-
-    table.insert(eventsInfoCollected, cleanMsg)
-
-    -- On redémarre un timer (1 seconde)
-    if eventsInfoTimer then
-        eventsInfoTimer:Cancel()
-    end
-    eventsInfoTimer = C_Timer.NewTimer(1, function()
-        capturingEvents = false
-        local fullText = table.concat(eventsInfoCollected, "\n")
-        local lines = ProcessEventsCapturedText(fullText)
-        ShowEventsAceGUI(lines)
-    end)
-end)
+-- local capturingEvents = false
+-- local eventsInfoCollected = {}
+-- local eventsInfoTimer = nil
+-- 
+-- -- Frame pour écouter les messages système (CHAT_MSG_SYSTEM)
+-- local eventsCaptureFrame = CreateFrame("Frame")
+-- eventsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+-- eventsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
+--     if not capturingEvents then return end
+-- 
+--     -- Nettoyage minimal
+--     local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
+--                        :gsub("|r", "")
+--                        :gsub("|H.-|h(.-)|h", "%1")
+--                        :gsub("|T.-|t", "")
+--                        :gsub("\226[\148-\149][\128-\191]", "")
+-- 
+--     table.insert(eventsInfoCollected, cleanMsg)
+-- 
+--     -- On redémarre un timer (1 seconde)
+--     if eventsInfoTimer then
+--         eventsInfoTimer:Cancel()
+--     end
+--     eventsInfoTimer = C_Timer.NewTimer(1, function()
+--         capturingEvents = false
+--         local fullText = table.concat(eventsInfoCollected, "\n")
+--         local lines = ProcessEventsCapturedText(fullText)
+--         ShowEventsAceGUI(lines)
+--     end)
+-- end)
 
 -----------------------------------------------------------
 -- 2) Lance la capture avant d'envoyer la commande
@@ -3464,7 +3578,8 @@ function Misc:OpenEventsManageManagement()
 		
 			btnActiveList:SetScript("OnClick", function()
 				StartEventsCapture()
-				SendChatMessage(".event activelist", "SAY")
+				-- SendChatMessage(".event activelist", "SAY")
+				TrinityAdmin:SendCommand(".event activelist")
 			end)
 		end
 
@@ -3527,7 +3642,7 @@ function Misc:OpenEventsManageManagement()
                 end
                 StartEventsCapture()
                 local cmd = ".event info " .. tostring(selectedID)
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 				-- Réinitialiser après utilisation :
 				ResetDropdownSelection(scrollableDropdown, L["Drop Select Event"])
             end)
@@ -3550,7 +3665,7 @@ function Misc:OpenEventsManageManagement()
                 end
                 StartEventsCapture()
                 local cmd = ".event start " .. tostring(selectedID)
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 				-- Réinitialiser après utilisation :
 				ResetDropdownSelection(scrollableDropdown, L["Drop Select Event"])
             end)
@@ -3573,7 +3688,7 @@ function Misc:OpenEventsManageManagement()
                 end
                 StartEventsCapture()
                 local cmd = ".event stop " .. tostring(selectedID)
-                SendChatMessage(cmd, "SAY")
+                TrinityAdmin:SendCommand(cmd)
 				-- Réinitialiser après utilisation :
 				ResetDropdownSelection(scrollableDropdown, L["Drop Select Event"])
             end)
@@ -3598,94 +3713,8 @@ function Misc:OpenEventsManageManagement()
     self.EventsManagePanel:Show()
 end
 
--- Ouvre le panneau AurasList en masquant le panneau principal
------------------------------------------------------------
--- Partie capture des messages système
------------------------------------------------------------
-local capturingEvents = false
-local eventsInfoCollected = {}
-local eventsInfoTimer = nil
-local lastListCommand = nil
+-- Ancien emplacement de la fonction capture en dessous
 
--- Frame pour écouter les messages système (CHAT_MSG_SYSTEM)
-local eventsCaptureFrame = CreateFrame("Frame")
-eventsCaptureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
-eventsCaptureFrame:SetScript("OnEvent", function(self, event, msg)
-    if not capturingEvents then return end
-
-    -- Nettoyage minimal du message
-    local cleanMsg = msg:gsub("|c%x%x%x%x%x%x%x%x", "")
-                       :gsub("|r", "")
-                       :gsub("|H.-|h(.-)|h", "%1")
-                       :gsub("|T.-|t", "")
-                       :gsub("\226[\148-\149][\128-\191]", "")
-    table.insert(eventsInfoCollected, cleanMsg)
-
-    -- Redémarrer un timer d'une seconde
-    if eventsInfoTimer then
-        eventsInfoTimer:Cancel()
-    end
-	eventsInfoTimer = C_Timer.NewTimer(1, function()
-		capturingEvents = false
-		local fullText = table.concat(eventsInfoCollected, "\n")
-		local lines = ProcessEventsCapturedText(fullText)
-		if lastListCommand and lastListCommand:find("%.list spawnpoints") then
-			ShowListSpawnsPopup(lines)
-		else
-			ShowEventsAceGUI(lines)
-		end
-		lastListCommand = nil  -- Réinitialisation après traitement
-	end)--Fin du callback du timer
-end)  -- Fin de la fonction OnEvent
-
--- Lance la capture
-local function StartEventsCapture()
-    wipe(eventsInfoCollected)
-    capturingEvents = true
-    if eventsInfoTimer then
-        eventsInfoTimer:Cancel()
-        eventsInfoTimer = nil
-    end
-end
-
--- Fonction de parsing : sépare le texte en lignes
-function ProcessEventsCapturedText(input)
-    local text = (type(input) == "table") and table.concat(input, "\n") or input
-    local processedLines = {}
-    for line in text:gmatch("[^\r\n]+") do
-        table.insert(processedLines, line)
-    end
-    return processedLines
-end
-
--- Affiche les messages capturés dans une popup AceGUI
-function ShowEventsAceGUI(lines)
-    local AceGUI = LibStub("AceGUI-3.0")
-    local frame = AceGUI:Create("Frame")
-    frame:SetTitle(L["Captured Events"])
-	frame:SetStatusText(L["Information from other commands"])
-    frame:SetLayout("Fill")
-    frame:SetWidth(400)
-    frame:SetHeight(300)
-    
-    local scroll = AceGUI:Create("ScrollFrame")
-    scroll:SetLayout("Flow")
-    frame:AddChild(scroll)
-    
-    for i, line in ipairs(lines) do
-        local edit = AceGUI:Create("EditBox")
-        edit:SetLabel(L["Line "] .. i)
-        edit:SetText(line)
-        edit:SetFullWidth(true)
-        scroll:AddChild(edit)
-    end
-
-    local closeBtn = AceGUI:Create("Button")
-    closeBtn:SetText(L["Close"])
-    closeBtn:SetWidth(100)
-    closeBtn:SetCallback("OnClick", function() AceGUI:Release(frame) end)
-    frame:AddChild(closeBtn)
-end
 
 -- function ShowListSpawnsPopup(lines)
 --     local AceGUI = LibStub("AceGUI-3.0")
@@ -3778,111 +3807,204 @@ end
 function ShowListSpawnsPopup(lines)
     local AceGUI = LibStub("AceGUI-3.0")
 
-    -- utilitaires ------------------------------------------------------------
-    local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
-    local function split(line)
-        local t = {}
-        for part in line:gmatch("[^|]+") do
-            t[#t+1] = trim(part:match(":%s*(.*)$") or part)
-        end
-        return t
-    end
+	------------------------------------------------------------------
+	-- 1) utilitaires de parsing corrigés
+	------------------------------------------------------------------
+	local function trim(s) return (s:gsub("^%s+", ""):gsub("%s+$", "")) end
+	
+	-- Retourne id, name, infos OU nil si la ligne ne contient pas “Entry:”
+	local function splitLine(line)
+		if not line:find("Entry:") then
+			return nil   -- on ignore cette ligne “Listing all spawn points…”
+		end
+	
+		local infos = {}
+		for key, rawVal in line:gmatch("(%w+):%s*([^|]+)") do
+			infos[key] = trim(rawVal)
+		end
+	
+		if not infos.Entry then   -- sûreté supplémentaire
+			return nil
+		end
+	
+		local id, name = infos.Entry:match("(%d+)%s*%((.-)%)")
+		if not id then
+			id   = infos.Entry:match("(%d+)") or infos.Entry
+			name = ""
+		end
+		return id, name, infos
+	end
+	
+	------------------------------------------------------------------
+	-- 2) pré-parsage : on ne garde QUE les lignes valides
+	------------------------------------------------------------------
+	local parsed = {}
+	for _, l in ipairs(lines) do
+		local id, name, infos = splitLine(l)
+		if id then   -- on n’insère que si la ligne contient bien un Entry
+			parsed[#parsed+1] = { id = id, name = name, infos = infos }
+		end
+	end
 
-    local headers = { "Type", "SpawnId", "Entry", "X", "Y", "Z" }
-    local w       = { 45, 85, 65, 75, 75, 75 }
+    ------------------------------------------------------------
+    -- 3) Création de la fenêtre AceGUI
+    ------------------------------------------------------------
+    local frame = AceGUI:Create("Frame")
+    frame:SetTitle(L["List Spawnpoints"])
+    frame:SetStatusText(L["Information from .List Spawnpoints commands"])
+    frame:SetLayout("Flow")   -- empilement vertical sans chevauchement
+    frame:SetWidth(560)
+    frame:SetHeight(430)
 
-    -- parse une seule fois
-    local parsed = {}
-    for _, l in ipairs(lines) do parsed[#parsed+1] = split(l) end
-
-    -- ───── fenêtre ----------------------------------------------------------
-    local f = AceGUI:Create("Frame")
-    f:SetTitle(L["List Spawnpoints"])
-    f:SetStatusText(L["Information from .List Spawnpoints commands"])
-    f:SetLayout("List")
-    f:SetWidth(560)
-    f:SetHeight(430)
-
-    -- header (fixe) ----------------------------------------------------------
-    local head = AceGUI:Create("SimpleGroup"); head:SetLayout("Flow"); head:SetFullWidth(true)
-    for i, h in ipairs(headers) do
-        local lab = AceGUI:Create("Label")
-        lab:SetText("|cff00ff00"..h.."|r")
-        lab:SetWidth(w[i])
-        head:AddChild(lab)
-    end
-    f:AddChild(head)
-
-    -- container qui accueillera la page courante ----------------------------
+    ------------------------------------------------------------
+    -- 4) Zone ScrollFrame (hauteur limitée pour laisser de la place aux boutons)
+    ------------------------------------------------------------
     local rowsHolder = AceGUI:Create("ScrollFrame")
     rowsHolder:SetLayout("List")
     rowsHolder:SetFullWidth(true)
-    rowsHolder:SetFullHeight(true)
-    f:AddChild(rowsHolder)
+    rowsHolder:SetHeight(320)  -- environ 110px en bas pour les boutons
+    frame:AddChild(rowsHolder)
 
-    -- pagination ------------------------------------------------------------
-    local pageSize    = 40
+    ------------------------------------------------------------
+    -- 5) Pagination
+    ------------------------------------------------------------
+    local pageSize    = 20  -- 15 entrées par page
     local currentPage = 1
     local totalPages  = math.ceil(#parsed / pageSize)
 
-    local function renderPage(p)
-        rowsHolder:ReleaseChildren()
+    ------------------------------------------------------------
+    -- 6) Fonction de rendu “page par page”
+    ------------------------------------------------------------
+    local function RenderPage(p)
+        rowsHolder:ReleaseChildren()  -- vide l’ancienne page
 
-        local first = (p-1)*pageSize + 1
-        local last  = math.min(p*pageSize, #parsed)
+        local first = (p - 1) * pageSize + 1
+        local last  = math.min(p * pageSize, #parsed)
 
         for idx = first, last do
-            local cols = parsed[idx]
-            local row  = AceGUI:Create("SimpleGroup")
-            row:SetFullWidth(true); row:SetLayout("Flow")
+            local entry = parsed[idx]
+            local id, name, infos = entry.id, entry.name, entry.infos
 
-            -- zébrage
+            -- Conteneur vertical pour cette entrée
+            local grp = AceGUI:Create("SimpleGroup")
+            grp:SetFullWidth(true)
+            grp:SetLayout("List")
+
+            -- Zébrage si idx est pair
             if idx % 2 == 0 then
-                local bg = row.frame:CreateTexture(nil, "BACKGROUND", nil, -1)
-                bg:SetAllPoints(); bg:SetColorTexture(0,0,0,0.18)
+                local bg = grp.frame:CreateTexture(nil, "BACKGROUND", nil, -1)
+                bg:SetAllPoints()
+                bg:SetColorTexture(0, 0, 0, 0.18)
             end
 
-            for i = 1, #headers do
-                local lab = AceGUI:Create("Label")
-                local txt = cols[i] or ""
-                if i == 2 or i == 3 then txt = "|cffffff00"..txt.."|r" end
-                lab:SetText(txt); lab:SetWidth(w[i])
-                row:AddChild(lab)
+            -- ── Ligne 1 : titre “Nom du mob” en jaune, police plus grande
+            local title = AceGUI:Create("Label")
+            title:SetFullWidth(true)
+            title:SetText("|cffffff00" .. name .. "|r")
+            if title.label then
+                title.label:SetFontObject("GameFontNormal")
             end
-            rowsHolder:AddChild(row)
+            grp:AddChild(title)
+
+            -- ── Ligne 2 : EditBox “Entry = … | SpawnId = … | X = … | Y = … | Z = …”
+            local detailEB = AceGUI:Create("EditBox")
+            detailEB:SetLabel("")       -- pas de label au-dessus
+            detailEB:SetFullWidth(true)
+
+            -- Construit le texte du EditBox :
+            -- Entry (vert) = id  |  SpawnId (vert) = infos.SpawnId  |  X = infos.X  |  Y = infos.Y  |  Z = infos.Z
+            local detailText = table.concat({
+                "|cff00ff00Entry|r = "   .. id,
+                "|cff00ff00SpawnId|r = " .. (infos.SpawnId or ""),
+                "|cff00ff00X|r = "       .. (infos.X or ""),
+                "|cff00ff00Y|r = "       .. (infos.Y or ""),
+                "|cff00ff00Z|r = "       .. (infos.Z or "")
+            }, "  |  ")
+            detailEB:SetText(detailText)
+
+            -- Empêche la saisie ET force le texte en blanc
+            if detailEB.editBox then
+                detailEB.editBox:SetScript("OnEditFocusGained", function(self) self:ClearFocus() end)
+                detailEB.editBox:SetTextColor(1, 1, 1)
+            end
+
+            grp:AddChild(detailEB)
+            rowsHolder:AddChild(grp)
         end
     end
-    renderPage(currentPage)
 
-    -- barre de pagination + bouton Copy -------------------------------------
-    local bar = AceGUI:Create("SimpleGroup"); bar:SetLayout("Flow"); bar:SetFullWidth(true)
+    -- appelle pour la première page
+    RenderPage(currentPage)
 
-    local prev = AceGUI:Create("Button"); prev:SetText(L["Preview"]); prev:SetWidth(100)
-    local pageLab = AceGUI:Create("Label"); pageLab:SetWidth(120)
-    local next = AceGUI:Create("Button"); next:SetText(L["Next"]); next:SetWidth(100)
-    local copy = AceGUI:Create("Button"); copy:SetText(L["Copy"]); copy:SetWidth(100)
+    ------------------------------------------------------------
+    -- 7) Barre de boutons (Preview, Next, Copy)
+    ------------------------------------------------------------
+    local btnPrev = AceGUI:Create("Button"); btnPrev:SetText(L["Pagination_Preview"]); btnPrev:SetWidth(100)
+    local pageLabel = AceGUI:Create("Label");  pageLabel:SetWidth(120)
+    local btnNext = AceGUI:Create("Button"); btnNext:SetText(L["Next"]);    btnNext:SetWidth(100)
+    local btnCopy = AceGUI:Create("Button"); btnCopy:SetText(L["G_Copy"]);   btnCopy:SetWidth(100)
 
-    local function updLabel() pageLab:SetText("Page "..currentPage.." / "..totalPages) end
-    updLabel()
+    local function UpdatePageLabel()
+        pageLabel:SetText("Page " .. currentPage .. " / " .. totalPages)
+    end
+    UpdatePageLabel()
 
-    prev:SetCallback("OnClick", function()
-        if currentPage > 1 then currentPage = currentPage - 1; renderPage(currentPage); updLabel() end
+    btnPrev:SetCallback("OnClick", function()
+        if currentPage > 1 then
+            currentPage = currentPage - 1
+            RenderPage(currentPage)
+            UpdatePageLabel()
+        end
     end)
-    next:SetCallback("OnClick", function()
-        if currentPage < totalPages then currentPage = currentPage + 1; renderPage(currentPage); updLabel() end
+    btnNext:SetCallback("OnClick", function()
+        if currentPage < totalPages then
+            currentPage = currentPage + 1
+            RenderPage(currentPage)
+            UpdatePageLabel()
+        end
     end)
-    copy:SetCallback("OnClick", function()
+
+    btnCopy:SetCallback("OnClick", function()
         local pop = AceGUI:Create("Frame")
-        pop:SetTitle(L["Copy Spawnpoints"]); pop:SetLayout("Fill"); pop:SetWidth(640); pop:SetHeight(400)
-        local edit = AceGUI:Create("MultiLineEditBox"); edit:SetLabel(""); edit:SetFullWidth(true); edit:SetFullHeight(true)
-        local t = { table.concat(headers, "\t") }
-        for _, c in ipairs(parsed) do t[#t+1] = table.concat(c, "\t") end
-        edit:SetText(table.concat(t, "\n")); pop:AddChild(edit)
+        pop:SetTitle(L["Copy Spawnpoints"])
+        pop:SetLayout("Fill")
+        pop:SetWidth(640)
+        pop:SetHeight(400)
+
+        local editAll = AceGUI:Create("MultiLineEditBox")
+        editAll:SetLabel("")
+        editAll:SetFullWidth(true)
+        editAll:SetFullHeight(true)
+
+        -- assemble le TSV complet : “ID <tab> Name <tab> Type <tab> SpawnId <tab> X <tab> Y <tab> Z”
+        local t = {}
+        for _, e in ipairs(parsed) do
+            local i = e.infos
+            t[#t+1] = table.concat({
+                e.id,
+                e.name,
+                i.Type   or "",
+                i.SpawnId or "",
+                i.X      or "",
+                i.Y      or "",
+                i.Z      or ""
+            }, "\t")
+        end
+        editAll:SetText(table.concat(t, "\n"))
+        pop:AddChild(editAll)
     end)
 
-    bar:AddChild(prev); bar:AddChild(pageLab); bar:AddChild(next); bar:AddChild(copy)
-    f:AddChild(bar)
+    local footer = AceGUI:Create("SimpleGroup")
+    footer:SetLayout("Flow")
+    footer:SetFullWidth(true)
+    footer:AddChild(btnPrev)
+    footer:AddChild(pageLabel)
+    footer:AddChild(btnNext)
+    footer:AddChild(btnCopy)
+    frame:AddChild(footer)
 end
+
+
 
 
 -----------------------------------------------------------
@@ -3915,7 +4037,8 @@ function Misc:OpenAurasListManagement()
         btnListAuras:SetScript("OnClick", function()
             StartEventsCapture()
             local command = ".list auras"
-            SendChatMessage(command, "SAY")
+            -- SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
         end)
         btnListAuras:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3931,7 +4054,8 @@ function Misc:OpenAurasListManagement()
         btnListScenes:SetScript("OnClick", function()
             StartEventsCapture()
             local command = ".list scenes"
-            SendChatMessage(command, "SAY")
+            -- SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
         end)
         btnListScenes:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3948,7 +4072,8 @@ function Misc:OpenAurasListManagement()
 		local command = ".list spawnpoints"
 		lastListCommand = command  -- sauvegarde de la commande
 		StartEventsCapture()
-		SendChatMessage(command, "SAY")
+		-- SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		end)
         btnListSpawnpoints:SetScript("OnEnter", function(self)
             GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -3988,7 +4113,8 @@ function Misc:OpenAurasListManagement()
             if maxCount ~= "" and maxCount ~= L["C_MAX_COUNT"] then
                 command = command .. " " .. maxCount
             end
-            SendChatMessage(command, "SAY")
+            -- SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
             editCreatureID:SetText(L["CREATURE_ID"])
             editCreatureMax:SetText(L["C_MAX_COUNT"])
         end)
@@ -4030,7 +4156,8 @@ function Misc:OpenAurasListManagement()
             if maxCount ~= "" and maxCount ~= L["C_MAX_COUNT"] then
                 command = command .. " " .. maxCount
             end
-            SendChatMessage(command, "SAY")
+            -- SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
             editItemID:SetText(L["C_ITEMID"])
             editItemMax:SetText(L["C_MAX_COUNT"])
         end)
@@ -4063,7 +4190,7 @@ function Misc:OpenAurasListManagement()
             end
             StartEventsCapture()
             local command = ".list mail " .. characterName
-            SendChatMessage(command, "SAY")
+            TrinityAdmin:SendCommand(command)
             editCharacterName:SetText(L["Character"])
         end)
         btnListMails:SetScript("OnEnter", function(self)
@@ -4104,7 +4231,7 @@ function Misc:OpenAurasListManagement()
             if maxCount ~= "" and maxCount ~= L["C_MAX_COUNT"] then
                 command = command .. " " .. maxCount
             end
-            SendChatMessage(command, "SAY")
+            TrinityAdmin:SendCommand(command)
             editGobjectID:SetText(L["F_GOBJECT_ID"])
             editGobjectMax:SetText(L["C_MAX_COUNT"])
         end)
@@ -4135,7 +4262,7 @@ function Misc:OpenAurasListManagement()
             if distance ~= "" and distance ~= L["G_DISTANCE"] then
                 command = command .. " " .. distance
             end
-            SendChatMessage(command, "SAY")
+            TrinityAdmin:SendCommand(command)
             editDistance:SetText(L["G_DISTANCE"])
         end)
         btnListRespawns:SetScript("OnEnter", function(self)

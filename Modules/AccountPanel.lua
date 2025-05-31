@@ -1,5 +1,7 @@
-local AccountModule = TrinityAdmin:GetModule("AccountPanel")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local AccountModule = TrinityAdmin:GetModule("AccountPanel")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 function AccountModule:ShowAccountPanel()
     TrinityAdmin:HideMainMenu()
@@ -163,7 +165,7 @@ function AccountModule:CreateAccountPanel()
             return
         end
         local command = ".bnetaccount create \"" .. accountValue .. "\" \"" .. passwordValue .. "\""
-        SendChatMessage(command, "SAY")
+        TrinityAdmin:SendCommand(command)
     end)
 
     -- Section "Infos Ban"
@@ -253,7 +255,7 @@ function AccountModule:CreateAccountPanel()
             command = option.value .. " " .. inputValue
         end
         -- print("Debug: Commande envoyée en SAY: " .. command)
-        SendChatMessage(command, "SAY")
+        TrinityAdmin:SendCommand(command)
     end)
 
     local banLabel = commandsFramePage1:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -394,7 +396,7 @@ function AccountModule:CreateAccountPanel()
             TrinityAdmin:Print(string.format(L["Ban_PlayerAccount_done"], nameValue, timeValue, reasonValue))
         end
         -- print("Debug: Commande envoyée en SAY: " .. command)
-        SendChatMessage(command, "SAY")
+        TrinityAdmin:SendCommand(command)
     end)
 
     -- Section "Bnet Account Manage"
@@ -474,7 +476,8 @@ function AccountModule:CreateAccountPanel()
             end
         end
         -- print("Debug: Commande envoyée en SAY: " .. finalCommand)
-        SendChatMessage(finalCommand, "SAY")
+        -- SendChatMessage(finalCommand, "SAY")
+		TrinityAdmin:SendCommand(finalCommand)
     end)
     btnBnetGo:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -547,7 +550,7 @@ function AccountModule:CreateAccountPanel()
     end
 
     local cmd = commandPrefix .. " \"" .. inputValue .. "\""
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
 end)
 	end
 

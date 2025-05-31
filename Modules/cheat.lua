@@ -1,5 +1,7 @@
-local cheat = TrinityAdmin:GetModule("cheat")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local cheat = TrinityAdmin:GetModule("cheat")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Fonction pour afficher le panneau ServerAdmin
 function cheat:ShowcheatPanel()
@@ -17,10 +19,10 @@ function cheat:CreatecheatPanel()
     panel:SetPoint("BOTTOMRIGHT", TrinityAdminMainFrame, "BOTTOMRIGHT", -10, 10)
     local bg = panel:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints(true)
-    bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)  -- Fond sombre, modifiez selon vos besoins
+    bg:SetColorTexture(0.2, 0.2, 0.5, 0.7)  -- Fond sombre
     panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     panel.title:SetPoint("TOPLEFT", 10, -10)
-    panel.title:SetText(L["Cheats Panel"])  -- Vous pouvez utiliser L si nécessaire
+    panel.title:SetText(L["Cheats Panel"])
 
 local bg = panel:CreateTexture(nil, "BACKGROUND")
 bg:SetAllPoints(true)
@@ -30,16 +32,7 @@ panel.title = panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 panel.title:SetPoint("TOPLEFT", 10, -10)
 panel.title:SetText(L["Cheats Panel"])
 
--- local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
--- btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
--- btnBack:SetText(L and L["Back"] or "Back")
--- btnBack:SetSize(btnBack:GetTextWidth() + 20, 22)
--- btnBack:SetScript("OnClick", function()
---     panel:Hide()
---     TrinityAdmin:ShowMainMenu()
--- end)
-
--- Code à ajouter pour capturer les messages du chat et afficher une popup Ace3
+-- Capturer les messages du chat et afficher une popup Ace3
 local AceGUI = LibStub("AceGUI-3.0")
 local chatMessages = {}
 
@@ -77,7 +70,7 @@ local spacing = 30
 local btnShowCheats = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 btnShowCheats:SetPoint("TOPLEFT", 10, yOffset)
 btnShowCheats:SetText(L["Show Enables Cheats"])
-btnShowCheats:SetSize(btnShowCheats:GetTextWidth() + 20, 22)
+TrinityAdmin.AutoSize(btnShowCheats, 20, 16)
 btnShowCheats:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["Shows the cheats you currently have enabled."], 1,1,1,1,true)
@@ -86,7 +79,8 @@ end)
 btnShowCheats:SetScript("OnLeave", function() GameTooltip:Hide() end)
 btnShowCheats:SetScript("OnClick", function()
     chatMessages = {}  -- Vider le cache des messages avant envoi
-    SendChatMessage(".cheat status", "SAY")
+    -- SendChatMessage(".cheat status", "SAY")
+	TrinityAdmin:SendCommand(".cheat status")
 	-- Délai de 1 seconde pour laisser le temps au chat de s'actualiser avant d'afficher la popup
     C_Timer.After(1, function() ShowChatPopup() end)
 end)
@@ -123,7 +117,7 @@ local function CreateRadioCommandRow(parent, y, rowLabel, tooltipText, commandPr
     local cmdButton = CreateFrame("Button", nil, parent, "UIPanelButtonTemplate")
     cmdButton:SetPoint("TOPLEFT", radioOff, "TOPRIGHT", 40, -4)
     cmdButton:SetText(rowLabel)
-    cmdButton:SetSize(cmdButton:GetTextWidth() + 20, 22)
+    TrinityAdmin.AutoSize(cmdButton, 20, 16)
     cmdButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(tooltipText, 1, 1, 1, 1, true)
@@ -142,7 +136,8 @@ local function CreateRadioCommandRow(parent, y, rowLabel, tooltipText, commandPr
         end
         local fullCommand = commandPrefix .. " " .. value
 		chatMessages = {}  -- Vider le cache des messages avant envoi
-        SendChatMessage(fullCommand, "SAY")
+        -- SendChatMessage(fullCommand, "SAY")
+		TrinityAdmin:SendCommand(fullCommand)
 		-- Délai de 1 seconde pour laisser le temps au chat de s'actualiser avant d'afficher la popup
 		C_Timer.After(1, function() ShowChatPopup() end)
     end)
@@ -201,7 +196,7 @@ end)
 local btnExecute = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 btnExecute:SetPoint("TOPLEFT", checkboxReveal, "TOPRIGHT", 60, -4)
 btnExecute:SetText(L["Execute"])
-btnExecute:SetSize(btnExecute:GetTextWidth() + 20, 22)
+TrinityAdmin.AutoSize(btnExecute, 20, 16)
 btnExecute:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["Reveal or hide all maps for the selected player. If no player is selected, hide or reveal maps to you.\nUse a #flag of value 1 to reveal, or 0 to hide all maps."], 1,1,1,1,true)
@@ -219,14 +214,14 @@ btnExecute:SetScript("OnClick", function()
         return
     end
     local fullCommand = ".cheat explore " .. flag
-    SendChatMessage(fullCommand, "SAY")
+    -- SendChatMessage(fullCommand, "SAY")
+	TrinityAdmin:SendCommand(fullCommand)
 end)
 
     local btnBack = CreateFrame("Button", "TrinityAdminTeleportBackButton", panel, "UIPanelButtonTemplate")
     btnBack:SetPoint("BOTTOM", 0, 10)
     btnBack:SetText(L["Back"])
-    btnBack:SetHeight(22)
-    btnBack:SetWidth(btnBack:GetTextWidth() + 20)
+    TrinityAdmin.AutoSize(btnBack, 20, 16)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()

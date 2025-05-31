@@ -1,5 +1,7 @@
-local AdvancedItems = TrinityAdmin:GetModule("AdvancedItems")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local AdvancedItems = TrinityAdmin:GetModule("AdvancedItems")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 ItemsData = {} -- Table globale qui contiendra toutes les entrées
 
@@ -276,7 +278,7 @@ function AdvancedItems:CreateAdvancedItemsPanel()
 			
 			-- print("Option cliquée :", fullText, "Entry:", option.entry)
 			-- print("Commande envoyée :", command)
-			SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
 			end)
 
             lastButton = btn

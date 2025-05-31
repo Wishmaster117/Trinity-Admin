@@ -1,5 +1,7 @@
-local DatabaseModule = TrinityAdmin:GetModule("DatabasePanel")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local DatabaseModule = TrinityAdmin:GetModule("DatabasePanel")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
  -- Liste complète des commandes reload
 local reloadOptions = {
@@ -177,7 +179,8 @@ UIDropDownMenu_SetText(dropdown, options[1].text)
 	TrinityAdmin.AutoSize(btnReload, 20, 16)
     btnReload:SetScript("OnClick", function()
    if dropdown.selectedOption then
-      SendChatMessage(dropdown.selectedOption.command, "SAY")
+      -- SendChatMessage(dropdown.selectedOption.command, "SAY")
+	  TrinityAdmin:SendCommand(dropdown.selectedOption.command)
    end
 end)
 btnReload:SetScript("OnEnter", function(self)

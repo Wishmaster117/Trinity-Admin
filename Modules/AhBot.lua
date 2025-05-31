@@ -1,5 +1,7 @@
-local AhBot = TrinityAdmin:GetModule("AhBot")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local AhBot = TrinityAdmin:GetModule("AhBot")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Fonction pour afficher le panneau AhBot
 function AhBot:ShowAhBotPanel()
@@ -224,7 +226,8 @@ function AhBot:CreateAhBotPanel()
 				capturingAHStatus = true
 				if ahStatusTimer then ahStatusTimer:Cancel() end
 				-- ===============================					
-                SendChatMessage(fullCommand, "SAY")
+                -- SendChatMessage(fullCommand, "SAY")
+				TrinityAdmin:SendCommand(fullCommand)
                 -- print("[DEBUG] Commande envoyée: " .. fullCommand)
             end)
         end
@@ -285,7 +288,8 @@ function AhBot:CreateAhBotPanel()
 				capturingAHStatus = true
 				if ahStatusTimer then ahStatusTimer:Cancel() end
 				-- ===============================					
-                SendChatMessage(fullCommand, "SAY")
+                -- SendChatMessage(fullCommand, "SAY")
+				TrinityAdmin:SendCommand(fullCommand)
             end)
 
             -- On garde une référence au bouton pour positionner la prochaine EditBox

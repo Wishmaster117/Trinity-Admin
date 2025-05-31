@@ -1,5 +1,7 @@
-local GameObjects = TrinityAdmin:GetModule("GameObjects")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local GameObjects = TrinityAdmin:GetModule("GameObjects")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Fonction pour afficher le panneau GameObjects
 function GameObjects:ShowGameObjectsPanel()
@@ -110,7 +112,7 @@ local specialOptions = {
 				return
 			end
 		end
-		SendChatMessage(finalCommand, "SAY")
+		TrinityAdmin:SendCommand(finalCommand)
 	end)
 	btnSpecialExecute:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -214,7 +216,7 @@ local specialOptions = {
         end
         local finalCommand = command .. " " .. guid .. " " .. x .. " " .. y .. " " .. z
         -- print("Debug: Commande envoyée: " .. finalCommand)  -- pour débug
-        SendChatMessage(finalCommand, "SAY")
+        TrinityAdmin:SendCommand(finalCommand)
     end)
     advButton:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -370,7 +372,8 @@ local specialOptions = {
 
 			btn:SetScript("OnClick", function()
 				-- print("Option cliquée :", fullText, "Entry:", option.entry)
-				SendChatMessage(".gobject add " .. option.entry, "SAY")
+				-- SendChatMessage(".gobject add " .. option.entry, "SAY")
+				TrinityAdmin:SendCommand('.gobject add ' .. option.entry)
 			end)
 		
 			lastButton = btn

@@ -1,5 +1,7 @@
-local AdvancedNpc = TrinityAdmin:GetModule("AdvancedNpc")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local AdvancedNpc = TrinityAdmin:GetModule("AdvancedNpc")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 NPCData = {} -- Table globale qui contiendra toutes les entrées
 
@@ -36,7 +38,7 @@ local function InitializeNPCData()
 	loadDataFromPart(NpcDataPart5)
 	loadDataFromPart(NpcDataPart6)
 	loadDataFromPart(NpcDataPart7)
-    -- print("Fin du chargement NpcData. Nombre total chargé :", #NPCData)
+    -- TrinityAdmin:Print("Fin du chargement NpcData. Nombre total chargé :", #NPCData)
 end
 
 -- Appel unique au démarrage :
@@ -180,12 +182,12 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
         end
 
         local optionsChunk = {}
-        -- print("isFiltered:", isFiltered, "totalEntriesLocal:", totalEntriesLocal, "currentPage:", currentPage)
+        -- TrinityAdmin:Print("isFiltered:", isFiltered, "totalEntriesLocal:", totalEntriesLocal, "currentPage:", currentPage)
 
         if isFiltered then
             local startIdx = (currentPage - 1) * entriesPerPage + 1
             local endIdx = math.min(currentPage * entriesPerPage, totalEntriesLocal)
-            -- print("Mode filtré: startIdx:", startIdx, "endIdx:", endIdx)
+            -- TrinityAdmin:Print("Mode filtré: startIdx:", startIdx, "endIdx:", endIdx)
             for i = startIdx, endIdx do
                 if sourceData[i] then
                     table.insert(optionsChunk, sourceData[i])
@@ -193,7 +195,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
             end
         else
             optionsChunk = sourceData
-            -- print("OptionsChunk size:", #optionsChunk)
+            -- TrinityAdmin:Print("OptionsChunk size:", #optionsChunk)
         end
 
         if #optionsChunk == 0 then
@@ -283,9 +285,10 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
 			btn:SetScript("OnClick", function()
 			local command = ""
 			command = ".npc add " .. option.entry
-			-- print("Option cliquée :", fullText, "Entry:", option.entry)
-			-- print("Commande envoyée :", command)
-			SendChatMessage(command, "SAY")
+			-- TrinityAdmin:Print("Option cliquée :", fullText, "Entry:", option.entry)
+			-- TrinityAdmin:Print("Commande envoyée :", command)
+			-- SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
 			end)
 
             lastButton = btn
@@ -347,7 +350,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
                 table.insert(results, entry)
             end
         end
-        -- print("Nombre de résultats trouvés :", #results)
+        -- TrinityAdmin:Print("Nombre de résultats trouvés :", #results)
         return results
     end
 
@@ -356,7 +359,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
         local searchText = self:GetText():lower()
 
         if searchText == L["search..."] or #searchText < 3 then
-            print(L["Please enter at least 3 characters for the search."])
+            TrinityAdmin:Print(L["Please enter at least 3 characters for the search."])
             return
         end
 
@@ -410,12 +413,12 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     end)	
     btnDelete:SetScript("OnClick", function()
 		if not UnitExists("target") then 
-		print(L["Please Select a Creature!"]) 
+		TrinityAdmin:Print(L["Please Select a Creature!"]) 
 		return 
 		end
 	local command = ".npc delete" 
 	--print("Commande envoyée :", command) 
-	SendChatMessage(command, "SAY") 
+	TrinityAdmin:SendCommand(command) 
 	end)
     ------------------------------------------------------------
     -- Bouton "Move" pour revenir à la liste complète
@@ -435,13 +438,13 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     end)	
     btnMove:SetScript("OnClick", function()
 		if not UnitExists("target") then 
-		print(L["Please Select a Creature!"]) 
+		TrinityAdmin:Print(L["Please Select a Creature!"]) 
 		return 
 		end
 		local command = ""
 		command = ".npc move "
-		--print("Commande envoyée :", command)
-		SendChatMessage(command, "SAY")
+		--TrinityAdmin:Print("Commande envoyée :", command)
+		TrinityAdmin:SendCommand(command)
 	end)	
     ------------------------------------------------------------
     -- Bouton "Back" pour revenir au menu principal

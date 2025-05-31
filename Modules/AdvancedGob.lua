@@ -1,5 +1,7 @@
-local AdvancedGob = TrinityAdmin:GetModule("AdvancedGob")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local AdvancedGob = TrinityAdmin:GetModule("AdvancedGob")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -------------------------------------------------------------
 -- Variables et fonctions pour la capture du .gob info
@@ -262,10 +264,12 @@ function AdvancedGob:CreateAdvancedGobPanel()
     btnShow:SetScript("OnClick", function(self)
         local distance = distanceEditBox:GetText()
         if distance == "" or distance == "Distance" then
-            SendChatMessage(".gobject near", "SAY")
+            -- SendChatMessage(".gobject near", "SAY")
+			TrinityAdmin:SendCommand(".gobject near")
             --print("Commande envoyée: .gobject near")
         else
-            SendChatMessage(".gobject near " .. distance, "SAY")
+            -- SendChatMessage(".gobject near " .. distance, "SAY")
+			TrinityAdmin:SendCommand('.gobject near ' .. distance)
             --print("Commande envoyée: .gobject near " .. distance)
         end
         GobInfoPopup_SetText("")
@@ -305,11 +309,12 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnMemory:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		capturingMemory = true
-		SendChatMessage(".gobject info guid " .. guid, "SAY")
+		-- SendChatMessage(".gobject info guid " .. guid, "SAY")
+		TrinityAdmin:SendCommand('.gobject info guid ' .. guid)
 		--print("Commande envoyée: .gobject info guid " .. guid)
 		C_Timer.NewTimer(3, function() capturingMemory = false end)
 	end)
@@ -398,11 +403,12 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnDelete:SetScript("OnClick", function(self)
 		local guid = deleteGuidEB:GetText()
 		if guid == "" or guid == "Enter GUID to delete" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		local command = ".gobject delete " .. guid
-		SendChatMessage(command, "SAY")
+		-- SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		-- print("Commande envoyée: " .. command)
 	end)
 	
@@ -436,7 +442,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnUp:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -445,7 +451,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		z = z + 0.5  -- Incrémente Z (bouge vers le haut)
 		posZEB:SetText(tostring(z))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-		SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		-- print("Commande envoyée: " .. command)
 	end)
 	
@@ -467,7 +473,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnLeft:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -476,7 +482,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		x = x + 0.5  -- Décrémente X (bouge vers la gauche)
 		posXEB:SetText(tostring(x))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-		SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		-- print("Commande envoyée: " .. command)
 	end)
 	
@@ -498,7 +504,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnRight:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -507,7 +513,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		x = x - 0.5  -- Incrémente X (bouge vers la droite)
 		posXEB:SetText(tostring(x))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-		SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		-- print("Commande envoyée: " .. command)
 	end)
 	
@@ -529,7 +535,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	btnDown:SetScript("OnClick", function(self)
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		local x = tonumber(posXEB:GetText()) or 0
@@ -538,7 +544,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		z = z - 0.5  -- Décrémente Z (bouge vers le bas)
 		posZEB:SetText(tostring(z))
 		local command = ".gobject move " .. guid .. " " .. x .. " " .. y .. " " .. z
-		SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		-- print("Commande envoyée: " .. command)
 	end)
 	
@@ -558,7 +564,7 @@ function AdvancedGob:CreateAdvancedGobPanel()
 	
 	btnReset:SetScript("OnClick", function(self)
 		if not initialX or not initialY or not initialZ then
-			print(L["No position memory"])
+			TrinityAdmin:Print(L["No position memory"])
 			return
 		end
 		posXEB:SetText(tostring(initialX))
@@ -566,12 +572,12 @@ function AdvancedGob:CreateAdvancedGobPanel()
 		posZEB:SetText(tostring(initialZ))
 		local guid = gameObjectGuidEB:GetText()
 		if guid == "" or guid == "Enter GameObject Guid" then
-			print(L["Enter valid GUID"])
+			TrinityAdmin:Print(L["Enter valid GUID"])
 			return
 		end
 		local command = ".gobject move " .. guid .. " " .. initialX .. " " .. initialY .. " " .. initialZ
-		SendChatMessage(command, "SAY")
-		print("Reset: " .. command)
+		TrinityAdmin:SendCommand(command)
+		TrinityAdmin:Print("Reset: " .. command)
 	end)
 
 
@@ -603,8 +609,8 @@ function AdvancedGob:CreateAdvancedGobPanel()
             GameTooltip:Hide()
         end)
         btn:SetScript("OnClick", function(self)
-            SendChatMessage(cmd, "SAY")
-            -- print("Commande envoyée: " .. cmd)
+            TrinityAdmin:SendCommand(cmd)
+            -- TrinityAdmin:Print("Commande envoyée: " .. cmd)
         end)
         return btn
     end

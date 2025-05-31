@@ -78,8 +78,8 @@ function Debug:CreateDebugPanel()
 	end
 	
 	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnPrev:SetSize(80, 22)
-	btnPrev:SetText(L["Preview"])
+	btnPrev:SetText(L["Pagination_Preview"])
+	TrinityAdmin.AutoSize(btnPrev, 20, 16)
 	btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
 	btnPrev:SetScript("OnClick", function()
 		if currentPage > 1 then
@@ -88,8 +88,8 @@ function Debug:CreateDebugPanel()
 	end)
 	
 	btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-	btnNext:SetSize(80, 22)
 	btnNext:SetText(L["Next"])
+	TrinityAdmin.AutoSize(btnNext, 20, 16)
 	btnNext:SetPoint("BOTTOMRIGHT", panel, "BOTTOMRIGHT", -10, 10)
 	btnNext:SetScript("OnClick", function()
 		if currentPage < totalPages then
@@ -104,41 +104,87 @@ function Debug:CreateDebugPanel()
 	-------------------------------------------------
 	local AceGUI = LibStub("AceGUI-3.0")
 	
-	local function AutoWidthButton(btn)
-		btn:SetWidth(btn:GetTextWidth() + 20)
-	end
-	
 	local function OpenDebugOutputWindow(title, debugCommand)
+		local AceGUI = LibStub("AceGUI-3.0")
+	
+		-- Crée la fenêtre principale AceGUI
 		local window = AceGUI:Create("Frame")
 		window:SetTitle(title)
-		window:SetStatusText("")
-		window:SetLayout("Flow")
-		window:SetWidth(400)
-		window:SetHeight(300)
+		window:SetStatusText("")       -- Pas de status text supplémentaire
+		window:SetLayout("Flow")       -- Empilement vertical
+		window:SetWidth(450)
+		window:SetHeight(350)
 		window.frame:ClearAllPoints()
 		window.frame:SetPoint("RIGHT", UIParent, "RIGHT", -10, 0)
-		
-		local outputBox = AceGUI:Create("MultiLineEditBox")
-		outputBox:SetLabel("")
-		outputBox:SetFullWidth(true)
-		outputBox:SetFullHeight(true)
-		outputBox:SetText("")
-		window:AddChild(outputBox)
-		
-		-- Création d'un frame pour capter les messages du chat et les afficher dans outputBox
+	
+		-- ───────────── Header fixe ─────────────
+		local header = AceGUI:Create("Label")
+		header:SetFullWidth(true)
+		header:SetFontObject("GameFontNormalLarge")
+		header:SetText("|cff00ff00"..L["Debug Output"].."|r")  -- Titre secondaire en vert
+		window:AddChild(header)
+	
+		-- ───────────── ScrollFrame pour chaque ligne ─────────────
+		local scroll = AceGUI:Create("ScrollFrame")
+		scroll:SetLayout("List")
+		scroll:SetFullWidth(true)
+		scroll:SetFullHeight(true)
+		window:AddChild(scroll)
+	
+		-- Crée un cadre “capturateur” pour le chat système
 		local captureFrame = CreateFrame("Frame")
-		--captureFrame:RegisterEvent("CHAT_MSG_CHANNEL")
-		--captureFrame:RegisterEvent("CHAT_MSG_SAY")
-		--captureFrame:RegisterEvent("CHAT_MSG_YELL")
-		--captureFrame:RegisterEvent("CHAT_MSG_PARTY")
-		--captureFrame:RegisterEvent("CHAT_MSG_GUILD")
-		--captureFrame:RegisterEvent("CHAT_MSG_OFFICER")
 		captureFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+	
+		-- Fonction utilitaire pour ajouter une ligne au scroll
+		local lineCount = 0
+		local function AddDebugLine(msg)
+			lineCount = lineCount + 1
+			local lbl = AceGUI:Create("Label")
+			lbl:SetFullWidth(true)
+	
+			-- Zébrer : fond gris clair tous les 2e labels
+			if (lineCount % 2) == 0 then
+				lbl:SetFontObject("GameFontHighlight")  -- Changement de style par ligne paire
+			else
+				lbl:SetFontObject("GameFontNormal")
+			end
+	
+			lbl:SetText(msg)
+			scroll:AddChild(lbl)
+	
+			-- Force le ScrollFrame à défiler tout en bas automatiquement
+			scroll.frame:UpdateScrollChildRect()
+			scroll.frame.ScrollBar:SetValue(scroll.frame.ScrollBar:GetMinMaxValues())
+		end
+	
+		-- Script qui capte chaque message système jusqu’au Close
 		captureFrame:SetScript("OnEvent", function(self, event, msg, ...)
-			local currentText = outputBox:GetText()
-			outputBox:SetText(currentText .. "\n" .. msg)
+			-- Ajoute chaque ligne au ScrollFrame via AddDebugLine
+			AddDebugLine(msg:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""))
 		end)
-		
+	
+		-- Au clic du bouton “Close”, on libère la fenêtre et on arrête la capture
+		local function Cleanup()
+			captureFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
+			captureFrame:SetScript("OnEvent", nil)
+			AceGUI:Release(window)
+		end
+	
+		-- ───────────── Footer = Bouton “Close” ─────────────
+		local footer = AceGUI:Create("SimpleGroup")
+		footer:SetLayout("Flow")
+		footer:SetFullWidth(true)
+	
+		local closeBtn = AceGUI:Create("Button")
+		closeBtn:SetText(L["Close"])
+		closeBtn:SetWidth(100)
+		closeBtn:SetCallback("OnClick", function()
+			Cleanup()
+		end)
+		footer:AddChild(closeBtn)
+	
+		window:AddChild(footer)
+	
 		return window
 	end
 
@@ -155,12 +201,11 @@ function Debug:CreateDebugPanel()
 
 	-- Bouton Debug Areatriggers
 	local debugAreatriggersButton = CreateFrame("Button", "DebugAreatriggersButton", commandsFramePage1, "UIPanelButtonTemplate")
-	--debugAreatriggersButton:SetSize(180, 22)
-	debugAreatriggersButton:SetHeight(24)
 	debugAreatriggersButton:SetPoint("TOPLEFT", page1Title, "BOTTOMLEFT", 0, -20)
 	debugAreatriggersButton:SetText(L["Areatriggers Debug is OFF"])
 	debugAreatriggersButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug areatriggers", "SAY")
+		-- SendChatMessage(".debug areatriggers", "SAY")
+		TrinityAdmin:SendCommand(".debug areatriggers")
 		-- print("Commande envoyée: .debug areatriggers")
 	end)
 	debugAreatriggersButton:SetScript("OnEnter", function(self)
@@ -171,16 +216,16 @@ function Debug:CreateDebugPanel()
 	debugAreatriggersButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugAreatriggersButton)
+	TrinityAdmin.AutoSize(debugAreatriggersButton, 20, 16)
 	
 	-- Bouton Debug Arena (à droite du bouton Areatriggers)
 	local debugArenaButton = CreateFrame("Button", "DebugArenaButton", commandsFramePage1, "UIPanelButtonTemplate")
 	--debugArenaButton:SetSize(180, 22)
-	debugArenaButton:SetHeight(24)
 	debugArenaButton:SetPoint("LEFT", debugAreatriggersButton, "RIGHT", 10, 0)
 	debugArenaButton:SetText(L["Arena Debug is OFF"])
 	debugArenaButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug arena", "SAY")
+		-- SendChatMessage(".debug arena", "SAY")
+		TrinityAdmin:SendCommand(".debug arena")
 		-- print("Commande envoyée: .debug arena")
 	end)
 	debugArenaButton:SetScript("OnEnter", function(self)
@@ -191,16 +236,15 @@ function Debug:CreateDebugPanel()
 	debugArenaButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugArenaButton)
+	TrinityAdmin.AutoSize(debugArenaButton, 20, 16)
 	
 	-- Bouton Debug Bg (à droite du bouton Arena)
 	local debugBgButton = CreateFrame("Button", "DebugBgButton", commandsFramePage1, "UIPanelButtonTemplate")
-	-- debugBgButton:SetHight(180, 22)
-	debugBgButton:SetHeight(24)
 	debugBgButton:SetPoint("LEFT", debugArenaButton, "RIGHT", 10, 0)
 	debugBgButton:SetText(L["Bg Debug is OFF"])
 	debugBgButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug bg", "SAY")
+		-- SendChatMessage(".debug bg", "SAY")
+		TrinityAdmin:SendCommand(".debug bg")
 		-- print("Commande envoyée: .debug bg")
 	end)
 	debugBgButton:SetScript("OnEnter", function(self)
@@ -211,7 +255,7 @@ function Debug:CreateDebugPanel()
 	debugBgButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugBgButton)
+	TrinityAdmin.AutoSize(debugBgButton, 20, 16)
 	
 	-- Frame pour capturer les messages du chat et mettre à jour les boutons précédents
 	local eventFrame = CreateFrame("Frame")
@@ -246,10 +290,10 @@ function Debug:CreateDebugPanel()
 	-- Premier bouton de la deuxième rangée
 	local debugCombatButton = CreateFrame("Button", "DebugCombatButton", commandsFramePage1, "UIPanelButtonTemplate")
 	debugCombatButton:SetText(L["Debug Combat"])
-	debugCombatButton:SetHeight(24)
 	debugCombatButton:SetPoint("TOPLEFT", debugAreatriggersButton, "BOTTOMLEFT", 0, -20)
 	debugCombatButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug combat", "SAY")
+		-- SendChatMessage(".debug combat", "SAY")
+		TrinityAdmin:SendCommand(".debug combat")
 		-- print("Commande envoyée: .debug combat")
 		OpenDebugOutputWindow("Debug Combat Output", ".debug combat")
 	end)
@@ -261,14 +305,14 @@ function Debug:CreateDebugPanel()
 	debugCombatButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugCombatButton)
+	TrinityAdmin.AutoSize(debugCombatButton, 20, 16)
 	
 	local debugPhaseButton = CreateFrame("Button", "DebugPhaseButton", commandsFramePage1, "UIPanelButtonTemplate")
 	debugPhaseButton:SetText(L["Debug Phase"])
-	debugPhaseButton:SetHeight(24)
 	debugPhaseButton:SetPoint("LEFT", debugCombatButton, "RIGHT", 10, 0)
 	debugPhaseButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug phase", "SAY")
+		-- SendChatMessage(".debug phase", "SAY")
+		TrinityAdmin:SendCommand(".debug phase")
 		-- print("Commande envoyée: .debug phase")
 		OpenDebugOutputWindow("Debug Phase Output", ".debug phase")
 	end)
@@ -280,14 +324,14 @@ function Debug:CreateDebugPanel()
 	debugPhaseButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugPhaseButton)
+	TrinityAdmin.AutoSize(debugPhaseButton, 20, 16)
 	
 	local debugThreatButton = CreateFrame("Button", "DebugThreatButton", commandsFramePage1, "UIPanelButtonTemplate")
 	debugThreatButton:SetText(L["Debug Threat"])
-	debugThreatButton:SetHeight(24)
 	debugThreatButton:SetPoint("LEFT", debugPhaseButton, "RIGHT", 10, 0)
 	debugThreatButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug threat", "SAY")
+		-- SendChatMessage(".debug threat", "SAY")
+		TrinityAdmin:SendCommand(".debug threat")
 		-- print("Commande envoyée: .debug threat")
 		OpenDebugOutputWindow("Debug Threat Output", ".debug threat")
 	end)
@@ -299,15 +343,15 @@ function Debug:CreateDebugPanel()
 	debugThreatButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugThreatButton)
+	TrinityAdmin.AutoSize(debugThreatButton, 20, 16)
 	
 	-- Ligne 3 : Debug Threatinfo, Debug asan memoryleak et Debug asan outofbounds
 	local debugThreatinfoButton = CreateFrame("Button", "DebugThreatinfoButton", commandsFramePage1, "UIPanelButtonTemplate")
 	debugThreatinfoButton:SetText(L["Debug Threatinfo"])
-	debugThreatinfoButton:SetHeight(24)
 	debugThreatinfoButton:SetPoint("TOPLEFT", debugCombatButton, "BOTTOMLEFT", 0, -20)
 	debugThreatinfoButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug threatinfo", "SAY")
+		-- SendChatMessage(".debug threatinfo", "SAY")
+		TrinityAdmin:SendCommand(".debug threatinfo")
 		-- print("Commande envoyée: .debug threatinfo")
 		OpenDebugOutputWindow("Debug Threatinfo Output", ".debug threatinfo")
 	end)
@@ -319,14 +363,14 @@ function Debug:CreateDebugPanel()
 	debugThreatinfoButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugThreatinfoButton)
+	TrinityAdmin.AutoSize(debugThreatinfoButton, 20, 16)
 	
 	local debugAsanMemoryleakButton = CreateFrame("Button", "DebugAsanMemoryleakButton", commandsFramePage1, "UIPanelButtonTemplate")
 	debugAsanMemoryleakButton:SetText(L["Debug asan memoryleak"])
-	debugAsanMemoryleakButton:SetHeight(24)
 	debugAsanMemoryleakButton:SetPoint("LEFT", debugThreatinfoButton, "RIGHT", 10, 0)
 	debugAsanMemoryleakButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug asan memoryleak", "SAY")
+		-- SendChatMessage(".debug asan memoryleak", "SAY")
+		TrinityAdmin:SendCommand(".debug asan memoryleak")
 		-- print("Commande envoyée: .debug asan memoryleak")
 		OpenDebugOutputWindow("Debug asan memoryleak Output", ".debug asan memoryleak")
 	end)
@@ -338,14 +382,14 @@ function Debug:CreateDebugPanel()
 	debugAsanMemoryleakButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugAsanMemoryleakButton)
+	TrinityAdmin.AutoSize(debugAsanMemoryleakButton, 20, 16)
 	
 	local debugAsanOutofboundsButton = CreateFrame("Button", "DebugAsanOutofboundsButton", commandsFramePage1, "UIPanelButtonTemplate")
 	debugAsanOutofboundsButton:SetText(L["Debug asan outofbounds"])
-	debugAsanOutofboundsButton:SetHeight(24)
 	debugAsanOutofboundsButton:SetPoint("LEFT", debugAsanMemoryleakButton, "RIGHT", 10, 0)
 	debugAsanOutofboundsButton:SetScript("OnClick", function(self)
-		SendChatMessage(".debug asan outofbounds", "SAY")
+		-- SendChatMessage(".debug asan outofbounds", "SAY")
+		TrinityAdmin:SendCommand(".debug asan outofbounds")
 		-- print("Commande envoyée: .debug asan outofbounds")
 		OpenDebugOutputWindow("Debug asan outofbounds Output", ".debug asan outofbounds")
 	end)
@@ -357,7 +401,7 @@ function Debug:CreateDebugPanel()
 	debugAsanOutofboundsButton:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	AutoWidthButton(debugAsanOutofboundsButton)
+	TrinityAdmin.AutoSize(debugAsanOutofboundsButton, 20, 16)
 
 	
 	------------------------------------------------------------
@@ -579,9 +623,9 @@ function Debug:CreateDebugPanel()
 	
 	-- Création du bouton d'action, positionné en fonction du yOffset calculé
 	local btn = CreateFrame("Button", nil, debugCommandFrame, "UIPanelButtonTemplate")
-	btn:SetSize(80, 22)
 	btn:SetPoint("TOPLEFT", debugCommandFrame, "TOPLEFT", 0, -yOffset)
 	btn:SetText(cmdInfo.buttonText)
+	TrinityAdmin.AutoSize(btn, 20, 16)
 	btn:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetText(cmdInfo.tooltip, 1, 1, 1, 1, true)
@@ -613,7 +657,8 @@ function Debug:CreateDebugPanel()
 		command = command .. " " .. (selectedValue or cmdInfo.dropdown.default)
 		end
 		--print("[DEBUG] Commande construite: " .. command)
-		SendChatMessage(command, "SAY")
+		-- SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
 		--print("[DEBUG] Commande envoyée: " .. command)
 	end)
 	
@@ -633,9 +678,9 @@ sceneDebugFrame:SetSize(200, 300)
 
 -- Bouton toggle pour activer/désactiver le debug de scene
 local sceneToggleButton = CreateFrame("Button", nil, sceneDebugFrame, "UIPanelButtonTemplate")
-sceneToggleButton:SetSize(150, 22)
 sceneToggleButton:SetPoint("TOPLEFT", sceneDebugFrame, "TOPLEFT", 0, 0)
 sceneToggleButton:SetText("Scene debug is OFF")
+TrinityAdmin.AutoSize(sceneToggleButton, 20, 16)
 sceneToggleButton:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     GameTooltip:SetText(L["scene_debug_tooltip"], 1,1,1,1,true)
@@ -645,11 +690,14 @@ sceneToggleButton:SetScript("OnLeave", function() GameTooltip:Hide() end)
 sceneToggleButton:SetScript("OnClick", function(self)
     sceneDebugEnabled = not sceneDebugEnabled
     if sceneDebugEnabled then
-        self:SetText("Scene debug is ON")
+        self:SetText(L["Scene_debug_is_ON"])
     else
-        self:SetText("Scene debug is OFF")
+        self:SetText(L["Scene_debug_is_OFF"])
     end
-    SendChatMessage(".scene debug", "SAY")
+	
+	TrinityAdmin.AutoSize(sceneToggleButton, 20, 16)
+    -- SendChatMessage(".scene debug", "SAY")
+	TrinityAdmin:SendCommand(".scene debug")
 end)
 
 -- Dropdown pour choisir l'action de scene
@@ -695,10 +743,10 @@ end
 
 -- Bouton d'action pour la dropdown, qui changera de texte et tooltip en fonction de l'option sélectionnée
 local sceneActionButton = CreateFrame("Button", nil, sceneDebugFrame, "UIPanelButtonTemplate")
-sceneActionButton:SetSize(150, 22)
 sceneActionButton:SetPoint("TOPLEFT", sceneInputFrame, "BOTTOMLEFT", 0, -10)
 sceneActionButton:SetText("Choose")
 sceneActionButton.tooltip = L["choose_action_tooltip"]
+TrinityAdmin.AutoSize(sceneActionButton, 20, 16)
 sceneActionButton:Hide()
 sceneActionButton:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -718,6 +766,7 @@ function UpdateSceneUI(option)
         sceneInput1:SetText("Scene Id")
         sceneActionButton:SetText("Play")
         sceneActionButton.tooltip = L["sceneplay_tooltip"]
+		TrinityAdmin.AutoSize(sceneActionButton, 20, 16)
         sceneActionButton:Show()
     elseif option == "scene cancel" then
         sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
@@ -727,6 +776,7 @@ function UpdateSceneUI(option)
         sceneInput1:SetText("Scene Package Id")
         sceneActionButton:SetText("Cancel")
         sceneActionButton.tooltip = L["scenecancel_tooltip"]
+		TrinityAdmin.AutoSize(sceneActionButton, 20, 16)
         sceneActionButton:Show()
     elseif option == "scene playpackage" then
         sceneInput1 = CreateFrame("EditBox", nil, sceneInputFrame, "InputBoxTemplate")
@@ -741,10 +791,12 @@ function UpdateSceneUI(option)
         sceneInput2:SetText("Playback Flags")
         sceneActionButton:SetText("Play Package")
         sceneActionButton.tooltip = L["sceneplaypackage_tooltip"]
+		TrinityAdmin.AutoSize(sceneActionButton, 20, 16)
         sceneActionButton:Show()
     else
         sceneActionButton:SetText("Choose")
         sceneActionButton.tooltip = L["choose_action_tooltip"]
+		TrinityAdmin.AutoSize(sceneActionButton, 20, 16)
         sceneActionButton:Hide()  -- On cache le bouton si l'option est "Choose"
     end
 end
@@ -760,7 +812,7 @@ sceneActionButton:SetScript("OnClick", function()
                 return
             end
             local cmd = ".scene play " .. sceneId
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
             -- print("[DEBUG] Commande envoyée: " .. cmd)
         end
     elseif option == "scene cancel" then
@@ -771,7 +823,7 @@ sceneActionButton:SetScript("OnClick", function()
                 return
             end
             local cmd = ".scene cancel " .. scenePackageId
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
             -- print("[DEBUG] Commande envoyée: " .. cmd)
         end
     elseif option == "scene playpackage" then
@@ -787,7 +839,7 @@ sceneActionButton:SetScript("OnClick", function()
                 return
             end
             local cmd = ".scene playpackage " .. scenePackageId .. " " .. playbackFlags
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
             -- print("[DEBUG] Commande envoyée: " .. cmd)
         end
     else
@@ -801,8 +853,7 @@ end)
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("BOTTOM", panel, "BOTTOM", 0, 30)
     btnBackFinal:SetText(L["Back"])
-    btnBackFinal:SetHeight(22)
-    btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
+    TrinityAdmin.AutoSize(btnBackFinal, 20, 16)
     btnBackFinal:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()
