@@ -483,7 +483,6 @@ L["reload_vehicle_accessory"] = "Recarga los accesorios de vehículos basados en
 L["reload_vehicle_template"] = "Recarga los modelos de vehículos."
 L["reload_vehicle_template_accessory"] = "Recarga los accesorios de vehículos por entrada."
 L["reload_waypoint_path"] = "Recarga las tablas waypoint_path y waypoint_path_node."
-
 L["Tele_to_Player"] = "Te teletransporta al jugador seleccionado. El jugador puede estar desconectado."
 L["Modify_honor"] = "Agrega $amount puntos de honor al jugador seleccionado."
 L["Modify_energy"] = "Modifica la energía del jugador seleccionado. Si no hay selección, modifica la tuya."
@@ -787,6 +786,7 @@ L["Action"] = "Acción"
 L["Please_enter_npc_vanue"] = "Por favor ingresa un valor para el PNJ o selecciona uno."
 L["pleaseentervalidvalue"] = "Por favor ingresa un valor válido."
 
+-- Archivo Modulecharacter.lua
 L["Player/Characters/Pets Functions"] = "Funciones de Jugadores/Personajes/Mascotas"
 L["Player Functions Part 1"] = "Funciones de Jugadores Parte 1"
 L["Add Aura"] = "Agregar Aura"
@@ -921,6 +921,7 @@ L["Send Money"] = "Enviar dinero"
 L["Send Money tooltip"] = "Envía un correo con dinero. Cantidad en cobre. Usa el conversor."
 L["To copper converter"] = "Conversor a cobre"
 
+-- Archivo Misc suite
 L["PvP Management"] = "Gestión de JcJ"
 L["Stop Combat"] = "Detener combate"
 L["Stop Combat Tooltip"] = "Finaliza el combate del personaje seleccionado. Si el objetivo no es un jugador, el comando se aplica a ti. Si se proporciona $playername, se intenta aplicar al jugador en línea."
@@ -1009,6 +1010,7 @@ L["enter_valid_gameobject_id_error"] = "Por favor ingresa un ID de objeto del mu
 L["List Respawns"] = "Listar reapariciones"
 L["List Respawns tooltip"] = "Lista todas las reapariciones previstas en la zona o en un radio de <distancia> metros."
 
+-- Archivo Learndamage.lua
 L["Learn and Damage Funcs"] = "Funciones de Aprendizaje y Daño"
 L["Learn Panel"] = "Panel de Aprendizaje"
 L["LearnLP"] = "Aprender"
@@ -1185,6 +1187,7 @@ L["Link_Grave_tooltip"] = "Vincula la zona actual a un cementerio para fantasmas
 L["enter_grave_id_linkgrave_error"] = "Error: ingresa un ID de cementerio para .linkgrave."
 L["select_faction_linkgrave_error"] = "Error: marca Horda o Alianza para .linkgrave."
 
+-- Archivo Gameobject.lua
 L["GameObjects Panel"] = "Panel de Objetos del Juego"
 L["Game Objects Tools"] = "Herramientas de Objetos del Juego"
 L["Enter Guid"] = "Ingresar GUID"
@@ -1240,6 +1243,7 @@ L["enter_valid_guid_error"] = "Por favor ingresa un GUID válido."
 L["Game Objects Advanced Add"] = "Adición Avanzada de Objetos"
 L["min_search_length_error"] = "Por favor ingresa al menos 3 caracteres para la búsqueda."
 
+-- Archivo debug.lua
 L["debug_boundary_tooltip"] = "Rellena el área de movimiento de la unidad seleccionada y marca sus límites con criaturas de depuración.\nUsa 'fill' como primer parámetro para llenar toda el área con criaturas de depuración."
 L["debug_conversation_tooltip"] = "Reproduce la conversación especificada."
 L["debug_guidlimits_tooltip"] = "Muestra el GUID máximo actual para criaturas y objetos del juego en el mapa especificado (o en todos si no se especifica)."
@@ -1279,6 +1283,7 @@ L["Reveal"] = "Revelar"
 L["ahbot_items_syntax_tooltip"] = "Define la cantidad de objetos %s a vender en la casa de subastas."
 L["ahbot_ratio_syntax_tooltip"] = "Define el ratio de objetos en la casa de subastas %s."
 
+-- Ajouts
 L["Please_select_option_infoban"] = "Por favor selecciona una opción para Información de Baneo."
 L["Please_enter_value_for"] = "Por favor ingresa un valor para "
 L["Select_ban_type"] = "Tipo de baneo seleccionado: "
@@ -1536,6 +1541,8 @@ L["Associate Professor %s"] = "Profesor Asociado %s"
 L["Professor %s"] = "Profesor %s"
 L["%s, Veteran of the Alliance"] = "%s, Veterano de la Alianza"
 L["%s, Veteran of the Horde"] = "%s, Veterano de la Horda"
+L["Champion %s"] = "Campeón %s"
+L["Lieutenant General %s"] = "Teniente general %s"
 L["%s, Hero of the Alliance"] = "%s, Héroe de la Alianza"
 L["%s, Hero of the Horde"] = "%s, Héroe de la Horda"
 L["%s the Bloodthirsty"] = "%s el Sanguinario"
@@ -2152,8 +2159,8 @@ L["Enchanted Adamantite Armor"] = "Armadura de Adamantita Encantada"
 L["Flame Guard"] = "Guardia de Llama"
 L["Khorium Ward"] = "Guardián de Khorium"
 L["Burning Rage"] = "Furia Ardiente"
+L["Gladiator's Dreadgear"] = "Atuendo de pavor del Gladiador"
 L["Gladiator's Battlegear"] = "Equipo de Batalla del Gladiador"
-L["Gladiator's Dreadgear"] = "Equipo de Temor del Gladiador"
 L["Faith in Felsteel"] = "Fe en Felacero"
 L["The Unyielding"] = "El Inquebrantable"
 L["Whitemend Wisdom"] = "Sabiduría de Whitemend"
@@ -2842,8 +2849,9 @@ L["Spectral Gambler's Last Call"] = "Última Llamada del Jugador Espectral"
 L["Currents of the Gale Sovereign"] = "Corrientes del Soberano del Torbellino"
 L["Spliced Fiendtrader's Influence"] = "Influencia del Comerciante de Demonios Hibrida"
 L["Underpin Strongarm's Muscle"] = "Músculo del Refuerzo Strongarm"
+-- Fin traduction des sets
 
-	-- Traduction des skill
+-- Traduction des skill
 L["Enchanting"] = "Encantamiento"
 L["Engineering"] = "Ingeniería"
 L["Blacksmithing"] = "Herrería"
@@ -3091,6 +3099,7 @@ L["Legion Enchanting"] = "Encantamiento de la Legión"
 L["Northrend Enchanting"] = "Encantamiento de Northrend"
 L["Legion Jewelcrafting"] = "Joyería de la Legión"
 L["Stygia Crafting"] = "Fabricación de Estigia"
+-- Fin Skill
 
 -- Missin variables:
 L["Comment"] = "Comentario"
@@ -3157,4 +3166,3 @@ L["G_TEAMNAME"] = "Nombre del equipo"
 L["G_Copy"] = "Copiar"
 L["Scene_debug_is_ON"] = "Depuración de escenas Activada"
 L["Scene_debug_is_OFF"] = "Depuración de escenas Desactivada"
-

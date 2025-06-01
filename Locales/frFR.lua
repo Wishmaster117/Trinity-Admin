@@ -571,7 +571,6 @@ L["hide_all_path"] = "Masquer tous les chemins affichés."
 L["display_detailed_wp"] = "Affiche les informations détaillées du waypoint sélectionné."
 L["Show"] = "Afficher"
 L["show_wp_explain"] = "Exécute la commande .wp show avec l’option sélectionnée et l’ID de chemin (si indiqué)."
-
 	
 -- Fichier trinityadmin.lua
 L["detected_language"] = "Langue détectée : "
@@ -579,7 +578,6 @@ L["click_to_open_main"] = "Cliquez pour ouvrir le menu principal."
 L["trinity_admin_welcome"] = "Bienvenue sur TrinityCore GM Tools par TheWarlock : https://www.azerothdevs.com"
 L["trinityadmin_close"] = "TrinityAdmin fermé"
 
-	
 -- Fichier tickets.lua
 L["T_management"] = "Gestion des tickets"
 L["Send"] = "Envoyer"
@@ -629,7 +627,6 @@ L["Ticket Reset Bug"] = "Réinitialiser les tickets bug"
 L["Ticket Reset Complaint"] = "Réinitialiser les tickets réclamation"
 L["Ticket Reset Suggestion"] = "Réinitialiser les tickets suggestion"
 L["Tickets Output"] = "Exportation des tickets"
-
 	
 -- Fichier teleportpanel.lua
 L["World teleportations"] = "Téléportations mondiales"
@@ -654,7 +651,6 @@ L["please_enter_value2"] = "Veuillez entrer une valeur pour "
 L["No location for zone:"] = "Aucun emplacement trouvé pour la zone :"
 L["of continent:"] = "du continent :"
 
-	
 -- Fichier serveradmin.lua
 L["Server Admin Panel"] = "Panneau d’administration serveur"
 L["server corpses"] = "Serveur : cadavres"
@@ -699,7 +695,6 @@ L["Set Loglevel"] = "Définir le niveau de log :"
 L["NameLogs"] = "Nom"
 L["setlogstooltip"] = "$facility : appender (a) ou logger (l).\n$loglevel : 0-désactivé, 1-trace, 2-debug, 3-info, 4-avertissement, 5-erreur, 6-critique."
 
-	
 -- Fichier others.lua
 L["Desable Functions"] = "Fonctions Désactivées"
 L["Desable Add"] = "Ajouter une désactivation"
@@ -731,6 +726,7 @@ L["Show information about current state of mmaps."] = "Afficher l’état actuel
 L["Calculate paths for all nearby npcs to player."] = "Calculer les chemins des PNJ proches vers le joueur."
 L["Mmaps Response"] = "Réponse Mmaps"
 
+-- Fichier RBAC / Permissions
 L["GMs Permission"] = "Permissions MJ"
 L["RBAC Permissions"] = "Permissions RBAC"
 L["You can copy/past this"] = "Vous pouvez copier/coller ceci"
@@ -749,7 +745,6 @@ L["demyerror2"] = "Erreur : le champ 'compte' est requis pour cette action."
 L["demyerror3"] = "Erreur : le champ ID est requis pour cette action."
 L["demyerror4"] = "Veuillez sélectionner une action."
 
-	
 -- Fichier npcpanel.lua
 L["NPC Loot Info"] = "Infos butin PNJ"
 L["Information from .npc showloot"] = "Informations issues de la commande .npc showloot"
@@ -791,7 +786,6 @@ L["Action"] = "Action"
 L["Please_enter_npc_vanue"] = "Veuillez entrer une valeur pour le PNJ ou en sélectionner un."
 L["pleaseentervalidvalue"] = "Veuillez entrer une valeur valide."
 
-	
 -- Fichier Modulecharacter.lua
 L["Player/Characters/Pets Functions"] = "Fonctions Joueurs/Personnages/Familiers"
 L["Player Functions Part 1"] = "Fonctions Joueurs Partie 1"
@@ -1053,7 +1047,6 @@ L["Damage GameObject"] = "Endommager un objet de jeu"
 L["Damage GameObject tooltip"] = "Inflige $damage à un objet destructible du jeu."
 L["deal_damage_gob_erreor"] = "Erreur : un GUID et un montant de dégâts sont requis pour endommager un objet."
 
--- Fichiers guild.lua
 L["Guild Info"] = "Infos Guilde"
 L["Information about the guild"] = "Informations sur la guilde"
 L["Guild's Management"] = "Gestion des Guildes"
@@ -1091,7 +1084,6 @@ L["enter_new_guild_name_error"] = "Veuillez saisir le nouveau nom de la guilde !
 L["UninviteG"] = "Exclure"
 L["UninviteG_tooltip"] = "Retire le joueur <PlayerName> de la guilde."
 
-	
 -- Fichiers GMPanel
 L["Adm Enter Value"] = "Entrer une valeur"
 L["btnFly tooltip"] = "Active ou désactive le mode vol MJ"
@@ -1282,11 +1274,11 @@ L["enter_scene_id_error"] = "Erreur : veuillez entrer un ID de scène."
 L["enter_scene_package_id_error"] = "Erreur : veuillez entrer un ID de package de scène."
 L["enter_playback_flags_error"] = "Erreur : veuillez entrer les flags de lecture."
 L["select_action_dropdown_error"] = "Erreur : veuillez choisir une action dans le menu déroulant."
-	
+
 L["Database Part 1"] = "Base de Données - Partie 1"
 L["Database Part 2"] = "Base de Données - Partie 2"
 L["Database Part 3"] = "Base de Données - Partie 3"
-	
+
 L["Reveal"] = "Révéler"
 L["ahbot_items_syntax_tooltip"] = "Définit la quantité d’objets %s à vendre à l’hôtel des ventes."
 L["ahbot_ratio_syntax_tooltip"] = "Définit le ratio d’objets dans l’hôtel des ventes %s."
@@ -1424,6 +1416,8 @@ L["Stone Guard %s"] = "Garde de pierre %s"
 L["Blood Guard %s"] = "Garde de sang %s"
 L["Legionnaire %s"] = "Légionnaire %s"
 L["Centurion %s"] = "Centurion %s"
+L["Champion %s"] = "Champion %s"
+L["Lieutenant General %s"] = "Lieutenant General %s"
 L["General %s"] = "Général %s"
 L["Warlord %s"] = "Seigneur de guerre %s"
 L["High Warlord %s"] = "Grand seigneur de guerre %s"
@@ -2166,6 +2160,7 @@ L["Flame Guard"] =	"Garde des flammes"
 L["Khorium Ward"] =	"Gardien de khorium"
 L["Burning Rage"] =	"Rage ardente"
 L["Gladiator's Dreadgear"] =	"Tenue horrifique de gladiateur"
+L["Gladiator's Battlegear"] = "Tenue de Bataille du Gladiateur"
 L["Faith in Felsteel"] =	"Foi dans le gangracier"
 L["The Unyielding"] =	"L'Inflexible"
 L["Whitemend Wisdom"] =	"Sagesse de la blanche guérison"
