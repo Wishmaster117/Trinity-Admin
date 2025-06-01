@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+
+jobs:
+  luacheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout des sources
+        uses: actions/checkout@v3
+
+      - name: Installer Lua et Luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 luarocks
+          luarocks install luacheck
+
+      - name: Lancer Luacheck
+        run: luacheck .
