@@ -61,19 +61,19 @@ function AddItem:CreateAddItemPanel()
     -- input1:SetSize(150, 22)
     input1:SetPoint("TOPLEFT", toolsTitle, "BOTTOMLEFT", 10, -20)
     input1:SetText(L["Choose a action"])  -- Valeur par défaut générale
-	TrinityAdmin.AutoSize(input1, 20, 13)
+	TrinityAdmin.AutoSize(input1, 20, 13, nil, 120)
 
     local input2 = CreateFrame("EditBox", "TrinityAdminAddLearnInput2", panel, "InputBoxTemplate")
     -- input2:SetSize(150, 22)
     input2:SetPoint("TOPLEFT", input1, "BOTTOMLEFT", 0, -10)
     input2:SetText(L["Choose a action"])
-	TrinityAdmin.AutoSize(input2, 20, 13)
+	TrinityAdmin.AutoSize(input2, 20, 13, nil, 120)
 
     local input3 = CreateFrame("EditBox", "TrinityAdminAddLearnInput3", panel, "InputBoxTemplate")
     -- input3:SetSize(150, 22)
     input3:SetPoint("TOPLEFT", input2, "BOTTOMLEFT", 0, -10)
     input3:SetText(L["Choose a action"])
-	TrinityAdmin.AutoSize(input3, 20, 13)
+	TrinityAdmin.AutoSize(input3, 20, 13, nil, 120)
 
     --------------------------------------------------------------------------------
     -- Création du menu déroulant
@@ -130,8 +130,11 @@ function AddItem:CreateAddItemPanel()
 				selectedOption = option
 				-- Mettre à jour les zones de saisie selon l'option sélectionnée
 				input1:SetText(option.defaults[1])
+				TrinityAdmin.AutoSize(input1, 20, 13, nil, 120)
 				input2:SetText(option.defaults[2])
+				TrinityAdmin.AutoSize(input2, 20, 13, nil, 120)
 				input3:SetText(option.defaults[3])
+				TrinityAdmin.AutoSize(input3, 20, 13, nil, 120)
 				if option.defaults[2] == L["Don't use"] or option.defaults[2] == "" then
 					input2:Hide()
 				else
@@ -180,8 +183,8 @@ function AddItem:CreateAddItemPanel()
     --------------------------------------------------------------------------------
     local btnGo = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     -- btnGo:SetSize(60, 22)
-    btnGo:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 35, -10)
-    btnGo:SetText(L["Go"])
+    btnGo:SetPoint("TOPLEFT", dropdown, "BOTTOMLEFT", 15, 0)
+    btnGo:SetText(L["Execute3"])
 	TrinityAdmin.AutoSize(btnGo, 20, 16)
     btnGo:SetScript("OnClick", function()
         local v1 = input1:GetText()
@@ -429,7 +432,7 @@ local function PopulateGOScroll(options)
         btn:SetScript("OnClick", function()
             -- print("Option cliquée :", textToShow, "Entry:", option.entry)
             -- SendChatMessage(".additem set " .. option.entry, "SAY")
-			TrinityAdmin:SendCommand('..additem set  ' .. option.entry)
+			TrinityAdmin:SendCommand('.additem set  ' .. option.entry)
         end)
 
         lastButton = btn

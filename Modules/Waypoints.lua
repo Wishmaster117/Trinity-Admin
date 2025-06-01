@@ -1,5 +1,7 @@
-local Waypoints = TrinityAdmin:GetModule("Waypoints")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local Waypoints = TrinityAdmin:GetModule("Waypoints")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Fonction pour afficher le panneau Waypoints
 function Waypoints:ShowWaypointsPanel()
@@ -101,7 +103,8 @@ function Waypoints:CreateWaypointsPanel()
     btnWpgps:SetText(L["Waypoint GSP"])
 	TrinityAdmin.AutoSize(btnWpgps, 20, 16)
     btnWpgps:SetScript("OnClick", function()
-        SendChatMessage(".wpgps", "SAY")
+        -- SendChatMessage(".wpgps", "SAY")
+		TrinityAdmin:SendCommand(".wpgps")
         -- print("[DEBUG] .wpgps envoyé.")
     end)
     btnWpgps:SetScript("OnEnter", function(self)
@@ -123,7 +126,8 @@ function Waypoints:CreateWaypointsPanel()
 	    		wpShowCollected = {}
 		capturingWPShow = true
 		if wpShowTimer then wpShowTimer:Cancel() end
-        SendChatMessage(".movegens", "SAY")
+        -- SendChatMessage(".movegens", "SAY")
+		TrinityAdmin:SendCommand(".movegens")
         -- print("[DEBUG] .wpgps envoyé.")
     end)
     btnmovegens:SetScript("OnEnter", function(self)
@@ -143,10 +147,11 @@ function Waypoints:CreateWaypointsPanel()
 	TrinityAdmin.AutoSize(btnWpAdd, 20, 16)
     btnWpAdd:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print(L["please_select_npc"])
+            TrinityAdmin:Print(L["please_select_npc"])
             return
         end
-        SendChatMessage(".wp add", "SAY")
+        -- SendChatMessage(".wp add", "SAY")
+		TrinityAdmin:SendCommand(".wp add")
         --print("[DEBUG] .wp add envoyé.")
     end)
     btnWpAdd:SetScript("OnEnter", function(self)
@@ -173,15 +178,16 @@ function Waypoints:CreateWaypointsPanel()
 	TrinityAdmin.AutoSize(btnWpLoad, 20, 16)
     btnWpLoad:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print(L["please_select_npc"])
+            TrinityAdmin:Print(L["please_select_npc"])
             return
         end
         local pathID = wpLoadEdit:GetText()
         if pathID == "" or pathID == "Path ID" then
-            print(L["Error_enter_PathID"])
+            TrinityAdmin:Print(L["Error_enter_PathID"])
             return
         end
-        SendChatMessage(".wp load " .. pathID, "SAY")
+        -- SendChatMessage(".wp load " .. pathID, "SAY")
+		TrinityAdmin:SendCommand('.wp load ' .. pathID)
         -- print("[DEBUG] .wp load " .. pathID .. " envoyé.")
     end)
     btnWpLoad:SetScript("OnEnter", function(self)
@@ -208,15 +214,16 @@ function Waypoints:CreateWaypointsPanel()
 	TrinityAdmin.AutoSize(btnWpReload, 20, 16)
     btnWpReload:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print(L["please_select_npc"])
+            TrinityAdmin:Print(L["please_select_npc"])
             return
         end
         local pathID = wpReloadEdit:GetText()
         if pathID == "" or pathID == "Path ID" then
-            print(L["error_pathid_missing"])
+            TrinityAdmin:Print(L["error_pathid_missing"])
             return
         end
-        SendChatMessage(".wp reload " .. pathID, "SAY")
+        -- SendChatMessage(".wp reload " .. pathID, "SAY")
+		TrinityAdmin:SendCommand('.wp reload ' .. pathID)
         --print("[DEBUG] .wp reload " .. pathID .. " envoyé.")
     end)
     btnWpReload:SetScript("OnEnter", function(self)
@@ -236,10 +243,11 @@ function Waypoints:CreateWaypointsPanel()
 	TrinityAdmin.AutoSize(btnWpUnload, 20, 16)
     btnWpUnload:SetScript("OnClick", function()
         if not UnitExists("target") then
-            print(L["please_select_npc"])
+            TrinityAdmin:Print(L["please_select_npc"])
             return
         end
-        SendChatMessage(".wp unload", "SAY")
+        -- SendChatMessage(".wp unload", "SAY")
+		TrinityAdmin:SendCommand(".wp unload")
         -- print("[DEBUG] .wp unload envoyé.")
     end)
     btnWpUnload:SetScript("OnEnter", function(self)
@@ -303,14 +311,15 @@ function Waypoints:CreateWaypointsPanel()
             command = command .. " off"
         end
         if not UnitExists("target") and option ~= "off" then
-            print(L["please_select_npc"])
+            TrinityAdmin:Print(L["please_select_npc"])
             return
         end
 		wpShowCollected = {}
 		capturingWPShow = true
 		if wpShowTimer then wpShowTimer:Cancel() end
 		
-        SendChatMessage(command, "SAY")
+        -- SendChatMessage(command, "SAY")
+		TrinityAdmin:SendCommand(command)
         -- print("[DEBUG] Commande envoyée: " .. command)
     end)
     btnWpShowExecute:SetScript("OnEnter", function(self)
@@ -327,8 +336,6 @@ function Waypoints:CreateWaypointsPanel()
     btnBack:SetPoint("BOTTOM", panel, "BOTTOM", 0, 10)
     btnBack:SetText(L["Back"])
 	TrinityAdmin.AutoSize(btnBack, 20, 16)
-    -- btnBack:SetHeight(22)
-    -- btnBack:SetWidth(btnBack:GetTextWidth() + 20)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()

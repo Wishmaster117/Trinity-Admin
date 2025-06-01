@@ -1,5 +1,7 @@
-local Tickets = TrinityAdmin:GetModule("Tickets")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local Tickets = TrinityAdmin:GetModule("Tickets")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -------------------------------------------------
 -- Fonction pour afficher le panneau Tickets
@@ -79,8 +81,7 @@ function Tickets:CreateTicketsPanel()
     -- Bouton Précédent
     -- local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 	btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    -- btnPrev:SetSize(80, 22)
-    btnPrev:SetText(L["Preview"])
+    btnPrev:SetText(L["Pagination_Preview"])
 	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnPrev:SetScript("OnClick", function()
@@ -119,37 +120,38 @@ function Tickets:CreateTicketsPanel()
         label:SetText(commandLabel)
 
         local edit1 = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        edit1:SetSize(80, 22)
+        -- edit1:SetSize(80, 22)
         edit1:SetPoint("LEFT", label, "RIGHT", 10, 0)
         edit1:SetAutoFocus(false)
         edit1:SetText(defaultParam1)
+		TrinityAdmin.AutoSize(edit1, 20, 13, nil, 80)
 
         local edit2 = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        edit2:SetSize(120, 22)
+        -- edit2:SetSize(120, 22)
         edit2:SetPoint("LEFT", edit1, "RIGHT", 10, 0)
         edit2:SetAutoFocus(false)
         edit2:SetText(defaultParam2)
+		TrinityAdmin.AutoSize(edit2, 20, 13, nil, 120)
 
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         -- btn:SetSize(60, 22) -- Enlevé pour resize auto
         btn:SetPoint("LEFT", edit2, "RIGHT", 10, 0)
         btn:SetText(L["Send"])
-		btn:SetWidth(btn:GetTextWidth() + 20) -- resize auto
-		btn:SetHeight(22)
+		TrinityAdmin.AutoSize(btn, 20, 16)
         btn:SetScript("OnClick", function()
             local param1 = edit1:GetText()
             local param2 = edit2:GetText()
             if not param1 or param1 == "" or param1 == defaultParam1 then
-                print(L["enter_first_param"] .. commandLabel)
+                TrinityAdmin:Print(L["enter_first_param"] .. commandLabel)
                 return
             end
             if not param2 or param2 == "" or param2 == defaultParam2 then
-                print(L["enter second param"] .. commandLabel)
+                TrinityAdmin:Print(L["enter second param"] .. commandLabel)
                 return
             end
             local fullCommand = commandPrefix .. " " .. param1 .. " " .. param2
-            SendChatMessage(fullCommand, "SAY")
-            -- print("[DEBUG] Commande envoyée: " .. fullCommand)
+            TrinityAdmin:SendCommand(fullCommand)
+            -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. fullCommand)
         end)
     end
 
@@ -164,26 +166,26 @@ function Tickets:CreateTicketsPanel()
         label:SetText(commandLabel)
 
         local edit = CreateFrame("EditBox", nil, row, "InputBoxTemplate")
-        edit:SetSize(80, 22)
+        -- edit:SetSize(80, 22)
         edit:SetPoint("LEFT", label, "RIGHT", 10, 0)
         edit:SetAutoFocus(false)
         edit:SetText(defaultParam)
+		TrinityAdmin.AutoSize(edit, 20, 13, nil, 80)
 
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
         -- btn:SetSize(60, 22)
         btn:SetPoint("LEFT", edit, "RIGHT", 10, 0)
         btn:SetText(L["Send"])
-		btn:SetWidth(btn:GetTextWidth() + 20)
-		btn:SetHeight(22)
+		TrinityAdmin.AutoSize(btn, 20, 16)
         btn:SetScript("OnClick", function()
             local param = edit:GetText()
             if not param or param == "" or param == defaultParam then
-                print(L["please enter value for"] .. commandLabel)
+                TrinityAdmin:Print(L["please enter value for"] .. commandLabel)
                 return
             end
             local fullCommand = commandPrefix .. " " .. param
-            SendChatMessage(fullCommand, "SAY")
-            -- print("[DEBUG] Commande envoyée: " .. fullCommand)
+            TrinityAdmin:SendCommand(fullCommand)
+            -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. fullCommand)
         end)
     end
 
@@ -198,14 +200,13 @@ function Tickets:CreateTicketsPanel()
         label:SetText(commandLabel)
 
         local btn = CreateFrame("Button", nil, row, "UIPanelButtonTemplate")
-        -- btn:SetSize(60, 22)
         btn:SetPoint("LEFT", label, "RIGHT", 10, 0)
         btn:SetText(L["Send"])
-		btn:SetWidth(btn:GetTextWidth() + 20)
-		btn:SetHeight(22)
+		TrinityAdmin.AutoSize(btn, 20, 16)
         btn:SetScript("OnClick", function()
-            SendChatMessage(commandPrefix, "SAY")
-            -- print("[DEBUG] Commande envoyée: " .. commandPrefix)
+            -- SendChatMessage(commandPrefix, "SAY")
+			TrinityAdmin:SendCommand(commandPrefix)
+            -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. commandPrefix)
         end)
     end
 
@@ -349,8 +350,7 @@ function Tickets:CreateTicketsPanel()
     local btnBackFinal = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
     btnBackFinal:SetPoint("BOTTOM", panel, "BOTTOM", 0, 30)
     btnBackFinal:SetText(L["Back"])
-    btnBackFinal:SetHeight(22)
-    btnBackFinal:SetWidth(btnBackFinal:GetTextWidth() + 20)
+    TrinityAdmin.AutoSize(btnBackFinal, 20, 16)
     btnBackFinal:SetScript("OnClick", function()
         panel:Hide()
         TrinityAdmin:ShowMainMenu()

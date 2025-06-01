@@ -1,4 +1,4 @@
-local L = _G.L
+-- local L = _G.L
 local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
 local AdvancedItems = TrinityAdmin:GetModule("AdvancedItems")
 local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
@@ -99,25 +99,22 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     advancedLabel:SetText(L["Add Items Advanced"])
 
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
-    -- filterEditBox:SetSize(150, 22)
 	filterEditBox:SetPoint("TOP", advancedLabel, "BOTTOM", 0, -5)
     filterEditBox:SetText(L["Search..."])
-	TrinityAdmin.AutoSize(filterEditBox, 20, 13, nil, 200)
+	TrinityAdmin.AutoSize(filterEditBox, 20, 13, nil, 120)
 	
 	-- Nouvelle EditBox pour le nom du joueur, placée à droite de filterEditBox
 	local playerNameEditBox = CreateFrame("EditBox", "TrinityAdminPlayerNameEditBox", panel, "InputBoxTemplate")
-	-- playerNameEditBox:SetSize(120, 22)
 	playerNameEditBox:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
 	playerNameEditBox:SetText(L["Player Name"])
-	TrinityAdmin.AutoSize(playerNameEditBox, 20, 13)
+	TrinityAdmin.AutoSize(playerNameEditBox, 20, 13, nil, 120)
 
 
 	-- Nouvelle EditBox pour le montant ("HowMuch?"), placée à droite de la zone "Nom du Joueur"
 	local howMuchEditBox = CreateFrame("EditBox", "TrinityAdminHowMuchEditBox", panel, "InputBoxTemplate")
-	-- howMuchEditBox:SetSize(100, 22)
 	howMuchEditBox:SetPoint("LEFT", playerNameEditBox, "RIGHT", 10, 0)
 	howMuchEditBox:SetText(L["HowMuch"])
-	TrinityAdmin.AutoSize(howMuchEditBox, 20, 13)
+	TrinityAdmin.AutoSize(howMuchEditBox, 20, 13, nil, 100)
     ------------------------------------------------------------
     -- ScrollFrame et scrollChild
     ------------------------------------------------------------
@@ -134,13 +131,11 @@ function AdvancedItems:CreateAdvancedItemsPanel()
     -- Boutons de pagination
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    -- btnPrev:SetSize(80, 22)
-    btnPrev:SetText(L["Preview"])
+    btnPrev:SetText(L["Pagination_Preview"])
 	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", -120, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    -- btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
 	TrinityAdmin.AutoSize(btnNext, 20, 16)
     btnNext:SetPoint("BOTTOM", panel, "BOTTOM", 60, 10)

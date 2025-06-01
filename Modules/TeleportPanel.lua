@@ -1,5 +1,7 @@
-local TeleportModule = TrinityAdmin:GetModule("TeleportPanel")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local TeleportModule = TrinityAdmin:GetModule("TeleportPanel")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 function TeleportModule:ShowTeleportPanel()
     TrinityAdmin:HideMainMenu()
@@ -281,7 +283,7 @@ end
                     return
                 end
             end
-            SendChatMessage(finalCommand, "SAY")
+            TrinityAdmin:SendCommand(finalCommand)
             -- print("[DEBUG] Commande envoyée: " .. finalCommand)
         end)
 
@@ -371,7 +373,7 @@ end
                 if vals[5] and vals[5] ~= "O" then
                     command = command .. " " .. vals[5]
                 end
-                SendChatMessage(command, "SAY")
+                TrinityAdmin:SendCommand(command)
                 -- print("[DEBUG] Commande envoyée: " .. command)
             end)
         end
@@ -441,7 +443,7 @@ end
 				end
 			end
 			local command = ".go offset " .. table.concat(vals, " ")
-			SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
 		end)
 	end
 
@@ -548,7 +550,8 @@ end
 			for _, edit in ipairs(edits_option) do
 				table.insert(vals, edit:GetText())
 			end
-			SendChatMessage(opt.command .. " " .. table.concat(vals, " "), "SAY")
+			-- SendChatMessage(opt.command .. " " .. table.concat(vals, " "), "SAY")
+			TrinityAdmin:SendCommand(opt.command .. " " .. table.concat(vals, " "))
 		end)
 		btnOption:SetScript("OnEnter", function(self)
 			local opt = optionDropdown.selectedOption
@@ -671,7 +674,7 @@ end
 				return
 			end
 			local command = opt.command .. " " .. val
-			SendChatMessage(command, "SAY")
+			TrinityAdmin:SendCommand(command)
 			-- print("[DEBUG] Commande envoyée: " .. command)
 		end)
 		
@@ -758,5 +761,5 @@ function TeleportModule:PopulateLocationDropdown(continentName, zoneName, panel)
 end
 
 function TeleportModule:TeleportTo(command)
-    SendChatMessage(command, "SAY")
+    TrinityAdmin:SendCommand(command)
 end

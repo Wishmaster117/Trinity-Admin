@@ -2,8 +2,10 @@
 -- ServerAdmin Module (ServerAdmin.lua)
 --------------------------------------------------------------
 
-local ServerAdmin = TrinityAdmin:GetModule("ServerAdmin")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local ServerAdmin = TrinityAdmin:GetModule("ServerAdmin")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Variables de capture pour .server info
 local capturingServerInfo = false
@@ -222,7 +224,7 @@ function ServerAdmin:CreateServerAdminPanel()
             GameTooltip:Hide()
         end)
         btn:SetScript("OnClick", function(self)
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
             -- print("Commande envoyée: " .. cmd)
         end)
         return btn
@@ -259,7 +261,8 @@ function ServerAdmin:CreateServerAdminPanel()
             local fullText = table.concat(serverInfoCollected, "\n")
             ShowServerInfoAceGUI(fullText)
         end)
-        SendChatMessage(".server info", "SAY")
+        -- SendChatMessage(".server info", "SAY")
+		TrinityAdmin:SendCommand(".server info")
         -- print("Commande envoyée: .server info")
     end)
 
@@ -291,7 +294,7 @@ function ServerAdmin:CreateServerAdminPanel()
         local delay = idlerestartDelay:GetText()
         local reason = idlerestartReason:GetText()
         local cmd = ".server idlerestart " .. delay .. " 2 " .. reason
-        SendChatMessage(cmd, "SAY")
+        TrinityAdmin:SendCommand(cmd)
         -- print("Commande envoyée: " .. cmd)
     end)
 
@@ -317,7 +320,7 @@ function ServerAdmin:CreateServerAdminPanel()
         local delay = idleshutdownDelay:GetText()
         local reason = idleshutdownReason:GetText()
         local cmd = ".server idleshutdown " .. delay .. " 0 " .. reason
-        SendChatMessage(cmd, "SAY")
+        TrinityAdmin:SendCommand(cmd)
         -- print("Commande envoyée: " .. cmd)
     end)
 	
@@ -346,7 +349,7 @@ function ServerAdmin:CreateServerAdminPanel()
         local delay = ServerRestartDelay:GetText()
         local reason = ServerRestartReason:GetText()
         local cmd = ".server restart " .. delay .. " 2 " .. reason
-        SendChatMessage(cmd, "SAY")
+        TrinityAdmin:SendCommand(cmd)
         -- print("Commande envoyée: " .. cmd)
     end)	
 
@@ -378,8 +381,8 @@ function ServerAdmin:CreateServerAdminPanel()
         local delay = ServerRestartForceDelay:GetText()
         local reason = ServerRestartForceReason:GetText()
         local cmd = ".server restart force " .. delay .. " 2 " .. reason
-        SendChatMessage(cmd, "SAY")
-        print("Commande envoyée: " .. cmd)
+        TrinityAdmin:SendCommand(cmd)
+        -- print("Commande envoyée: " .. cmd)
     end)	
 	
 	-------------------------------------------------------------------------------
@@ -404,7 +407,7 @@ function ServerAdmin:CreateServerAdminPanel()
         local delay = ServerShutdownDelay:GetText()
         local reason = ServerShutdownReason:GetText()
         local cmd = ".server shutdown " .. delay .. " 0 " .. reason
-        SendChatMessage(cmd, "SAY")
+        TrinityAdmin:SendCommand(cmd)
         -- print("Commande envoyée: " .. cmd)
     end)	
 
@@ -433,7 +436,7 @@ function ServerAdmin:CreateServerAdminPanel()
         local delay = ServerShutdownForceDelay:GetText()
         local reason = ServerShutdownForceReason:GetText()
         local cmd = ".server shutdown force " .. delay .. " 0 " .. reason
-        SendChatMessage(cmd, "SAY")
+        TrinityAdmin:SendCommand(cmd)
         -- print("Commande envoyée: " .. cmd)
     end)
 	
@@ -467,7 +470,7 @@ function ServerAdmin:CreateServerAdminPanel()
         end)
         btn:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
         btn:SetScript("OnClick", function(self)
-            SendChatMessage(cmd, "SAY")
+            TrinityAdmin:SendCommand(cmd)
             -- print("Commande envoyée: " .. cmd)
         end)
         return btn
@@ -488,7 +491,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnServerSetMotd:SetScript("OnClick", function(self)
 		local message = editServerMotd:GetText()
 		local cmd = ".server set motd " .. message
-		SendChatMessage(cmd, "SAY")
+		TrinityAdmin:SendCommand(cmd)
 		-- print("Commande envoyée: " .. cmd)
 	end)
 
@@ -559,7 +562,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	btnServerSetClosed:SetScript("OnClick", function(self)
 		local state = radioOn:GetChecked() and "on" or "off"
 		local cmd = ".server set closed " .. state
-		SendChatMessage(cmd, "SAY")
+		TrinityAdmin:SendCommand(cmd)
 		-- print("Commande envoyée: " .. cmd)
 	end)
 	
@@ -605,7 +608,7 @@ function ServerAdmin:CreateServerAdminPanel()
 		else
 			cmd = ".server plimit " .. arg
 		end
-		SendChatMessage(cmd, "SAY")
+		TrinityAdmin:SendCommand(cmd)
 		-- print("Commande envoyée: " .. cmd)
 	end)
 	
@@ -625,7 +628,7 @@ function ServerAdmin:CreateServerAdminPanel()
 	end)
 	btnServerPlimitReset:SetScript("OnClick", function(self)
 		local cmd = ".server plimit reset"
-		SendChatMessage(cmd, "SAY")
+		TrinityAdmin:SendCommand(cmd)
 		-- print("Commande envoyée: " .. cmd)
 	end)
 
@@ -682,7 +685,7 @@ function ServerAdmin:CreateServerAdminPanel()
 		local name = editName:GetText()
 		local level = editLevel:GetText()
 		local cmd = ".server set loglevel " .. facility .. " " .. name .. " " .. level
-		SendChatMessage(cmd, "SAY")
+		TrinityAdmin:SendCommand(cmd)
 		-- print("Commande envoyée: " .. cmd)
 	end)
 

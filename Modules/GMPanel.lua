@@ -1,5 +1,7 @@
-local GMModule = TrinityAdmin:GetModule("GMPanel")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local GMModule = TrinityAdmin:GetModule("GMPanel")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 function GMModule:ShowGMPanel()
     TrinityAdmin:HideMainMenu()
@@ -214,7 +216,7 @@ function GMModule:CreateGMPanel()
             command = ".modify " .. func .. " " .. value
         end
         -- print("Commande de sortie: " .. command)
-        SendChatMessage(command, "SAY")
+        TrinityAdmin:SendCommand(command)
 		modifyInput:SetText(L["Adm Enter Value"])  -- Remise à zéro du texte de saisie
     end)
 

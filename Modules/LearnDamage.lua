@@ -97,11 +97,11 @@ function LearnDamage:CreateLearnDamagePanel()
 		local spellID = spellIdEdit:GetText()
 		local optionVal = optionEdit:GetText()
 		if spellID == "" or spellID == L["SpellID1"] then
-			print("Erreur: Spell ID requis.")
+			TrinityAdmin:Print("Erreur: Spell ID requis.")
 			return
 		end
 		if not UnitName("target") then
-			print(L["no_player_selected_error"])
+			TrinityAdmin:Print(L["no_player_selected_error"])
 			return
 		end
 		local command = ".learn " .. spellID
@@ -137,7 +137,7 @@ function LearnDamage:CreateLearnDamagePanel()
 			command = command .. " " .. playerName
 		else
 			if not UnitName("target") then
-				print(L["no_player_or_name_error"])
+				TrinityAdmin:Print(L["no_player_or_name_error"])
 				return
 			end
 		end
@@ -356,7 +356,7 @@ btnDealDamage:SetScript("OnLeave", function() GameTooltip:Hide() end)
 btnDealDamage:SetScript("OnClick", function()
     local dmgAmount = damageAmountEdit:GetText()
     if dmgAmount == "" or dmgAmount == "Damage Amount" then
-        print(L["Deal_damage_error"])
+        TrinityAdmin:Print(L["Deal_damage_error"])
         return
     end
     local command = ".damage " .. dmgAmount
@@ -369,7 +369,7 @@ btnDealDamage:SetScript("OnClick", function()
         command = command .. " " .. spellid
     end
 	TrinityAdmin:SendCommand(command)
-    -- print("Commande envoyée: " .. command)
+    -- TrinityAdmin:Print("Commande envoyée: " .. command)
 end)
 
 ------------------------------
@@ -403,7 +403,7 @@ btnDamageGameObject:SetScript("OnClick", function()
     local guid = guidEdit:GetText()
     local dmgAmountGO = goDamageAmountEdit:GetText()
     if guid == "" or guid == "Guid" or dmgAmountGO == "" or dmgAmountGO == "Damage Amount" then
-        print(L["deal_damage_gob_erreor"])
+        TrinityAdmin:Print(L["deal_damage_gob_erreor"])
         return
     end
     local command = ".damage go " .. guid .. " " .. dmgAmountGO

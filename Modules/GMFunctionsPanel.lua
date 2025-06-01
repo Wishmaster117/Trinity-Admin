@@ -672,19 +672,19 @@ function module:CreateGMFunctionsPanel()
             CreateGMButton(page, def, self, buttonRefs)
         end
 
-if buttonRefs["btnGPS"] then
-    buttonRefs["btnGPS"]:SetScript("OnClick", function()
-        capturingGPSInfo = true
-        gpsInfoCollected = {}
-        if gpsInfoTimer then
-            gpsInfoTimer:Cancel()
-            gpsInfoTimer = nil
-        end
-        -- SendChatMessage(".gps", "SAY")
-		TrinityAdmin:SendCommand(".gps")
-		
-    end)
-end
+		if buttonRefs["btnGPS"] then
+			buttonRefs["btnGPS"]:SetScript("OnClick", function()
+				capturingGPSInfo = true
+				gpsInfoCollected = {}
+				if gpsInfoTimer then
+					gpsInfoTimer:Cancel()
+					gpsInfoTimer = nil
+				end
+				-- SendChatMessage(".gps", "SAY")
+				TrinityAdmin:SendCommand(".gps")
+				
+			end)
+		end
         -- Ajout du comportement personnalisé pour le bouton "btnguid"
 		if buttonRefs["btnguid"] then
 			buttonRefs["btnguid"]:SetScript("OnClick", function()
@@ -1796,15 +1796,6 @@ end
 
             local wID = weatherDropdown.selected.id
             local sID = statusDropdown.selected.id
-
-            -- For "Enable" we presumably use 1, for "Disable" => 0 or 2?
-            -- The spec said "Desable" means 2, so we interpret 2 => 0? 
-            -- The user said "Desable => 2"? The example is "enable => 1, disable => 2".
-            -- But wchange syntax says #status can be 0 or 1. 
-            -- So let's interpret "Disable => 0" if you want to follow the normal .wchange logic:
-            -- but let's just do the user wants 1 or 2. We'll do .wchange wID sID.
-            -- The user specifically said "for example for snow we do .wchange 2 1" => that means "2 => snow, 1 => enable"
-            -- so we'll just pass them directly:
             local cmd = ".wchange " .. wID .. " " .. sID
             TrinityAdmin:SendCommand(cmd)
 			-- print("[DEBUG] Commande envoyée: " ..cmd)

@@ -1,5 +1,7 @@
-local Others = TrinityAdmin:GetModule("Others")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local Others = TrinityAdmin:GetModule("Others")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -------------------------------------------------
 -- Fonction pour afficher le panneau Others

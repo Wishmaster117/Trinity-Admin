@@ -1,5 +1,7 @@
-local ModuleCharacter = TrinityAdmin:GetModule("ModuleCharacter")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local ModuleCharacter = TrinityAdmin:GetModule("ModuleCharacter")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- Fonction pour afficher le panneau CharactersAdmin
 function ModuleCharacter:ShowModuleCharacterPanel()
@@ -116,7 +118,7 @@ local function CreateServerButtonPage1(name, text, tooltip, cmd)
     end)
     btn:SetScript("OnLeave", function(self) GameTooltip:Hide() end)
     btn:SetScript("OnClick", function(self)
-        SendChatMessage(cmd, "SAY")
+        TrinityAdmin:SendCommand(cmd)
         -- TrinityAdmin:Print("Commande envoyée: " .. cmd)
     end)
     return btn
@@ -159,7 +161,7 @@ btnAddAura:SetScript("OnClick", function()
         return
     end
     local cmd = ".aura " .. spellId
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -199,7 +201,7 @@ btnAddAuraRemove:SetScript("OnClick", function()
         return
     end
     local cmd = ".unaura " .. spellId
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -272,7 +274,7 @@ btnFreeze:SetScript("OnClick", function()
     end
 
     local cmd = ".freeze " .. playerName .. " " .. duration
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -321,7 +323,7 @@ btnUnfreeze:SetScript("OnClick", function()
     end
 	
     local cmd = ".unfreeze " .. playerName
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -382,7 +384,8 @@ local function CreateServerButtonPage2(name, text, tooltip, cmd)
             finalCmd = cmd -- sans cible (appliqué au GM lui-même)
         end
 
-        SendChatMessage(finalCmd, "SAY")
+        -- SendChatMessage(finalCmd, "SAY")
+		TrinityAdmin:SendCommand(finalCmd)
         -- TrinityAdmin:Print("Commande envoyée: " .. finalCmd)
     end)
     return btn
@@ -483,7 +486,7 @@ btnUnstuck:SetScript("OnClick", function()
     end
 	
     local cmd = ".unstuck " .. playerName .. " " .. selectedLocation
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -559,7 +562,7 @@ btnKick:SetScript("OnClick", function()
     end
 
     local cmd = ".kick " .. playerName .. " " .. reason
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -636,7 +639,7 @@ btnLevelup:SetScript("OnClick", function()
     end
 
     local cmd = ".levelup " .. playerName .. " " .. level
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -680,7 +683,7 @@ btnRemoveCooldown:SetScript("OnClick", function()
     else
         cmd = ".cooldown " .. spellId
     end
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 ----------------------------
@@ -782,7 +785,7 @@ btnRename:SetScript("OnClick", function()
         cmd = cmd .. " " .. newNameValue
     end
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -833,7 +836,7 @@ btnReputation:SetScript("OnClick", function()
 
     local cmd = ".character reputation " .. nameValue
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -884,7 +887,7 @@ btnTitles:SetScript("OnClick", function()
 
     local cmd = ".character titles " .. nameValue
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -932,7 +935,7 @@ btnChangeRace:SetScript("OnClick", function()
 
     local cmd = ".character changerace " .. nameValue
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -980,7 +983,7 @@ btnChangefaction:SetScript("OnClick", function()
 
     local cmd = ".character changefaction " .. nameValue
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1028,7 +1031,7 @@ btnCustomize:SetScript("OnClick", function()
 
     local cmd = ".character customize " .. nameValue
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1102,7 +1105,7 @@ btnSetLevel:SetScript("OnClick", function()
         cmd = cmd .. " " .. level
     end
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 ----------------------------
@@ -1198,7 +1201,7 @@ btnRename:SetScript("OnClick", function()
 	
     local cmd = ".character changeaccount " .. nameValue .. " " ..newAccountValue
 	
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1286,7 +1289,8 @@ btnExecute:SetScript("OnClick", function()
 
     local finalCmd = selectedOption.command .. " " .. inputValue
 
-    SendChatMessage(finalCmd, "SAY")
+    -- SendChatMessage(finalCmd, "SAY")
+	TrinityAdmin:SendCommand(finalCmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. finalCmd)
 end)
 
@@ -1383,7 +1387,7 @@ btnRestore:SetScript("OnClick", function()
         cmd = cmd .. " " .. newAccount
     end
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
     -- TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1427,7 +1431,7 @@ local function CreateServerButtonPage5(name, text, tooltip, cmd)
             finalCmd = cmd -- sans cible (appliqué au GM lui-même)
         end
 
-        SendChatMessage(finalCmd, "SAY")
+        TrinityAdmin:SendCommand(finalCmd)
         -- TrinityAdmin:Print("Commande envoyée: " .. finalCmd)
     end)
     return btn
@@ -1489,7 +1493,7 @@ btnLearnPet:SetScript("OnClick", function()
             return
 		end
     local cmd = ".pet learn " .. petName
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
    --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1534,7 +1538,7 @@ btnPetlevel:SetScript("OnClick", function()
             return
 		end
     local cmd = ".pet level " .. petLevel
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
    --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1580,7 +1584,7 @@ btnPetUnlearn:SetScript("OnClick", function()
 		end
 	
     local cmd = ".pet unleran " .. petSpell
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
    --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 	
@@ -1623,7 +1627,7 @@ local function CreateServerButtonPage5(name, text, tooltip, cmd)
             finalCmd = cmd -- sans cible (appliqué au GM lui-même)
         end
 
-        SendChatMessage(finalCmd, "SAY")
+        TrinityAdmin:SendCommand(finalCmd)
        --  TrinityAdmin:Print("Commande envoyée: " .. finalCmd)
     end)
     return btn
@@ -1742,7 +1746,7 @@ btnDumpCopy:SetScript("OnClick", function()
         cmd = cmd .. " " .. newGuidValue
     end
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
    --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1850,7 +1854,7 @@ btnDumpLoad:SetScript("OnClick", function()
         cmd = cmd .. " " .. newGuidValue
     end
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
    --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 
@@ -1917,7 +1921,7 @@ btnDumpWrite:SetScript("OnClick", function()
     -- Construction de la commande
     local cmd = ".pdump write " .. nameValueWrite .. " " .. accountValueWrite
 
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
    --  TrinityAdmin:Print("Commande envoyée : " .. cmd)
 end)
 	
@@ -2327,7 +2331,8 @@ TrinityAdmin.AutoSize(btnCapturePinfo, 20, 16)
 -- btnCapturePinfo:SetHeight(22)
 -- btnCapturePinfo:SetWidth(btnCapturePinfo:GetTextWidth() + 20)
 btnCapturePinfo:SetScript("OnClick", function()
-    SendChatMessage(".pinfo", "SAY")
+    -- SendChatMessage(".pinfo", "SAY")
+	TrinityAdmin:SendCommand(".pinfo")
     capturingPinfo = true
     collectedInfo = {}
     if captureTimer then captureTimer:Cancel() end
@@ -2437,7 +2442,7 @@ btnSendItems:SetScript("OnClick", function()
         end
     end
 
-    SendChatMessage(command, "SAY")
+    TrinityAdmin:SendCommand(command)
     -- TrinityAdmin:Print("[DEBUG] Commande envoyée: " .. command)
 end)
 
@@ -2496,7 +2501,7 @@ btnSendMail:SetScript("OnClick", function()
         return
     end
     local cmd = '.send mail ' .. playerName .. ' "' .. subject .. '" "' .. text .. '"'
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
 end)
 
 -- Send Message Section
@@ -2534,7 +2539,7 @@ btnSendMessage:SetScript("OnClick", function()
         return
     end
     local cmd = '.send message ' .. playerName .. ' ' .. message
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
 end)
 
 -- Send Money Section
@@ -2588,7 +2593,7 @@ btnSendMoney:SetScript("OnClick", function()
         return
     end
     local cmd = '.send money ' .. playerName .. ' "' .. subject .. '" "' .. text .. '" ' .. money
-    SendChatMessage(cmd, "SAY")
+    TrinityAdmin:SendCommand(cmd)
 end)
 
 local convertSubtitle = commandsFramePage8:CreateFontString(nil, "OVERLAY", "GameFontNormal")

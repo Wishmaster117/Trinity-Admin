@@ -5,8 +5,10 @@ if not UnitIsNPC then
     end
 end
 
-local NPCModule = TrinityAdmin:GetModule("NPCPanel")
 local L = _G.L
+local TrinityAdmin = LibStub("AceAddon-3.0"):GetAddon("TrinityAdmin")
+local NPCModule = TrinityAdmin:GetModule("NPCPanel")
+local L = LibStub("AceLocale-3.0"):GetLocale("TrinityAdmin")
 
 -- -------------------------------------------------------------------------
 -- 1) ShowNPCPanel : Ouvre le panneau
@@ -565,7 +567,7 @@ function NPCModule:CreateNPCPanel()
     actionButton:SetScript("OnClick", function()
         if selectedCommand == ".npc info" then
             if not (UnitExists("target") and UnitIsNPC("target")) then
-                print(L["Select a NPC"])
+                TrinityAdmin:Print(L["Select a NPC"])
                 return
             end
             npcInfoCollected = {}
@@ -584,14 +586,16 @@ function NPCModule:CreateNPCPanel()
 
         local value = inputBox:GetText()
         if value and value ~= "" and value ~= selectedDefaultText then
-            SendChatMessage(selectedCommand .. " " .. value, "SAY")
+            -- SendChatMessage(selectedCommand .. " " .. value, "SAY")
+			TrinityAdmin:SendCommand(selectedCommand .. " " .. value)
             -- print("[DEBUG] Commande envoyée 1: " .. selectedCommand .. " " .. value)
         else
             if UnitExists("target") and UnitIsNPC("target") then
                 -- pas de param => juste .npc ...
-                SendChatMessage(selectedCommand, "SAY")
+                -- SendChatMessage(selectedCommand, "SAY")
+				TrinityAdmin:SendCommand(selectedCommand)
             else
-                print(L["Please_enter_npc_vanue"])
+                TrinityAdmin:Print(L["Please_enter_npc_vanue"])
             end
         end
     end)
@@ -634,7 +638,8 @@ function NPCModule:CreateNPCPanel()
                 table.insert(args, eb:GetText())
             end
             local fullCommand = cmd.command .. " " .. table.concat(args, " ")
-            SendChatMessage(fullCommand, "SAY")
+            -- SendChatMessage(fullCommand, "SAY")
+			TrinityAdmin:SendCommand(fullCommand)
             -- print("[DEBUG] Commande envoyée 2: " .. fullCommand)
         end)
         sendButton:SetScript("OnEnter", function(self)
@@ -695,7 +700,8 @@ function NPCModule:CreateNPCPanel()
                     table.insert(args, eb:GetText())
                 end
                 local fullCommand = cmd1.command .. " " .. table.concat(args, " ")
-                SendChatMessage(fullCommand, "SAY")
+                -- SendChatMessage(fullCommand, "SAY")
+				TrinityAdmin:SendCommand(fullCommand)
                 -- print("[DEBUG] Commande envoyée 3: " .. fullCommand)
             end)
             sendButton1:SetScript("OnEnter", function(self)
@@ -768,7 +774,8 @@ end
                     table.insert(args, eb:GetText())
                 end
                 local fullCommand = cmdData.command .. " " .. table.concat(args, " ")
-                SendChatMessage(fullCommand, "SAY")
+                -- SendChatMessage(fullCommand, "SAY")
+				TrinityAdmin:SendCommand(fullCommand)
                 -- print("[DEBUG] Commande envoyée 4: " .. fullCommand)
             end)
 
@@ -845,7 +852,7 @@ end
             local ccmd = singleFrame.selectedCommand or singleInputCommands[1]
             local value = singleEditBox:GetText()
             if not value or value == "" or value == "Enter Value" then
-                print(L["pleaseentervalidvalue"])
+                TrinityAdmin:Print(L["pleaseentervalidvalue"])
                 return
             end
             local fullCommand = ccmd.command .. " " .. value
@@ -854,7 +861,8 @@ end
         capturingShowLoot = true
         wipe(showLootCollected)
     end
-            SendChatMessage(fullCommand, "SAY")
+            -- SendChatMessage(fullCommand, "SAY")
+			TrinityAdmin:SendCommand(fullCommand)
             -- print("[DEBUG] Commande envoyée5: " .. fullCommand)
         end)
 
