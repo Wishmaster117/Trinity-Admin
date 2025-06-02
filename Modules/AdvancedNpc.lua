@@ -103,10 +103,10 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     advancedLabel:SetText(L["Advanced Npc Add"])
 
     local filterEditBox = CreateFrame("EditBox", "TrinityAdminGOFilterEditBox", panel, "InputBoxTemplate")
-    filterEditBox:SetSize(150, 22)
     -- filterEditBox:SetPoint("TOPRIGHT", advancedLabel, "BOTTOMRIGHT", -20, -5)
 	filterEditBox:SetPoint("TOP", advancedLabel, "BOTTOM", 0, -5)
     filterEditBox:SetText(L["Search..."])
+	TrinityAdmin.AutoSize(filterEditBox, 20, 13, nil, 120)
 	
     ------------------------------------------------------------
     -- ScrollFrame et scrollChild
@@ -124,13 +124,13 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     -- Boutons de pagination
     ------------------------------------------------------------
     local btnPrev = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnPrev:SetSize(80, 22)
-    btnPrev:SetText(L["Preview"])
+    btnPrev:SetText(L["Pagination_Preview"])
+	TrinityAdmin.AutoSize(btnPrev, 20, 16)
     btnPrev:SetPoint("BOTTOM", panel, "BOTTOM", -120, 10)
 
     local btnNext = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnNext:SetSize(80, 22)
     btnNext:SetText(L["Next"])
+	TrinityAdmin.AutoSize(btnNext, 20, 16)
     btnNext:SetPoint("BOTTOM", panel, "BOTTOM", 60, 10)
 
     local btnPage = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
@@ -145,20 +145,96 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     -- local isFiltered = false   -- indique si on est en mode recherche
 
 	-- Création d'une frame de prévisualisation indépendante
-	local creaturePreviewFrame = CreateFrame("Frame", "CreaturePreviewContainer", UIParent)
+	local creaturePreviewFrame = CreateFrame("Frame", "CreaturePreviewContainer", TrinityAdminMainFrame)
 	creaturePreviewFrame:SetSize(440, 440)
-	creaturePreviewFrame:SetPoint("CENTER")  -- Positionnez-la selon vos besoins
+	creaturePreviewFrame:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPRIGHT", 60, 0)
+	creaturePreviewFrame:SetFrameStrata("HIGH")
+	creaturePreviewFrame:EnableMouse(true)
+	creaturePreviewFrame:SetHitRectInsets(30, 30, 30, 50) -- On étend la zone “active” de 50px vers le bas pour englober les boutons.
 	creaturePreviewFrame:Hide()
 	
 	-- Ajout d'un fond semi-transparent (facultatif)
-	-- local bg = creaturePreviewFrame:CreateTexture(nil, "BACKGROUND")
-	-- bg:SetAllPoints()
-	-- bg:SetColorTexture(0, 0, 0, 0.5)
+	local bg = creaturePreviewFrame:CreateTexture(nil, "BACKGROUND")
+	bg:SetAllPoints()
+	bg:SetColorTexture(0, 0, 0, 0.5)
 	
 	-- Création du modèle de la créature dans la frame de prévisualisation
 	local creatureModel = CreateFrame("PlayerModel", "CreaturePreviewModel", creaturePreviewFrame)
-	creatureModel:SetSize(400, 400)
-	creatureModel:SetPoint("CENTER", creaturePreviewFrame, "CENTER", 0, 0)
+	-- creatureModel:SetSize(400, 400)
+	-- creatureModel:SetPoint("CENTER", creaturePreviewFrame, "CENTER", 0, 0)
+	creatureModel:SetAllPoints(creaturePreviewFrame)
+	
+		-- Ajout de la variable pour stocker l'angle actuel (en radians)
+    local currentFacing = 0
+	
+		-- On crée deux flags pour savoir si on tourne à gauche ou à droite
+	local rotatingLeft  = false
+	local rotatingRight = false	
+
+	-- OnUpdate sur le frame parent pour faire tourner le modèle
+	creaturePreviewFrame:SetScript("OnUpdate", function(self, elapsed)
+		-- elapsed est le temps écoulé depuis la dernière frame, en secondes
+		if rotatingLeft then
+			currentFacing = currentFacing - (1 * elapsed)   -- 1 rad/s vers la gauche
+			creatureModel:SetFacing(currentFacing)
+		elseif rotatingRight then
+			currentFacing = currentFacing + (1 * elapsed)   -- 1 rad/s vers la droite
+			creatureModel:SetFacing(currentFacing)
+		end
+	end)
+	
+	-----------------------------------------------------------------
+    -- Boutons de rotation : « ← » et « → »
+    -----------------------------------------------------------------
+ 
+    -- Bouton “Rotation gauche”
+    local btnRotateLeft = CreateFrame("Button", "RotateLeftButton", creaturePreviewFrame, "UIPanelButtonTemplate")
+    btnRotateLeft:SetSize(20, 20)
+    btnRotateLeft:SetPoint("BOTTOMLEFT", creaturePreviewFrame, "BOTTOMLEFT", 10, 10)
+    btnRotateLeft:SetText("<<")
+    TrinityAdmin.AutoSize(btnRotateLeft, 14, 14)
+    
+	btnRotateLeft:SetScript("OnClick", function()
+        -- On décrémente l'angle puis on applique la rotation
+        currentFacing = currentFacing - 0.1    -- 0.1 rad  5.7°
+        creatureModel:SetFacing(currentFacing)
+    end)
+	
+	btnRotateLeft:SetScript("OnMouseDown", function(self)
+    rotatingLeft = true
+	end)
+	btnRotateLeft:SetScript("OnMouseUp", function(self)
+		rotatingLeft = false
+	end)
+ 
+    -- Bouton “Rotatation droite”
+    local btnRotateRight = CreateFrame("Button", "RotateRightButton", creaturePreviewFrame, "UIPanelButtonTemplate")
+    btnRotateRight:SetSize(20, 20)
+    btnRotateRight:SetPoint("BOTTOMRIGHT", creaturePreviewFrame, "BOTTOMRIGHT", -10, 10)
+    btnRotateRight:SetText(">>")
+    TrinityAdmin.AutoSize(btnRotateRight, 14, 14)
+    
+	btnRotateRight:SetScript("OnClick", function()
+        -- On incrémente l'angle puis on applique la rotation
+        currentFacing = currentFacing + 0.1
+        creatureModel:SetFacing(currentFacing)
+    end)
+	
+	btnRotateRight:SetScript("OnMouseDown", function(self)
+    rotatingRight = true
+	end)
+	btnRotateRight:SetScript("OnMouseUp", function(self)
+		rotatingRight = false
+	end)
+
+    -- Cacher la preview seulement lorsque la souris quitte TOUTE LA FRAME
+    creaturePreviewFrame:SetScript("OnLeave", function(self)
+       self:Hide()
+    end)	
+
+    ------------------------------------------------------------
+    -- Fonction PopulateGOScroll
+    ------------------------------------------------------------
 
     local function PopulateGOScroll(data)
         local sourceData, totalEntriesLocal
@@ -242,45 +318,15 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
             end
             btn:SetText(truncatedText)
 			
-			-- Avec Tooltip
-           -- btn:SetScript("OnEnter", function(self)
-           --     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		   --	GameTooltip:SetText(fullText, 1, 1, 1, 1, true)
-           --     GameTooltip:Show()
-           -- end)
-           -- btn:SetScript("OnLeave", function(self)
-           --     GameTooltip:Hide()
-           -- end)
-		   
-			-- Avec previes
-			-- btn:SetScript("OnEnter", function(self)
-			-- 	-- Création d'un cadre de prévisualisation s'il n'existe pas déjà
-			-- 	if not self.previewFrame then
-			-- 		self.previewFrame = CreateFrame("PlayerModel", "CreaturePreviewFrame", UIParent)
-			-- 		self.previewFrame:SetSize(200, 200)
-			-- 		self.previewFrame:SetPoint("LEFT", self, "RIGHT", 10, 0)
-			-- 		self.previewFrame:SetFrameStrata("TOOLTIP")
-			-- 	end
-			-- 	-- On récupère le DisplayId associé à la créature (par exemple, option.DisplayId)
-			-- 	self.previewFrame:SetDisplayInfo(option.DisplayId)
-			-- 	self.previewFrame:Show()
-			-- end)
-			-- 
-			-- btn:SetScript("OnLeave", function(self)
-			-- 	if self.previewFrame then
-			-- 		self.previewFrame:Hide()
-			-- 	end
-			-- end)
-			
 			btn:SetScript("OnEnter", function(self)
 			creatureModel:SetDisplayInfo(option.DisplayId)
 			creaturePreviewFrame:Show()
 			end)
 			
 			-- Lorsqu'on quitte le bouton, on masque la frame
-			btn:SetScript("OnLeave", function(self)
-				creaturePreviewFrame:Hide()
-			end)
+			-- btn:SetScript("OnLeave", function(self)
+				-- creaturePreviewFrame:Hide()
+			-- end)
 
 			btn:SetScript("OnClick", function()
 			local command = ""
@@ -372,9 +418,8 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     -- Bouton "Reset" pour revenir à la liste complète
     ------------------------------------------------------------
     local btnReset = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnReset:SetHeight(22)
     btnReset:SetText(L["Reset"])
-	btnReset:SetWidth(btnReset:GetTextWidth() + 10)
+	TrinityAdmin.AutoSize(btnReset, 20, 16)
     btnReset:SetPoint("RIGHT", filterEditBox, "RIGHT", -155, 0)
 	btnReset:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -399,9 +444,8 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     -- Bouton "Delete" pour revenir à la liste complète
     ------------------------------------------------------------
     local btnDelete = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnDelete:SetHeight(22)
     btnDelete:SetText(L["Delete Npc"])
-	btnDelete:SetWidth(btnDelete:GetTextWidth() + 10)
+	TrinityAdmin.AutoSize(btnDelete, 20, 16)
     btnDelete:SetPoint("LEFT", filterEditBox, "RIGHT", 10, 0)
 	btnDelete:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -424,9 +468,8 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     -- Bouton "Move" pour revenir à la liste complète
     ------------------------------------------------------------
     local btnMove = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnMove:SetHeight(22)
     btnMove:SetText(L["Move Npc"])
-	btnMove:SetWidth(btnMove:GetTextWidth() + 10)
+	TrinityAdmin.AutoSize(btnMove, 20, 16)
     btnMove:SetPoint("LEFT", btnDelete, "RIGHT", 10, 0)
 	btnMove:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
@@ -451,8 +494,8 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     ------------------------------------------------------------
 
 	local btnBack = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    btnBack:SetSize(80, 22)
     btnBack:SetText(L["Back"])
+	TrinityAdmin.AutoSize(btnBack, 20, 16)
     btnBack:SetPoint("BOTTOMLEFT", panel, "BOTTOMLEFT", 10, 10)
     btnBack:SetScript("OnClick", function()
         panel:Hide()
