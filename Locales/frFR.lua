@@ -238,7 +238,6 @@ L["Hp"]                       = "PV"
 L["Xp"]                       = "XP"
 L["Scale"]                    = "Taille"
 L["Currency"]                 = "Monnaie"
-
 L["Add_Money"] = "Ajoute le montant de monnaie (emblèmes, etc.) avec l’ID au joueur. Si aucun joueur n’est sélectionné, l’ajout se fait sur vous.\n\nSyntaxe : ID + espace + montant"
 
 L["Modify_Speed"] = "Modifie la vitesse de déplacement du joueur sélectionné selon la valeur saisie (vitesse de course normale = 1).\n\nSyntaxe : $speedtypes #rate\n\nSi aucun joueur n’est sélectionné, cela modifie votre propre vitesse.\n\n$speedtypes : fly, all, walk, backwalk, swim\n#rate : de 0.1 à 50"
@@ -250,7 +249,6 @@ L["Modify_HP"] = "Modifie les points de vie (HP) du joueur sélectionné. Si auc
 L["Modify_XP"] = "Modifie l’expérience (XP) du joueur sélectionné. Si aucun joueur n’est sélectionné, modifie votre XP."
 
 L["Modify_Scale"] = "Modifie la taille du joueur ou de la créature sélectionnée. Si aucune cible n’est sélectionnée, modifie votre propre taille.\n\nValeurs possibles : de 0.1 à 10"
-
 L["Enter_Valid_Value"] = "Veuillez entrer une valeur valide."
 L["Enter_Valid_Currency"] = "Veuillez entrer un ID et un montant séparés par un espace pour la monnaie."
 L["Free_Panel"] = "Panneau à définir"
@@ -571,7 +569,7 @@ L["hide_all_path"] = "Masquer tous les chemins affichés."
 L["display_detailed_wp"] = "Affiche les informations détaillées du waypoint sélectionné."
 L["Show"] = "Afficher"
 L["show_wp_explain"] = "Exécute la commande .wp show avec l’option sélectionnée et l’ID de chemin (si indiqué)."
-	
+
 -- Fichier trinityadmin.lua
 L["detected_language"] = "Langue détectée : "
 L["click_to_open_main"] = "Cliquez pour ouvrir le menu principal."
@@ -651,7 +649,6 @@ L["please_enter_value2"] = "Veuillez entrer une valeur pour "
 L["No location for zone:"] = "Aucun emplacement trouvé pour la zone :"
 L["of continent:"] = "du continent :"
 
--- Fichier serveradmin.lua
 L["Server Admin Panel"] = "Panneau d’administration serveur"
 L["server corpses"] = "Serveur : cadavres"
 L["servercorpstooltip"] = "Déclenche la vérification d’expiration des cadavres."
@@ -695,7 +692,6 @@ L["Set Loglevel"] = "Définir le niveau de log :"
 L["NameLogs"] = "Nom"
 L["setlogstooltip"] = "$facility : appender (a) ou logger (l).\n$loglevel : 0-désactivé, 1-trace, 2-debug, 3-info, 4-avertissement, 5-erreur, 6-critique."
 
--- Fichier others.lua
 L["Desable Functions"] = "Fonctions Désactivées"
 L["Desable Add"] = "Ajouter une désactivation"
 L["Error_All_fields_required"] = "Tous les champs sont requis pour l’ajout d’une désactivation !"
@@ -726,7 +722,6 @@ L["Show information about current state of mmaps."] = "Afficher l’état actuel
 L["Calculate paths for all nearby npcs to player."] = "Calculer les chemins des PNJ proches vers le joueur."
 L["Mmaps Response"] = "Réponse Mmaps"
 
--- Fichier RBAC / Permissions
 L["GMs Permission"] = "Permissions MJ"
 L["RBAC Permissions"] = "Permissions RBAC"
 L["You can copy/past this"] = "Vous pouvez copier/coller ceci"
@@ -745,7 +740,6 @@ L["demyerror2"] = "Erreur : le champ 'compte' est requis pour cette action."
 L["demyerror3"] = "Erreur : le champ ID est requis pour cette action."
 L["demyerror4"] = "Veuillez sélectionner une action."
 
--- Fichier npcpanel.lua
 L["NPC Loot Info"] = "Infos butin PNJ"
 L["Information from .npc showloot"] = "Informations issues de la commande .npc showloot"
 L["NPC Info Frame"] = "Infos PNJ"
@@ -786,7 +780,6 @@ L["Action"] = "Action"
 L["Please_enter_npc_vanue"] = "Veuillez entrer une valeur pour le PNJ ou en sélectionner un."
 L["pleaseentervalidvalue"] = "Veuillez entrer une valeur valide."
 
--- Fichier Modulecharacter.lua
 L["Player/Characters/Pets Functions"] = "Fonctions Joueurs/Personnages/Familiers"
 L["Player Functions Part 1"] = "Fonctions Joueurs Partie 1"
 L["Add Aura"] = "Ajouter une Aura"
@@ -921,7 +914,6 @@ L["Send Money"] = "Envoyer de l’argent"
 L["Send Money tooltip"] = "Envoie un courrier contenant de l’argent. Le montant est en cuivre. Utilisez le convertisseur."
 L["To copper converter"] = "Convertisseur en cuivre"
 
--- Fichier Misc suite
 L["PvP Management"] = "Gestion PvP"
 L["Stop Combat"] = "Arrêter le combat"
 L["Stop Combat Tooltip"] = "Met fin au combat du personnage sélectionné. Si la cible n’est pas un joueur, la commande s’applique à vous. Si $playername est fourni, tente de l’appliquer au joueur en ligne."
@@ -1010,7 +1002,7 @@ L["enter_valid_gameobject_id_error"] = "Veuillez entrer un ID d’objet de jeu v
 L["List Respawns"] = "Lister les réapparitions"
 L["List Respawns tooltip"] = "Liste toutes les réapparitions prévues dans la zone ou à <distance> mètres."
 
--- Fichier Learndamage.lua
+
 L["Learn and Damage Funcs"] = "Fonctions d'Apprentissage et de Dégâts"
 L["Learn Panel"] = "Panneau d’Apprentissage"
 L["LearnLP"] = "Apprendre"
@@ -1084,7 +1076,7 @@ L["enter_new_guild_name_error"] = "Veuillez saisir le nouveau nom de la guilde !
 L["UninviteG"] = "Exclure"
 L["UninviteG_tooltip"] = "Retire le joueur <PlayerName> de la guilde."
 
--- Fichiers GMPanel
+
 L["Adm Enter Value"] = "Entrer une valeur"
 L["btnFly tooltip"] = "Active ou désactive le mode vol MJ"
 L["btnGmOn tooltip"] = "Active ou désactive le mode MJ"
@@ -1283,7 +1275,6 @@ L["Reveal"] = "Révéler"
 L["ahbot_items_syntax_tooltip"] = "Définit la quantité d’objets %s à vendre à l’hôtel des ventes."
 L["ahbot_ratio_syntax_tooltip"] = "Définit le ratio d’objets dans l’hôtel des ventes %s."
 
--- Ajouts
 L["Please_select_option_infoban"] = "Veuillez sélectionner une option pour Infos Ban."
 L["Please_enter_value_for"] = "Veuillez entrer une valeur pour "
 L["Select_ban_type"] = "Type de bannissement sélectionné : "
