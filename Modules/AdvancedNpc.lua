@@ -139,18 +139,14 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     btnPage:SetText("Page 1 / 1")
 
     ------------------------------------------------------------
-    -- Fonction PopulateGOScroll (affichage du chunk actuel)
+    -- Création d'une frame de prévisualisation indépendante
     ------------------------------------------------------------
-    -- local currentResults = nil -- variable globale pour stocker les résultats filtrés
-    -- local isFiltered = false   -- indique si on est en mode recherche
-
-	-- Création d'une frame de prévisualisation indépendante
 	local creaturePreviewFrame = CreateFrame("Frame", "CreaturePreviewContainer", TrinityAdminMainFrame)
 	creaturePreviewFrame:SetSize(440, 440)
 	creaturePreviewFrame:SetPoint("TOPLEFT", TrinityAdminMainFrame, "TOPRIGHT", 60, 0)
 	creaturePreviewFrame:SetFrameStrata("HIGH")
 	creaturePreviewFrame:EnableMouse(true)
-	creaturePreviewFrame:SetHitRectInsets(30, 30, 30, 50) -- On étend la zone “active” de 50px vers le bas pour englober les boutons.
+	creaturePreviewFrame:SetHitRectInsets(50, 50, 50, 50) -- gauche, droite, haut, bas
 	creaturePreviewFrame:Hide()
 	
 	-- Ajout d'un fond semi-transparent (facultatif)
@@ -158,16 +154,30 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
 	bg:SetAllPoints()
 	bg:SetColorTexture(0, 0, 0, 0.5)
 	
+	-- 1) Créer le bouton “fermer” avec le template UIPanelCloseButton
+	local btnClose = CreateFrame("Button", nil, creaturePreviewFrame, "UIPanelCloseButton")
+	
+	-- 2) Positionner ce bouton dans l’angle supérieur gauche du cadre
+	-- Ajustez les valeurs x/y si la croix n’est pas parfaitement alignée
+	btnClose:SetPoint("TOPRIGHT", creaturePreviewFrame, "TOPRIGHT", 0, 0)
+	
+	-- 3) Quand on clique dessus, on cache simplement creaturePreviewFrame
+	btnClose:SetScript("OnClick", function()
+		creaturePreviewFrame:Hide()
+	end)
+
 	-- Création du modèle de la créature dans la frame de prévisualisation
 	local creatureModel = CreateFrame("PlayerModel", "CreaturePreviewModel", creaturePreviewFrame)
 	-- creatureModel:SetSize(400, 400)
 	-- creatureModel:SetPoint("CENTER", creaturePreviewFrame, "CENTER", 0, 0)
 	creatureModel:SetAllPoints(creaturePreviewFrame)
+	-- creatureModel:SetPortraitZoom(1.0)
+	creatureModel:SetCamDistanceScale(1.2) -- Zoomer dezoomer
 	
-		-- Ajout de la variable pour stocker l'angle actuel (en radians)
+	-- Ajout de la variable pour stocker l'angle actuel (en radians)
     local currentFacing = 0
 	
-		-- On crée deux flags pour savoir si on tourne à gauche ou à droite
+	-- Deux flags pour savoir si on tourne à gauche ou à droite
 	local rotatingLeft  = false
 	local rotatingRight = false	
 
@@ -233,7 +243,7 @@ function AdvancedNpc:CreateAdvancedNpcPanel()
     end)	
 
     ------------------------------------------------------------
-    -- Fonction PopulateGOScroll
+    -- Fonction PopulateGOScroll pour peupler la liste des pnj
     ------------------------------------------------------------
 
     local function PopulateGOScroll(data)
