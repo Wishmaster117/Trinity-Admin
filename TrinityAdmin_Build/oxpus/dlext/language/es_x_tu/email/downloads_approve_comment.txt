@@ -1,0 +1,15 @@
+Asunto: Nuevo comentario de descarga
+
+Hola {{ USERNAME }},
+
+Has recibido este correo porque hay un comentario nuevo o editado para "{{ DOWNLOAD }}" en "{{ SITENAME }}", dentro de la categoría "{{ CATEGORY }}", que está pendiente de aprobación.
+
+Si quieres aprobar este comentario, haz clic en el siguiente enlace:
+
+{{ U_APPROVE }}
+
+O puedes ver el comentario usando este enlace:
+
+{{ U_DOWNLOAD }}
+
+{{ EMAIL_SIG }}

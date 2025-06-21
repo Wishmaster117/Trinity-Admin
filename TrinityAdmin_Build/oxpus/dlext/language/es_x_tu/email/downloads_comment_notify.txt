@@ -1,0 +1,18 @@
+Asunto: Nuevo comentario en una descarga
+
+Hola {{ USERNAME }},
+
+Has recibido este correo porque hay un nuevo comentario en una de tus descargas suscritas en "{{ SITENAME }}":
+
+---------------------------
+Categoría: {{ CATEGORY }}
+Descarga: {{ DOWNLOAD }}
+---------------------------
+
+Si quieres ver este comentario, haz clic en el siguiente enlace:
+
+{{ U_DOWNLOAD }}
+
+Recuerda que siempre puedes elegir no recibir notificaciones sobre nuevos comentarios cambiando la configuración correspondiente en tu perfil de usuario.
+
+{{ EMAIL_SIG }}

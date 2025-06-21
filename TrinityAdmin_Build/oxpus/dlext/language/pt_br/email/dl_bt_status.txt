@@ -1,0 +1,16 @@
+Assunto: Novo Status para Relatório de Bug em {{ SITENAME }}
+
+Olá {{ USERNAME }},
+
+Você está recebendo este e-mail porque o status do seu relatório de bug "{{ REPORT_TITLE }}" em "{{ SITENAME }}" foi alterado.
+Novo status: {{ STATUS }}.
+
+{{ STATUS_TEXT }}
+
+Para mais detalhes, por favor acesse o seguinte link:
+
+{{ U_BUG_REPORT }}
+
+----------------------------
+
+{{ EMAIL_SIG }}

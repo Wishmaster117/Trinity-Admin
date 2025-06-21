@@ -1,0 +1,13 @@
+Oggetto: Download non funzionante
+
+Ciao {{ USERNAME }},
+
+Hai ricevuto questa email perché "{{ REPORTER }}" ha segnalato un download non funzionante su "{{ SITENAME }}".
+Per favore, utilizza il seguente link per verificare questa segnalazione:
+
+---------------------------
+{{ U_DOWNLOAD }}
+{{ REPORT_NOTIFY_TEXT }}
+---------------------------
+
+{{ EMAIL_SIG }}

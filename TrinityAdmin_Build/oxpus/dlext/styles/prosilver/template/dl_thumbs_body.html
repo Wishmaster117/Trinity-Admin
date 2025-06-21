@@ -1,0 +1,78 @@
+{% INCLUDE '@oxpus_dlext/helpers/dl_header.html' %}
+
+<h2>
+	{% INCLUDE '@oxpus_dlext/helpers/dl_filestatus.html' %}
+	<label>{{ DL_DESCRIPTION }}{{ DL_HACK_VERSION }}
+		{% INCLUDE '@oxpus_dlext/helpers/dl_miniimg.html' %}
+	</label>
+</h2>
+
+<br />
+
+<form action="{{ S_DL_FORMS_ACTION }}" method="post" enctype="multipart/form-data" id="dl_thumbs">
+
+<div class="panel">
+	<div class="inner">
+
+	<h3>{{ lang('DL_EDIT_THUMBS') }}</h3>
+
+	<fieldset>
+
+	<dl>
+		<dt><label>{{ lang('DL_FILE_NAME') }}</label></dt>
+		<dd><input type="file" name="img_link" class="inputbox" size="60" /><br /><span class="small">{{ DL_THUMB_MAX_SIZE }}</span></dd>
+	</dl>
+	<dl>
+		<dt><label>{{ lang('DL_FILE_DESCRIPTION') }}</label></dt>
+		<dd><input type="text" name="img_title" size="70" maxlength="255" value="{{ DL_EDIT_IMG_TITLE }}" class="inputbox autowidth" /></dd>
+	</dl>
+
+	</fieldset>
+
+	</div>
+</div>
+
+<fieldset class="submit-buttons">
+	<input type="submit" name="submit" value="{{ lang('SUBMIT') }}" class="button icon-button" />&nbsp;&nbsp;
+	<input type="submit" name="cancel" value="{{ lang('CANCEL') }}" class="button icon-button" />
+</fieldset>
+
+<div>{{ S_FORM_TOKEN }}{{ S_DL_HIDDEN_FIELDS }}</div>
+
+</form>
+
+{% for dl_thumbnails in loops.dl_thumbnails %}
+{% if dl_thumbnails.S_FIRST_ROW %}
+<br />
+
+<div class="rules">
+	<div class="inner">
+
+	{{ lang('DL_THUMB_HINTS') }}
+
+	</div>
+</div>
+
+<div class="panel">
+	<div class="inner">
+{% endif %}
+
+	<div class="dl-left dl-cell-block dl-intent-right dl-thumb-box-manage">
+		<div class="dl-thumb-cell">
+			<a href="{{ dl_thumbnails.DL_IMG_LINK }}" rel="prettyPhoto[pp_gal]" title="{{ dl_thumbnails.DL_IMG_TITLE }}"><img src="{{ dl_thumbnails.DL_IMG_PIC }}" alt="{{ dl_thumbnails.DL_IMG_TITLE }}" title="{{ dl_thumbnails.DL_IMG_TITLE }}" class="dl-thumb-box" /></a>
+		</div>
+		<div class="dl-thumb-cell-button">
+			<a href="{{ dl_thumbnails.U_DL_DELETE }}" title="{{ lang('DL_DELETE') }}" class="button button-icon-only"><i class="icon fa-times fa-fw" aria-hidden="true"></i><span>{{ lang('DL_DELETE') }}</span></a>
+			<a href="{{ dl_thumbnails.U_DL_EDIT }}" title="{{ lang('DL_EDIT_FILE') }}" class="button button-icon-only"><i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span>{{ lang('DL_EDIT_FILE') }}</span></a>
+		</div>
+	</div>
+
+{% if dl_thumbnails.S_LAST_ROW %}
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+
+<br />
+
+{% INCLUDE '@oxpus_dlext/helpers/dl_footer.html' %}

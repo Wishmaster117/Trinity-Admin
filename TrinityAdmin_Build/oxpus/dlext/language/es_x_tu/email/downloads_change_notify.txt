@@ -1,0 +1,18 @@
+Asunto: Descarga modificada
+
+Hola {{ USERNAME }},
+
+Has recibido este correo porque la siguiente descarga en "{{ SITENAME }}", dentro de la categoría "{{ CATEGORY }}", ha sido modificada:
+
+---------------------------
+{{ DOWNLOAD }}
+{{ DESCRIPTION }}
+---------------------------
+
+Si quieres echarle un vistazo a esta descarga, haz clic en el siguiente enlace:
+
+{{ U_CATEGORY }}
+
+Recuerda que siempre puedes elegir no recibir notificaciones sobre descargas modificadas cambiando la configuración correspondiente en tu perfil de usuario.
+
+{{ EMAIL_SIG }}

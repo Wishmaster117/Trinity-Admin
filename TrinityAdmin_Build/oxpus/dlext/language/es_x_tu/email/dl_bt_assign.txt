@@ -1,0 +1,12 @@
+Asunto: Informe de error asignado en {{ SITENAME }}
+
+Hola {{ USERNAME }},
+
+Has recibido este correo porque en "{{ SITENAME }}" se te ha asignado un informe de error para que lo revises.
+Para más detalles sobre este informe, sigue este enlace:
+
+{{ U_BUG_REPORT }}
+
+----------------------------
+
+{{ EMAIL_SIG }}

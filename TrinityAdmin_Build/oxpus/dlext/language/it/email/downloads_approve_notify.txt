@@ -1,0 +1,18 @@
+Oggetto: Nuovo download
+
+Ciao {{ USERNAME }},
+
+Hai ricevuto questa email perché è stato aggiunto o modificato un download su "{{ SITENAME }}" nella categoria "{{ CATEGORY }}" e attende approvazione:
+
+---------------------------
+{{ DOWNLOAD }}
+{{ DESCRIPTION }}
+---------------------------
+
+Se desideri approvare questo download, clicca sul seguente link:
+
+{{ U_APPROVE }}
+
+Ricorda che puoi sempre scegliere di non ricevere notifiche sui nuovi o modificati download modificando l’impostazione corrispondente nel tuo profilo utente.
+
+{{ EMAIL_SIG }}

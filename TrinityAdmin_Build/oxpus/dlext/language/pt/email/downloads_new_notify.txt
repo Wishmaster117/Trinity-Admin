@@ -1,0 +1,18 @@
+Assunto: Novo Download
+
+Olá {{ USERNAME }},
+
+Recebeste este e-mail porque foi adicionado um novo download em "{{ SITENAME }}" na categoria "{{ CATEGORY }}":
+
+---------------------------
+{{ DOWNLOAD }}
+{{ DESCRIPTION }}
+---------------------------
+
+Se quiseres ver este download, clica no seguinte link:
+
+{{ U_CATEGORY }}
+
+Lembra-te que podes sempre optar por não receber notificações sobre novos ou alterados downloads, alterando a definição apropriada no teu perfil de utilizador.
+
+{{ EMAIL_SIG }}

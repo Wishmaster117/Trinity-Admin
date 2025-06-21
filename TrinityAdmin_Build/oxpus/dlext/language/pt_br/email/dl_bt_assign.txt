@@ -1,0 +1,12 @@
+Assunto: Relatório de Bug Atribuído em {{ SITENAME }}
+
+Olá {{ USERNAME }},
+
+Você está recebendo este e-mail porque um relatório de bug foi atribuído a você no "{{ SITENAME }}" para que você possa resolvê-lo.
+Para mais detalhes sobre este relatório, por favor acesse o seguinte link:
+
+{{ U_BUG_REPORT }}
+
+----------------------------
+
+{{ EMAIL_SIG }}

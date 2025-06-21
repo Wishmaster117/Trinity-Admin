@@ -1,0 +1,16 @@
+Oggetto: Nuovo stato della segnalazione bug su {{ SITENAME }}
+
+Ciao {{ USERNAME }},
+
+Hai ricevuto questa email perché lo stato della tua segnalazione bug "{{ REPORT_TITLE }}" su "{{ SITENAME }}" è cambiato.  
+Nuovo stato: {{ STATUS }}.
+
+{{ STATUS_TEXT }}
+
+Per maggiori dettagli, segui questo link:
+
+{{ U_BUG_REPORT }}
+
+----------------------------
+
+{{ EMAIL_SIG }}

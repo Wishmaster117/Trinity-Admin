@@ -1,0 +1,13 @@
+Asunto: Descarga rota
+
+Hola {{ USERNAME }},
+
+Has recibido este correo porque "{{ REPORTER }}" ha reportado una descarga rota en "{{ SITENAME }}".
+Por favor, usa el siguiente enlace para revisar este informe:
+
+---------------------------
+{{ U_DOWNLOAD }}
+{{ REPORT_NOTIFY_TEXT }}
+---------------------------
+
+{{ EMAIL_SIG }}

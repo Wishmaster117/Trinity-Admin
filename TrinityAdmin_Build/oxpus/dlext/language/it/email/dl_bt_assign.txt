@@ -1,0 +1,13 @@
+Oggetto: Segnalazione bug assegnata su {{ SITENAME }}
+
+Ciao {{ USERNAME }},
+
+Hai ricevuto questa email perché su "{{ SITENAME }}" ti è stata assegnata una segnalazione di bug da gestire.
+Per maggiori dettagli su questa segnalazione, segui questo link:
+
+{{ U_BUG_REPORT }}
+
+----------------------------
+
+{{ EMAIL_SIG }}
+

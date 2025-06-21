@@ -1,0 +1,15 @@
+Oggetto: Nuovo commento al download
+
+Ciao {{ USERNAME }},
+
+Hai ricevuto questa email perché è stato aggiunto o modificato un commento al download "{{ DOWNLOAD }}" su "{{ SITENAME }}" nella categoria "{{ CATEGORY }}" e attende approvazione.
+
+Se desideri approvare questo commento, clicca sul seguente link:
+
+{{ U_APPROVE }}
+
+Oppure puoi visualizzare il commento utilizzando questo link:
+
+{{ U_DOWNLOAD }}
+
+{{ EMAIL_SIG }}

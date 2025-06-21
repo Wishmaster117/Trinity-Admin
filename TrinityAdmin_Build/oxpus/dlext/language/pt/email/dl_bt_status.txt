@@ -1,0 +1,16 @@
+Assunto: Novo Estado do Relatório de Erro em {{ SITENAME }}
+
+Olá {{ USERNAME }},
+
+Recebeste este e-mail porque o estado do teu relatório de erro "{{ REPORT_TITLE }}" em "{{ SITENAME }}" foi alterado.
+Novo estado: {{ STATUS }}.
+
+{{ STATUS_TEXT }}
+
+Para mais detalhes, por favor segue o link abaixo:
+
+{{ U_BUG_REPORT }}
+
+----------------------------
+
+{{ EMAIL_SIG }}

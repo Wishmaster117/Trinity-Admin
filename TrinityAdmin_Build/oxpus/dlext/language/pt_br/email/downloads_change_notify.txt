@@ -1,0 +1,18 @@
+Assunto: Download Alterado
+
+Olá {{ USERNAME }},
+
+Você está recebendo este e-mail porque o seguinte download em "{{ SITENAME }}", na categoria "{{ CATEGORY }}", foi alterado:
+
+---------------------------
+{{ DOWNLOAD }}
+{{ DESCRIPTION }}
+---------------------------
+
+Se você deseja visualizar este download, por favor clique no seguinte link:
+
+{{ U_CATEGORY }}
+
+Lembre-se de que você pode escolher não ser notificado sobre downloads editados alterando a configuração apropriada no seu perfil de usuário.
+
+{{ EMAIL_SIG }}

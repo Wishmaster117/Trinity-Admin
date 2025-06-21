@@ -1,0 +1,13 @@
+Assunto: Download com Problemas
+
+Olá {{ USERNAME }},
+
+Recebeste este e-mail porque "{{ REPORTER }}" reportou um download com problemas em "{{ SITENAME }}".
+Por favor, usa o seguinte link para verificar este relatório:
+
+---------------------------
+{{ U_DOWNLOAD }}
+{{ REPORT_NOTIFY_TEXT }}
+---------------------------
+
+{{ EMAIL_SIG }}

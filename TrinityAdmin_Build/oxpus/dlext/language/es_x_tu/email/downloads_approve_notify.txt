@@ -1,0 +1,18 @@
+Asunto: Nueva descarga
+
+Hola {{ USERNAME }},
+
+Has recibido este correo porque hay una nueva descarga o una descarga editada en "{{ SITENAME }}", dentro de la categoría "{{ CATEGORY }}", que está pendiente de aprobación:
+
+---------------------------
+{{ DOWNLOAD }}
+{{ DESCRIPTION }}
+---------------------------
+
+Si quieres aprobar esta descarga, haz clic en el siguiente enlace:
+
+{{ U_APPROVE }}
+
+Recuerda que siempre puedes elegir no recibir notificaciones sobre nuevas descargas o descargas editadas cambiando la configuración correspondiente en tu perfil de usuario.
+
+{{ EMAIL_SIG }}
