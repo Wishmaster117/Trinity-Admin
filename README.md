@@ -41,8 +41,6 @@ Launch the game → Enable addons → log in.
 
 You’re set! 🎉
 
-Note: Access is currently referral-based (free) due to the development effort.
-
 🎬 Preview
 
 ▶️ Video: https://youtu.be/eF8vu5FURTA
