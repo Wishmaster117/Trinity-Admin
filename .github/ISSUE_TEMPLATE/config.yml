@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation / Wiki
+    url: https://example.com/wiki
+    about: Please check the docs before opening an issue. (Replace this link.)
+  - name: 💬 Quick support (Discord)
+    url: https://example.com/discord
+    about: For usage or installation questions. (Replace this link.)
