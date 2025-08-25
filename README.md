@@ -1,6 +1,6 @@
 TrinityAdmin Reforged (WoW 11.2.x)
 
-A modern GM interface for TrinityCore — rebuilt, streamlined, and ready for 11.1.x.
+A modern GM interface for TrinityCore — rebuilt, streamlined, and ready for 11.2.x.
 Originally inspired by NixAJ’s TrinityAdmin. Fully reforged and upgraded.
 
 ✨ What’s new
