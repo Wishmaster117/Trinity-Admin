@@ -18,7 +18,10 @@ Fully compatible with WoW 11.1.0
 Multilingual-ready
 :link: Learn More & Get the Addon
 Due to the significant development effort, the addon is available through a referral-based access system (free of charge).
-:compass: (https://youtu.be/eF8vu5FURTA)
+
+Preview:
+https://youtu.be/eF8vu5FURTA
+
 :backhand_index_pointing_right: [Visit the official TrinityAdmin forum thread] AzerothDevs - Login
 
 Special thanks to the TrinityCore devs—this project wouldn’t exist without your incredible work.
