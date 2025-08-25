@@ -7,7 +7,7 @@ After many months of development, I’m proud to share TrinityAdmin, a fully rew
 :hammer_and_wrench: A Revival of the Original
 This project is a modern revival of the original TrinityAdmin addon by NixAJ, which hadn’t been updated in over five years. I took the base concept and reforged the entire code, rebuilt the interface using Ace3, and added dozens of features to bring it up to modern standards.
 
-:bullseye: Key Features:
+Key Features:
 
 Complete UI built with Ace3, clean and responsive
 Quick access to all GM commands
@@ -16,13 +16,14 @@ Full quest, spell, aura and teleportation utilities
 In-game search, filters, and action logs
 Fully compatible with WoW 11.1.0
 Multilingual-ready
-:link: Learn More & Get the Addon
+
+Learn More & Get the Addon:
 Due to the significant development effort, the addon is available through a referral-based access system (free of charge).
 
 Preview:
 https://youtu.be/eF8vu5FURTA
 
-:backhand_index_pointing_right: [Visit the official TrinityAdmin forum thread] AzerothDevs - Login
+Visit the official TrinityAdmin forum thread AzerothDevs: https://www.azerothdevs.com/viewforum.php?f=42
 
 Special thanks to the TrinityCore devs—this project wouldn’t exist without your incredible work.
 
