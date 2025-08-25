@@ -124,29 +124,30 @@ end
 ---------------------------------------------------------------------
 local function ParseGuildList(rawLines)
     local guilds = {}
-
-    -- On ne garde que les lignes qui commencent par un ID numérique
     for _, line in ipairs(rawLines) do
+        -- On ne garde que les lignes de données (commencent par l'ID)
         if line:match("^%s*%d+%s*|") then
-            local id, name, gm, created, members, level, bank =
-                line:match("^%s*(%d+)%s*|%s*(.-)%s*|%s*(.-)%s*|%s*(%d%d%d%d%-%d%d%-%d%d)%s*|%s*(%d+)%s*|%s*(%d+)%s*|%s*(%d+)")
-            if id then
+            -- Split robuste par '|', puis trim
+            local cols = {}
+            for part in line:gmatch("([^|]+)") do
+                part = part:gsub("^%s*", ""):gsub("%s*$", "")  -- trim
+                table.insert(cols, part)
+            end
+            -- Nouveau format: 6 colonnes -> id | name | gm | created(ts) | members | bank
+            if #cols >= 6 then
                 table.insert(guilds, {
-                    id      = id,
-                    name    = name,
-                    gm      = gm,
-                    created = created,
-                    members = members,
-                    level   = level,
-                    bank    = bank,
+                    id      = cols[1],
+                    name    = cols[2],
+                    gm      = cols[3],
+                    created = cols[4],  -- peut être "YYYY-MM-DD" ou "YYYY-MM-DD HH:MM:SS"
+                    members = cols[5],
+                    bank    = cols[6],
                 })
             end
         end
     end
-
     return guilds
 end
-
 ----------------------------------------------------------------------------------------------------
 -- 3) Fonction ShowGuildInfoAceGUI : crée la fenêtre AceGUI et y place des EditBox pour chaque info
 ----------------------------------------------------------------------------------------------------
@@ -301,7 +302,6 @@ local function ShowGuildListAceGUI(rawLines)
         AddRow(scroll, "Guild-Master", g.gm)
         AddRow(scroll, "Created",    g.created)
         AddRow(scroll, "Members",    g.members)
-        AddRow(scroll, "Level",      g.level)
         AddRow(scroll, "Bank (g)",   g.bank)
     end
 end
