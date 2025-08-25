@@ -1,33 +1,83 @@
-[AddOn] TrintyAdmin Reforged for 11.1.7
-:bell: [Addon Release] TrinityAdmin – A Modern GM Interface for TrinityCore (WoW 11.1.7)
-Hello TrinityCore community,
+TrinityAdmin Reforged (WoW 11.2.x)
 
-After many months of development, I’m proud to share TrinityAdmin, a fully reworked and upgraded GM addon designed for TrinityCore servers running World of Warcraft 11.1.0.
+A modern GM interface for TrinityCore — rebuilt, streamlined, and ready for 11.1.x.
+Originally inspired by NixAJ’s TrinityAdmin. Fully reforged and upgraded.
 
-:hammer_and_wrench: A Revival of the Original
-This project is a modern revival of the original TrinityAdmin addon by NixAJ, which hadn’t been updated in over five years. I took the base concept and reforged the entire code, rebuilt the interface using Ace3, and added dozens of features to bring it up to modern standards.
+✨ What’s new
 
-Key Features:
+🧱 Full UI rebuild with Ace3 — clean, fast, responsive
 
-Complete UI built with Ace3, clean and responsive
-Quick access to all GM commands
-Advanced tools for managing players, creatures, items, tickets, and more
-Full quest, spell, aura and teleportation utilities
-In-game search, filters, and action logs
-Fully compatible with WoW 11.1.0
-Multilingual-ready
+⚡ Quick actions for the most-used GM commands
 
-Learn More & Get the Addon:
-Due to the significant development effort, the addon is available through a referral-based access system (free of charge).
+🧰 Advanced tools for players, creatures, items, tickets, and more
 
-Preview:
-https://youtu.be/eF8vu5FURTA
+📜 Quest / Spell / Aura / Teleport utilities at your fingertips
 
-Visit the official TrinityAdmin forum thread AzerothDevs: https://www.azerothdevs.com/viewforum.php?f=42
+🔎 In-game search & filters + action logs
 
-Special thanks to the TrinityCore devs—this project wouldn’t exist without your incredible work.
+🌍 Multilingual-ready
 
-Feel free to reach out with questions, feedback, or collaboration ideas.
+✅ Tested on WoW 11.1.7 (compatible with 11.1.0+ on TrinityCore)
+
+🛠️ Why “Reforged”?
+
+The original TrinityAdmin hadn’t seen updates in 5+ years. This project revives the concept with:
+
+A ground-up code rework,
+
+A modernized UI powered by Ace3,
+
+Dozens of quality-of-life features for GMs and admins.
+
+📦 Install
+
+Go to Releases (right sidebar) and download the latest ZIP.
+
+Extract to World of Warcraft/_retail_/Interface/AddOns/TrinityAdmin/
+
+Make sure Ace3 is installed/enabled.
+
+Launch the game → Enable addons → log in.
+
+You’re set! 🎉
+
+Note: Access is currently referral-based (free) due to the development effort.
+
+🎬 Preview
+
+▶️ Video: https://youtu.be/eF8vu5FURTA
+
+🧵 Forum thread (AzerothDevs): https://www.azerothdevs.com/viewforum.php?f=42
+
+🧩 Compatibility
+WoW / TrinityCore	Status
+11.1.7	✅ Tested
+11.1.0+	✅ Supported
+
+Designed for TrinityCore master targeting WoW 11.1.x.
+
+🌐 Localization
+
+Multilingual-ready. Want to help translate? Open an issue or PR with your locale file.
+
+🙌 Credits
+
+Original concept by NixAJ
+
+Massive thanks to the TrinityCore developers & community — your work makes projects like this possible ❤️
+
+🤝 Support & Feedback
+
+Questions, ideas, bugs?
+
+Open a GitHub Issue
+
+Or join the AzerothDevs forum thread above
+
+📜 License
+
+See LICENSE (at the repository root).
+Not affiliated with or endorsed by Blizzard Entertainment. For private server development with TrinityCore.
 
 Best regards,
-TheWarlock
+TheWarlock ✨
