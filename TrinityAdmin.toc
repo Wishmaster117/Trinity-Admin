@@ -1,4 +1,4 @@
-## Interface: 11506, 11507, 20504, 30405, 40402, 40401, 50500, 110205, 110107, 110200
+## Interface: 11506, 11507, 20504, 30405, 40402, 40401, 50500, 110205, 110107, 110200, 120000
 ## Title: TrinityAdmin
 ## Notes: Note this is the first release
 ## Author: TheWarlock
@@ -50,3 +50,4 @@ Functions\Utils.lua
 
 # Modules
 Modules\Includes.xml
+
